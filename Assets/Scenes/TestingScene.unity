@@ -151,6 +151,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcb86695e96b39be690cb65b9d03c704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creaturePod1: {fileID: 0}
+  creaturePod2: {fileID: 0}
+  mutationFactor: 10
 --- !u!4 &38959333
 Transform:
   m_ObjectHideFlags: 0
@@ -307,7 +310,7 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0.15686275, g: 0.16470589, b: 0.21176471, a: 1}
   - {r: 0.38039216, g: 0.827451, b: 0.9843137, a: 1}
-  statRange: 5.5
+  statRange: 3.5
   statMin: 10
   creaturePrefab: {fileID: 129799733685832868, guid: d419a20c30a205e35a4ecb4e5442002d, type: 3}
 --- !u!4 &2012135054

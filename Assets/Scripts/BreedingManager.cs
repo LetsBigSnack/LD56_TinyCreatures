@@ -14,7 +14,7 @@ public class BreedingManager : MonoBehaviour
     [SerializeField] private GameObject creaturePod2;
 
     [Range(0f, 100f)]
-    [SerializeField] private float mutationFactor = 25.0f;
+    [SerializeField] private float mutationFactor = 20.0f;
 
     private void Awake()
     {
@@ -32,9 +32,9 @@ public class BreedingManager : MonoBehaviour
 
     private void Start()
     {
-        creaturePod1 = CreatureManager.Instance.CreateBasicCreature();
-        creaturePod2 = CreatureManager.Instance.CreateBasicCreature();
-        Breed();
+        //creaturePod1 = CreatureManager.Instance.CreateBasicCreature();
+        //creaturePod2 = CreatureManager.Instance.CreateBasicCreature();
+        //Breed();
     }
 
     public void Breed()

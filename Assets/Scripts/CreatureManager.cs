@@ -17,7 +17,8 @@ public class CreatureManager : MonoBehaviour
     
     [Header("Stat Settings")]
     [Range(0, 100.0f)]
-    [SerializeField] private float statRange = 5.5f;
+    [SerializeField] private float statRange = 3.5f;
+    [Range(0, 100.0f)]
     [SerializeField] private float statMin = 10f;
     
     [Header("Prefabs")]
@@ -52,11 +53,11 @@ public class CreatureManager : MonoBehaviour
         Creature newCreature = newCreatureObj.GetComponent<Creature>();
 
         
-        int randomHealth = Mathf.RoundToInt(UnityEngine.Random.Range(0, statRange) + statMin);
-        float randomSpeed = UnityEngine.Random.Range(0, statRange) + statMin;
-        float randomAttack = UnityEngine.Random.Range(0, statRange) + statMin;
-        float randomDefense = UnityEngine.Random.Range(0, statRange) + statMin;
-        float randomDexterity = UnityEngine.Random.Range(0, statRange) + statMin;
+        int randomHealth = Mathf.RoundToInt(UnityEngine.Random.Range(-statRange, statRange) + statMin);
+        float randomSpeed = UnityEngine.Random.Range(-statRange, statRange) + statMin;
+        float randomAttack = UnityEngine.Random.Range(-statRange, statRange) + statMin;
+        float randomDefense = UnityEngine.Random.Range(-statRange, statRange) + statMin;
+        float randomDexterity = UnityEngine.Random.Range(-statRange, statRange) + statMin;
 
         newCreature.SetStats(randomHealth, randomSpeed, randomAttack, randomDefense, randomDexterity);
 
@@ -86,11 +87,11 @@ public class CreatureManager : MonoBehaviour
         Creature newCreature = newCreatureObj.GetComponent<Creature>();
 
         
-        int randomHealth = Mathf.RoundToInt(UnityEngine.Random.Range(0, definedStatRange) * definedStatMin);
-        float randomSpeed = UnityEngine.Random.Range(0, definedStatRange) * definedStatMin;
-        float randomAttack = UnityEngine.Random.Range(0, definedStatRange) * definedStatMin;
-        float randomDefense = UnityEngine.Random.Range(0, definedStatRange) * definedStatMin;
-        float randomDexterity = UnityEngine.Random.Range(0, definedStatRange) * definedStatMin;
+        int randomHealth = Mathf.RoundToInt(UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin);
+        float randomSpeed = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin;
+        float randomAttack = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin;
+        float randomDefense = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin;
+        float randomDexterity = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin;
 
         newCreature.SetStats(randomHealth, randomSpeed, randomAttack, randomDefense, randomDexterity);
 
