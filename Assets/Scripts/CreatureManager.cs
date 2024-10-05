@@ -38,13 +38,6 @@ public class CreatureManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-
-    private void Start()
-    {
-        CreateBasicCreature();
-    }
-
-
     
     public GameObject CreateBasicCreature()
     {
