@@ -36,10 +36,11 @@ public class BreedingManager : MonoBehaviour
         //creaturePod2 = CreatureManager.Instance.CreateBasicCreature();
         //Breed();
     }
-
+    
+    
+    //TODO: add Generation infromation when breeding, so it searches for the Gen of both Parents takes the higher one and adds one.
     public void Breed()
     {
-        
         Creature parent1 = creaturePod1.GetComponent<Creature>();
         Creature parent2 = creaturePod2.GetComponent<Creature>();
 
@@ -87,6 +88,7 @@ public class BreedingManager : MonoBehaviour
 
         
         newCreature.SetSprites(newHeadSprite, newBodySprite, newLegsSprite, newArmsSprite);
+        
     }
 
     private float MutationFactor()

@@ -76,7 +76,9 @@ public class CreatureManager : MonoBehaviour
         Sprite randomArms = creatureArmsSprites[UnityEngine.Random.Range(0, creatureArmsSprites.Length)];
 
         newCreature.SetSprites(randomHead, randomBody, randomLegs, randomArms);
-
+        
+        newCreature.CreatureGeneration = 0;
+        
         return newCreatureObj;
     }
 
@@ -111,6 +113,9 @@ public class CreatureManager : MonoBehaviour
 
         newCreature.SetSprites(randomHead, randomBody, randomLegs, randomArms);
 
+        newCreature.CreatureGeneration = 0;
+        
+        
         return newCreatureObj;
     }
 }
