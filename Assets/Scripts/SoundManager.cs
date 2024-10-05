@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour
 {
@@ -11,6 +13,16 @@ public class SoundManager : MonoBehaviour
     public AudioSource sfxSource;
 
     public float customLoopTime = 5f;
+
+    [SerializeField]
+    private AudioMixer myMixer;
+    [SerializeField]
+    private Slider musicSlider;
+    [SerializeField]
+    private Slider sfxSlider;
+
+    [SerializeField]
+    private bool muffledMusic = false;
 
     private void Awake()
     {
@@ -28,6 +40,8 @@ public class SoundManager : MonoBehaviour
     private void Start()
     {
         PlayBackgroundMusic();
+        SetMusicVolume();
+        SetSfxVolume();
     }
 
     public void PlayBackgroundMusic()
@@ -36,7 +50,6 @@ public class SoundManager : MonoBehaviour
         {
             musicSource[i].clip = musicSounds[i].clip;
             musicSource[i].Play();
-            customLoopTime = customLoopTime + i;
             if(i != 1) {
                 StartCoroutine(HandleCustomLoop(musicSource[i], customLoopTime));
             }
@@ -65,6 +78,34 @@ public class SoundManager : MonoBehaviour
         {
             sfxSource.PlayOneShot(sound.clip);
         }
+    }
+
+    public void SetMusicVolume()
+    {
+        float volume = musicSlider.value;
+        myMixer.SetFloat("music", Mathf.Log10(volume)*20);
+    }
+
+    public void SetSfxVolume()
+    {
+        float volume = sfxSlider.value;
+        myMixer.SetFloat("sfx", Mathf.Log10(volume) * 20);
+    }
+
+    public void changeBackground()
+    {
+        if (muffledMusic)
+        {
+            myMixer.SetFloat("lowpass", 5000f);
+            myMixer.SetFloat("distortion", 0.25f);
+        }
+        if (!muffledMusic)
+        {
+            myMixer.SetFloat("lowpass", 700f);
+            myMixer.SetFloat("distortion", 0f);
+        }
+
+        muffledMusic = !muffledMusic;
     }
 
 
