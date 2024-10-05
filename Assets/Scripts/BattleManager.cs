@@ -7,7 +7,6 @@ public class BattleManager : MonoBehaviour
     public static BattleManager Instance { get; private set; }
 
     [Header("Battle Parameters")] 
-    [SerializeField] private Creature playerCreature;
     [SerializeField] private Creature enemyCreature;
     [Range(0, 100.0f)]
     [SerializeField] private float statRange = 3.5f;
@@ -15,9 +14,12 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private float statMin = 10f;
     [SerializeField] private float speedFactor = 15f;
     [SerializeField] private float winFactor = 0.6f;
-    
-    
-    [Header("Battle Information")]
+
+    public float StatRange{get{return statRange;}}
+    public float StatMin{get{return statMin;}}
+
+    [Header("Battle Information")] 
+    [SerializeField] private bool battleRunning = true;
     [SerializeField] private bool hasBattleStarted = false;
     [SerializeField] private int playerWins = 0;
 
@@ -36,15 +38,13 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        playerCreature = CreatureManager.Instance.CreateAdjustedCreature(4, 18).GetComponent<Creature>();
-        playerCreature.CreatureName = "Player";
-    }
-
     private void Update()
     {
-        if (playerCreature != null && !hasBattleStarted)
+        if (!battleRunning)
+        {
+            return;
+        }
+        if (InventoryManager.Instance.SelectedCreatureForBattle != null && !hasBattleStarted)
         {
             StartBattle();
         }
@@ -52,6 +52,7 @@ public class BattleManager : MonoBehaviour
 
     public void StartBattle()
     {
+        Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
         hasBattleStarted = true;
         playerCreature.CurrentHealth = playerCreature.MaxHealth;
 
@@ -87,7 +88,9 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator BattleCoroutine()
     {
-        while (playerCreature != null && enemyCreature != null && playerCreature.CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
+        Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
+        
+        while (battleRunning && playerCreature != null && enemyCreature != null && playerCreature.CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
         {
             yield return StartCoroutine(PerformAttack(playerCreature, enemyCreature));
 
@@ -123,4 +126,23 @@ public class BattleManager : MonoBehaviour
         // Wait for the attack interval based on the attacker's speed
         yield return new WaitForSeconds(attackInterval);
     }
+
+    public void StopBattle()
+    {
+        battleRunning = false;
+    }
+    
+    public void ResumeBattle()
+    {
+        battleRunning = true;
+    }
+
+    public int GetPredictedPowerLevel(float adjustment = 1.0f)
+    {
+        float adjustedStat = statMin + (playerWins * winFactor * 2) + (statRange + (playerWins * winFactor));
+        float predictedPowerLevel = ((adjustedStat * 4) / 4) * adjustedStat;
+        return  Mathf.RoundToInt(predictedPowerLevel);
+    }
+
+    
 }

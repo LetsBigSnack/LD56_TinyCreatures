@@ -89,6 +89,12 @@ public class BreedingManager : MonoBehaviour
         
         newCreature.SetSprites(newHeadSprite, newBodySprite, newLegsSprite, newArmsSprite);
         
+        
+        int lastGeneration = parent1.CreatureGeneration > parent2.CreatureGeneration ? parent1.CreatureGeneration : parent2.CreatureGeneration;
+        lastGeneration++;
+
+        newCreature.CreatureGeneration = lastGeneration;
+
     }
 
     private float MutationFactor()
