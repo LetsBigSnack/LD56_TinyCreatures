@@ -40,9 +40,23 @@ public class UI_CompareManager : MonoBehaviour
             rightCreatureSprite.SetupRepresentation(right);
         }
         //TODO: Set Text
-        
-        
         //Left / Button handle 
     }
+
+    public void SetToBreedPod()
+    {
+        //add creature to the breedPod
+    }
+
+    public void SetAsActiveFightingCreature() {
+        //add creature to the current fight
+    }
+
+    public void SellCreatureToShop()
+    {
+        //sell current picked creature
+    }
+
+
     
 }
