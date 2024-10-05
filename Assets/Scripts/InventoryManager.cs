@@ -21,6 +21,13 @@ public class InventoryManager : MonoBehaviour
     { get => selectedCreatureForBattle; set => selectedCreatureForBattle = value; }
     
     
+    public Creature CreatureInspectorLeft 
+    { get => creatureInspectorLeft; set => creatureInspectorLeft = value; }
+
+    public Creature CreatureInspectorRight 
+    { get => creatureInspectorRight; set => creatureInspectorRight = value; }
+
+    
     public List<Creature> InventoryCreatures
     {
         get { return inventoryCreatures; }
@@ -38,6 +45,10 @@ public class InventoryManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             inventoryCreatures = new List<Creature>();
             _breedingCreatures = new HashSet<Creature>();
+
+            AddCreature(CreatureManager.Instance.CreateBasicCreature().GetComponent<Creature>());
+            AddCreature(CreatureManager.Instance.CreateBasicCreature().GetComponent<Creature>());
+            AddCreature(CreatureManager.Instance.CreateBasicCreature().GetComponent<Creature>());
         }
     }
 
@@ -45,7 +56,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (newCreature != null && !inventoryCreatures.Contains(newCreature))
         {
-            if (inventoryCreatures.Count >= inventorySpace)
+            if (inventoryCreatures.Count <= inventorySpace)
             {
                 inventoryCreatures.Add(newCreature);
                 return true;

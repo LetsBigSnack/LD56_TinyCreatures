@@ -11,6 +11,7 @@ public class StoreManager : MonoBehaviour
     [SerializeField] private int pricesPerSlot = 10;
     [SerializeField] private int boughtSlots = 0;
     [SerializeField] private int basicCreaturePrice = 10;
+    //TODO: add threshold to buy shir
     [SerializeField] private int winThreshold = 20;
     [SerializeField] private int advancedCreaturePrice = 10;
     [SerializeField] private int pricePerPowerLevel = 5;

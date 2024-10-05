@@ -1,0 +1,48 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class UI_CompareManager : MonoBehaviour
+{
+    public static UI_CompareManager Instance;
+    
+    [SerializeField] private UI_CreatureSprite leftCreatureSprite;
+    [SerializeField] private UI_CreatureSprite rightCreatureSprite;
+
+    public void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    public void SetInspector()
+    {
+        leftCreatureSprite.Reset();
+        rightCreatureSprite.Reset();
+        
+        Creature left = InventoryManager.Instance.CreatureInspectorLeft;
+        Creature right = InventoryManager.Instance.CreatureInspectorRight;
+        
+        if (left != null)
+        {
+            leftCreatureSprite.SetupRepresentation(left);
+        }
+        if (right != null)
+        {
+            rightCreatureSprite.SetupRepresentation(right);
+        }
+        //TODO: Set Text
+        
+        
+        //Left / Button handle 
+    }
+    
+}
