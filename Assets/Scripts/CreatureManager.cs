@@ -41,7 +41,7 @@ public class CreatureManager : MonoBehaviour
 
     private void Start()
     {
-        //CreateBasicCreature();
+        CreateBasicCreature();
     }
 
 
