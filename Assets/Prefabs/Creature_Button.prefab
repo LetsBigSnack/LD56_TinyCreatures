@@ -278,19 +278,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2148942320053515979}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7843208254596767153}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &4740814729668810428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,10 +353,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creature: {fileID: 0}
-  creatureHead: {fileID: 4981271777573876129}
-  creatureBody: {fileID: 2672177709707318695}
-  creatureArms: {fileID: 1267496120057767483}
-  creatureLegs: {fileID: 3241432862342586151}
 --- !u!114 &8565825482338371458
 MonoBehaviour:
   m_ObjectHideFlags: 0

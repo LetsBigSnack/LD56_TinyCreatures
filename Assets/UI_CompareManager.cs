@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class UI_CompareManager : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class UI_CompareManager : MonoBehaviour
     
     [SerializeField] private UI_CreatureSprite leftCreatureSprite;
     [SerializeField] private UI_CreatureSprite rightCreatureSprite;
+    [SerializeField] private UI_CreatureDetailsText leftCreatureDetails;
+    [SerializeField] private UI_CreatureDetailsText rightCreatureDetails;
 
     public void Awake()
     {
@@ -34,12 +38,13 @@ public class UI_CompareManager : MonoBehaviour
         if (left != null)
         {
             leftCreatureSprite.SetupRepresentation(left);
+            leftCreatureDetails.SetupRepresentation(left);
         }
         if (right != null)
         {
             rightCreatureSprite.SetupRepresentation(right);
+            rightCreatureDetails.SetupRepresentation(right);
         }
-        //TODO: Set Text
         //Left / Button handle 
     }
 
