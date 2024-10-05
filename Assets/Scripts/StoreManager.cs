@@ -79,6 +79,13 @@ public class StoreManager : MonoBehaviour
         return true;
         
     }
+
+    public bool SellOwnedCreature(Creature creature)
+    {
+        EarnMoney(creature.PowerLevel);
+        return true;
+    }
+
     public void SpendMoney(int price)
     {
         playerMoney -= price;

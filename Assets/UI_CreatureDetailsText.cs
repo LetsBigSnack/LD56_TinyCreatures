@@ -7,6 +7,7 @@ using TMPro;
 public class UI_CreatureDetailsText : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI creatureNameText;
+    [SerializeField] private TextMeshProUGUI powerLevelText;
     [SerializeField] private TextMeshProUGUI hpText;
     [SerializeField] private TextMeshProUGUI atkText;
     [SerializeField] private TextMeshProUGUI spdText;
@@ -16,6 +17,7 @@ public class UI_CreatureDetailsText : MonoBehaviour
     public void Reset()
     {
         creatureNameText.text = null;
+        powerLevelText.text = null;
         hpText.text = null;
         atkText.text = null;
         spdText.text = null;
@@ -26,6 +28,7 @@ public class UI_CreatureDetailsText : MonoBehaviour
     public void SetupRepresentation(Creature creature)
     {
         creatureNameText.text = creature.CreatureName;
+        powerLevelText.text = creature.PowerLevel.ToString();
         hpText.text = creature.MaxHealth.ToString();
         atkText.text = creature.Attack.ToString();
         spdText.text = creature.Speed.ToString();

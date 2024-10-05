@@ -31,6 +31,8 @@ public class UI_CompareManager : MonoBehaviour
     {
         leftCreatureSprite.Reset();
         rightCreatureSprite.Reset();
+        leftCreatureDetails.Reset();
+        rightCreatureDetails.Reset();
         
         Creature left = InventoryManager.Instance.CreatureInspectorLeft;
         Creature right = InventoryManager.Instance.CreatureInspectorRight;
@@ -57,9 +59,32 @@ public class UI_CompareManager : MonoBehaviour
         //add creature to the current fight
     }
 
-    public void SellCreatureToShop()
+    public void SellCreatureToShop(bool isLeft)
     {
-        //sell current picked creature
+        Creature left = InventoryManager.Instance.CreatureInspectorLeft;
+        Creature right = InventoryManager.Instance.CreatureInspectorRight;
+
+        if (isLeft)
+        {
+            if (left != null)
+            {
+                StoreManager.Instance.SellOwnedCreature(left);
+                InventoryManager.Instance.RemoveCreature(left);
+                InventoryManager.Instance.SelectCreatureLeft(null);
+            }
+        } 
+        else
+        {
+            if (right != null)
+            {
+                StoreManager.Instance.SellOwnedCreature(right);
+                InventoryManager.Instance.RemoveCreature(right);
+                InventoryManager.Instance.SelectCreatureRight(null);
+            }
+        }
+
+        UI_InventoryManager.Instance.RefreshInventory();
+        SetInspector();
     }
 
 

@@ -66,7 +66,7 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
-    private bool RemoveCreature(Creature creatureToRemove)
+    public bool RemoveCreature(Creature creatureToRemove)
     {
         if (creatureToRemove != null && inventoryCreatures.Contains(creatureToRemove))
         {
