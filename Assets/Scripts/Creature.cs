@@ -171,5 +171,16 @@ public class Creature : MonoBehaviour
     {
         powerLevel = Mathf.RoundToInt((speed + attack + defense + dexterity) / 4);
     }
+
+    public void TakeDamage(float damage)
+    {
+        float finalDamage = damage - (defense * 0.5f); 
+        finalDamage = Mathf.Max(1, finalDamage);
+        currentHealth -= Mathf.RoundToInt(finalDamage);
+        currentHealth = Mathf.Max(0, currentHealth);
+
+        Debug.Log($"{creatureName} took {finalDamage} damage, current health: {currentHealth}");
+    }
+
 }
 

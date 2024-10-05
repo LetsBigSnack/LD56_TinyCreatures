@@ -54,10 +54,10 @@ public class CreatureManager : MonoBehaviour
 
         
         int randomHealth = Mathf.RoundToInt(UnityEngine.Random.Range(-statRange, statRange) + statMin);
-        float randomSpeed = UnityEngine.Random.Range(-statRange, statRange) + statMin;
-        float randomAttack = UnityEngine.Random.Range(-statRange, statRange) + statMin;
-        float randomDefense = UnityEngine.Random.Range(-statRange, statRange) + statMin;
-        float randomDexterity = UnityEngine.Random.Range(-statRange, statRange) + statMin;
+        float randomSpeed = UnityEngine.Random.Range(-statRange, statRange) + statMin/2;
+        float randomAttack = UnityEngine.Random.Range(-statRange, statRange) + statMin/2;
+        float randomDefense = UnityEngine.Random.Range(-statRange, statRange) + statMin/2;
+        float randomDexterity = UnityEngine.Random.Range(-statRange, statRange) + statMin/2;
 
         newCreature.SetStats(randomHealth, randomSpeed, randomAttack, randomDefense, randomDexterity);
 
@@ -67,7 +67,7 @@ public class CreatureManager : MonoBehaviour
         Color armsColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
         Color legsColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
 
-        newCreature.SetColor(headColor, bodyColor, armsColor, legsColor);
+        newCreature.SetColor(headColor, bodyColor, legsColor, armsColor);
 
         
         Sprite randomHead = creatureHeadSprites[UnityEngine.Random.Range(0, creatureHeadSprites.Length)];
@@ -88,13 +88,21 @@ public class CreatureManager : MonoBehaviour
 
         
         int randomHealth = Mathf.RoundToInt(UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin);
-        float randomSpeed = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin;
-        float randomAttack = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin;
-        float randomDefense = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin;
-        float randomDexterity = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin;
+        float randomSpeed = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin/2;
+        float randomAttack = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin/2;
+        float randomDefense = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin/2;
+        float randomDexterity = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin/2;
 
         newCreature.SetStats(randomHealth, randomSpeed, randomAttack, randomDefense, randomDexterity);
 
+        
+        Color headColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
+        Color bodyColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
+        Color armsColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
+        Color legsColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
+        
+        newCreature.SetColor(headColor, bodyColor,legsColor, armsColor);
+        
         
         Sprite randomHead = creatureHeadSprites[UnityEngine.Random.Range(0, creatureHeadSprites.Length)];
         Sprite randomBody = creatureBodySprites[UnityEngine.Random.Range(0, creatureBodySprites.Length)];
