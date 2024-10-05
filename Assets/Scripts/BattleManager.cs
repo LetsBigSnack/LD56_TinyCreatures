@@ -23,6 +23,9 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private bool hasBattleStarted = false;
     [SerializeField] private int playerWins = 0;
 
+    public int PlayerWins{get{return playerWins;}}
+    
+    
     private Coroutine battleCoroutine;
 
     private void Awake()

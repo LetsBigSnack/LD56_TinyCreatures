@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +15,16 @@ public class StoreManager : MonoBehaviour
     //TODO: add threshold to buy shir
     [SerializeField] private int winThreshold = 20;
     [SerializeField] private int advancedCreaturePrice = 10;
-    [SerializeField] private int pricePerPowerLevel = 5;
+    [SerializeField] private int pricePerPowerLevel = 2;
     [SerializeField] private int playerMoney = 50;
+    
+    public int PlayerMoney { get => playerMoney; set => playerMoney = value; }
+    
+    
+    public int CurrentSlotPrice { get => currentSlotPrice; set => currentSlotPrice = value; }
+    public int BasicCreaturePrice { get => basicCreaturePrice; set => basicCreaturePrice = value; }
+    public int AdvancedCreaturePrice { get => advancedCreaturePrice; set => advancedCreaturePrice = value; }
+    
     
     
 
@@ -33,12 +42,17 @@ public class StoreManager : MonoBehaviour
         }
     }
 
-
+    
+    //TODO: dont know if i should put in Update but i am a bit tired to maybe needs to change
+    private void FixedUpdate()
+    {
+        UpdatePrices();
+    }
 
     public void UpdatePrices()
     {
         advancedCreaturePrice = BattleManager.Instance.GetPredictedPowerLevel()  * pricePerPowerLevel;
-        currentSlotPrice = pricesPerSlot * pricesPerSlot;
+        currentSlotPrice = pricesPerSlot + pricesPerSlot * boughtSlots;
     }
 
     public bool BuyNewSlot()
@@ -50,18 +64,25 @@ public class StoreManager : MonoBehaviour
 
         InventoryManager.Instance.AddSlot();
         SpendMoney(currentSlotPrice);
+        boughtSlots++;
         return true;
     }
     
     public bool BuyBasicCreature()
     {
-        if (playerMoney < basicCreaturePrice)
+        if (playerMoney < basicCreaturePrice && InventoryManager.Instance.HasSpace())
         {
             return false;
         }
-        InventoryManager.Instance.AddCreature(CreatureManager.Instance.CreateBasicCreature().GetComponent<Creature>());
-        SpendMoney(basicCreaturePrice);
-        return true;
+
+        if (InventoryManager.Instance.AddCreature(CreatureManager.Instance.CreateBasicCreature()
+                .GetComponent<Creature>()))
+        {
+            SpendMoney(basicCreaturePrice);
+            return true;
+        }
+        
+        return false;
 
     }
     
@@ -74,9 +95,14 @@ public class StoreManager : MonoBehaviour
 
         float statMin = BattleManager.Instance.StatMin;
         float statRange = BattleManager.Instance.StatRange;
-        InventoryManager.Instance.AddCreature(CreatureManager.Instance.CreateAdjustedCreature(statRange, statMin).GetComponent<Creature>());
-        SpendMoney(advancedCreaturePrice);
-        return true;
+        
+        if (InventoryManager.Instance.AddCreature(CreatureManager.Instance.CreateAdjustedCreature(statRange, statMin).GetComponent<Creature>()))
+        {
+            SpendMoney(advancedCreaturePrice);
+            return true;
+        }
+        
+        return false;
         
     }
 
@@ -93,5 +119,10 @@ public class StoreManager : MonoBehaviour
     public void EarnMoney(int price)
     {
         playerMoney += price;
+    }
+
+    public bool CanBuyAdvancedCreature()
+    {
+        return BattleManager.Instance.PlayerWins >= winThreshold;
     }
 }

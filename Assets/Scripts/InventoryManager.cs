@@ -33,6 +33,8 @@ public class InventoryManager : MonoBehaviour
         get { return inventoryCreatures; }
     }
     
+    public int InventorySpace {get => inventorySpace;}
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -56,7 +58,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (newCreature != null && !inventoryCreatures.Contains(newCreature))
         {
-            if (inventoryCreatures.Count <= inventorySpace)
+            if (inventoryCreatures.Count < inventorySpace)
             {
                 inventoryCreatures.Add(newCreature);
                 return true;
@@ -122,16 +124,29 @@ public class InventoryManager : MonoBehaviour
 
     public void SelectCreatureLeft(Creature creatureToSelect)
     {
+        if (creatureToSelect == creatureInspectorRight)
+        {
+            creatureInspectorRight = null;
+        }
         creatureInspectorLeft = creatureToSelect;
     }
     
     public void SelectCreatureRight(Creature creatureToSelect)
     {
+        if (creatureToSelect == creatureInspectorLeft)
+        {
+            creatureInspectorLeft = null;
+        }
         creatureInspectorRight = creatureToSelect;
     }
 
     public void AddSlot()
     {
         inventorySpace++;
+    }
+
+    public bool HasSpace()
+    {
+        throw new System.NotImplementedException();
     }
 }

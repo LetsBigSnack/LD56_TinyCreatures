@@ -28,7 +28,13 @@ public class UI_InventoryManager : MonoBehaviour
     
     public void RefreshInventory()
     {
-        //TODO: Delete old entries
+        
+        foreach (GameObject uiCrt in uiCreatures)
+        {
+            Destroy(uiCrt);
+        }
+        
+        uiCreatures = new List<GameObject>();
         
         foreach (Creature creature in InventoryManager.Instance.InventoryCreatures)
         {
@@ -37,6 +43,7 @@ public class UI_InventoryManager : MonoBehaviour
             UICreatureButton uiCreatureButton = uiCreature.GetComponentInChildren<UICreatureButton>();
             uiCreatureButton.Creature = creature;
             uiCreatureButton.GetComponent<UI_CreatureSprite>().SetupRepresentation(creature);
+            uiCreatures.Add(uiCreature);
         }
     }
 }

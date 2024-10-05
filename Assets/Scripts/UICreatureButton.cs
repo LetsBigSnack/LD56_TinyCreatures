@@ -27,7 +27,7 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler
         {
             InventoryManager.Instance.SelectCreatureRight(creature);
         }
-
+        //TODO: handel when on different screen
         UI_CompareManager.Instance.SetInspector();
         UI_InventoryManager.Instance.RefreshInventory();
         
