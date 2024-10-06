@@ -17,19 +17,22 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        // Detect left click
-        if (eventData.button == PointerEventData.InputButton.Left)
+
+        if (UI_ToggleManager.Instance.CurrentState == ToggleState.Inspector)
         {
-            InventoryManager.Instance.SelectCreatureLeft(creature);
+            // Detect left click
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                InventoryManager.Instance.SelectCreatureLeft(creature);
+            }
+            // Detect right click
+            else if (eventData.button == PointerEventData.InputButton.Right)
+            {
+                InventoryManager.Instance.SelectCreatureRight(creature);
+            }
+            UI_CompareManager.Instance.SetInspector();
+            UI_InventoryManager.Instance.RefreshInventory();
         }
-        // Detect right click
-        else if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            InventoryManager.Instance.SelectCreatureRight(creature);
-        }
-        //TODO: handel when on different screen
-        UI_CompareManager.Instance.SetInspector();
-        UI_InventoryManager.Instance.RefreshInventory();
         
     }
     
