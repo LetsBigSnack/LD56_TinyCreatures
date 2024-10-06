@@ -33,6 +33,11 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler
             UI_CompareManager.Instance.SetInspector();
             UI_InventoryManager.Instance.RefreshInventory();
         }
+
+        if (UI_ToggleManager.Instance.CurrentState == ToggleState.Battle)
+        {
+            UI_BattleManager.Instance.SetInspector(creature);
+        }
         
     }
     

@@ -21,6 +21,11 @@ public class UI_CreatureSprite : MonoBehaviour
     
     public void SetupRepresentation(Creature creature)
     {
+        if (creature == null)
+        {
+            return;
+        }
+        
         creatureHead.sprite = creature.HeadRenderer.sprite;
         creatureHead.color = creature.HeadRenderer.color;
         
@@ -34,4 +39,5 @@ public class UI_CreatureSprite : MonoBehaviour
         creatureArms.color = creature.ArmsRenderer.color;
         
     }
+    
 }

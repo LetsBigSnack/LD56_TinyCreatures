@@ -71,6 +71,7 @@ public class CreatureManager : MonoBehaviour
         newCreature.SetSprites(randomHead, randomBody, randomLegs, randomArms);
         
         newCreature.CreatureGeneration = 0;
+        newCreature.CreatureName = "PLAYER";
         
         return newCreatureObj;
     }
@@ -107,7 +108,7 @@ public class CreatureManager : MonoBehaviour
         newCreature.SetSprites(randomHead, randomBody, randomLegs, randomArms);
 
         newCreature.CreatureGeneration = 0;
-        
+        newCreature.CreatureName = "PLAYER";
         
         return newCreatureObj;
     }

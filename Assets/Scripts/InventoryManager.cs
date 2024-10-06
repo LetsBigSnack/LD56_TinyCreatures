@@ -111,6 +111,14 @@ public class InventoryManager : MonoBehaviour
         }
     }
     
+    public void RetreatFormBattle(Creature creatureToChose)
+    {
+        if (creatureToChose != null && selectedCreatureForBattle == creatureToChose)
+        {
+            RemoveCreatureFormBattle();
+        }
+    }
+    
     private void RemoveCreatureFormBattle()
     {
         if (selectedCreatureForBattle != null)

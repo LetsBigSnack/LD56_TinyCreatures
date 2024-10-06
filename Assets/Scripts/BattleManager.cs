@@ -27,6 +27,13 @@ public class BattleManager : MonoBehaviour
     
     
     private Coroutine battleCoroutine;
+    
+    public Creature EnemyCreature
+    {
+        get => enemyCreature;
+    }
+    
+    
 
     private void Awake()
     {
@@ -99,7 +106,8 @@ public class BattleManager : MonoBehaviour
 
             if (enemyCreature.CurrentHealth <= 0)
             {
-                Debug.Log("Player wins!");
+                UI_BattleDisplayManager.Instance.CreateLogEntry($"Player: {playerCreature.CreatureName} defeated {enemyCreature.CreatureName}!");
+
                 WinBattle();
                 yield break; // Stop the battle immediately when the enemy dies
             }
@@ -108,7 +116,7 @@ public class BattleManager : MonoBehaviour
 
             if (playerCreature.CurrentHealth <= 0)
             {
-                Debug.Log("Enemy wins!");
+                UI_BattleDisplayManager.Instance.CreateLogEntry($"Enemy: {enemyCreature.CreatureName} defeated {playerCreature.CreatureName}!");
                 hasBattleStarted = false;
                 Destroy(playerCreature.gameObject); // Destroy player if defeated
                 playerCreature = null;
@@ -123,7 +131,7 @@ public class BattleManager : MonoBehaviour
         float attackInterval = speedFactor / attacker.Speed;
         float attackDamage = attacker.Attack;
 
-        Debug.Log($"{attacker.CreatureName} attacks {defender.CreatureName} for {attackDamage} damage.");
+        UI_BattleDisplayManager.Instance.CreateLogEntry($"{attacker.CreatureName} attacks {defender.CreatureName} for {attackDamage} damage.");
         defender.TakeDamage(attackDamage);
         
         // Wait for the attack interval based on the attacker's speed

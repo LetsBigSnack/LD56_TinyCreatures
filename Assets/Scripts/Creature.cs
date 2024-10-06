@@ -176,10 +176,11 @@ public class Creature : MonoBehaviour
     {
         float finalDamage = damage - (defense * 0.5f); 
         finalDamage = Mathf.Max(1, finalDamage);
+        finalDamage = Mathf.RoundToInt(finalDamage);
         currentHealth -= Mathf.RoundToInt(finalDamage);
         currentHealth = Mathf.Max(0, currentHealth);
-
-        Debug.Log($"{creatureName} took {finalDamage} damage, current health: {currentHealth}");
+        
+        UI_BattleDisplayManager.Instance.CreateLogEntry($"{creatureName} took {finalDamage} damage, current health: {currentHealth}");
     }
 
 }
