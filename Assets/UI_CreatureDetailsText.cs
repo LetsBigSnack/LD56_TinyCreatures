@@ -29,11 +29,11 @@ public class UI_CreatureDetailsText : MonoBehaviour
     {
         creatureNameText.text = creature.CreatureName;
         powerLevelText.text = creature.PowerLevel.ToString();
-        hpText.text = creature.MaxHealth.ToString();
-        atkText.text = creature.Attack.ToString();
-        spdText.text = creature.Speed.ToString();
-        dexText.text = creature.Dexterity.ToString();
-        defText.text = creature.Defense.ToString();
+        hpText.text = creature.MaxHealth.ToString("n2"); 
+        atkText.text = creature.Attack.ToString("n2"); 
+        spdText.text = creature.Speed.ToString("n2"); 
+        dexText.text = creature.Dexterity.ToString("n2"); 
+        defText.text = creature.Defense.ToString("n2"); 
     }
 
 }

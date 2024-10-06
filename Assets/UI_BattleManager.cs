@@ -13,7 +13,8 @@ public class UI_BattleManager : MonoBehaviour
     [SerializeField] private UICreatureButton activeBattleCreature;
 
     private Creature _selectedCreature;
-    
+    public Creature SelectedCreature { get => _selectedCreature; set => _selectedCreature = value; }
+
     public void Awake()
     {
         if (Instance != null && Instance != this)
@@ -63,6 +64,8 @@ public class UI_BattleManager : MonoBehaviour
     
     public void SetBattleCreature()
     {
+        BattleManager.Instance.ResumeBattle();
+        
         if (_selectedCreature != null)
         {
             InventoryManager.Instance.ChoiceCreatureForBattle(_selectedCreature);
@@ -74,10 +77,13 @@ public class UI_BattleManager : MonoBehaviour
     
     public void RetreatCreature()
     {
+        
         if (_selectedCreature != null)
         {
+            BattleManager.Instance.StopBattle();
             InventoryManager.Instance.RetreatFormBattle(_selectedCreature);
             activeBattleCreature.Creature = null;
+            _selectedCreature = null;
         }
         
         Refresh();

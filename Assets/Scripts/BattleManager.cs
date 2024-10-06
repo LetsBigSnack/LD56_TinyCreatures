@@ -85,6 +85,8 @@ public class BattleManager : MonoBehaviour
 
     public void WinBattle()
     {
+
+        StoreManager.Instance.EarnMoney(enemyCreature.PowerLevel * 5);
         Destroy(enemyCreature.gameObject);
         enemyCreature = null;
         playerWins++;
@@ -99,43 +101,61 @@ public class BattleManager : MonoBehaviour
     private IEnumerator BattleCoroutine()
     {
         Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
-        
-        while (battleRunning && playerCreature != null && enemyCreature != null && playerCreature.CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
-        {
-            yield return StartCoroutine(PerformAttack(playerCreature, enemyCreature));
 
+        yield return new WaitForSeconds(1);
+
+        // Start both creatures attacking concurrently without waiting for either to finish
+        Coroutine playerAttack = StartCoroutine(CreatureAttackCycle(playerCreature, enemyCreature));
+        Coroutine enemyAttack = StartCoroutine(CreatureAttackCycle(enemyCreature, playerCreature));
+
+        // Keep checking the health status of both creatures in a loop
+        while (battleRunning && playerCreature != null && enemyCreature != null)
+        {
+            // If either creature has 0 health, stop the battle
             if (enemyCreature.CurrentHealth <= 0)
             {
                 UI_BattleDisplayManager.Instance.CreateLogEntry($"Player: {playerCreature.CreatureName} defeated {enemyCreature.CreatureName}!");
-
                 WinBattle();
-                yield break; // Stop the battle immediately when the enemy dies
+                StopCoroutine(playerAttack);
+                StopCoroutine(enemyAttack);
+                yield break;
             }
-
-            yield return StartCoroutine(PerformAttack(enemyCreature, playerCreature));
 
             if (playerCreature.CurrentHealth <= 0)
             {
                 UI_BattleDisplayManager.Instance.CreateLogEntry($"Enemy: {enemyCreature.CreatureName} defeated {playerCreature.CreatureName}!");
                 hasBattleStarted = false;
-                Destroy(playerCreature.gameObject); // Destroy player if defeated
-                playerCreature = null;
-                yield break; // Stop the battle immediately when the player dies
+                if (playerCreature.gameObject != null)
+                {
+                    Destroy(playerCreature.gameObject);
+                }
+                UI_BattleManager.Instance.SelectedCreature = null;
+                UI_BattleManager.Instance.Refresh();
+
+                StopCoroutine(playerAttack);
+                StopCoroutine(enemyAttack);
+                yield break;
             }
+
+            // Check health frequently but don't block execution (yield for a short time to prevent freezing)
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
-
-    private IEnumerator PerformAttack(Creature attacker, Creature defender)
+    // A coroutine for each creature to handle its attack cycle independently
+    private IEnumerator CreatureAttackCycle(Creature attacker, Creature defender)
     {
-        float attackInterval = speedFactor / attacker.Speed;
-        float attackDamage = attacker.Attack;
+        while (battleRunning && attacker != null && defender != null && attacker.CurrentHealth > 0 && defender.CurrentHealth > 0)
+        {
+            float attackInterval = speedFactor / attacker.Speed;
+            float attackDamage = attacker.Attack;
 
-        UI_BattleDisplayManager.Instance.CreateLogEntry($"{attacker.CreatureName} attacks {defender.CreatureName} for {attackDamage} damage.");
-        defender.TakeDamage(attackDamage);
-        
-        // Wait for the attack interval based on the attacker's speed
-        yield return new WaitForSeconds(attackInterval);
+            UI_BattleDisplayManager.Instance.CreateLogEntry($"{attacker.CreatureName} attacks {defender.CreatureName} for {attackDamage} damage.");
+            defender.TakeDamage(attackDamage);
+
+            // Wait for the attack interval based on the attacker's speed before attacking again
+            yield return new WaitForSeconds(attackInterval);
+        }
     }
 
     public void StopBattle()
