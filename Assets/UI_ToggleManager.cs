@@ -7,7 +7,8 @@ public enum ToggleState
 {
     Shop,
     Battle,
-    Inspector
+    Inspector,
+    Fusion
 }
 
 public class UI_ToggleManager : MonoBehaviour
@@ -17,7 +18,8 @@ public class UI_ToggleManager : MonoBehaviour
     [SerializeField] private GameObject shop;
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject inspector;
-    
+    [SerializeField] private GameObject fuse;
+
     [SerializeField] private ToggleState currentState = ToggleState.Battle;
     
     public ToggleState CurrentState { get => currentState; set => currentState = value; }
@@ -48,19 +50,29 @@ public class UI_ToggleManager : MonoBehaviour
                 shop.SetActive(true);
                 battle.SetActive(false);
                 inspector.SetActive(false);
+                fuse.SetActive(false);
                 currentState = ToggleState.Shop;
                 break;
             case "Battle":
                 battle.SetActive(true);
                 shop.SetActive(false);
                 inspector.SetActive(false);
+                fuse.SetActive(false);
                 currentState = ToggleState.Battle;
                 break;
             case "Inspector":
                 inspector.SetActive(true);
                 battle.SetActive(false);
                 shop.SetActive(false);
+                fuse.SetActive(false);
                 currentState = ToggleState.Inspector;
+                break;
+            case "Fusion":
+                fuse.SetActive(true);
+                inspector.SetActive(false);
+                battle.SetActive(false);
+                shop.SetActive(false);
+                currentState = ToggleState.Fusion;
                 break;
         }
         
