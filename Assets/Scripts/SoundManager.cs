@@ -82,14 +82,27 @@ public class SoundManager : MonoBehaviour
 
     public void SetMusicVolume()
     {
-        float volume = musicSlider.value;
-        myMixer.SetFloat("music", Mathf.Log10(volume)*20);
+        if(musicSlider == null)
+        {
+            Debug.Log("No music slider");
+        }
+        else{
+            float volume = musicSlider.value;
+            myMixer.SetFloat("music", Mathf.Log10(volume) * 20);
+        }
     }
 
     public void SetSfxVolume()
     {
-        float volume = sfxSlider.value;
-        myMixer.SetFloat("sfx", Mathf.Log10(volume) * 20);
+        if (sfxSlider == null)
+        {
+            Debug.Log("No music slider");
+        }
+        else
+        {
+            float volume = sfxSlider.value;
+            myMixer.SetFloat("sfx", Mathf.Log10(volume) * 20);
+        }
     }
 
     public void changeBackground()

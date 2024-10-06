@@ -16,6 +16,8 @@ public class PopupManager : MonoBehaviour
     private TextMeshProUGUI _popupText;
     [SerializeField]
     private GameObject _popupContainer;
+    [SerializeField]
+    private GameObject _settingsPopup;
 
     [SerializeField]
     private string[] popupTexts;
@@ -48,10 +50,19 @@ public class PopupManager : MonoBehaviour
     {
         for (int i = 0; i <= popupTexts.Length; i++)
         {
-            if (popupType == i)
+            if (popupType == i && popupType != 0)
             {
                 CreatePopup(popupTexts[i], "OK");
+                _btn1.gameObject.SetActive(true);
                 _popupContainer.SetActive(true);
+                _settingsPopup.SetActive(false);
+            }
+            else if(popupType == 0)
+            {
+                CreatePopup(" ", " ");
+                _btn1.gameObject.SetActive(false);
+                _popupContainer.SetActive(true);
+                _settingsPopup.SetActive(true);
             }
             else
             {
