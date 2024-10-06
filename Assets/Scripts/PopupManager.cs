@@ -42,8 +42,13 @@ public class PopupManager : MonoBehaviour
 
         _btn1.onClick.AddListener(() => 
         {
-            _popupContainer.SetActive(false);
+            ClosePopup();
         });
+    }
+
+    public void ClosePopup()
+    {
+        _popupContainer.SetActive(false);
     }
 
     public void ViewPopup(int popupType)
