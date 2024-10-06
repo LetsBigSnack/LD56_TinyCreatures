@@ -14,8 +14,12 @@ public class BreedingManager : MonoBehaviour
     [SerializeField] private Creature creaturePod1;
     [SerializeField] private Creature creaturePod2;
     [SerializeField] private Creature result;
-    [SerializeField] private int breedingPrice;
-    
+    [SerializeField] private int breedingPrice = 0;
+
+    public int BreedingPrice
+    {
+        get => breedingPrice;
+    }
     
     private HashSet<Creature> _breedingCreatures;
     
@@ -65,9 +69,28 @@ public class BreedingManager : MonoBehaviour
         return true;
     }
 
-    public bool RemoveToBreed(Creature creature, bool isLeft)
+    public bool RemoveToBreed(bool isLeft)
     {
-        //
+
+        if (isLeft)
+        {
+            if (creaturePod1 != null)
+            {
+                InventoryManager.Instance.AddCreature(creaturePod1);
+                breedingPrice = 0;
+                creaturePod1 = null;
+            }
+        }
+        else
+        {
+            if (creaturePod2 != null)
+            {
+                InventoryManager.Instance.AddCreature(creaturePod2);
+                breedingPrice = 0;
+                creaturePod2 = null;
+            }
+        }
+        
         return false;
     }
     
@@ -76,12 +99,13 @@ public class BreedingManager : MonoBehaviour
         Creature parent1 = creaturePod1.GetComponent<Creature>();
         Creature parent2 = creaturePod2.GetComponent<Creature>();
 
-        if (parent1 == null || parent2 == null)
+        if ((parent1 == null || parent2 == null ) && StoreManager.Instance.PlayerMoney < BreedingPrice)
         {
             Debug.LogError("One or both parent creatures are missing.");
             return;
         }
-
+        
+        StoreManager.Instance.SpendMoney(BreedingPrice);
         
         GameObject newCreatureObj = Instantiate(breedingPrefab);
         Creature newCreature = newCreatureObj.GetComponent<Creature>();
@@ -146,5 +170,14 @@ public class BreedingManager : MonoBehaviour
             return;
         }
         breedingPrice = Mathf.RoundToInt((creaturePod1.PowerLevel + creaturePod2.PowerLevel)/2)*2;
+    }
+
+    public void Collect()
+    {
+        if (result != null)
+        {
+            InventoryManager.Instance.AddCreature(result);
+            result = null;
+        }
     }
 }

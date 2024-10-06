@@ -27,6 +27,11 @@ public class UI_CreatureDetailsText : MonoBehaviour
 
     public void SetupRepresentation(Creature creature)
     {
+        if (creature == null)
+        {
+            return;
+        }
+        
         creatureNameText.text = creature.CreatureName;
         powerLevelText.text = creature.PowerLevel.ToString();
         hpText.text = creature.MaxHealth.ToString("n2"); 

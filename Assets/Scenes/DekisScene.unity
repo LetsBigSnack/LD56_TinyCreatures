@@ -9168,6 +9168,9 @@ MonoBehaviour:
   creatureSpriteLeft: {fileID: 208672864}
   creatureSpriteRight: {fileID: 898073201}
   creatureSpriteMiddle: {fileID: 696872543}
+  detailsLeft: {fileID: 1201037864}
+  detailsRight: {fileID: 326734223}
+  costText: {fileID: 1917945313}
 --- !u!1 &371050865
 GameObject:
   m_ObjectHideFlags: 0
@@ -11352,7 +11355,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 493727846}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 357379357}
+        m_TargetAssemblyTypeName: UI_BreedingManager, Assembly-CSharp
+        m_MethodName: RemoveCreatureFromPod
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &493727846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20645,6 +20660,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Press
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 357379357}
+        m_TargetAssemblyTypeName: UI_BreedingManager, Assembly-CSharp
+        m_MethodName: FuseCreature
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1001 &1179899473
@@ -40976,7 +41003,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2041736836}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 357379357}
+        m_TargetAssemblyTypeName: UI_BreedingManager, Assembly-CSharp
+        m_MethodName: RemoveCreatureFromPod
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &2041736836
 MonoBehaviour:
   m_ObjectHideFlags: 0
