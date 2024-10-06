@@ -8,13 +8,19 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler
 {
     
     [SerializeField] private Creature creature;
-    
+    private SoundManager soundManager;
+        
     public Creature Creature
     {
         get => creature;
         set => creature = value;
     }
-    
+
+    private void Awake()
+    {
+        soundManager = FindObjectOfType<SoundManager>();
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
 
@@ -32,12 +38,23 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler
             }
             UI_CompareManager.Instance.SetInspector();
             UI_InventoryManager.Instance.RefreshInventory();
+            soundManager.PlaySFX("Click");
+
         }
 
         if (UI_ToggleManager.Instance.CurrentState == ToggleState.Battle)
         {
-            UI_BattleManager.Instance.SetInspector(creature);
+            if (UI_BattleManager.Instance.SetInspector(creature))
+            {
+                soundManager.PlaySFX("Click");
+            }
+            else
+            {
+                soundManager.PlaySFX("Error");
+            }
         }
+
+
         
     }
     

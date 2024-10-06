@@ -143,6 +143,14 @@ public class InventoryManager : MonoBehaviour
 
     public bool HasSpace()
     {
-        throw new System.NotImplementedException();
+        if(inventoryCreatures.Count < inventorySpace)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        //throw new System.NotImplementedException();
     }
 }

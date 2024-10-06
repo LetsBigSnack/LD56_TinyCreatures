@@ -21,7 +21,9 @@ public class UI_ToggleManager : MonoBehaviour
     [SerializeField] private GameObject fuse;
 
     [SerializeField] private ToggleState currentState = ToggleState.Battle;
-    
+
+    private SoundManager soundManager;
+
     public ToggleState CurrentState { get => currentState; set => currentState = value; }
     
     private void Awake()
@@ -33,17 +35,20 @@ public class UI_ToggleManager : MonoBehaviour
         else
         {
             Instance = this;
-            SwitchState("Battle");
             DontDestroyOnLoad(gameObject);
         }
+        soundManager = FindObjectOfType<SoundManager>();
     }
-    
-    
-    
-    
+
+    public void Start()
+    {
+        SwitchState("Battle");
+    }
+
     public void SwitchState(string state)
     {
 
+        soundManager.PlaySFX("Click");
         switch (state)
         {
             case "Shop":

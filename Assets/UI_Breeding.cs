@@ -8,6 +8,8 @@ public class UI_BreedingManager : MonoBehaviour
 {
     
     static public UI_BreedingManager Instance;
+    private SoundManager soundManager;
+
 
     private void Awake()
     {
@@ -19,6 +21,7 @@ public class UI_BreedingManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            soundManager = FindObjectOfType<SoundManager>();
         }
     }
     
@@ -58,13 +61,27 @@ public class UI_BreedingManager : MonoBehaviour
 
     public void RemoveCreatureFromPod(bool isLeft)
     {
-        BreedingManager.Instance.RemoveToBreed(isLeft);
+        if (BreedingManager.Instance.RemoveToBreed(isLeft))
+        {
+            soundManager.PlaySFX("Click");
+        }
+        else
+        {
+            soundManager.PlaySFX("Error");
+        }
         UI_InventoryManager.Instance.RefreshInventory();
     }
     
     public void FuseCreature()
     {
-        BreedingManager.Instance.Breed();
+        if (BreedingManager.Instance.Breed())
+        {
+            soundManager.PlaySFX("Breed");
+        }
+        else
+        {
+            soundManager.PlaySFX("Error");
+        }
         CollectCreature();
     }
 

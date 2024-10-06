@@ -12,6 +12,8 @@ public class UI_BattleManager : MonoBehaviour
     [SerializeField] private UI_CreatureSprite activeBattleCreatureButton;
     [SerializeField] private UICreatureButton activeBattleCreature;
 
+    private SoundManager soundManager;
+
     private Creature _selectedCreature;
     public Creature SelectedCreature { get => _selectedCreature; set => _selectedCreature = value; }
 
@@ -25,10 +27,11 @@ public class UI_BattleManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            soundManager = FindObjectOfType<SoundManager>();
         }
     }
     
-    public void SetInspector(Creature creature)
+    public bool SetInspector(Creature creature)
     {
   
         
@@ -42,6 +45,11 @@ public class UI_BattleManager : MonoBehaviour
             battleCreatureDetails.SetupRepresentation(creature);
             activeBattleCreatureButton.SetupRepresentation(InventoryManager.Instance.SelectedCreatureForBattle);
             _selectedCreature = creature;
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -70,6 +78,11 @@ public class UI_BattleManager : MonoBehaviour
         {
             InventoryManager.Instance.ChoiceCreatureForBattle(_selectedCreature);
             activeBattleCreature.Creature = _selectedCreature;
+            soundManager.PlaySFX("Click");
+        }
+        else
+        {
+            soundManager.PlaySFX("Error");
         }
         
         Refresh();
@@ -84,6 +97,11 @@ public class UI_BattleManager : MonoBehaviour
             InventoryManager.Instance.RetreatFormBattle(_selectedCreature);
             activeBattleCreature.Creature = null;
             _selectedCreature = null;
+            soundManager.PlaySFX("Click");
+        }
+        else
+        {
+            soundManager.PlaySFX("Error");
         }
         
         Refresh();

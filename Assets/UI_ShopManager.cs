@@ -15,10 +15,13 @@ public class UI_ShopManager : MonoBehaviour
 
     private string _defaultAdjustedText;
 
+    private SoundManager soundManager;
+
 
     private void Awake()
     {
         _defaultAdjustedText = adjustedCreatureText.text;
+        soundManager = FindObjectOfType<SoundManager>();
     }
 
     private void FixedUpdate()
@@ -50,19 +53,41 @@ public class UI_ShopManager : MonoBehaviour
 
     public void BuySlot()
     {
-        StoreManager.Instance.BuyNewSlot();
+        if (StoreManager.Instance.BuyNewSlot())
+        {
+            soundManager.PlaySFX("Transaction");
+        }
+        else
+        {
+            soundManager.PlaySFX("Error");
+        }
         UI_InventoryManager.Instance.RefreshInventory();
     }
 
     public void BuyBasicCreature()
     {
-        StoreManager.Instance.BuyBasicCreature();
+        if (StoreManager.Instance.BuyBasicCreature())
+        {
+            soundManager.PlaySFX("Transaction");
+        }
+        else
+        {
+            soundManager.PlaySFX("Error");
+            Debug.Log("No money");
+        }
         UI_InventoryManager.Instance.RefreshInventory();
     }
 
     public void BuyAdjustedCreature()
     {
-        StoreManager.Instance.BuyAdvancedCreature();
+        if (StoreManager.Instance.BuyAdvancedCreature())
+        {
+            soundManager.PlaySFX("Transaction");
+        }
+        else
+        {
+            soundManager.PlaySFX("Error");
+        }
         UI_InventoryManager.Instance.RefreshInventory();
     }
     

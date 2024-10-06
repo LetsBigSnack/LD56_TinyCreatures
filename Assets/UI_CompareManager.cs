@@ -14,6 +14,8 @@ public class UI_CompareManager : MonoBehaviour
     [SerializeField] private UI_CreatureDetailsText leftCreatureDetails;
     [SerializeField] private UI_CreatureDetailsText rightCreatureDetails;
 
+    private SoundManager soundManager;
+
     public void Awake()
     {
         if (Instance != null && Instance != this)
@@ -24,6 +26,7 @@ public class UI_CompareManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            soundManager = FindObjectOfType<SoundManager>();
         }
     }
 
@@ -71,6 +74,11 @@ public class UI_CompareManager : MonoBehaviour
                 StoreManager.Instance.SellOwnedCreature(left);
                 InventoryManager.Instance.RemoveCreature(left);
                 InventoryManager.Instance.SelectCreatureLeft(null);
+                soundManager.PlaySFX("Click");
+            }
+            else
+            {
+                soundManager.PlaySFX("Error");
             }
         } 
         else
@@ -80,6 +88,11 @@ public class UI_CompareManager : MonoBehaviour
                 StoreManager.Instance.SellOwnedCreature(right);
                 InventoryManager.Instance.RemoveCreature(right);
                 InventoryManager.Instance.SelectCreatureRight(null);
+                soundManager.PlaySFX("Click");
+            }
+            else
+            {
+                soundManager.PlaySFX("Error");
             }
         }
 
@@ -99,6 +112,11 @@ public class UI_CompareManager : MonoBehaviour
                 UI_BreedingManager.Instance.AddCreatureToPod(left);
                 InventoryManager.Instance.SelectCreatureLeft(null);
                 left = null;
+                soundManager.PlaySFX("Click");
+            }
+            else
+            {
+                soundManager.PlaySFX("Error");
             }
         } 
         else
@@ -108,6 +126,11 @@ public class UI_CompareManager : MonoBehaviour
                 UI_BreedingManager.Instance.AddCreatureToPod(right);
                 InventoryManager.Instance.SelectCreatureRight(null);
                 right = null;
+                soundManager.PlaySFX("Click");
+            }
+            else
+            {
+                soundManager.PlaySFX("Error");
             }
         }
 

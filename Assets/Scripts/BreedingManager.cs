@@ -79,6 +79,7 @@ public class BreedingManager : MonoBehaviour
                 InventoryManager.Instance.AddCreature(creaturePod1);
                 breedingPrice = 0;
                 creaturePod1 = null;
+                return true;
             }
         }
         else
@@ -88,21 +89,27 @@ public class BreedingManager : MonoBehaviour
                 InventoryManager.Instance.AddCreature(creaturePod2);
                 breedingPrice = 0;
                 creaturePod2 = null;
+                return true;
             }
         }
         
         return false;
     }
     
-   public void Breed()
+   public bool Breed()
     {
+        if(creaturePod1 == null || creaturePod2 == null)
+        {
+            return false;
+        }
+
         Creature parent1 = creaturePod1.GetComponent<Creature>();
         Creature parent2 = creaturePod2.GetComponent<Creature>();
 
         if ((parent1 == null || parent2 == null ) && StoreManager.Instance.PlayerMoney < BreedingPrice)
         {
             Debug.LogError("One or both parent creatures are missing.");
-            return;
+            return false;
         }
         
         StoreManager.Instance.SpendMoney(BreedingPrice);
@@ -152,6 +159,7 @@ public class BreedingManager : MonoBehaviour
         newCreature.CreatureGeneration = lastGeneration;
         
         result = newCreature;
+        return true;
     }
 
     private float MutationFactor()
@@ -174,6 +182,7 @@ public class BreedingManager : MonoBehaviour
 
     public void Collect()
     {
+        //TODO: Check if slots are full
         if (result != null)
         {
             InventoryManager.Instance.AddCreature(result);
