@@ -10,9 +10,20 @@ public class BreedingManager : MonoBehaviour
     public static BreedingManager Instance { get; private set; }
 
     [Header("Breeding")] 
-    [SerializeField] private GameObject creaturePod1;
-    [SerializeField] private GameObject creaturePod2;
-
+    [SerializeField] private GameObject breedingPrefab;
+    [SerializeField] private Creature creaturePod1;
+    [SerializeField] private Creature creaturePod2;
+    [SerializeField] private Creature result;
+    [SerializeField] private int breedingPrice;
+    
+    
+    private HashSet<Creature> _breedingCreatures;
+    
+    public Creature CreaturePod1 { get => creaturePod1; set => creaturePod1 = value; }
+    public Creature CreaturePod2 { get => creaturePod2; set => creaturePod2 = value; }
+    
+    public Creature Result { get => result; set => result = value; }
+    
     [Range(0f, 100f)]
     [SerializeField] private float mutationFactor = 20.0f;
 
@@ -29,17 +40,38 @@ public class BreedingManager : MonoBehaviour
             DontDestroyOnLoad(gameObject); // Ensure this instance persists across scenes
         }
     }
-
-    private void Start()
+    
+    public bool AddToBreed(Creature creature)
     {
-        //creaturePod1 = CreatureManager.Instance.CreateBasicCreature();
-        //creaturePod2 = CreatureManager.Instance.CreateBasicCreature();
-        //Breed();
+        if (creaturePod1 && creaturePod2)
+        {
+            return false;
+        }
+
+        
+        
+        if (creaturePod1 != null)
+        {
+            creaturePod2 = creature;
+            
+        }
+        else
+        {
+            creaturePod1 = creature;
+   
+        }
+        
+        UpdatePrice();
+        return true;
+    }
+
+    public bool RemoveToBreed(Creature creature, bool isLeft)
+    {
+        //
+        return false;
     }
     
-    
-    //TODO: add Generation infromation when breeding, so it searches for the Gen of both Parents takes the higher one and adds one.
-    public void Breed()
+   public void Breed()
     {
         Creature parent1 = creaturePod1.GetComponent<Creature>();
         Creature parent2 = creaturePod2.GetComponent<Creature>();
@@ -51,7 +83,7 @@ public class BreedingManager : MonoBehaviour
         }
 
         
-        GameObject newCreatureObj = Instantiate(creaturePod1);
+        GameObject newCreatureObj = Instantiate(breedingPrefab);
         Creature newCreature = newCreatureObj.GetComponent<Creature>();
 
         
@@ -94,15 +126,25 @@ public class BreedingManager : MonoBehaviour
         lastGeneration++;
 
         newCreature.CreatureGeneration = lastGeneration;
-
+        
+        result = newCreature;
     }
 
     private float MutationFactor()
     {
-        float factor = 1f + Random.Range(-mutationFactor / 100f, mutationFactor / 100f);
+        float factor = 1f + Random.Range((-mutationFactor/2) / 100f, mutationFactor / 100f);
         
         Debug.Log("Factor: " + factor);
         
         return factor;
+    }
+
+    public void UpdatePrice()
+    {
+        if (!creaturePod1 || !creaturePod2)
+        {
+            return;
+        }
+        breedingPrice = Mathf.RoundToInt((creaturePod1.PowerLevel + creaturePod2.PowerLevel)/2)*2;
     }
 }

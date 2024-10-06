@@ -12,7 +12,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private List<Creature> inventoryCreatures;
     [SerializeField] private int inventorySpace = 8;
     [SerializeField] private Creature selectedCreatureForBattle;
-    private HashSet<Creature> _breedingCreatures;
+
     [SerializeField] private Creature creatureInspectorLeft;
     [SerializeField] private Creature creatureInspectorRight;
     
@@ -46,7 +46,6 @@ public class InventoryManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             inventoryCreatures = new List<Creature>();
-            _breedingCreatures = new HashSet<Creature>();
 
             AddCreature(CreatureManager.Instance.CreateBasicCreature().GetComponent<Creature>());
             AddCreature(CreatureManager.Instance.CreateBasicCreature().GetComponent<Creature>());
@@ -80,24 +79,13 @@ public class InventoryManager : MonoBehaviour
     
     public void AddToBreed(Creature creature)
     {
-        if (_breedingCreatures.Count > 2)
-        {
-            return;
-        }
-        
-        _breedingCreatures.Add(creature);
-        RemoveCreature(creature);
-        
-    }
 
-    public void RemoveToBreed(Creature creature)
-    {
-        if (_breedingCreatures.Contains(creature))
+
+        if (BreedingManager.Instance.AddToBreed(creature))
         {
-            _breedingCreatures.Remove(creature);
-            AddCreature(creature);
-            
-        }
+            RemoveCreature(creature);
+        };
+        
     }
     
     public void ChoiceCreatureForBattle(Creature creatureToChose)

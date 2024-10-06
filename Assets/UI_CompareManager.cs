@@ -86,6 +86,34 @@ public class UI_CompareManager : MonoBehaviour
         UI_InventoryManager.Instance.RefreshInventory();
         SetInspector();
     }
+    
+    public void AddToBread(bool isLeft)
+    {
+        Creature left = InventoryManager.Instance.CreatureInspectorLeft;
+        Creature right = InventoryManager.Instance.CreatureInspectorRight;
+
+        if (isLeft)
+        {
+            if (left != null)
+            {
+                UI_BreedingManager.Instance.AddCreatureToPod(left);
+                InventoryManager.Instance.SelectCreatureLeft(null);
+                left = null;
+            }
+        } 
+        else
+        {
+            if (right != null)
+            {
+                UI_BreedingManager.Instance.AddCreatureToPod(right);
+                InventoryManager.Instance.SelectCreatureRight(null);
+                right = null;
+            }
+        }
+
+        UI_InventoryManager.Instance.RefreshInventory();
+        SetInspector();
+    }
 
 
     
