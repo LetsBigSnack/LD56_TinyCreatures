@@ -72,6 +72,7 @@ public class CreatureManager : MonoBehaviour
         
         newCreature.CreatureGeneration = 0;
         newCreature.CreatureName = "PLAYER";
+        Debug.Log(newCreatureObj.transform.localScale);
         
         return newCreatureObj;
     }
