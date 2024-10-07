@@ -55,7 +55,7 @@ public class StoreManager : MonoBehaviour
 
     public void UpdatePrices()
     {
-        advancedCreaturePrice = BattleManager.Instance.GetPredictedPowerLevel() + 5;
+        advancedCreaturePrice = Mathf.RoundToInt(BattleManager.Instance.GetPredictedPowerLevel() + 5 * 2f);
         currentSlotPrice = pricesPerSlot + pricesPerSlot * boughtSlots;
     }
 
@@ -100,7 +100,10 @@ public class StoreManager : MonoBehaviour
         float statMin = BattleManager.Instance.StatMin;
         float statRange = BattleManager.Instance.StatRange;
         
-        if (InventoryManager.Instance.AddCreature(CreatureManager.Instance.CreateAdjustedCreature(statRange, statMin).GetComponent<Creature>()))
+        // Battle Creature
+        if (InventoryManager.Instance.AddCreature(CreatureManager.Instance.
+                CreateAdjustedCreature(statRange + (BattleManager.Instance.PlayerWins * BattleManager.Instance.WinFactor), 
+                    statMin + (BattleManager.Instance.PlayerWins * BattleManager.Instance.WinFactor * 2)).GetComponent<Creature>()))
         {
             SpendMoney(advancedCreaturePrice);
             return true;
