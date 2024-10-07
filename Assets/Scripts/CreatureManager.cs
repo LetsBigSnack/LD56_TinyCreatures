@@ -42,6 +42,7 @@ public class CreatureManager : MonoBehaviour
     {
         
         GameObject newCreatureObj = Instantiate(creaturePrefab);
+        newCreatureObj.transform.position = new Vector3(20000f, 20000f, 20000f);
         Creature newCreature = newCreatureObj.GetComponent<Creature>();
 
         
@@ -80,6 +81,7 @@ public class CreatureManager : MonoBehaviour
     {
         
         GameObject newCreatureObj = Instantiate(creaturePrefab);
+        newCreatureObj.transform.position = new Vector3(20000f, 20000f, 20000f);
         Creature newCreature = newCreatureObj.GetComponent<Creature>();
 
         

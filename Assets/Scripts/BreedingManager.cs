@@ -120,6 +120,8 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     StoreManager.Instance.SpendMoney(BreedingPrice);
     
     GameObject newCreatureObj = Instantiate(breedingPrefab);
+    newCreatureObj.transform.position = new Vector3(20000f, 20000f, 20000f);
+
     Creature newCreature = newCreatureObj.GetComponent<Creature>();
 
     // Combine stats from both parents and apply mutation
