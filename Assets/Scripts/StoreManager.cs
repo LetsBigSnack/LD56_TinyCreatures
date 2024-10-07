@@ -31,6 +31,8 @@ public class StoreManager : MonoBehaviour
     
     public List<Creature> SoldCreatures { get => soledCreatures; set => soledCreatures = value; }
     
+    
+    public int WinThreshold { get => winThreshold; set => winThreshold = value; }
 
     private void Awake()
     {
@@ -55,7 +57,7 @@ public class StoreManager : MonoBehaviour
 
     public void UpdatePrices()
     {
-        advancedCreaturePrice = Mathf.RoundToInt(BattleManager.Instance.GetPredictedPowerLevel() + 5 * 2f);
+        advancedCreaturePrice = Mathf.RoundToInt(BattleManager.Instance.GetPredictedPowerLevel() + 5 * 3f);
         currentSlotPrice = pricesPerSlot + pricesPerSlot * boughtSlots;
     }
 

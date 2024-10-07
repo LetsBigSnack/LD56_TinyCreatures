@@ -22,7 +22,9 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private bool battleRunning = true;
     [SerializeField] private bool hasBattleStarted = false;
     [SerializeField] private int playerWins = 0;
-
+    [SerializeField] private float factorMult = 2f;
+    
+    
     public int PlayerWins{get{return playerWins;}}
     
     public float WinFactor{get{return winFactor;}}
@@ -92,6 +94,11 @@ public class BattleManager : MonoBehaviour
         enemyCreature = null;
         playerWins++;
         hasBattleStarted = false;
+
+        if (playerWins >= StoreManager.Instance.WinThreshold)
+        {
+            winFactor = WinFactor * factorMult; 
+        }
 
         if (battleCoroutine != null)
         {
