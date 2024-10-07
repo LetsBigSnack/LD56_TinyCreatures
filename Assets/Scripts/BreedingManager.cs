@@ -50,8 +50,6 @@ public class BreedingManager : MonoBehaviour
         {
             return false;
         }
-
-        
         
         if (creaturePod1 != null)
         {
@@ -73,7 +71,7 @@ public class BreedingManager : MonoBehaviour
 
         if (isLeft)
         {
-            if (creaturePod1 != null)
+            if (creaturePod1 != null && InventoryManager.Instance.HasSpace())
             {
                 InventoryManager.Instance.AddCreature(creaturePod1);
                 breedingPrice = 0;
@@ -83,7 +81,7 @@ public class BreedingManager : MonoBehaviour
         }
         else
         {
-            if (creaturePod2 != null)
+            if (creaturePod2 != null && InventoryManager.Instance.HasSpace())
             {
                 InventoryManager.Instance.AddCreature(creaturePod2);
                 breedingPrice = 0;

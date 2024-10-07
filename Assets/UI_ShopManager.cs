@@ -52,7 +52,7 @@ public class UI_ShopManager : MonoBehaviour
         else
         {
             adjustedButton.interactable = false;
-            adjustedCreatureText.text = "Not able to buy advanced creature. Win at least 20 Battles";
+            adjustedCreatureText.text = "Win 10 Battles to unlock \n " + BattleManager.Instance.PlayerWins + "/10";
             adjustedPriceText.text = "";
         }
     }

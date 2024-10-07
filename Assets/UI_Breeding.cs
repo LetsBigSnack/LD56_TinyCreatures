@@ -73,9 +73,15 @@ public class UI_BreedingManager : MonoBehaviour
     
     public void FuseCreature()
     {
+        if (BreedingManager.Instance.Result != null)
+        {
+            soundManager.PlaySFX("Error");
+            return;
+        }
         if (BreedingManager.Instance.Breed())
         {
             soundManager.PlaySFX("Breed");
+            UI_ToggleManager.Instance.SwitchState("Fusion");
         }
         else
         {
