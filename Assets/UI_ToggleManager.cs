@@ -39,12 +39,12 @@ public class UI_ToggleManager : MonoBehaviour
         }
         soundManager = FindObjectOfType<SoundManager>();
         popupManager = FindObjectOfType<PopupManager>();
+        SwitchState("Battle");
     }
 
     public void SwitchState(string state)
     {  
         soundManager.PlaySFX("Click");
-        popupManager.ViewPopup(state);
 
         switch (state)
         {
@@ -54,6 +54,7 @@ public class UI_ToggleManager : MonoBehaviour
                 inspector.SetActive(false);
                 fuse.SetActive(false);
                 currentState = ToggleState.Shop;
+                popupManager.ViewPopup(state);
                 break;
             case "Battle":
                 battle.SetActive(true);
@@ -68,6 +69,7 @@ public class UI_ToggleManager : MonoBehaviour
                 shop.SetActive(false);
                 fuse.SetActive(false);
                 currentState = ToggleState.Inspector;
+                popupManager.ViewPopup(state);
                 break;
             case "Fusion":
                 fuse.SetActive(true);
@@ -75,6 +77,7 @@ public class UI_ToggleManager : MonoBehaviour
                 battle.SetActive(false);
                 shop.SetActive(false);
                 currentState = ToggleState.Fusion;
+                popupManager.ViewPopup(state);
                 break;
         }
         
