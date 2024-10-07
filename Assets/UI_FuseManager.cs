@@ -32,7 +32,7 @@ public class UI_FuseManager : MonoBehaviour
    {
       if (BreedingManager.Instance.Collect())
       {
-         _soundManager.PlaySFX("Click");
+         UI_ToggleManager.Instance.SwitchState("Inspector");
       }
       else
       {
@@ -45,9 +45,9 @@ public class UI_FuseManager : MonoBehaviour
    {
       if (BreedingManager.Instance.Result != null)
       {
-         _soundManager.PlaySFX("Click");
          StoreManager.Instance.SellOwnedCreature(BreedingManager.Instance.Result);
          BreedingManager.Instance.Result = null;
+         UI_ToggleManager.Instance.SwitchState("Inspector");
       }
       else
       {
@@ -58,20 +58,14 @@ public class UI_FuseManager : MonoBehaviour
 
    public void Refuse()
    {
-      if (BreedingManager.Instance.Result != null &&  StoreManager.Instance.RefuseCreature(BreedingManager.Instance.Result))
+      Creature creature = BreedingManager.Instance.Result;
+      if (creature != null && BreedingManager.Instance.Breed(false))
       {
-         Creature creature = BreedingManager.Instance.Result;
-         BreedingManager.Instance.Result = null;
-         Destroy(creature.gameObject);
+         StoreManager.Instance.EarnMoney(creature.PowerLevel);
          
-         if (BreedingManager.Instance.Breed(false))
-         {
-            _soundManager.PlaySFX("Click");
-         }
-         else
-         {
-            _soundManager.PlaySFX("Error");
-         }
+         Destroy(creature.gameObject);
+         _soundManager.PlaySFX("Click");
+         
       }
       else
       {

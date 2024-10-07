@@ -174,7 +174,25 @@ public class Creature : MonoBehaviour
     // Example method to calculate the power level based on stats
     private void CalculatePowerLevel()
     {
-        powerLevel = Mathf.RoundToInt((speed + attack + defense + dexterity) / 4);
+        // Define weights for each stat component. You can tweak these values to adjust the impact of each stat on the overall power level.
+        float healthWeight = 0.10f;   // Weight for HP
+        float speedWeight = 0.25f;     // Weight for speed
+        float attackWeight = 0.25f;    // Weight for attack
+        float defenseWeight = 0.2f;   // Weight for defense
+        float dexterityWeight = 0.2f; // Weight for dexterity
+
+        // Weighted sum of stats to determine the power level
+        float weightedHealth = maxHealth * healthWeight;
+        float weightedSpeed = speed * speedWeight;
+        float weightedAttack = attack * attackWeight;
+        float weightedDefense = defense * defenseWeight;
+        float weightedDexterity = dexterity * dexterityWeight;
+
+        // Calculate the total power level by summing all weighted stats
+        float totalPowerLevel = weightedHealth + weightedSpeed + weightedAttack + weightedDefense + weightedDexterity;
+
+        // Assign the rounded value to powerLevel
+        powerLevel = Mathf.RoundToInt(totalPowerLevel);
     }
 
     public void TakeDamage(float damage)

@@ -183,11 +183,35 @@ public class BattleManager : MonoBehaviour
         battleRunning = true;
     }
 
-    public int GetPredictedPowerLevel(float adjustment = 1.0f)
+    public int GetPredictedPowerLevel()
     {
-        float adjustedStat = statMin + (playerWins * winFactor * 2) + (statRange + (playerWins * winFactor));
-        float predictedPowerLevel = ((adjustedStat * 4) / 4) * adjustedStat;
-        return  Mathf.RoundToInt(predictedPowerLevel);
+        // Adjust stat range and minimum based on player wins and win factor
+        float adjustedStatRange = statRange + (playerWins * winFactor);
+        float adjustedStatMin = statMin + (playerWins * winFactor * 2);
+
+        // Calculate the average of the adjusted stat range for each individual stat
+        float averageMaxHealth = adjustedStatMin;
+        float averageSpeed = adjustedStatMin;
+        float averageAttack = adjustedStatMin;
+        float averageDefense = adjustedStatMin;
+        float averageDexterity = adjustedStatMin;
+
+        // Define weights for each stat component
+        float healthWeight = 0.10f;    // Weight for HP
+        float speedWeight = 0.25f;      // Weight for speed
+        float attackWeight = 0.25f;     // Weight for attack
+        float defenseWeight = 0.2f;    // Weight for defense
+        float dexterityWeight = 0.2f; // Weight for dexterity
+
+        // Calculate the weighted average power level using the actual average stats
+        float averagePowerLevel = (averageMaxHealth * healthWeight) +
+                                  (averageSpeed * speedWeight) +
+                                  (averageAttack * attackWeight) +
+                                  (averageDefense * defenseWeight) +
+                                  (averageDexterity * dexterityWeight);
+
+        // Return the rounded average power level
+        Debug.Log(averagePowerLevel);
+        return Mathf.RoundToInt(averagePowerLevel);
     }
-    
 }
