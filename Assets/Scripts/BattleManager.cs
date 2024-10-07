@@ -12,8 +12,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private float statRange = 3.5f;
     [Range(0, 100.0f)]
     [SerializeField] private float statMin = 10f;
-    [SerializeField] private float speedFactor = 15f;
-    [SerializeField] private float winFactor = 0.6f;
+    [SerializeField] private float speedFactor = 60f;
+    [SerializeField] private float winFactor = 0.3f;
 
     public float StatRange{get{return statRange;}}
     public float StatMin{get{return statMin;}}
@@ -22,7 +22,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private bool battleRunning = true;
     [SerializeField] private bool hasBattleStarted = false;
     [SerializeField] private int playerWins = 0;
-    [SerializeField] private float factorMult = 2f;
+    [SerializeField] private float factorMult = 1.5f;
     
     
     public int PlayerWins{get{return playerWins;}}
@@ -95,7 +95,7 @@ public class BattleManager : MonoBehaviour
         playerWins++;
         hasBattleStarted = false;
 
-        if (playerWins >= StoreManager.Instance.WinThreshold)
+        if (playerWins == StoreManager.Instance.WinThreshold)
         {
             winFactor = WinFactor * factorMult; 
         }
