@@ -54,8 +54,8 @@ public class UI_CreatureDetailsText : MonoBehaviour
     public void CompareColor(Creature creature1, Creature creature2)
     {
 
-        Color pos = new Color(10/255f,27/255f,1/255f);
-        Color neg = new Color(90/10f,13/255f,6/255f);
+        Color pos = new Color(10/255f,71/255f,6/255f);
+        Color neg = new Color(71/255f,5/255f,5/255f);
         
         if (creature1 == null || creature2 == null)
         {
