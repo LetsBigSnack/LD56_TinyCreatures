@@ -43,11 +43,14 @@ public class UI_CompareManager : MonoBehaviour
         {
             leftCreatureSprite.SetupRepresentation(left);
             leftCreatureDetails.SetupRepresentation(left);
+            leftCreatureDetails.CompareColor(left, right);
+
         }
         if (right != null)
         {
             rightCreatureSprite.SetupRepresentation(right);
             rightCreatureDetails.SetupRepresentation(right);
+            rightCreatureDetails.CompareColor(right, left);
         }
         //Left / Button handle 
     }
