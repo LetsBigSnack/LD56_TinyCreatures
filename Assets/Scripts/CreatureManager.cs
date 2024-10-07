@@ -133,4 +133,10 @@ public class CreatureManager : MonoBehaviour
 
         return null;
     }
+    
+    public Color GetRandomColor()
+    {
+        Color headColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
+        return headColor;
+    }
 }
