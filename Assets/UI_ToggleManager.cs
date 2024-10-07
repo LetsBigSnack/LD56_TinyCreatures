@@ -23,6 +23,7 @@ public class UI_ToggleManager : MonoBehaviour
     [SerializeField] private ToggleState currentState = ToggleState.Battle;
 
     private SoundManager soundManager;
+    private PopupManager popupManager;
 
     public ToggleState CurrentState { get => currentState; set => currentState = value; }
     
@@ -37,22 +38,17 @@ public class UI_ToggleManager : MonoBehaviour
             Instance = this;
         }
         soundManager = FindObjectOfType<SoundManager>();
-    }
-
-    public void Start()
-    {
-        SwitchState("Battle");
-        SwitchState("Shop");
-        SwitchState("Battle");
+        popupManager = FindObjectOfType<PopupManager>();
     }
 
     public void SwitchState(string state)
-    {
-
+    {  
         soundManager.PlaySFX("Click");
+        popupManager.ViewPopup(state);
+
         switch (state)
         {
-            case "Shop":
+            case "Shop":  
                 shop.SetActive(true);
                 battle.SetActive(false);
                 inspector.SetActive(false);

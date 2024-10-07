@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PopupHelper : MonoBehaviour
+public class EntryCall : MonoBehaviour
 {
     private PopupManager popupManager;
-
-    private void Awake()
+    private void Start()
     {
         popupManager = FindObjectOfType<PopupManager>();
-    }
-
-    public void SettingsBtnPressed()
-    {
-        popupManager.ViewPopup("Settings");
+        popupManager.ViewPopup("Entry");
     }
 }
