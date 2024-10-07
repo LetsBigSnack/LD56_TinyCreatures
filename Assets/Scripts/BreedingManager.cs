@@ -152,10 +152,10 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     };
 
     // Randomly assign colors from the pod to the new creature's body parts
-    Color newHeadColor = colorPod[Random.Range(0, colorPod.Count)];
-    Color newBodyColor = colorPod[Random.Range(0, colorPod.Count)];
-    Color newArmsColor = colorPod[Random.Range(0, colorPod.Count)];
-    Color newLegsColor = colorPod[Random.Range(0, colorPod.Count)];
+    Color newHeadColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor() : colorPod[Random.Range(0, colorPod.Count)];
+    Color newBodyColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor() : colorPod[Random.Range(0, colorPod.Count)];
+    Color newArmsColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor()  : colorPod[Random.Range(0, colorPod.Count)];
+    Color newLegsColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor()  : colorPod[Random.Range(0, colorPod.Count)];
 
     newCreature.SetColor(newHeadColor, newBodyColor, newLegsColor, newArmsColor);
 
