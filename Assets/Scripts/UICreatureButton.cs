@@ -53,9 +53,6 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler
                 soundManager.PlaySFX("Error");
             }
         }
-
-
-        
     }
     
 }

@@ -26,7 +26,12 @@ public class Creature : MonoBehaviour
     [SerializeField] private float defense;
     [SerializeField] private float dexterity;
     [SerializeField] private int powerLevel;
+    
+    private string[] prefixes = { "Xeno", "Proto", "Neuro", "Hydro", "Pyro", "Astro", "Bio", "Cryo", "Phyto", "Electro" };
+    private string[] middleParts = { "ter", "gon", "pho", "ri", "no", "mo", "plu", "lo", "zan", "rek", "dar", "val" };
+    private string[] suffixes = { "ium", "on", "us", "or", "ic", "ex", "is", "ax", "um", "ox" };
 
+    
     // Getters and Setters for Representation
     
     public string CreatureName
@@ -174,7 +179,7 @@ public class Creature : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        float finalDamage = damage - (defense * 0.5f); 
+        float finalDamage = damage * (1 - (defense / (defense + 200)));
         finalDamage = Mathf.Max(1, finalDamage);
         finalDamage = Mathf.RoundToInt(finalDamage);
         currentHealth -= Mathf.RoundToInt(finalDamage);
@@ -182,6 +187,15 @@ public class Creature : MonoBehaviour
         
         UI_BattleDisplayManager.Instance.CreateLogEntry($"{creatureName} took {finalDamage} damage, current health: {currentHealth}");
     }
+    
+    public string GenerateRandomName()
+    {
+        string prefix = prefixes[Random.Range(0, prefixes.Length)];
+        string middle = middleParts[Random.Range(0, middleParts.Length)];
+        string suffix = suffixes[Random.Range(0, suffixes.Length)];
 
+        return prefix + middle + suffix;
+    }
+    
 }
 

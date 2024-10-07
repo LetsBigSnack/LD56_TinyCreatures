@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class StoreManager : MonoBehaviour
@@ -13,10 +14,13 @@ public class StoreManager : MonoBehaviour
     [SerializeField] private int boughtSlots = 0;
     [SerializeField] private int basicCreaturePrice = 10;
     //TODO: add threshold to buy shir
-    [SerializeField] private int winThreshold = 20;
+    [SerializeField] private int winThreshold = 10;
     [SerializeField] private int advancedCreaturePrice = 10;
     [SerializeField] private int pricePerPowerLevel = 2;
     [SerializeField] private int playerMoney = 50;
+    
+    [SerializeField] private List<Creature> soledCreatures;
+    [SerializeField] private int soldLimit;
     
     public int PlayerMoney { get => playerMoney; set => playerMoney = value; }
     
@@ -25,7 +29,7 @@ public class StoreManager : MonoBehaviour
     public int BasicCreaturePrice { get => basicCreaturePrice; set => basicCreaturePrice = value; }
     public int AdvancedCreaturePrice { get => advancedCreaturePrice; set => advancedCreaturePrice = value; }
     
-    
+    public List<Creature> SoldCreatures { get => soledCreatures; set => soledCreatures = value; }
     
 
     private void Awake()
@@ -38,7 +42,7 @@ public class StoreManager : MonoBehaviour
         {
             Instance = this;
             currentSlotPrice = pricesPerSlot;
-            DontDestroyOnLoad(gameObject);
+            soledCreatures = new List<Creature>();
         }
     }
 
@@ -51,7 +55,7 @@ public class StoreManager : MonoBehaviour
 
     public void UpdatePrices()
     {
-        advancedCreaturePrice = BattleManager.Instance.GetPredictedPowerLevel()  * pricePerPowerLevel;
+        advancedCreaturePrice = BattleManager.Instance.GetPredictedPowerLevel() + 5;
         currentSlotPrice = pricesPerSlot + pricesPerSlot * boughtSlots;
     }
 
@@ -70,7 +74,7 @@ public class StoreManager : MonoBehaviour
     
     public bool BuyBasicCreature()
     {
-        if (playerMoney < basicCreaturePrice && InventoryManager.Instance.HasSpace())
+        if (playerMoney < basicCreaturePrice || !InventoryManager.Instance.HasSpace())
         {
             return false;
         }
@@ -109,7 +113,26 @@ public class StoreManager : MonoBehaviour
     public bool SellOwnedCreature(Creature creature)
     {
         EarnMoney(creature.PowerLevel);
+        
+        if (soledCreatures.Count+1 > soldLimit)
+        {
+            Creature soldCrt = soledCreatures.First();
+            Destroy(soldCrt.gameObject);
+            soledCreatures.Remove(soldCrt);
+        }
+        
+        soledCreatures.Add(creature);   
         return true;
+    }
+    
+    public bool RefuseCreature(Creature creature)
+    {
+        if (playerMoney >= creature.PowerLevel )
+        {
+            SpendMoney(creature.PowerLevel);
+            return true;
+        }
+        return false;
     }
 
     public void SpendMoney(int price)
@@ -124,5 +147,16 @@ public class StoreManager : MonoBehaviour
     public bool CanBuyAdvancedCreature()
     {
         return BattleManager.Instance.PlayerWins >= winThreshold;
+    }
+
+    public bool BuyBack(Creature creature)
+    {
+        if (soledCreatures.Contains(creature) && playerMoney >= creature.PowerLevel && InventoryManager.Instance.HasSpace())
+        {
+            InventoryManager.Instance.AddCreature(creature);
+            soledCreatures.Remove(creature);
+            return true;
+        }
+        return false;
     }
 }
