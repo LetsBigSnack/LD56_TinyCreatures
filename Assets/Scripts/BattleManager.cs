@@ -25,6 +25,7 @@ public class BattleManager : MonoBehaviour
 
     public int PlayerWins{get{return playerWins;}}
     
+    public float WinFactor{get{return winFactor;}}
     
     private Coroutine battleCoroutine;
     

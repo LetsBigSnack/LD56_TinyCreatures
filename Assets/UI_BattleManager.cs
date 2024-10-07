@@ -76,6 +76,17 @@ public class UI_BattleManager : MonoBehaviour
         if (_selectedCreature != null)
         {
             InventoryManager.Instance.ChoiceCreatureForBattle(_selectedCreature);
+
+            if (_selectedCreature == InventoryManager.Instance.CreatureInspectorLeft)
+            {
+                InventoryManager.Instance.CreatureInspectorLeft = null;
+            }
+            
+            if (_selectedCreature == InventoryManager.Instance.CreatureInspectorRight)
+            {
+                InventoryManager.Instance.CreatureInspectorRight = null;
+            }
+            
             activeBattleCreature.Creature = _selectedCreature;
             soundManager.PlaySFX("Click");
         }
