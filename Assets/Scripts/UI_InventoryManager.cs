@@ -39,7 +39,7 @@ public class UI_InventoryManager : MonoBehaviour
         foreach (Creature creature in InventoryManager.Instance.InventoryCreatures)
         {
             GameObject uiCreature = Instantiate(uiCreaturePrefabs, uiCreatureContainer.position, Quaternion.identity);
-            uiCreature.transform.SetParent(uiCreatureContainer);
+            uiCreature.transform.SetParent(uiCreatureContainer, false);
             UICreatureButton uiCreatureButton = uiCreature.GetComponentInChildren<UICreatureButton>();
             uiCreatureButton.Creature = creature;
             uiCreatureButton.GetComponent<UI_CreatureSprite>().SetupRepresentation(creature);
