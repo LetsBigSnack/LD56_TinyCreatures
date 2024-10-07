@@ -7183,11 +7183,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6713915945538524265, guid: 324ab149a1f7a13459ce9f743f94e353, type: 3}
       propertyPath: entryTexts.Array.size
-      value: 4
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6713915945538524265, guid: 324ab149a1f7a13459ce9f743f94e353, type: 3}
       propertyPath: battleTexts.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6713915945538524265, guid: 324ab149a1f7a13459ce9f743f94e353, type: 3}
       propertyPath: fusionTexts.Array.size
@@ -7226,8 +7226,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6713915945538524265, guid: 324ab149a1f7a13459ce9f743f94e353, type: 3}
       propertyPath: entryTexts.Array.data[4]
-      value: Prove your genius, perfect your experiments, and rise as the ultimate
-        mad scientist!  Good luck, Master!
+      value: "Left-click on a Monkepok in your inventory to check its stats. When
+        you're ready, send it into battle by pressing \"Fight!\" If things take a
+        turn for the worse, you can retreat at any time to save your creature \u2014
+        because once it dies, it\u2019s gone for good. "
+      objectReference: {fileID: 0}
+    - target: {fileID: 6713915945538524265, guid: 324ab149a1f7a13459ce9f743f94e353, type: 3}
+      propertyPath: entryTexts.Array.data[5]
+      value: 'Your Monkepok fully recovers HP between battles, but remember: if you
+        retreat, the enemy heals too. Plan your moves carefully!'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6713915945538524265, guid: 324ab149a1f7a13459ce9f743f94e353, type: 3}
+      propertyPath: entryTexts.Array.data[6]
+      value: "In the bottom-right corner, you'll find your inventory. The mini-screen
+        on the left shows how many space slots you have available, while the mini-screen
+        on the right displays your Genes \u2014 your currency."
       objectReference: {fileID: 0}
     - target: {fileID: 6713915945538524265, guid: 324ab149a1f7a13459ce9f743f94e353, type: 3}
       propertyPath: popupTexts.Array.data[1]
