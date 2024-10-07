@@ -112,10 +112,20 @@ public class StoreManager : MonoBehaviour
 
     public bool SellOwnedCreature(Creature creature)
     {
+        
+        Creature test = InventoryManager.Instance.SelectedCreatureForBattle;
+
+        if (test == creature)
+        {
+            InventoryManager.Instance.SelectedCreatureForBattle = null;
+            UI_BattleManager.Instance.Refresh();
+        }
+        
         EarnMoney(creature.PowerLevel);
         
         if (soledCreatures.Count+1 > soldLimit)
         {
+            
             Creature soldCrt = soledCreatures.First();
             Destroy(soldCrt.gameObject);
             soledCreatures.Remove(soldCrt);
@@ -127,6 +137,8 @@ public class StoreManager : MonoBehaviour
     
     public bool RefuseCreature(Creature creature)
     {
+        EarnMoney(creature.PowerLevel);
+        
         if (playerMoney >= creature.PowerLevel )
         {
             SpendMoney(creature.PowerLevel);

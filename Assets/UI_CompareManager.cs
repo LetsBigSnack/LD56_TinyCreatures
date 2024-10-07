@@ -70,6 +70,14 @@ public class UI_CompareManager : MonoBehaviour
         {
             if (left != null)
             {
+                Creature test = UI_BattleManager.Instance.SelectedCreature;
+
+                if (test == left)
+                {
+                    UI_BattleManager.Instance.SelectedCreature = null;
+                }
+                UI_BattleManager.Instance.Refresh();
+                
                 InventoryManager.Instance.RemoveCreature(left);
                 InventoryManager.Instance.SelectCreatureLeft(null);
                 StoreManager.Instance.SellOwnedCreature(left);
@@ -84,6 +92,14 @@ public class UI_CompareManager : MonoBehaviour
         {
             if (right != null)
             {
+                Creature test = UI_BattleManager.Instance.SelectedCreature;
+
+                if (test == right)
+                {
+                    UI_BattleManager.Instance.SelectedCreature = null;
+                }
+                UI_BattleManager.Instance.Refresh();
+                
                 InventoryManager.Instance.RemoveCreature(right);
                 InventoryManager.Instance.SelectCreatureRight(null);
                 StoreManager.Instance.SellOwnedCreature(right);
@@ -110,6 +126,16 @@ public class UI_CompareManager : MonoBehaviour
             {
                 UI_BreedingManager.Instance.AddCreatureToPod(left);
                 InventoryManager.Instance.SelectCreatureLeft(null);
+
+                Creature test = UI_BattleManager.Instance.SelectedCreature;
+
+                if (test == left)
+                {
+                    UI_BattleManager.Instance.SelectedCreature = null;
+                }
+                
+                UI_BattleManager.Instance.Refresh();
+                
                 left = null;
                 soundManager.PlaySFX("Click");
             }
@@ -124,6 +150,16 @@ public class UI_CompareManager : MonoBehaviour
             {
                 UI_BreedingManager.Instance.AddCreatureToPod(right);
                 InventoryManager.Instance.SelectCreatureRight(null);
+                
+                Creature test = UI_BattleManager.Instance.SelectedCreature;
+
+                if (test == right)
+                {
+                    UI_BattleManager.Instance.SelectedCreature = null;
+                }
+                
+                UI_BattleManager.Instance.Refresh();
+                
                 right = null;
                 soundManager.PlaySFX("Click");
             }

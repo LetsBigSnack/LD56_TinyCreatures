@@ -45,7 +45,7 @@ public class CreatureManager : MonoBehaviour
         Creature newCreature = newCreatureObj.GetComponent<Creature>();
 
         
-        int randomHealth = Mathf.RoundToInt(UnityEngine.Random.Range(-statRange, statRange) + statMin);
+        int randomHealth = Mathf.RoundToInt((UnityEngine.Random.Range(-statRange, statRange) + statMin) * 1.2f);
         float randomSpeed = UnityEngine.Random.Range(-statRange, statRange) + statMin/2;
         float randomAttack = UnityEngine.Random.Range(-statRange, statRange) + statMin/2;
         float randomDefense = UnityEngine.Random.Range(-statRange, statRange) + statMin/2;
@@ -83,7 +83,7 @@ public class CreatureManager : MonoBehaviour
         Creature newCreature = newCreatureObj.GetComponent<Creature>();
 
         
-        int randomHealth = Mathf.RoundToInt(UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin);
+        int randomHealth = Mathf.RoundToInt((UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin) * 1.2f);
         float randomSpeed = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin/2;
         float randomAttack = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin/2;
         float randomDefense = UnityEngine.Random.Range(-definedStatRange, definedStatRange) + definedStatMin/2;
