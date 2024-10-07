@@ -20,7 +20,6 @@ public class UI_BreedingManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
             soundManager = FindObjectOfType<SoundManager>();
         }
     }
@@ -82,13 +81,6 @@ public class UI_BreedingManager : MonoBehaviour
         {
             soundManager.PlaySFX("Error");
         }
-        CollectCreature();
-    }
-
-    public void CollectCreature()
-    {
-        BreedingManager.Instance.Collect();
-        UI_InventoryManager.Instance.RefreshInventory();
     }
     
 }

@@ -44,7 +44,6 @@ public class InventoryManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
             inventoryCreatures = new List<Creature>();
 
             AddCreature(CreatureManager.Instance.CreateBasicCreature().GetComponent<Creature>());

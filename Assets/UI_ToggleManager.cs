@@ -35,13 +35,14 @@ public class UI_ToggleManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         soundManager = FindObjectOfType<SoundManager>();
     }
 
     public void Start()
     {
+        SwitchState("Battle");
+        SwitchState("Shop");
         SwitchState("Battle");
     }
 
