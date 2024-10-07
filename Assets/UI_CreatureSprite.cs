@@ -14,9 +14,13 @@ public class UI_CreatureSprite : MonoBehaviour
     public void Reset()
     {
         creatureHead.sprite = null;
+        creatureHead.color = new Color(0f, 0f, 0f, 0f);
         creatureBody.sprite = null;
+        creatureBody.color = new Color(0f, 0f, 0f, 0f);
         creatureLegs.sprite = null;
+        creatureLegs.color = new Color(0f, 0f, 0f, 0f);
         creatureArms.sprite = null;
+        creatureArms.color = new Color(0f, 0f, 0f, 0f);
     }
     
     public void SetupRepresentation(Creature creature)

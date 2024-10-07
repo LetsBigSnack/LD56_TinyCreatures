@@ -12,7 +12,12 @@ public class UI_ShopManager : MonoBehaviour
     [SerializeField] private  UnityEngine.UI.Button adjustedButton;
     [SerializeField] private TextMeshProUGUI adjustedPriceText;
     [SerializeField] private TextMeshProUGUI adjustedCreatureText;
+    
+    [SerializeField] private GameObject uiBuckBackPrefab;
+    [SerializeField] private List<GameObject> buyBacks;
+    [SerializeField] private Transform buyBacksParent;
 
+    
     private string _defaultAdjustedText;
 
     private SoundManager soundManager;
@@ -22,6 +27,7 @@ public class UI_ShopManager : MonoBehaviour
     {
         _defaultAdjustedText = adjustedCreatureText.text;
         soundManager = FindObjectOfType<SoundManager>();
+        buyBacks = new List<GameObject>();
     }
 
     private void FixedUpdate()
@@ -89,6 +95,35 @@ public class UI_ShopManager : MonoBehaviour
             soundManager.PlaySFX("Error");
         }
         UI_InventoryManager.Instance.RefreshInventory();
+    }
+
+    private void OnEnable()
+    {
+        RefreshInventory();
+    }
+
+    public void RefreshInventory()
+    {
+        
+        foreach (GameObject uiCrt in buyBacks)
+        {
+            Destroy(uiCrt);
+        }
+        
+        buyBacks = new List<GameObject>();
+        if (StoreManager.Instance == null || StoreManager.Instance.SoldCreatures == null)
+        {
+            return;
+        }
+        foreach (Creature creature in StoreManager.Instance.SoldCreatures)
+        {
+            GameObject uiCreature = Instantiate(uiBuckBackPrefab, buyBacksParent.position, Quaternion.identity);
+            uiCreature.transform.SetParent(buyBacksParent, false);
+            BuyBackCreature uiCreatureButton = uiCreature.GetComponentInChildren<BuyBackCreature>();
+            uiCreatureButton.Creature = creature;
+            uiCreatureButton.Refresh();
+            buyBacks.Add(uiCreature);
+        }
     }
     
     

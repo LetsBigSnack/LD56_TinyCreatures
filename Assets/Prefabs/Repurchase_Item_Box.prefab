@@ -273,9 +273,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UI_ShopManager, Assembly-CSharp
-        m_MethodName: BuySlot
+      - m_Target: {fileID: 5605996711033309914}
+        m_TargetAssemblyTypeName: BuyBackCreature, Assembly-CSharp
+        m_MethodName: BuyBack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -478,6 +478,7 @@ GameObject:
   - component: {fileID: 9113508452662195119}
   - component: {fileID: 670391531884676521}
   - component: {fileID: 7880460822354378002}
+  - component: {fileID: 5605996711033309914}
   m_Layer: 5
   m_Name: Repurchase_Item_Box
   m_TagString: Untagged
@@ -571,6 +572,22 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &5605996711033309914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3611316130643498315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d82e9e3a5298c020980a53607ddbaed4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creature: {fileID: 0}
+  sprite: {fileID: 4767768291808920478}
+  text: {fileID: 397882094605759511}
+  priceText: {fileID: 3254054877139814952}
 --- !u!1 &4835075370260598772
 GameObject:
   m_ObjectHideFlags: 0

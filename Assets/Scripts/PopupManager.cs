@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PopupManager : MonoBehaviour
@@ -18,7 +19,12 @@ public class PopupManager : MonoBehaviour
     private GameObject _popupContainer;
     [SerializeField]
     private GameObject _settingsPopup;
-
+    
+    
+    [SerializeField]
+    private GameObject continueButton;
+    
+    
     [SerializeField]
     private string[] popupTexts;
 
@@ -61,6 +67,7 @@ public class PopupManager : MonoBehaviour
                 _btn1.gameObject.SetActive(true);
                 _popupContainer.SetActive(true);
                 _settingsPopup.SetActive(false);
+                continueButton.SetActive(false);
             }
             else if(popupType == 0)
             {
@@ -68,6 +75,7 @@ public class PopupManager : MonoBehaviour
                 _btn1.gameObject.SetActive(false);
                 _popupContainer.SetActive(true);
                 _settingsPopup.SetActive(true);
+                continueButton.SetActive(true);
             }
             else
             {
@@ -75,5 +83,12 @@ public class PopupManager : MonoBehaviour
             }
         }
     }
-
+    
+    
+    public void ReloadScene()
+    {
+        // Get the active scene and reload it
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        ClosePopup();
+    }
 }

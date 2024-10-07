@@ -26,7 +26,6 @@ public class UI_BattleManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
             soundManager = FindObjectOfType<SoundManager>();
         }
     }

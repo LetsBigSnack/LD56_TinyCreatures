@@ -44,7 +44,7 @@ public class BattleManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+
         }
     }
 
@@ -150,13 +150,28 @@ public class BattleManager : MonoBehaviour
             float attackInterval = speedFactor / attacker.Speed;
             float attackDamage = attacker.Attack;
 
-            UI_BattleDisplayManager.Instance.CreateLogEntry($"{attacker.CreatureName} attacks {defender.CreatureName} for {attackDamage} damage.");
+            // Calculate critical hit chance based on dexterity using a logistic function
+            float critChance = 1 - Mathf.Exp(-attacker.Dexterity / 100f); // This approaches 1 but never reaches it
+
+            bool isCriticalHit = UnityEngine.Random.value < critChance; // Random.value gives a value between 0 and 1
+
+            if (isCriticalHit)
+            {
+                attackDamage *= 1.2f; // Critical hit multiplies damage by 120%
+                UI_BattleDisplayManager.Instance.CreateLogEntry($"{attacker.CreatureName} lands a CRITICAL HIT on {defender.CreatureName} for {attackDamage} damage!");
+            }
+            else
+            {
+                UI_BattleDisplayManager.Instance.CreateLogEntry($"{attacker.CreatureName} attacks {defender.CreatureName} for {attackDamage} damage.");
+            }
+
             defender.TakeDamage(attackDamage);
 
             // Wait for the attack interval based on the attacker's speed before attacking again
             yield return new WaitForSeconds(attackInterval);
         }
     }
+
 
     public void StopBattle()
     {
@@ -174,6 +189,5 @@ public class BattleManager : MonoBehaviour
         float predictedPowerLevel = ((adjustedStat * 4) / 4) * adjustedStat;
         return  Mathf.RoundToInt(predictedPowerLevel);
     }
-
     
 }

@@ -25,7 +25,6 @@ public class UI_CompareManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
             soundManager = FindObjectOfType<SoundManager>();
         }
     }
@@ -71,9 +70,9 @@ public class UI_CompareManager : MonoBehaviour
         {
             if (left != null)
             {
-                StoreManager.Instance.SellOwnedCreature(left);
                 InventoryManager.Instance.RemoveCreature(left);
                 InventoryManager.Instance.SelectCreatureLeft(null);
+                StoreManager.Instance.SellOwnedCreature(left);
                 soundManager.PlaySFX("Click");
             }
             else
@@ -85,9 +84,9 @@ public class UI_CompareManager : MonoBehaviour
         {
             if (right != null)
             {
-                StoreManager.Instance.SellOwnedCreature(right);
                 InventoryManager.Instance.RemoveCreature(right);
                 InventoryManager.Instance.SelectCreatureRight(null);
+                StoreManager.Instance.SellOwnedCreature(right);
                 soundManager.PlaySFX("Click");
             }
             else

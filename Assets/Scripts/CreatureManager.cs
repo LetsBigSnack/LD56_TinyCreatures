@@ -35,7 +35,6 @@ public class CreatureManager : MonoBehaviour
         {
             
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
     }
     
@@ -71,7 +70,7 @@ public class CreatureManager : MonoBehaviour
         newCreature.SetSprites(randomHead, randomBody, randomLegs, randomArms);
         
         newCreature.CreatureGeneration = 0;
-        newCreature.CreatureName = "PLAYER";
+        newCreature.CreatureName = newCreature.GenerateRandomName();
         Debug.Log(newCreatureObj.transform.localScale);
         
         return newCreatureObj;
@@ -109,8 +108,29 @@ public class CreatureManager : MonoBehaviour
         newCreature.SetSprites(randomHead, randomBody, randomLegs, randomArms);
 
         newCreature.CreatureGeneration = 0;
-        newCreature.CreatureName = "PLAYER";
+        newCreature.CreatureName = newCreature.GenerateRandomName();
         
         return newCreatureObj;
+    }
+
+    public Sprite GetRandomBodyPart(string name)
+    {
+        switch (name)
+        {
+            case "Head":
+                return creatureHeadSprites[UnityEngine.Random.Range(0, creatureHeadSprites.Length)];
+                break;
+            case "Body":
+                return creatureBodySprites[UnityEngine.Random.Range(0, creatureHeadSprites.Length)];
+                break;
+            case "Legs":
+                return creatureLegsSprites[UnityEngine.Random.Range(0, creatureHeadSprites.Length)];
+                break;
+            case "Arms":
+                return creatureArmsSprites[UnityEngine.Random.Range(0, creatureHeadSprites.Length)];
+                break;
+        }
+
+        return null;
     }
 }

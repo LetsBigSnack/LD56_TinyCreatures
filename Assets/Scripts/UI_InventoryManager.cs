@@ -17,7 +17,6 @@ public class UI_InventoryManager : MonoBehaviour
             Destroy(gameObject);
         }else {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
     }
 

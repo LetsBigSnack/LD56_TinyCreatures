@@ -35,7 +35,6 @@ public class UI_BattleDisplayManager : MonoBehaviour
         {
             Instance = this;
             logs = new List<GameObject>();
-            DontDestroyOnLoad(gameObject);
         }
     }
 
