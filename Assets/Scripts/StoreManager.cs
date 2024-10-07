@@ -57,7 +57,7 @@ public class StoreManager : MonoBehaviour
 
     public void UpdatePrices()
     {
-        advancedCreaturePrice = Mathf.RoundToInt(BattleManager.Instance.GetPredictedPowerLevel() + 5 * 3f);
+        advancedCreaturePrice = Mathf.RoundToInt((BattleManager.Instance.GetPredictedPowerLevel() + 5) * 2f);
         currentSlotPrice = pricesPerSlot + pricesPerSlot * boughtSlots;
     }
 
