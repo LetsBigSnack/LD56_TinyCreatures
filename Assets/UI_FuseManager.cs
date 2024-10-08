@@ -59,7 +59,7 @@ public class UI_FuseManager : MonoBehaviour
    public void Refuse()
    {
       Creature creature = BreedingManager.Instance.Result;
-      if (creature != null && BreedingManager.Instance.Breed(false))
+      if (creature != null && BreedingManager.Instance.Breed(true))
       {
          StoreManager.Instance.EarnMoney(creature.PowerLevel);
          
