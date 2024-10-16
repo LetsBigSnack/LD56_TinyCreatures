@@ -78,7 +78,7 @@ public class UI_BattleDisplayManager : MonoBehaviour
     public void CreateLogEntry(string text)
     {
         GameObject logEntry = Instantiate(logPrefab, logParent.position, Quaternion.identity);
-        logEntry.transform.SetParent(logParent);
+        logEntry.transform.SetParent(logParent, false);
         TextMeshProUGUI logEntryTMP = logEntry.GetComponentInChildren<TextMeshProUGUI>();
         logEntryTMP.text = text;
         logs.Add(logEntry);
