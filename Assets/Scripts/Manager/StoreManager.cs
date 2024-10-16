@@ -81,8 +81,7 @@ public class StoreManager : MonoBehaviour
             return false;
         }
 
-        if (InventoryManager.Instance.AddCreature(CreatureManager.Instance.CreateBasicCreature()
-                .GetComponent<Creature>()))
+        if (InventoryManager.Instance.AddCreature(CreatureManager.Instance.CreateBasicCreature()))
         {
             SpendMoney(basicCreaturePrice);
             return true;
@@ -105,7 +104,7 @@ public class StoreManager : MonoBehaviour
         // Battle Creature
         if (InventoryManager.Instance.AddCreature(CreatureManager.Instance.
                 CreateAdjustedCreature(statRange + (BattleManager.Instance.PlayerWins * BattleManager.Instance.WinFactor), 
-                    statMin + (BattleManager.Instance.PlayerWins * BattleManager.Instance.WinFactor * 2)).GetComponent<Creature>()))
+                    statMin + (BattleManager.Instance.PlayerWins * BattleManager.Instance.WinFactor * 2))))
         {
             SpendMoney(advancedCreaturePrice);
             return true;
@@ -126,13 +125,12 @@ public class StoreManager : MonoBehaviour
             UI_BattleManager.Instance.Refresh();
         }
         
-        EarnMoney(creature.PowerLevel);
+        EarnMoney(creature.CreatureStats.PowerLevel);
         
         if (soledCreatures.Count+1 > soldLimit)
         {
             
             Creature soldCrt = soledCreatures.First();
-            Destroy(soldCrt.gameObject);
             soledCreatures.Remove(soldCrt);
         }
         
@@ -142,11 +140,11 @@ public class StoreManager : MonoBehaviour
     
     public bool RefuseCreature(Creature creature)
     {
-        EarnMoney(creature.PowerLevel);
+        EarnMoney(creature.CreatureStats.PowerLevel);
         
-        if (playerMoney >= creature.PowerLevel )
+        if (playerMoney >= creature.CreatureStats.PowerLevel )
         {
-            SpendMoney(creature.PowerLevel);
+            SpendMoney(creature.CreatureStats.PowerLevel);
             return true;
         }
         return false;
@@ -168,7 +166,7 @@ public class StoreManager : MonoBehaviour
 
     public bool BuyBack(Creature creature)
     {
-        if (soledCreatures.Contains(creature) && playerMoney >= creature.PowerLevel && InventoryManager.Instance.HasSpace())
+        if (soledCreatures.Contains(creature) && playerMoney >= creature.CreatureStats.PowerLevel && InventoryManager.Instance.HasSpace())
         {
             InventoryManager.Instance.AddCreature(creature);
             soledCreatures.Remove(creature);

@@ -56,7 +56,7 @@ public class UI_BattleDisplayManager : MonoBehaviour
             playerObject.SetActive(true);
             playerHealthBar.maxValue = battleCreature.MaxHealth;
             playerHealthBar.value = battleCreature.CurrentHealth;
-            playerPL.text = battleCreature.PowerLevel.ToString();
+            playerPL.text = battleCreature.CreatureStats.PowerLevel.ToString();
         }
 
         if (enemyCreature == null)
@@ -68,7 +68,7 @@ public class UI_BattleDisplayManager : MonoBehaviour
             enemyObject.SetActive(true);
             enemyHealthBar.maxValue = enemyCreature.MaxHealth;
             enemyHealthBar.value = enemyCreature.CurrentHealth;
-            enemyPL.text = enemyCreature.PowerLevel.ToString();
+            enemyPL.text = enemyCreature.CreatureStats.PowerLevel.ToString();
         }
         
         battleCreatureSprite.SetupRepresentation(battleCreature);

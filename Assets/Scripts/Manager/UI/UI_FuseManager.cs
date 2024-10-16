@@ -61,9 +61,8 @@ public class UI_FuseManager : MonoBehaviour
       Creature creature = BreedingManager.Instance.Result;
       if (creature != null && BreedingManager.Instance.Breed(true))
       {
-         StoreManager.Instance.EarnMoney(creature.PowerLevel);
+         StoreManager.Instance.EarnMoney(creature.CreatureStats.PowerLevel);
          
-         Destroy(creature.gameObject);
          _soundManager.PlaySFX("Click");
          
       }

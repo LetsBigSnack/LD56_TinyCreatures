@@ -38,16 +38,16 @@ public class UI_CreatureDetailsText : MonoBehaviour
         }
         
         creatureNameText.text = creature.CreatureName;
-        powerLevelText.text = creature.PowerLevel.ToString();
+        powerLevelText.text = creature.CreatureStats.PowerLevel.ToString();
         hpText.text = creature.MaxHealth.ToString("n2");
         hpText.color = new Color(6/255f,40/255f,41/255f,255);
-        atkText.text = creature.Attack.ToString("n2");
+        atkText.text = creature.CreatureStats.Attack.ToString("n2");
         atkText.color = new Color(6/255f,40/255f,41/255f,255);
-        spdText.text = creature.Speed.ToString("n2");
+        spdText.text = creature.CreatureStats.Speed.ToString("n2");
         spdText.color = new Color(6/255f,40/255f,41/255f,255);
-        dexText.text = creature.Dexterity.ToString("n2");
+        dexText.text = creature.CreatureStats.Dexterity.ToString("n2");
         dexText.color = new Color(6/255f,40/255f,41/255f,255);
-        defText.text = creature.Defense.ToString("n2");
+        defText.text = creature.CreatureStats.Defense.ToString("n2");
         defText.color = new Color(6/255f,40/255f,41/255f,255);
     }
 
@@ -75,9 +75,9 @@ public class UI_CreatureDetailsText : MonoBehaviour
             }
         }
         
-        if (creature1.Attack != creature2.Attack)
+        if (creature1.CreatureStats.Attack != creature2.CreatureStats.Attack)
         {
-            if (creature1.Attack < creature2.Attack)
+            if (creature1.CreatureStats.Attack < creature2.CreatureStats.Attack)
             {
                 atkText.color = neg;
             }
@@ -87,9 +87,9 @@ public class UI_CreatureDetailsText : MonoBehaviour
             }
         }
         
-        if (creature1.Speed != creature2.Speed)
+        if (creature1.CreatureStats.Speed != creature2.CreatureStats.Speed)
         {
-            if (creature1.Speed < creature2.Speed)
+            if (creature1.CreatureStats.Speed < creature2.CreatureStats.Speed)
             {
                 spdText.color = neg;
             }
@@ -99,9 +99,9 @@ public class UI_CreatureDetailsText : MonoBehaviour
             }
         }
         
-        if (creature1.Dexterity != creature2.Dexterity)
+        if (creature1.CreatureStats.Dexterity != creature2.CreatureStats.Dexterity)
         {
-            if (creature1.Dexterity < creature2.Dexterity)
+            if (creature1.CreatureStats.Dexterity < creature2.CreatureStats.Dexterity)
             {
                 dexText.color = neg;
             }
@@ -111,9 +111,9 @@ public class UI_CreatureDetailsText : MonoBehaviour
             }
         }
         
-        if (creature1.Defense != creature2.Defense)
+        if (creature1.CreatureStats.Defense != creature2.CreatureStats.Defense)
         {
-            if (creature1.Defense < creature2.Defense)
+            if (creature1.CreatureStats.Defense < creature2.CreatureStats.Defense)
             {
                 defText.color = neg;
             }

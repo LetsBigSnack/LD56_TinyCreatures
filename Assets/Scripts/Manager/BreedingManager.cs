@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -46,7 +47,7 @@ public class BreedingManager : MonoBehaviour
     
     public bool AddToBreed(Creature creature)
     {
-        if (creaturePod1 && creaturePod2)
+        if (creaturePod1 != null && creaturePod2 != null)
         {
             return false;
         }
@@ -100,8 +101,8 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
         return false;
     }
 
-    Creature parent1 = creaturePod1.GetComponent<Creature>();
-    Creature parent2 = creaturePod2.GetComponent<Creature>();
+    Creature parent1 = creaturePod1;
+    Creature parent2 = creaturePod2;
 
     if ((parent1 == null || parent2 == null ))
     {
@@ -119,17 +120,13 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     
     StoreManager.Instance.SpendMoney(BreedingPrice);
     
-    GameObject newCreatureObj = Instantiate(breedingPrefab);
-    newCreatureObj.transform.position = new Vector3(20000f, 20000f, 20000f);
-
-    Creature newCreature = newCreatureObj.GetComponent<Creature>();
-
+    
     // Combine stats from both parents and apply mutation
     int newHealth = Mathf.RoundToInt((parent1.MaxHealth + parent2.MaxHealth) / 2f * MutationFactor());
-    float newSpeed = ((parent1.Speed + parent2.Speed) / 2f) * MutationFactor();
-    float newAttack = ((parent1.Attack + parent2.Attack) / 2f) * MutationFactor();
-    float newDefense = ((parent1.Defense + parent2.Defense) / 2f) * MutationFactor();
-    float newDexterity = ((parent1.Dexterity + parent2.Dexterity) / 2f) * MutationFactor();
+    float newSpeed = ((parent1.CreatureStats.Speed + parent2.CreatureStats.Speed) / 2f) * MutationFactor();
+    float newAttack = ((parent1.CreatureStats.Attack + parent2.CreatureStats.Attack) / 2f) * MutationFactor();
+    float newDefense = ((parent1.CreatureStats.Defense + parent2.CreatureStats.Defense) / 2f) * MutationFactor();
+    float newDexterity = ((parent1.CreatureStats.Dexterity + parent2.CreatureStats.Dexterity) / 2f) * MutationFactor();
 
     // Ensure minimum values for stats
     newHealth = Mathf.Max(1, newHealth);
@@ -137,20 +134,20 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     newAttack = Mathf.Max(1f, newAttack);
     newDefense = Mathf.Max(1f, newDefense);
     newDexterity = Mathf.Max(1f, newDexterity);
-
-    newCreature.SetStats(newHealth, newSpeed, newAttack, newDefense, newDexterity);
+    
 
     // Create a "color pod" from all body parts of both parents
     List<Color> colorPod = new List<Color>
     {
-        parent1.HeadRenderer.color,
-        parent1.BodyRenderer.color,
-        parent1.ArmsRenderer.color,
-        parent1.LegsRenderer.color,
-        parent2.HeadRenderer.color,
-        parent2.BodyRenderer.color,
-        parent2.ArmsRenderer.color,
-        parent2.LegsRenderer.color
+        parent1.Representation.HeadColor,
+        parent1.Representation.BodyColor,
+        parent1.Representation.LegsColor,
+        parent1.Representation.ArmsColor,
+        parent2.Representation.HeadColor,
+        parent2.Representation.BodyColor,
+        parent2.Representation.LegsColor,
+        parent2.Representation.ArmsColor,
+
     };
 
     // Randomly assign colors from the pod to the new creature's body parts
@@ -158,22 +155,19 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     Color newBodyColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor() : colorPod[Random.Range(0, colorPod.Count)];
     Color newArmsColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor()  : colorPod[Random.Range(0, colorPod.Count)];
     Color newLegsColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor()  : colorPod[Random.Range(0, colorPod.Count)];
-
-    newCreature.SetColor(newHeadColor, newBodyColor, newLegsColor, newArmsColor);
-
-    // Randomly assign sprites from the parents or use random body parts based on the randomChance
-    Sprite newHeadSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart("Head") : (Random.value > 0.5f ? parent1.HeadRenderer.sprite : parent2.HeadRenderer.sprite);
-    Sprite newBodySprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart("Body") : (Random.value > 0.5f ? parent1.BodyRenderer.sprite : parent2.BodyRenderer.sprite);
-    Sprite newLegsSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart("Legs") : (Random.value > 0.5f ? parent1.LegsRenderer.sprite : parent2.LegsRenderer.sprite);
-    Sprite newArmsSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart("Arms") : (Random.value > 0.5f ? parent1.ArmsRenderer.sprite : parent2.ArmsRenderer.sprite);
-
-    newCreature.SetSprites(newHeadSprite, newBodySprite, newLegsSprite, newArmsSprite);
     
-    // Assign generation based on the higher of the two parents' generations
+    // Randomly assign sprites from the parents or use random body parts based on the randomChance
+    Sprite newHeadSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart("Head") : (Random.value > 0.5f ? parent1.Representation.HeadSprite : parent2.Representation.HeadSprite);
+    Sprite newBodySprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart("Body") : (Random.value > 0.5f ? parent1.Representation.BodySprite : parent2.Representation.BodySprite);
+    Sprite newLegsSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart("Legs") : (Random.value > 0.5f ? parent1.Representation.LegsSprite: parent2.Representation.LegsSprite);
+    Sprite newArmsSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart("Arms") : (Random.value > 0.5f ? parent1.Representation.ArmsSprite: parent2.Representation.ArmsSprite);
+
+    CreatureRepresentation creatureRepresentation = new CreatureRepresentation(newHeadSprite, newBodySprite, newLegsSprite, newArmsSprite, newHeadColor, newBodyColor, newLegsColor, newArmsColor);
     int lastGeneration = Mathf.Max(parent1.CreatureGeneration, parent2.CreatureGeneration) + 1;
-    newCreature.CreatureGeneration = lastGeneration;
-    newCreature.CreatureName = newCreature.GenerateRandomName();
-    result = newCreature;
+    CreatureStats creatureStats = new CreatureStats(newSpeed, newAttack, newDefense, newDexterity);
+    
+    
+    result = new Creature(lastGeneration, newHealth, creatureStats, creatureRepresentation);
     return true;
 }
 
@@ -190,11 +184,11 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
 
     public void UpdatePrice()
     {
-        if (!creaturePod1 || !creaturePod2)
+        if (creaturePod1 != null || creaturePod2 != null)
         {
             return;
         }
-        breedingPrice = Mathf.RoundToInt((creaturePod1.PowerLevel + creaturePod2.PowerLevel)/2)*2;
+        breedingPrice = Mathf.RoundToInt((creaturePod1.CreatureStats.PowerLevel + creaturePod2.CreatureStats.PowerLevel)/2)*2;
     }
 
     public bool Collect()

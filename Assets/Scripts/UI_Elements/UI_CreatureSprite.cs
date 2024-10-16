@@ -30,17 +30,17 @@ public class UI_CreatureSprite : MonoBehaviour
             return;
         }
         
-        creatureHead.sprite = creature.HeadRenderer.sprite;
-        creatureHead.color = creature.HeadRenderer.color;
+        creatureHead.sprite = creature.Representation.HeadSprite;
+        creatureHead.color = creature.Representation.HeadColor;
         
-        creatureBody.sprite = creature.BodyRenderer.sprite;
-        creatureBody.color = creature.BodyRenderer.color;
+        creatureBody.sprite = creature.Representation.BodySprite;
+        creatureBody.color = creature.Representation.BodyColor;
         
-        creatureLegs.sprite = creature.LegsRenderer.sprite;
-        creatureLegs.color = creature.LegsRenderer.color;
+        creatureLegs.sprite = creature.Representation.LegsSprite;
+        creatureLegs.color = creature.Representation.LegsColor;
         
-        creatureArms.sprite = creature.ArmsRenderer.sprite;
-        creatureArms.color = creature.ArmsRenderer.color;
+        creatureArms.sprite = creature.Representation.ArmsSprite;
+        creatureArms.color = creature.Representation.ArmsColor;
         
     }
     

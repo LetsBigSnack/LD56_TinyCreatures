@@ -46,9 +46,9 @@ public class InventoryManager : MonoBehaviour
             Instance = this;
             inventoryCreatures = new List<Creature>();
 
-            AddCreature(CreatureManager.Instance.CreateBasicCreature().GetComponent<Creature>());
-            AddCreature(CreatureManager.Instance.CreateBasicCreature().GetComponent<Creature>());
-            AddCreature(CreatureManager.Instance.CreateBasicCreature().GetComponent<Creature>());
+            AddCreature(CreatureManager.Instance.CreateBasicCreature());
+            AddCreature(CreatureManager.Instance.CreateBasicCreature());
+            AddCreature(CreatureManager.Instance.CreateBasicCreature());
         }
     }
 
