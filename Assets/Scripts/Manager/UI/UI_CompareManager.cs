@@ -63,7 +63,9 @@ public class UI_CompareManager : MonoBehaviour
     public void SetAsActiveFightingCreature() {
         //add creature to the current fight
     }
-
+    
+    
+    //TODO: check if all the logic is needed
     public void SellCreatureToShop(bool isLeft)
     {
         Creature left = InventoryManager.Instance.CreatureInspectorLeft;

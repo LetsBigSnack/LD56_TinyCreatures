@@ -11,7 +11,6 @@ public class BuyBackCreature : MonoBehaviour
     [SerializeField] private TextMeshProUGUI priceText;
     
     
-    
     private SoundManager soundManager;
         
     public Creature Creature
@@ -43,6 +42,6 @@ public class BuyBackCreature : MonoBehaviour
     {
         sprite.SetupRepresentation(creature);
         text.text = creature.CreatureName;
-        priceText.text = "Buy\n" + creature.PowerLevel + ",-";
+        priceText.text = "Buy\n" + creature.CreatureStats.PowerLevel + ",-";
     }
 }

@@ -177,7 +177,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 496357446863512097}
-  - component: {fileID: 5827929307585195087}
   - component: {fileID: 2992910452447548770}
   m_Layer: 0
   m_Name: CreaturePrefab_V2
@@ -205,35 +204,6 @@ Transform:
   - {fileID: 8498104270020870269}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5827929307585195087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4812369771820379678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c57ac29905d49f79ca3af933fb6b6872, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  creatureName: 
-  creatureGeneration: 0
-  headRenderer: {fileID: 7528014044043318533}
-  bodyRenderer: {fileID: 24029627594149503}
-  legsRenderer: {fileID: 449235750737088974}
-  armsRenderer: {fileID: 748746151136052506}
-  headColor: {r: 0, g: 0, b: 0, a: 0}
-  bodyColor: {r: 0, g: 0, b: 0, a: 0}
-  legsColor: {r: 0, g: 0, b: 0, a: 0}
-  armsColor: {r: 0, g: 0, b: 0, a: 0}
-  currentHealth: 0
-  maxHealth: 0
-  speed: 0
-  attack: 0
-  defense: 0
-  dexterity: 0
-  powerLevel: 0
 --- !u!95 &2992910452447548770
 Animator:
   serializedVersion: 5

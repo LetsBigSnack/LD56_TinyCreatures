@@ -13,7 +13,6 @@ public class StoreManager : MonoBehaviour
     [SerializeField] private int pricesPerSlot = 10;
     [SerializeField] private int boughtSlots = 0;
     [SerializeField] private int basicCreaturePrice = 10;
-    //TODO: add threshold to buy shir
     [SerializeField] private int winThreshold = 10;
     [SerializeField] private int advancedCreaturePrice = 10;
     [SerializeField] private int pricePerPowerLevel = 2;
@@ -50,6 +49,8 @@ public class StoreManager : MonoBehaviour
 
     
     //TODO: dont know if i should put in Update but i am a bit tired to maybe needs to change
+    
+    //TODO: Observer Pattern --> Battle Manager and Here and Battle Manager notifies Store when creates has been deafted
     private void FixedUpdate()
     {
         UpdatePrices();
@@ -81,8 +82,7 @@ public class StoreManager : MonoBehaviour
             return false;
         }
 
-        if (InventoryManager.Instance.AddCreature(CreatureManager.Instance.CreateBasicCreature()
-                .GetComponent<Creature>()))
+        if (InventoryManager.Instance.AddCreature(CreatureManager.Instance.CreateBasicCreature()))
         {
             SpendMoney(basicCreaturePrice);
             return true;
@@ -105,7 +105,7 @@ public class StoreManager : MonoBehaviour
         // Battle Creature
         if (InventoryManager.Instance.AddCreature(CreatureManager.Instance.
                 CreateAdjustedCreature(statRange + (BattleManager.Instance.PlayerWins * BattleManager.Instance.WinFactor), 
-                    statMin + (BattleManager.Instance.PlayerWins * BattleManager.Instance.WinFactor * 2)).GetComponent<Creature>()))
+                    statMin + (BattleManager.Instance.PlayerWins * BattleManager.Instance.WinFactor * 2))))
         {
             SpendMoney(advancedCreaturePrice);
             return true;
@@ -126,13 +126,12 @@ public class StoreManager : MonoBehaviour
             UI_BattleManager.Instance.Refresh();
         }
         
-        EarnMoney(creature.PowerLevel);
+        EarnMoney(creature.CreatureStats.PowerLevel);
         
         if (soledCreatures.Count+1 > soldLimit)
         {
             
             Creature soldCrt = soledCreatures.First();
-            Destroy(soldCrt.gameObject);
             soledCreatures.Remove(soldCrt);
         }
         
@@ -142,11 +141,11 @@ public class StoreManager : MonoBehaviour
     
     public bool RefuseCreature(Creature creature)
     {
-        EarnMoney(creature.PowerLevel);
+        EarnMoney(creature.CreatureStats.PowerLevel);
         
-        if (playerMoney >= creature.PowerLevel )
+        if (playerMoney >= creature.CreatureStats.PowerLevel )
         {
-            SpendMoney(creature.PowerLevel);
+            SpendMoney(creature.CreatureStats.PowerLevel);
             return true;
         }
         return false;
@@ -168,8 +167,9 @@ public class StoreManager : MonoBehaviour
 
     public bool BuyBack(Creature creature)
     {
-        if (soledCreatures.Contains(creature) && playerMoney >= creature.PowerLevel && InventoryManager.Instance.HasSpace())
+        if (soledCreatures.Contains(creature) && playerMoney >= creature.CreatureStats.PowerLevel && InventoryManager.Instance.HasSpace())
         {
+            SpendMoney(creature.CreatureStats.PowerLevel);
             InventoryManager.Instance.AddCreature(creature);
             soledCreatures.Remove(creature);
             return true;

@@ -74,8 +74,7 @@ public class BattleManager : MonoBehaviour
             Debug.Log("Create Creature");
             enemyCreature = CreatureManager.Instance.
                 CreateAdjustedCreature(statRange + (playerWins * winFactor), 
-                                        statMin + (playerWins * winFactor * 2))
-                .GetComponent<Creature>();
+                                        statMin + (playerWins * winFactor * 2));
             enemyCreature.CreatureName = "Enemy";
         }
         else
@@ -89,8 +88,7 @@ public class BattleManager : MonoBehaviour
     public void WinBattle()
     {
 
-        StoreManager.Instance.EarnMoney(enemyCreature.PowerLevel * 5);
-        Destroy(enemyCreature.gameObject);
+        StoreManager.Instance.EarnMoney(enemyCreature.CreatureStats.PowerLevel * 5);
         enemyCreature = null;
         playerWins++;
         hasBattleStarted = false;
@@ -133,10 +131,7 @@ public class BattleManager : MonoBehaviour
             {
                 UI_BattleDisplayManager.Instance.CreateLogEntry($"Enemy: {enemyCreature.CreatureName} defeated {playerCreature.CreatureName}!");
                 hasBattleStarted = false;
-                if (playerCreature.gameObject != null)
-                {
-                    Destroy(playerCreature.gameObject);
-                }
+                
                 UI_BattleManager.Instance.SelectedCreature = null;
                 UI_BattleManager.Instance.Refresh();
 
@@ -155,11 +150,11 @@ public class BattleManager : MonoBehaviour
     {
         while (battleRunning && attacker != null && defender != null && attacker.CurrentHealth > 0 && defender.CurrentHealth > 0)
         {
-            float attackInterval = speedFactor / attacker.Speed;
-            float attackDamage = attacker.Attack;
+            float attackInterval = speedFactor / attacker.CreatureStats.Speed;
+            float attackDamage = attacker.CreatureStats.Attack;
 
             // Calculate critical hit chance based on dexterity using a logistic function
-            float critChance = 1 - Mathf.Exp(-attacker.Dexterity / 100f); // This approaches 1 but never reaches it
+            float critChance = 1 - Mathf.Exp(-attacker.CreatureStats.Dexterity / 100f); // This approaches 1 but never reaches it
 
             bool isCriticalHit = UnityEngine.Random.value < critChance; // Random.value gives a value between 0 and 1
 

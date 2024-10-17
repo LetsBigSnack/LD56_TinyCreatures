@@ -46,9 +46,9 @@ public class InventoryManager : MonoBehaviour
             Instance = this;
             inventoryCreatures = new List<Creature>();
 
-            AddCreature(CreatureManager.Instance.CreateBasicCreature().GetComponent<Creature>());
-            AddCreature(CreatureManager.Instance.CreateBasicCreature().GetComponent<Creature>());
-            AddCreature(CreatureManager.Instance.CreateBasicCreature().GetComponent<Creature>());
+            AddCreature(CreatureManager.Instance.CreateBasicCreature());
+            AddCreature(CreatureManager.Instance.CreateBasicCreature());
+            AddCreature(CreatureManager.Instance.CreateBasicCreature());
         }
     }
 
@@ -78,8 +78,6 @@ public class InventoryManager : MonoBehaviour
     
     public void AddToBreed(Creature creature)
     {
-
-
         if (BreedingManager.Instance.AddToBreed(creature))
         {
             RemoveCreature(creature);

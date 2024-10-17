@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7168764949861139510}
-  - component: {fileID: 6735907436925129691}
   m_Layer: 0
   m_Name: CreaturePrefab
   m_TagString: Untagged
@@ -36,31 +35,6 @@ Transform:
   - {fileID: 1162128339769574220}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6735907436925129691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129799733685832868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c57ac29905d49f79ca3af933fb6b6872, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  creatureName: 
-  creatureGeneration: 0
-  headRenderer: {fileID: 3004116248969885383}
-  bodyRenderer: {fileID: 140427014447836870}
-  legsRenderer: {fileID: 2600234091598977923}
-  armsRenderer: {fileID: 5253008683692912314}
-  currentHealth: 0
-  maxHealth: 0
-  speed: 0
-  attack: 0
-  defense: 0
-  dexterity: 0
-  powerLevel: 0
 --- !u!1 &1745669500753196744
 GameObject:
   m_ObjectHideFlags: 0
