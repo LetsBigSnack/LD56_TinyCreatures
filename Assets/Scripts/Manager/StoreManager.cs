@@ -169,6 +169,7 @@ public class StoreManager : MonoBehaviour
     {
         if (soledCreatures.Contains(creature) && playerMoney >= creature.CreatureStats.PowerLevel && InventoryManager.Instance.HasSpace())
         {
+            SpendMoney(creature.CreatureStats.PowerLevel);
             InventoryManager.Instance.AddCreature(creature);
             soledCreatures.Remove(creature);
             return true;

@@ -184,8 +184,9 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
 
     public void UpdatePrice()
     {
-        if (creaturePod1 != null || creaturePod2 != null)
+        if (creaturePod1 == null || creaturePod2 == null)
         {
+            Debug.Log("Test");
             return;
         }
         breedingPrice = Mathf.RoundToInt((creaturePod1.CreatureStats.PowerLevel + creaturePod2.CreatureStats.PowerLevel)/2)*2;
