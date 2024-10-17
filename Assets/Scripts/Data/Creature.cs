@@ -63,6 +63,7 @@ public class Creature
         _currentHealth = _maxHealth;
         _creatureStats = creatureStats;
         _representation = representation;
+        
     }
     
     

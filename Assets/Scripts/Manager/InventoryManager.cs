@@ -78,8 +78,6 @@ public class InventoryManager : MonoBehaviour
     
     public void AddToBreed(Creature creature)
     {
-
-
         if (BreedingManager.Instance.AddToBreed(creature))
         {
             RemoveCreature(creature);

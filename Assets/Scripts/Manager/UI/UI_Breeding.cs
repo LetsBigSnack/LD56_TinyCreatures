@@ -33,6 +33,8 @@ public class UI_BreedingManager : MonoBehaviour
     [SerializeField] private UI_CreatureDetailsText detailsRight;
     [SerializeField] private TextMeshProUGUI costText;
 
+    
+    //TODO: Observer Pattern
     private void FixedUpdate()
     {
         creatureSpriteLeft.Reset();

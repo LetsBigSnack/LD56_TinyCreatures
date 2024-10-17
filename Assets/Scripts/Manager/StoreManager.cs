@@ -13,7 +13,6 @@ public class StoreManager : MonoBehaviour
     [SerializeField] private int pricesPerSlot = 10;
     [SerializeField] private int boughtSlots = 0;
     [SerializeField] private int basicCreaturePrice = 10;
-    //TODO: add threshold to buy shir
     [SerializeField] private int winThreshold = 10;
     [SerializeField] private int advancedCreaturePrice = 10;
     [SerializeField] private int pricePerPowerLevel = 2;
@@ -50,6 +49,8 @@ public class StoreManager : MonoBehaviour
 
     
     //TODO: dont know if i should put in Update but i am a bit tired to maybe needs to change
+    
+    //TODO: Observer Pattern --> Battle Manager and Here and Battle Manager notifies Store when creates has been deafted
     private void FixedUpdate()
     {
         UpdatePrices();
