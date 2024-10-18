@@ -74,8 +74,6 @@ public class Creature
         finalDamage = Mathf.RoundToInt(finalDamage);
         _currentHealth -= Mathf.RoundToInt(finalDamage);
         _currentHealth = Mathf.Max(0, _currentHealth);
-        
-        UI_BattleDisplayManager.Instance.CreateLogEntry($"{_creatureName} took {finalDamage} damage, current health: {_currentHealth}");
     }
     
     public string GenerateRandomName()

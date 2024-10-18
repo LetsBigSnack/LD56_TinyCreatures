@@ -120,7 +120,6 @@ public class BattleManager : MonoBehaviour
             // If either creature has 0 health, stop the battle
             if (enemyCreature.CurrentHealth <= 0)
             {
-                UI_BattleDisplayManager.Instance.CreateLogEntry($"Player: {playerCreature.CreatureName} defeated {enemyCreature.CreatureName}!");
                 WinBattle();
                 StopCoroutine(playerAttack);
                 StopCoroutine(enemyAttack);
@@ -129,7 +128,6 @@ public class BattleManager : MonoBehaviour
 
             if (playerCreature.CurrentHealth <= 0)
             {
-                UI_BattleDisplayManager.Instance.CreateLogEntry($"Enemy: {enemyCreature.CreatureName} defeated {playerCreature.CreatureName}!");
                 hasBattleStarted = false;
                 
                 UI_BattleManager.Instance.SelectedCreature = null;
@@ -161,11 +159,13 @@ public class BattleManager : MonoBehaviour
             if (isCriticalHit)
             {
                 attackDamage *= 1.2f; // Critical hit multiplies damage by 120%
-                UI_BattleDisplayManager.Instance.CreateLogEntry($"{attacker.CreatureName} lands a CRITICAL HIT on {defender.CreatureName} for {attackDamage} damage!");
+                int attack = (int)attackDamage;
+                UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToString(),true, attacker);
             }
             else
             {
-                UI_BattleDisplayManager.Instance.CreateLogEntry($"{attacker.CreatureName} attacks {defender.CreatureName} for {attackDamage} damage.");
+                int attack = (int)attackDamage;
+                UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToString(),false, attacker);
             }
 
             defender.TakeDamage(attackDamage);
