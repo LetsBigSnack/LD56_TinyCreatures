@@ -129,10 +129,11 @@ public class BattleManager : MonoBehaviour
             if (playerCreature.CurrentHealth <= 0)
             {
                 hasBattleStarted = false;
+                battleRunning = false;
                 
+                InventoryManager.Instance.SelectedCreatureForBattle = null;
                 UI_BattleManager.Instance.SelectedCreature = null;
                 UI_BattleManager.Instance.Refresh();
-
                 StopCoroutine(playerAttack);
                 StopCoroutine(enemyAttack);
                 yield break;
@@ -164,6 +165,7 @@ public class BattleManager : MonoBehaviour
             }
             else
             {
+                //NOTE: Deki 
                 int attack = (int)attackDamage;
                 UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToString(),false, attacker);
             }
