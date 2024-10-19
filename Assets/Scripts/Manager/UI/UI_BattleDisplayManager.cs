@@ -14,10 +14,8 @@ public class UI_BattleDisplayManager : MonoBehaviour
     
     [SerializeField] private UI_CreatureSprite battleCreatureSprite;
     [SerializeField] private UI_CreatureSprite enemyCreatureSprite;
-    [SerializeField] private GameObject logPrefab;
-    [SerializeField] private Transform logParent;
-    [SerializeField] private List<GameObject> logs;
-    [SerializeField] private int maxLogs = 4;
+    [SerializeField] private GameObject attackPrefab;
+    [SerializeField] private GameObject critPrefab;
     [SerializeField] private GameObject playerObject;
     [SerializeField] private GameObject enemyObject;
     [SerializeField] private Slider playerHealthBar;
@@ -34,7 +32,6 @@ public class UI_BattleDisplayManager : MonoBehaviour
         else
         {
             Instance = this;
-            logs = new List<GameObject>();
         }
     }
 
@@ -75,20 +72,39 @@ public class UI_BattleDisplayManager : MonoBehaviour
         enemyCreatureSprite.SetupRepresentation(enemyCreature);
     }
     
-    public void CreateLogEntry(string text)
+    public void CreateDamagePopUp(string text, bool isCrit, Creature creature)
     {
-        GameObject logEntry = Instantiate(logPrefab, logParent.position, Quaternion.identity);
-        logEntry.transform.SetParent(logParent, false);
-        TextMeshProUGUI logEntryTMP = logEntry.GetComponentInChildren<TextMeshProUGUI>();
-        logEntryTMP.text = text;
-        logs.Add(logEntry);
+        Transform spawnPosition;
 
-        if (logs.Count > maxLogs)
+        if(creature.CreatureName == playerObject.GetComponentInChildren<UICreatureButton>().creature.CreatureName)
         {
-            GameObject logFirst = logs.First();
-            Destroy(logFirst);
-            logs.Remove(logFirst);
+            spawnPosition = enemyObject.transform;
+            chooseAttackPrefab(text, isCrit, spawnPosition);
+        } 
+        else
+        {
+            spawnPosition = playerObject.transform;
+            chooseAttackPrefab(text, isCrit, spawnPosition);
         }
-        
+    }
+
+    public void chooseAttackPrefab(string damage, bool isCrit, Transform creature)
+    {
+        if (isCrit)
+        {
+            GameObject critEntry = Instantiate(critPrefab, new Vector2(creature.position.x, creature.position.y) , Quaternion.identity);
+            critEntry.transform.parent = creature.transform;
+            critEntry.transform.position = new Vector2(creature.position.x, creature.position.y + 100);
+            critEntry.GetComponentInChildren<TextMeshProUGUI>().text = damage + "!!";
+            Destroy(critEntry, 1);
+            return;
+        }
+
+        GameObject attackEntry = Instantiate(attackPrefab, new Vector2(creature.position.x, creature.position.y) , Quaternion.identity);
+        attackEntry.transform.parent = creature.transform;
+        attackEntry.transform.position = new Vector2(creature.position.x, creature.position.y + 100);
+        attackEntry.GetComponentInChildren<TextMeshProUGUI>().text = damage;
+        Destroy(attackEntry, 1);
+        return;
     }
 }

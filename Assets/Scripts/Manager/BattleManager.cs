@@ -120,7 +120,6 @@ public class BattleManager : MonoBehaviour
             // If either creature has 0 health, stop the battle
             if (enemyCreature.CurrentHealth <= 0)
             {
-                UI_BattleDisplayManager.Instance.CreateLogEntry($"Player: {playerCreature.CreatureName} defeated {enemyCreature.CreatureName}!");
                 WinBattle();
                 StopCoroutine(playerAttack);
                 StopCoroutine(enemyAttack);
@@ -129,12 +128,12 @@ public class BattleManager : MonoBehaviour
 
             if (playerCreature.CurrentHealth <= 0)
             {
-                UI_BattleDisplayManager.Instance.CreateLogEntry($"Enemy: {enemyCreature.CreatureName} defeated {playerCreature.CreatureName}!");
                 hasBattleStarted = false;
+                battleRunning = false;
                 
+                InventoryManager.Instance.SelectedCreatureForBattle = null;
                 UI_BattleManager.Instance.SelectedCreature = null;
                 UI_BattleManager.Instance.Refresh();
-
                 StopCoroutine(playerAttack);
                 StopCoroutine(enemyAttack);
                 yield break;
@@ -161,14 +160,15 @@ public class BattleManager : MonoBehaviour
             if (isCriticalHit)
             {
                 attackDamage *= 1.2f; // Critical hit multiplies damage by 120%
-                UI_BattleDisplayManager.Instance.CreateLogEntry($"{attacker.CreatureName} lands a CRITICAL HIT on {defender.CreatureName} for {attackDamage} damage!");
+                int attack = defender.TakeDamage(attackDamage);
+                UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToString(),true, attacker);
             }
             else
             {
-                UI_BattleDisplayManager.Instance.CreateLogEntry($"{attacker.CreatureName} attacks {defender.CreatureName} for {attackDamage} damage.");
+                //NOTE: Deki 
+                int attack = defender.TakeDamage(attackDamage);
+                UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToString(),false, attacker);
             }
-
-            defender.TakeDamage(attackDamage);
 
             // Wait for the attack interval based on the attacker's speed before attacking again
             yield return new WaitForSeconds(attackInterval);

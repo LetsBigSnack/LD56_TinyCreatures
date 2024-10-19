@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UICreatureButton : MonoBehaviour, IPointerClickHandler
 {
     
-    [SerializeField] private Creature creature;
+    [SerializeField] public Creature creature;
     private SoundManager soundManager;
         
     public Creature Creature
