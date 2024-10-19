@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Helper.Util;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -36,19 +37,18 @@ public class UI_CreatureDetailsText : MonoBehaviour
         {
             return;
         }
-        
         creatureNameText.text = creature.CreatureName;
-        powerLevelText.text = creature.CreatureStats.PowerLevel.ToString();
-        hpText.text = creature.MaxHealth.ToString("n2");
+        hpText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.MaxHealth, false);
         hpText.color = new Color(6/255f,40/255f,41/255f,255);
-        atkText.text = creature.CreatureStats.Attack.ToString("n2");
+        atkText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.Attack);
         atkText.color = new Color(6/255f,40/255f,41/255f,255);
-        spdText.text = creature.CreatureStats.Speed.ToString("n2");
+        spdText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.Speed);
         spdText.color = new Color(6/255f,40/255f,41/255f,255);
-        dexText.text = creature.CreatureStats.Dexterity.ToString("n2");
+        dexText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.Dexterity);
         dexText.color = new Color(6/255f,40/255f,41/255f,255);
-        defText.text = creature.CreatureStats.Defense.ToString("n2");
+        defText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.Defense);
         defText.color = new Color(6/255f,40/255f,41/255f,255);
+        powerLevelText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.PowerLevel, false);
     }
 
     public void CompareColor(Creature creature1, Creature creature2)
