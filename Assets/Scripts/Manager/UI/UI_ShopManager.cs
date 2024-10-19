@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Helper.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI; 
@@ -38,8 +39,8 @@ public class UI_ShopManager : MonoBehaviour
 
     private void UpdatePrices()
     {
-        slotPriceText.text = "Buy\n"+StoreManager.Instance.CurrentSlotPrice.ToString()+",-";
-        adjustedPriceText.text = "Buy\n"+StoreManager.Instance.AdvancedCreaturePrice.ToString()+",-";
+        slotPriceText.text = "Buy\n"+Util_LargeNumberDisplay.LargerNumberConversion(StoreManager.Instance.CurrentSlotPrice,false)+",-";
+        adjustedPriceText.text = "Buy\n"+Util_LargeNumberDisplay.LargerNumberConversion(StoreManager.Instance.AdvancedCreaturePrice, false)+",-";
     }
 
     private void UpdateUnlockables()

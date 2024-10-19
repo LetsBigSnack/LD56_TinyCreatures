@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Helper.Util;
 using TMPro;
 using UnityEngine;
 
@@ -42,6 +43,6 @@ public class BuyBackCreature : MonoBehaviour
     {
         sprite.SetupRepresentation(creature);
         text.text = creature.CreatureName;
-        priceText.text = "Buy\n" + creature.CreatureStats.PowerLevel + ",-";
+        priceText.text = "Buy\n" + Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.PowerLevel,false) + ",-";
     }
 }

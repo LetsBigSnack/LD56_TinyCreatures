@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Helper.Util;
 using TMPro;
 using UnityEngine;
 
@@ -51,7 +52,7 @@ public class UI_BreedingManager : MonoBehaviour
         detailsLeft.SetupRepresentation(BreedingManager.Instance.CreaturePod1);
         detailsRight.SetupRepresentation(BreedingManager.Instance.CreaturePod2);
         
-        costText.text = BreedingManager.Instance.BreedingPrice.ToString();
+        costText.text = Util_LargeNumberDisplay.LargerNumberConversion(BreedingManager.Instance.BreedingPrice,false);
     }
 
     public void AddCreatureToPod(Creature creature)
