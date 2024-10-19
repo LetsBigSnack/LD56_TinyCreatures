@@ -160,17 +160,15 @@ public class BattleManager : MonoBehaviour
             if (isCriticalHit)
             {
                 attackDamage *= 1.2f; // Critical hit multiplies damage by 120%
-                int attack = (int)attackDamage;
+                int attack = defender.TakeDamage(attackDamage);
                 UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToString(),true, attacker);
             }
             else
             {
                 //NOTE: Deki 
-                int attack = (int)attackDamage;
+                int attack = defender.TakeDamage(attackDamage);
                 UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToString(),false, attacker);
             }
-
-            defender.TakeDamage(attackDamage);
 
             // Wait for the attack interval based on the attacker's speed before attacking again
             yield return new WaitForSeconds(attackInterval);

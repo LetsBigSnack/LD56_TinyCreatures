@@ -67,13 +67,15 @@ public class Creature
     }
     
     
-    public void TakeDamage(float damage)
+    public int TakeDamage(float damage)
     {
         float finalDamage = damage * (1 - (_creatureStats.Defense / (_creatureStats.Defense  + 200)));
         finalDamage = Mathf.Max(1, finalDamage);
         finalDamage = Mathf.RoundToInt(finalDamage);
         _currentHealth -= Mathf.RoundToInt(finalDamage);
         _currentHealth = Mathf.Max(0, _currentHealth);
+
+        return (int)finalDamage;
     }
     
     public string GenerateRandomName()
