@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Helper.Util;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
@@ -156,19 +157,20 @@ public class BattleManager : MonoBehaviour
             float critChance = 1 - Mathf.Exp(-attacker.CreatureStats.Dexterity / 100f); // This approaches 1 but never reaches it
 
             bool isCriticalHit = UnityEngine.Random.value < critChance; // Random.value gives a value between 0 and 1
-
+            int attack = 0;
+            
             if (isCriticalHit)
             {
-                attackDamage *= 1.2f; // Critical hit multiplies damage by 120%
-                int attack = defender.TakeDamage(attackDamage);
-                UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToString(),true, attacker);
+                attackDamage *= 1.2f;
+                attack = defender.TakeDamage(attackDamage);
             }
             else
-            {
-                //NOTE: Deki 
-                int attack = defender.TakeDamage(attackDamage);
-                UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToString(),false, attacker);
+            { 
+                attack = defender.TakeDamage(attackDamage);
             }
+            
+            UI_BattleDisplayManager.Instance.CreateDamagePopUp(Util_LargeNumberDisplay.LargerNumberConversion(attack, false),isCriticalHit, attacker);
+
 
             // Wait for the attack interval based on the attacker's speed before attacking again
             yield return new WaitForSeconds(attackInterval);
