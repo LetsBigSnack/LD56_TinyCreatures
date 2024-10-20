@@ -94,6 +94,8 @@ public class BattleManager : MonoBehaviour
         playerWins++;
         hasBattleStarted = false;
 
+        InventoryManager.Instance.SelectedCreatureForBattle.CreatureWins++;
+        
         if (playerWins == StoreManager.Instance.WinThreshold)
         {
             winFactor = WinFactor * factorMult; 

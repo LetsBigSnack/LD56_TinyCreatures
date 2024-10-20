@@ -11,6 +11,8 @@ public class Creature
     private int _creatureGeneration;
     private int _currentHealth;
     private int _maxHealth;
+    private int _creatureWins;
+    
     private CreatureStats _creatureStats;
     private CreatureRepresentation _representation;
 
@@ -48,6 +50,12 @@ public class Creature
     {
         get => _representation;
         set => _representation = value;
+    }
+    
+    public int CreatureWins
+    {
+        get => _creatureWins;
+        set => _creatureWins = value;
     }
 
     //TODO: make it a static Class Method and not a Object Method
