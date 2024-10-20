@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Data;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -122,22 +123,6 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     
     StoreManager.Instance.SpendMoney(BreedingPrice);
 
-
-    int totalWins = parent1.CreatureWins + parent2.CreatureWins;
-    
-    // Combine stats from both parents and apply mutation
-    int newHealth = Mathf.RoundToInt((parent1.MaxHealth + parent2.MaxHealth) / 2f * MutationFactor(totalWins));
-    float newSpeed = ((parent1.CreatureStats.Speed + parent2.CreatureStats.Speed) / 2f) * MutationFactor(totalWins);
-    float newAttack = ((parent1.CreatureStats.Attack + parent2.CreatureStats.Attack) / 2f) * MutationFactor(totalWins);
-    float newDefense = ((parent1.CreatureStats.Defense + parent2.CreatureStats.Defense) / 2f) * MutationFactor(totalWins);
-    float newDexterity = ((parent1.CreatureStats.Dexterity + parent2.CreatureStats.Dexterity) / 2f) * MutationFactor(totalWins);
-
-    // Ensure minimum values for stats
-    newHealth = Mathf.Max(1, newHealth);
-    newSpeed = Mathf.Max(1f, newSpeed);
-    newAttack = Mathf.Max(1f, newAttack);
-    newDefense = Mathf.Max(1f, newDefense);
-    newDexterity = Mathf.Max(1f, newDexterity);
     
 
     // Create a "color pod" from all body parts of both parents
@@ -160,14 +145,46 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     Color newArmsColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor()  : colorPod[Random.Range(0, colorPod.Count)];
     Color newLegsColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor()  : colorPod[Random.Range(0, colorPod.Count)];
     
+    
+    
+    
     // Randomly assign sprites from the parents or use random body parts based on the randomChance
-    Sprite newHeadSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart("Head") : (Random.value > 0.5f ? parent1.Representation.HeadSprite : parent2.Representation.HeadSprite);
-    Sprite newBodySprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart("Body") : (Random.value > 0.5f ? parent1.Representation.BodySprite : parent2.Representation.BodySprite);
-    Sprite newLegsSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart("Legs") : (Random.value > 0.5f ? parent1.Representation.LegsSprite: parent2.Representation.LegsSprite);
-    Sprite newArmsSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart("Arms") : (Random.value > 0.5f ? parent1.Representation.ArmsSprite: parent2.Representation.ArmsSprite);
-
-    CreatureRepresentation creatureRepresentation = new CreatureRepresentation(newHeadSprite, newBodySprite, newLegsSprite, newArmsSprite, newHeadColor, newBodyColor, newLegsColor, newArmsColor);
+    BodyPart newHeadSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart(BodyPartType.Head) : (Random.value > 0.5f ? parent1.Representation.BodyParts[BodyPartType.Head] : parent2.Representation.BodyParts[BodyPartType.Head]);
+    BodyPart newBodySprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart(BodyPartType.Body) : (Random.value > 0.5f ? parent1.Representation.BodyParts[BodyPartType.Body] : parent2.Representation.BodyParts[BodyPartType.Body]);
+    BodyPart newLegsSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart(BodyPartType.Legs) : (Random.value > 0.5f ? parent1.Representation.BodyParts[BodyPartType.Legs]: parent2.Representation.BodyParts[BodyPartType.Legs]);
+    BodyPart newArmsSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart(BodyPartType.Arms) : (Random.value > 0.5f ? parent1.Representation.BodyParts[BodyPartType.Arms]: parent2.Representation.BodyParts[BodyPartType.Arms]);
+    
+    Dictionary<BodyPartType, BodyPart> bodyParts = new Dictionary<BodyPartType, BodyPart>();
+    bodyParts.Add(BodyPartType.Head, newHeadSprite);
+    bodyParts.Add(BodyPartType.Body, newBodySprite);
+    bodyParts.Add(BodyPartType.Arms, newLegsSprite);
+    bodyParts.Add(BodyPartType.Legs, newArmsSprite);
+    
+    
+    CreatureRepresentation creatureRepresentation = new CreatureRepresentation(bodyParts, newHeadColor, newBodyColor, newLegsColor, newArmsColor);
     int lastGeneration = Mathf.Max(parent1.CreatureGeneration, parent2.CreatureGeneration) + 1;
+    int totalWins = parent1.CreatureWins + parent2.CreatureWins;
+    
+    float totalHealthModifier = bodyParts.Select(c => c.Value).Sum(t => t.healthModifier);
+    float totalSpeedModifier = bodyParts.Select(c => c.Value).Sum(t => t.speedModifier);
+    float totalAttackModifier = bodyParts.Select(c => c.Value).Sum(t => t.attackModifier);
+    float totalDexterityModifier = bodyParts.Select(c => c.Value).Sum(t => t.dexterityModifier);
+    float totalDefenseModifier = bodyParts.Select(c => c.Value).Sum(t => t.defenseModifier);
+
+    
+    // Combine stats from both parents and apply mutation
+    int newHealth = Mathf.RoundToInt((parent1.MaxHealth + parent2.MaxHealth) / 2f * MutationFactor(totalWins, totalHealthModifier));
+    float newSpeed = ((parent1.CreatureStats.Speed + parent2.CreatureStats.Speed) / 2f) * MutationFactor(totalWins, totalSpeedModifier);
+    float newAttack = ((parent1.CreatureStats.Attack + parent2.CreatureStats.Attack) / 2f) * MutationFactor(totalWins, totalAttackModifier);
+    float newDefense = ((parent1.CreatureStats.Defense + parent2.CreatureStats.Defense) / 2f) * MutationFactor(totalWins, totalDefenseModifier);
+    float newDexterity = ((parent1.CreatureStats.Dexterity + parent2.CreatureStats.Dexterity) / 2f) * MutationFactor(totalWins, totalDexterityModifier);
+
+    // Ensure minimum values for stats
+    newHealth = Mathf.Max(1, newHealth);
+    newSpeed = Mathf.Max(1f, newSpeed);
+    newAttack = Mathf.Max(1f, newAttack);
+    newDefense = Mathf.Max(1f, newDefense);
+    newDexterity = Mathf.Max(1f, newDexterity);
     CreatureStats creatureStats = new CreatureStats(newSpeed, newAttack, newDefense, newDexterity);
     
     
@@ -177,13 +194,11 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
 
 
 
-    private float MutationFactor(int totalWins)
+    private float MutationFactor(int totalWins, float totalModifier)
     {
-        //TODO: think about creatureWins
         float factor = 1f + Random.Range((-mutationFactor/(1.5f)) / 100f, (mutationFactor + (totalWins * winFactor)) / 100f);
-        
+        factor *= totalModifier; // Apply the total modifier
         Debug.Log("Factor: " + factor);
-        
         return factor;
     }
 

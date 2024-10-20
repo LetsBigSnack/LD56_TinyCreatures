@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Data
@@ -5,12 +6,14 @@ namespace Data
     public class CreatureRepresentation
     {
 
-        //TODO: change that for scriptable objects
-        private Sprite _headSprite;
-        private Sprite _bodySprite;
-        private Sprite _legsSprite;
-        private Sprite _armsSprite;
-    
+        private Dictionary<BodyPartType, BodyPart> _bodyParts;
+
+        public Dictionary<BodyPartType, BodyPart> BodyParts
+        {
+            get => _bodyParts;
+            set => _bodyParts = value;
+        }
+
         private Color _headColor;
         private Color _bodyColor;
         private Color _legsColor;
@@ -18,26 +21,25 @@ namespace Data
         
         public Sprite HeadSprite
         {
-            get => _headSprite;
-            set => _headSprite = value;
+            get => _bodyParts.ContainsKey(BodyPartType.Head) ? _bodyParts[BodyPartType.Head].bodyPartSprite : null;
         }
 
         public Sprite BodySprite
         {
-            get => _bodySprite;
-            set => _bodySprite = value;
+            get => _bodyParts.ContainsKey(BodyPartType.Body) ? _bodyParts[BodyPartType.Body].bodyPartSprite : null;
+
         }
 
         public Sprite LegsSprite
         {
-            get => _legsSprite;
-            set => _legsSprite = value;
+            get => _bodyParts.ContainsKey(BodyPartType.Legs) ? _bodyParts[BodyPartType.Legs].bodyPartSprite : null;
+
         }
 
         public Sprite ArmsSprite
         {
-            get => _armsSprite;
-            set => _armsSprite = value;
+            get => _bodyParts.ContainsKey(BodyPartType.Arms) ? _bodyParts[BodyPartType.Arms].bodyPartSprite : null;
+
         }
 
         public Color HeadColor
@@ -64,13 +66,9 @@ namespace Data
             set => _armsColor = value;
         }
 
-        public CreatureRepresentation(Sprite headSprite, Sprite bodySprite, Sprite legsSprite, Sprite armsSprite,
-            Color headColor, Color bodyColor, Color legsColor, Color armsColor)
+        public CreatureRepresentation(Dictionary<BodyPartType, BodyPart> bodyParts, Color headColor, Color bodyColor, Color legsColor, Color armsColor)
         {
-            _headSprite = headSprite;
-            _bodySprite = bodySprite;
-            _legsSprite = legsSprite;
-            _armsSprite = armsSprite;
+            _bodyParts = bodyParts;
             
             _headColor = headColor;
             _bodyColor = bodyColor;
