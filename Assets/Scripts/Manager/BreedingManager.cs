@@ -196,8 +196,13 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
 
     private float MutationFactor(int totalWins, float totalModifier)
     {
-        float factor = 1f + Random.Range((-mutationFactor/(1.5f)) / 100f, (mutationFactor + (totalWins * winFactor)) / 100f);
-        factor *= totalModifier; // Apply the total modifier
+        float factor = 1f + Random.Range(((-mutationFactor/(1.75f)) / 100f) * (1 - totalModifier), ((mutationFactor + (totalWins * winFactor)) / 100f)* (1 + totalModifier));
+
+        var t = ((-mutationFactor / (1.75f)) / 100f) * (1 - totalModifier);
+        var t2 = (((mutationFactor + (totalWins * winFactor)) / 100f) * (1 + totalModifier));
+        
+        Debug.Log("Lower Bound" + ((-mutationFactor/(1.75f)) / 100f) * (1 - totalModifier));
+        Debug.Log("Upper Bound" + (((mutationFactor + (totalWins * winFactor)) / 100f) * (1 + totalModifier)));
         Debug.Log("Factor: " + factor);
         return factor;
     }
