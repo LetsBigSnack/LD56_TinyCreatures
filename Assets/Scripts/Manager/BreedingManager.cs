@@ -16,6 +16,8 @@ public class BreedingManager : MonoBehaviour
     [SerializeField] private Creature creaturePod2;
     [SerializeField] private Creature result;
     [SerializeField] private int breedingPrice = 0;
+    //TODO: need to think about a better way 
+    [SerializeField] private float winFactor = 0.5f;
 
     public int BreedingPrice
     {
@@ -119,14 +121,16 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     }
     
     StoreManager.Instance.SpendMoney(BreedingPrice);
-    
+
+
+    int totalWins = parent1.CreatureWins + parent2.CreatureWins;
     
     // Combine stats from both parents and apply mutation
-    int newHealth = Mathf.RoundToInt((parent1.MaxHealth + parent2.MaxHealth) / 2f * MutationFactor());
-    float newSpeed = ((parent1.CreatureStats.Speed + parent2.CreatureStats.Speed) / 2f) * MutationFactor();
-    float newAttack = ((parent1.CreatureStats.Attack + parent2.CreatureStats.Attack) / 2f) * MutationFactor();
-    float newDefense = ((parent1.CreatureStats.Defense + parent2.CreatureStats.Defense) / 2f) * MutationFactor();
-    float newDexterity = ((parent1.CreatureStats.Dexterity + parent2.CreatureStats.Dexterity) / 2f) * MutationFactor();
+    int newHealth = Mathf.RoundToInt((parent1.MaxHealth + parent2.MaxHealth) / 2f * MutationFactor(totalWins));
+    float newSpeed = ((parent1.CreatureStats.Speed + parent2.CreatureStats.Speed) / 2f) * MutationFactor(totalWins);
+    float newAttack = ((parent1.CreatureStats.Attack + parent2.CreatureStats.Attack) / 2f) * MutationFactor(totalWins);
+    float newDefense = ((parent1.CreatureStats.Defense + parent2.CreatureStats.Defense) / 2f) * MutationFactor(totalWins);
+    float newDexterity = ((parent1.CreatureStats.Dexterity + parent2.CreatureStats.Dexterity) / 2f) * MutationFactor(totalWins);
 
     // Ensure minimum values for stats
     newHealth = Mathf.Max(1, newHealth);
@@ -173,9 +177,10 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
 
 
 
-    private float MutationFactor()
+    private float MutationFactor(int totalWins)
     {
-        float factor = 1f + Random.Range((-mutationFactor/(1.5f)) / 100f, mutationFactor / 100f);
+        //TODO: think about creatureWins
+        float factor = 1f + Random.Range((-mutationFactor/(1.5f)) / 100f, (mutationFactor + (totalWins * winFactor)) / 100f);
         
         Debug.Log("Factor: " + factor);
         
