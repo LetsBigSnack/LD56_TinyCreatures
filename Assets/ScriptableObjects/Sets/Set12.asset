@@ -12,7 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024ae6eef6be435784a235a87667b7af, type: 3}
   m_Name: Set12
   m_EditorClassIdentifier: 
-  bodyPartEntries: []
-  unlocked: 0
+  bodyPartEntries:
+  - bodyPartType: 0
+    bodyPart: {fileID: 11400000, guid: bee22f44115abae2db61b5bbd60f8e18, type: 2}
+  - bodyPartType: 1
+    bodyPart: {fileID: 11400000, guid: ad11ed610e76f4472a55dfd382b809dd, type: 2}
+  - bodyPartType: 2
+    bodyPart: {fileID: 11400000, guid: 20a932d9d2cfe921893f6aecca01a857, type: 2}
+  - bodyPartType: 3
+    bodyPart: {fileID: 11400000, guid: 4e97dc4bf99b7bb199930b23c4a65bbb, type: 2}
+  unlocked: 1
   setName: 
   setText: 

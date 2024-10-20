@@ -32497,7 +32497,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 330.1, y: -680}
+  m_AnchoredPosition: {x: 330.1, y: -500}
   m_SizeDelta: {x: 540.2, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1274519534
@@ -51211,58 +51211,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb8ec532c9913c54bba3768ba1c11ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureHeadSprites:
-  - {fileID: 161566193, guid: ef128d8596e878b45a0cde29ee7a3595, type: 3}
-  - {fileID: 1656175545, guid: ef128d8596e878b45a0cde29ee7a3595, type: 3}
-  - {fileID: -729313939, guid: ef128d8596e878b45a0cde29ee7a3595, type: 3}
-  - {fileID: 56136354, guid: ef128d8596e878b45a0cde29ee7a3595, type: 3}
-  - {fileID: 272754834, guid: ef128d8596e878b45a0cde29ee7a3595, type: 3}
-  - {fileID: -297280382, guid: ef128d8596e878b45a0cde29ee7a3595, type: 3}
-  - {fileID: -533599733, guid: ef128d8596e878b45a0cde29ee7a3595, type: 3}
-  - {fileID: -357816700, guid: ef128d8596e878b45a0cde29ee7a3595, type: 3}
-  - {fileID: 1507619600, guid: ef128d8596e878b45a0cde29ee7a3595, type: 3}
-  - {fileID: 1870413396, guid: ef128d8596e878b45a0cde29ee7a3595, type: 3}
-  - {fileID: -432575695, guid: ef128d8596e878b45a0cde29ee7a3595, type: 3}
-  - {fileID: 220838551, guid: ef128d8596e878b45a0cde29ee7a3595, type: 3}
-  creatureBodySprites:
-  - {fileID: -979326223, guid: c9f3b1a6a9f6acf4db739123bc40e4af, type: 3}
-  - {fileID: 1343703355, guid: c9f3b1a6a9f6acf4db739123bc40e4af, type: 3}
-  - {fileID: 218368710, guid: c9f3b1a6a9f6acf4db739123bc40e4af, type: 3}
-  - {fileID: 754528774, guid: c9f3b1a6a9f6acf4db739123bc40e4af, type: 3}
-  - {fileID: 1496880043, guid: c9f3b1a6a9f6acf4db739123bc40e4af, type: 3}
-  - {fileID: -486107328, guid: c9f3b1a6a9f6acf4db739123bc40e4af, type: 3}
-  - {fileID: 663024532, guid: c9f3b1a6a9f6acf4db739123bc40e4af, type: 3}
-  - {fileID: -323382654, guid: c9f3b1a6a9f6acf4db739123bc40e4af, type: 3}
-  - {fileID: -2118927642, guid: c9f3b1a6a9f6acf4db739123bc40e4af, type: 3}
-  - {fileID: 200568304, guid: c9f3b1a6a9f6acf4db739123bc40e4af, type: 3}
-  - {fileID: 1603185673, guid: c9f3b1a6a9f6acf4db739123bc40e4af, type: 3}
-  - {fileID: -282465633, guid: c9f3b1a6a9f6acf4db739123bc40e4af, type: 3}
-  creatureLegsSprites:
-  - {fileID: -1086539988, guid: 7a013009720e9144c87d25040e6ababe, type: 3}
-  - {fileID: 993648650, guid: 7a013009720e9144c87d25040e6ababe, type: 3}
-  - {fileID: 2004364220, guid: 7a013009720e9144c87d25040e6ababe, type: 3}
-  - {fileID: 462671963, guid: 7a013009720e9144c87d25040e6ababe, type: 3}
-  - {fileID: -17762014, guid: 7a013009720e9144c87d25040e6ababe, type: 3}
-  - {fileID: 1863409505, guid: 7a013009720e9144c87d25040e6ababe, type: 3}
-  - {fileID: -652481008, guid: 7a013009720e9144c87d25040e6ababe, type: 3}
-  - {fileID: -1317226287, guid: 7a013009720e9144c87d25040e6ababe, type: 3}
-  - {fileID: -1415631127, guid: 7a013009720e9144c87d25040e6ababe, type: 3}
-  - {fileID: 71115749, guid: 7a013009720e9144c87d25040e6ababe, type: 3}
-  - {fileID: -2003004428, guid: 7a013009720e9144c87d25040e6ababe, type: 3}
-  - {fileID: 1762172219, guid: 7a013009720e9144c87d25040e6ababe, type: 3}
-  creatureArmsSprites:
-  - {fileID: -1012775132, guid: 7197265e14039be4fb358c65c1ff633e, type: 3}
-  - {fileID: -2098603952, guid: 7197265e14039be4fb358c65c1ff633e, type: 3}
-  - {fileID: 793703052, guid: 7197265e14039be4fb358c65c1ff633e, type: 3}
-  - {fileID: -2144766759, guid: 7197265e14039be4fb358c65c1ff633e, type: 3}
-  - {fileID: 462168423, guid: 7197265e14039be4fb358c65c1ff633e, type: 3}
-  - {fileID: -261536287, guid: 7197265e14039be4fb358c65c1ff633e, type: 3}
-  - {fileID: 1562202377, guid: 7197265e14039be4fb358c65c1ff633e, type: 3}
-  - {fileID: 571386327, guid: 7197265e14039be4fb358c65c1ff633e, type: 3}
-  - {fileID: -962369336, guid: 7197265e14039be4fb358c65c1ff633e, type: 3}
-  - {fileID: 97480106, guid: 7197265e14039be4fb358c65c1ff633e, type: 3}
-  - {fileID: 787247973, guid: 7197265e14039be4fb358c65c1ff633e, type: 3}
-  - {fileID: 657455994, guid: 7197265e14039be4fb358c65c1ff633e, type: 3}
+  bodyPartSets:
+  - {fileID: 11400000, guid: 9cbf4bd9dc2b5a08f9ded98f0bc40391, type: 2}
+  - {fileID: 11400000, guid: 08856df236e0b8a79a2409ea67836a79, type: 2}
+  - {fileID: 11400000, guid: 5998a683525d1426285b5dd31f245de0, type: 2}
+  - {fileID: 11400000, guid: 45032c98da9368114b600685ae1a7103, type: 2}
+  - {fileID: 11400000, guid: a0480ddcaee67997ba4eba0f0cfa0962, type: 2}
+  - {fileID: 11400000, guid: 674f8d446505a98a3a998c22280bdbda, type: 2}
+  - {fileID: 11400000, guid: ddc8c92642b8382c6946a8100225dc36, type: 2}
+  - {fileID: 11400000, guid: fe96690eecb61114da9f48555afa0af3, type: 2}
+  - {fileID: 11400000, guid: 5dd7235b34730122ba17e62ad2da6636, type: 2}
+  - {fileID: 11400000, guid: 51a081211af61b82e8c12ad8e4d2c46b, type: 2}
+  - {fileID: 11400000, guid: 03bf3366a5d00dfa4a203cbe0e6b5be3, type: 2}
+  - {fileID: 11400000, guid: 488fe12b6aefad26e8f68423288124d9, type: 2}
   creatureColors:
   - {r: 0.38431373, g: 0.44705883, b: 0.6431373, a: 1}
   - {r: 0.54509807, g: 0.9137255, b: 0.99215686, a: 1}
