@@ -14,20 +14,27 @@ public class UI_CreatureDetailsText : MonoBehaviour
     [SerializeField] private TextMeshProUGUI spdText;
     [SerializeField] private TextMeshProUGUI dexText;
     [SerializeField] private TextMeshProUGUI defText;
+    [SerializeField] private TextMeshProUGUI winsText;
+
+    private void Start()
+    {
+        Reset();
+    }
 
     public void Reset()
     {
-        creatureNameText.text = null;
-        powerLevelText.text = null;
-        hpText.text = null;
+        creatureNameText.text = "   ";
+        powerLevelText.text = "       ";
+        winsText.text = "      ";
+        hpText.text = "      ";
         hpText.color = new Color(6/255f,40/255f,41/255f,255);
-        atkText.text = null;
+        atkText.text = "      ";
         atkText.color = new Color(6/255f,40/255f,41/255f,255);
-        spdText.text = null;
+        spdText.text = "      ";
         spdText.color = new Color(6/255f,40/255f,41/255f,255);
-        dexText.text = null;
+        dexText.text = "      ";
         dexText.color = new Color(6/255f,40/255f,41/255f,255);
-        defText.text = null;
+        defText.text = "      ";
         defText.color = new Color(6/255f,40/255f,41/255f,255);
     }
 
@@ -49,6 +56,7 @@ public class UI_CreatureDetailsText : MonoBehaviour
         defText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.Defense);
         defText.color = new Color(6/255f,40/255f,41/255f,255);
         powerLevelText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.PowerLevel, false);
+        winsText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureWins, false);
     }
 
     public void CompareColor(Creature creature1, Creature creature2)
