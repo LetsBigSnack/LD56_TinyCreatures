@@ -50,8 +50,8 @@ public class CreatureManager : MonoBehaviour
         CreatureRepresentation creatureRepresentation = GetRandomCreatureRepresentation();
         
         float totalHealthModifier = creatureRepresentation.BodyParts.Select(c => c.Value).Sum(t => t.healthModifier);
-       
-        int randomHealth = Mathf.RoundToInt(UnityEngine.Random.Range(-statRange * (1 - totalHealthModifier), statRange * (1 + totalHealthModifier)) + statMin * 1.2f);
+        int randomHealth = Mathf.RoundToInt((UnityEngine.Random.Range(-statRange * (1 - totalHealthModifier), statRange * (1 + totalHealthModifier)) + statMin + statMin) * 1.2f);
+
         CreatureStats creatureStats = CreateCreatureStats(statRange, statMin, creatureRepresentation.BodyParts);
         
         Creature createdCreature = new Creature(0,randomHealth, creatureStats, creatureRepresentation);
@@ -110,7 +110,7 @@ public class CreatureManager : MonoBehaviour
         CreatureRepresentation creatureRepresentation = GetRandomCreatureRepresentation();
         
         float totalHealthModifier = creatureRepresentation.BodyParts.Select(c => c.Value).Sum(t => t.healthModifier);
-        int randomHealth = Mathf.RoundToInt(UnityEngine.Random.Range(-definedStatRange * (1 - totalHealthModifier), definedStatRange * (1 + totalHealthModifier)) + definedStatMin * 1.2f);
+        int randomHealth = Mathf.RoundToInt((UnityEngine.Random.Range(-definedStatRange * (1 - totalHealthModifier), definedStatRange * (1 + totalHealthModifier)) + definedStatMin + definedStatMin) * 1.2f);
 
         CreatureStats creatureStats = CreateCreatureStats(definedStatRange, definedStatMin,creatureRepresentation.BodyParts);
         
