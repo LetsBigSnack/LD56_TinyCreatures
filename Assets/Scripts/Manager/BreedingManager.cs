@@ -157,8 +157,8 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     Dictionary<BodyPartType, BodyPart> bodyParts = new Dictionary<BodyPartType, BodyPart>();
     bodyParts.Add(BodyPartType.Head, newHeadSprite);
     bodyParts.Add(BodyPartType.Body, newBodySprite);
-    bodyParts.Add(BodyPartType.Arms, newLegsSprite);
-    bodyParts.Add(BodyPartType.Legs, newArmsSprite);
+    bodyParts.Add(BodyPartType.Legs, newLegsSprite);
+    bodyParts.Add(BodyPartType.Arms, newArmsSprite);
     
     
     CreatureRepresentation creatureRepresentation = new CreatureRepresentation(bodyParts, newHeadColor, newBodyColor, newLegsColor, newArmsColor);
