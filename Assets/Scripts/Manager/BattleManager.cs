@@ -26,11 +26,15 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private float factorMult = 1.5f;
     
     
+    private Coroutine _enemyAttack;
+    private Coroutine _playerAttack;
+    private Coroutine _battleCoroutine;
+    
     public int PlayerWins{get{return playerWins;}}
     
     public float WinFactor{get{return winFactor;}}
     
-    private Coroutine battleCoroutine;
+    
     
     public Creature EnemyCreature
     {
@@ -83,7 +87,7 @@ public class BattleManager : MonoBehaviour
             enemyCreature.CurrentHealth = enemyCreature.MaxHealth;
         }
 
-        battleCoroutine = StartCoroutine(BattleCoroutine());
+        _battleCoroutine = StartCoroutine(BattleCoroutine());
     }
 
     public void WinBattle()
@@ -101,9 +105,9 @@ public class BattleManager : MonoBehaviour
             winFactor = WinFactor * factorMult; 
         }
 
-        if (battleCoroutine != null)
+        if (_battleCoroutine != null)
         {
-            StopCoroutine(battleCoroutine);
+            StopCoroutine(_battleCoroutine);
         }
     }
 
@@ -114,8 +118,8 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         // Start both creatures attacking concurrently without waiting for either to finish
-        Coroutine playerAttack = StartCoroutine(CreatureAttackCycle(playerCreature, enemyCreature));
-        Coroutine enemyAttack = StartCoroutine(CreatureAttackCycle(enemyCreature, playerCreature));
+        _playerAttack = StartCoroutine(CreatureAttackCycle(playerCreature, enemyCreature));
+        _enemyAttack = StartCoroutine(CreatureAttackCycle(enemyCreature, playerCreature));
 
         // Keep checking the health status of both creatures in a loop
         while (battleRunning && playerCreature != null && enemyCreature != null)
@@ -124,8 +128,8 @@ public class BattleManager : MonoBehaviour
             if (enemyCreature.CurrentHealth <= 0)
             {
                 WinBattle();
-                StopCoroutine(playerAttack);
-                StopCoroutine(enemyAttack);
+                StopCoroutine(_playerAttack);
+                StopCoroutine(_enemyAttack);
                 yield break;
             }
 
@@ -137,8 +141,8 @@ public class BattleManager : MonoBehaviour
                 InventoryManager.Instance.SelectedCreatureForBattle = null;
                 UI_BattleManager.Instance.SelectedCreature = null;
                 UI_BattleManager.Instance.Refresh();
-                StopCoroutine(playerAttack);
-                StopCoroutine(enemyAttack);
+                StopCoroutine(_playerAttack);
+                StopCoroutine(_enemyAttack);
                 yield break;
             }
 
@@ -179,10 +183,19 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    
 
     public void StopBattle()
     {
         battleRunning = false;
+        StopAllRoutines();
+    }
+
+    public void StopAllRoutines()
+    {
+        StopCoroutine(_playerAttack);
+        StopCoroutine(_enemyAttack);
+        StopCoroutine(_battleCoroutine);
     }
     
     public void ResumeBattle()
