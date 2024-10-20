@@ -1,4 +1,4 @@
-Shader "UI/CRT_Shader"
+Shader "UI/CRTShader_NoRed"
 {
     Properties
     {
@@ -7,8 +7,8 @@ Shader "UI/CRT_Shader"
         _Size("Scanline Size", Float) = 100.0
         _Speed("Speed", Float) = 1.0
         _Opacity("Opacity", Range(0, 1)) = 1.0
-        _Color("Color Tint", Color) = (1, 1, 1, 1) // New color tint
-        _BlurAmount("Blur Amount", Range(0, 5)) = 1.0 // New blur amount
+        _Color("Color Tint", Color) = (1, 1, 1, 1)
+        _BlurAmount("Blur Amount", Range(0, 5)) = 1.0
     }
         SubShader
         {
@@ -41,8 +41,8 @@ Shader "UI/CRT_Shader"
                 float _Size;
                 float _Speed;
                 float _Opacity;
-                float4 _Color; // New color tint
-                float _BlurAmount; // New blur amount
+                float4 _Color;
+                float _BlurAmount;
 
                 v2f vert(appdata_t v)
                 {
@@ -65,7 +65,7 @@ Shader "UI/CRT_Shader"
 
                 fixed4 frag(v2f i) : SV_Target
                 {
-                    // Sample the original UI image texture with blur
+                    // Blur the original texture
                     fixed4 col = Blur(_MainTex, i.uv, _BlurAmount);
 
                 // Apply CRT scanline effect using sine waves based on UV.y
@@ -77,8 +77,8 @@ Shader "UI/CRT_Shader"
                 // Darken the image using the scanline effect
                 col.rgb *= scanline;
 
-                // Apply color tint
-                col.rgb *= _Color.rgb;
+                // Apply color tint, ensure no unwanted red tint
+                col.rgb *= _Color.rgb;  // Make sure _Color is set to (1, 1, 1) for no tint
 
                 // Apply opacity
                 col.a *= _Opacity;
