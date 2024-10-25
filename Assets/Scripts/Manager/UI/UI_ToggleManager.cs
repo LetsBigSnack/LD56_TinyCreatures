@@ -8,7 +8,8 @@ public enum ToggleState
     Shop,
     Battle,
     Inspector,
-    Fusion
+    Fusion,
+    Materials
 }
 
 public class UI_ToggleManager : MonoBehaviour
@@ -19,6 +20,7 @@ public class UI_ToggleManager : MonoBehaviour
     [SerializeField] private GameObject battle;
     [SerializeField] private GameObject inspector;
     [SerializeField] private GameObject fuse;
+    [SerializeField] private GameObject materials;
 
     [SerializeField] private ToggleState currentState = ToggleState.Battle;
 
@@ -53,6 +55,7 @@ public class UI_ToggleManager : MonoBehaviour
                 battle.SetActive(false);
                 inspector.SetActive(false);
                 fuse.SetActive(false);
+                materials.SetActive(false);
                 currentState = ToggleState.Shop;
                 popupManager.ViewPopup(state);
                 break;
@@ -61,6 +64,7 @@ public class UI_ToggleManager : MonoBehaviour
                 shop.SetActive(false);
                 inspector.SetActive(false);
                 fuse.SetActive(false);
+                materials.SetActive(false);
                 currentState = ToggleState.Battle;
                 break;
             case "Inspector":
@@ -68,6 +72,7 @@ public class UI_ToggleManager : MonoBehaviour
                 battle.SetActive(false);
                 shop.SetActive(false);
                 fuse.SetActive(false);
+                materials.SetActive(false);
                 currentState = ToggleState.Inspector;
                 popupManager.ViewPopup(state);
                 break;
@@ -76,8 +81,18 @@ public class UI_ToggleManager : MonoBehaviour
                 inspector.SetActive(false);
                 battle.SetActive(false);
                 shop.SetActive(false);
+                materials.SetActive(false);
                 currentState = ToggleState.Fusion;
                 popupManager.ViewPopup(state);
+                break;
+            case "Materials":
+                fuse.SetActive(false);
+                inspector.SetActive(false);
+                battle.SetActive(false);
+                shop.SetActive(false);
+                materials.SetActive(true);
+                currentState = ToggleState.Materials;
+                //popupManager.ViewPopup(state);
                 break;
         }
         
