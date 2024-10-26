@@ -15,6 +15,7 @@ public class UI_CreatureDetailsText : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dexText;
     [SerializeField] private TextMeshProUGUI defText;
     [SerializeField] private TextMeshProUGUI winsText;
+    [SerializeField] private GameObject[] attributes;
 
     private void Start()
     {
@@ -42,7 +43,22 @@ public class UI_CreatureDetailsText : MonoBehaviour
     {
         if (creature == null)
         {
+            if (attributes.Length > 0)
+            {
+                for (int i = 0; i < attributes.Length; i++)
+                {
+                    attributes[i].SetActive(false);
+                }
+            }
             return;
+        }
+
+        if (attributes.Length > 0)
+        {
+            for (int i = 0; i < attributes.Length; i++)
+            {
+                attributes[i].SetActive(true);
+            }
         }
         creatureNameText.text = creature.CreatureName;
         hpText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.MaxHealth, false);

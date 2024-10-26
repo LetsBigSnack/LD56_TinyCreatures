@@ -71,6 +71,7 @@ public class BattleManager : MonoBehaviour
     public void StartBattle()
     {
         Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
+        UI_InventoryHoverManager.Instance.BattleText.text = "BATTLE ONGOING!";
         hasBattleStarted = true;
         playerCreature.CurrentHealth = playerCreature.MaxHealth;
 
@@ -141,6 +142,7 @@ public class BattleManager : MonoBehaviour
                 InventoryManager.Instance.SelectedCreatureForBattle = null;
                 UI_BattleManager.Instance.SelectedCreature = null;
                 UI_BattleManager.Instance.Refresh();
+                UI_InventoryHoverManager.Instance.BattleText.text = playerCreature.CreatureName + " died!";
                 StopCoroutine(_playerAttack);
                 StopCoroutine(_enemyAttack);
                 yield break;
@@ -177,7 +179,6 @@ public class BattleManager : MonoBehaviour
             
             UI_BattleDisplayManager.Instance.CreateDamagePopUp(Util_LargeNumberDisplay.LargerNumberConversion(attack, false),isCriticalHit, attacker);
 
-
             // Wait for the attack interval based on the attacker's speed before attacking again
             yield return new WaitForSeconds(attackInterval);
         }
@@ -188,6 +189,7 @@ public class BattleManager : MonoBehaviour
     public void StopBattle()
     {
         battleRunning = false;
+        UI_InventoryHoverManager.Instance.BattleText.text = "NO DATA FOUND!";
         StopAllRoutines();
     }
 
