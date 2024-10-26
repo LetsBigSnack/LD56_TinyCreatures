@@ -11,8 +11,7 @@ namespace Helper.Util
             { 1000, "K"},
             { 1000000, "M"},
             { 1000000000, "B"},
-            //TODO: will never reach with int max 2 billion ish --> 4 billion ish if we have uint
-            {1000000000000, "T"}
+           {1000000000000, "T"}
         };
         
         public static string LargerNumberConversion(double number, bool fill = true)
