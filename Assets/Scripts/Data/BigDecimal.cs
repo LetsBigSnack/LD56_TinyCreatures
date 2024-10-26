@@ -1,11 +1,13 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Data
 {
     using System;
     using System.Numerics;
-
-    public struct BigDecimal
+    
+    [Serializable]
+    public struct BigDecimal: IComparable<BigDecimal>, IEquatable<BigDecimal>
     {
         
         private static readonly Dictionary<BigDecimal, string> Suffixes = new Dictionary<BigDecimal, string>()
@@ -34,15 +36,24 @@ namespace Data
         };
 
         
+        [SerializeField]
+        private string mantissaString;
+        [SerializeField]
+        private string exponentString;
+        
         // Core Fields
+        [SerializeField]
         private BigInteger mantissa;
+        [SerializeField]
         private BigInteger exponent;
-
+        
         // Constructor
         public BigDecimal(BigInteger mantissa, BigInteger exponent)
         {
             this.mantissa = mantissa;
             this.exponent = exponent;
+            mantissaString = mantissa.ToString();
+            exponentString = exponent.ToString();
         }
         
         // Operators

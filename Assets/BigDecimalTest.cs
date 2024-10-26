@@ -5,8 +5,13 @@ using UnityEngine;
 
 public class BigDecimalTest : MonoBehaviour
 {
+    public BigInteger dekiisnichtsoCool;
+    public BigDecimal DekiIsCool = new BigDecimal(100,0);
+    
     void Start()
     {
+        
+        Debug.Log(DekiIsCool);
         // Initializing BigDecimal Instances
         BigDecimal d1 = new BigDecimal(100000, -3);
         BigDecimal d2 = new BigDecimal(1200, -3);
