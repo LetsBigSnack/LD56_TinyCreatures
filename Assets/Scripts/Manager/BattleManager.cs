@@ -193,6 +193,8 @@ public class BattleManager : MonoBehaviour
 
     public void StopAllRoutines()
     {
+        if(_playerAttack == null || _enemyAttack == null || _battleCoroutine == null)
+            return;
         StopCoroutine(_playerAttack);
         StopCoroutine(_enemyAttack);
         StopCoroutine(_battleCoroutine);
