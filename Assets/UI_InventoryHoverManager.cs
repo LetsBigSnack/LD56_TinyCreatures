@@ -59,13 +59,13 @@ public class UI_InventoryHoverManager : MonoBehaviour
         battleWindow.SetActive(false);
         detailsWindow.SetActive(true);
         creatureNameText.text = creature.CreatureName;
-        pwrText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.PowerLevel, false);
-        hpText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.MaxHealth, false);
-        attText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.Attack);
-        spdText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.Speed);
-        dexText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.Dexterity);
-        defText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.Defense);
-        winsText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureWins, false);
+        pwrText.text = creature.CreatureStats.PowerLevel.ToNumberSuffix(false);
+        hpText.text = creature.MaxHealth.ToNumberSuffix(false);
+        attText.text = creature.CreatureStats.Attack.ToNumberSuffix();
+        spdText.text = creature.CreatureStats.Speed.ToNumberSuffix();
+        dexText.text = creature.CreatureStats.Dexterity.ToNumberSuffix();
+        defText.text = creature.CreatureStats.Defense.ToNumberSuffix();
+        winsText.text = Creature.CreatureWins.ToNumberSuffix(false);
     }
 
     public void ResetDetails()

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,9 +43,10 @@ public class UI_BattleInventoryManager : MonoBehaviour
         else
         {
             playerObject.SetActive(true);
-            playerHealthBar.maxValue = battleCreature.MaxHealth;
-            playerHealthBar.value = battleCreature.CurrentHealth;
-            playerPL.text = battleCreature.CreatureStats.PowerLevel.ToString();
+            BigDecimal healthPercentage = battleCreature.CurrentHealth.Round(3) / battleCreature.MaxHealth.Round(3);
+            playerHealthBar.maxValue = 1;
+            playerHealthBar.value = (float)healthPercentage;
+            playerPL.text = battleCreature.CreatureStats.PowerLevel.ToNumberSuffix(false);
         }
 
         if (enemyCreature == null)
@@ -54,9 +56,10 @@ public class UI_BattleInventoryManager : MonoBehaviour
         else
         {
             enemyObject.SetActive(true);
-            enemyHealthBar.maxValue = enemyCreature.MaxHealth;
-            enemyHealthBar.value = enemyCreature.CurrentHealth;
-            enemyPL.text = enemyCreature.CreatureStats.PowerLevel.ToString();
+            BigDecimal healthPercentage = enemyCreature.CurrentHealth.Round(3) / enemyCreature.MaxHealth.Round(3);
+            enemyHealthBar.maxValue = 1;
+            enemyHealthBar.value = (float)healthPercentage;
+            enemyPL.text = enemyCreature.CreatureStats.PowerLevel.ToNumberSuffix(false);
         }
 
         battleCreatureSprite.SetupRepresentation(battleCreature);
