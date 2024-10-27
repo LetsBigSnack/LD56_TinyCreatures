@@ -8,12 +8,20 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler
 {
     
     [SerializeField] public Creature creature;
+    [SerializeField] public bool isHoverable;
+
     private SoundManager soundManager;
         
     public Creature Creature
     {
         get => creature;
         set => creature = value;
+    }
+
+    public bool IsHoverable
+    {
+        get => isHoverable;
+        set => isHoverable = value;
     }
 
     private void Awake()
@@ -52,6 +60,22 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler
             {
                 soundManager.PlaySFX("Error");
             }
+        }
+    }
+
+    public void OnHover()
+    {
+        if (isHoverable)
+        {
+            UI_InventoryHoverManager.Instance.SetDetails(creature);
+        }
+    }
+
+    public void OffHover()
+    {
+        if (isHoverable)
+        {
+            UI_InventoryHoverManager.Instance.ResetDetails();
         }
     }
     
