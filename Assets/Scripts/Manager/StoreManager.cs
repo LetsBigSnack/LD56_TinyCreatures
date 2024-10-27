@@ -14,7 +14,7 @@ public class StoreManager : MonoBehaviour
     [SerializeField] private BigDecimal pricesPerSlot = 10;
     [SerializeField] private BigDecimal boughtSlots = 0;
     [SerializeField] private BigDecimal basicCreaturePrice = 10;
-    [SerializeField] private BigDecimal winThreshold = 0;
+    [SerializeField] private BigDecimal winThreshold = 10;
     [SerializeField] private BigDecimal advancedCreaturePrice = 10;
     [SerializeField] private BigDecimal pricePerPowerLevel = 2;
     [SerializeField] private BigDecimal playerMoney = 70;
