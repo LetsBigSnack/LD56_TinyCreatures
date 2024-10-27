@@ -17832,7 +17832,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   breedingPrefab: {fileID: 4812369771820379678, guid: 4afdb3ee534746c48848233b3796d7bf, type: 3}
-  breedingPrice: 0
+  breedingPrice:
+    mantissaString: 0
+    exponentString: 0
   winFactor: 0.5
   mutationFactor: 20
 --- !u!1 &536833311
@@ -25199,13 +25201,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26334c87f17335ec3bb612fe522995fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statRange: 3.5
-  statMin: 10
-  speedFactor: 60
-  winFactor: 0.3
+  statRange:
+    mantissaString: 35
+    exponentString: -1
+  statMin:
+    mantissaString: 10
+    exponentString: 0
+  speedFactor:
+    mantissaString: 60
+    exponentString: 0
+  winFactor:
+    mantissaString: 30000001192092896
+    exponentString: -17
   battleRunning: 1
   hasBattleStarted: 0
-  playerWins: 0
+  playerWins:
+    mantissaString: 0
+    exponentString: 0
   factorMult: 1.5
 --- !u!1 &953157883
 GameObject:
@@ -30791,14 +30803,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 882cc6ce200e3c95b8c7babdfcfdf3c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSlotPrice: 0
-  pricesPerSlot: 10
-  boughtSlots: 0
-  basicCreaturePrice: 10
-  winThreshold: 10
-  advancedCreaturePrice: 10
-  pricePerPowerLevel: 5
-  playerMoney: 70
+  currentSlotPrice:
+    mantissaString: 
+    exponentString: 
+  pricesPerSlot:
+    mantissaString: 10
+    exponentString: 0
+  boughtSlots:
+    mantissaString: 0
+    exponentString: 0
+  basicCreaturePrice:
+    mantissaString: 10
+    exponentString: 0
+  winThreshold:
+    mantissaString: 10
+    exponentString: 0
+  advancedCreaturePrice:
+    mantissaString: 10
+    exponentString: 0
+  pricePerPowerLevel:
+    mantissaString: 2
+    exponentString: 0
+  playerMoney:
+    mantissaString: 99999999999999999999
+    exponentString: 0
   soldLimit: 5
 --- !u!1 &1218190122
 GameObject:
@@ -51374,8 +51402,12 @@ MonoBehaviour:
   - {r: 0.7411765, g: 0.5764706, b: 0.9764706, a: 1}
   - {r: 1, g: 0.33333334, b: 0.33333334, a: 1}
   - {r: 0.94509804, g: 0.98039216, b: 0.54901963, a: 1}
-  statRange: 3.5
-  statMin: 10
+  statRange:
+    mantissaString: 35
+    exponentString: -1
+  statMin:
+    mantissaString: 10
+    exponentString: 0
 --- !u!4 &1738654117
 Transform:
   m_ObjectHideFlags: 0

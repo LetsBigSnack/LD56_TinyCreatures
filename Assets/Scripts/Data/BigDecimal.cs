@@ -58,7 +58,8 @@ namespace Data
         
         // Operators
         #region Operators
-
+        
+        public static BigDecimal operator -(BigDecimal a) => a.Multiply(-1);
         public static BigDecimal operator +(BigDecimal a, BigDecimal b) => a.Add(b);
         public static BigDecimal operator -(BigDecimal a, BigDecimal b) => a.Subtract(b);
         public static BigDecimal operator *(BigDecimal a, BigDecimal b) => a.Multiply(b);
@@ -120,7 +121,8 @@ namespace Data
             BigInteger newExponent = exponent + other.exponent;
             return new BigDecimal(newMantissa, newExponent);
         }
-
+        
+        //TODO: fix for different numbers of exponents like 1.000 / 1 --> fucks us rn
         public BigDecimal Divide(BigDecimal other)
         {
             if (other.mantissa == 0)
@@ -151,12 +153,8 @@ namespace Data
 
         // Utility Math Functions
         #region Utility Math Functions
-
-        public BigDecimal Abs()
-        {
-            return new BigDecimal(BigInteger.Abs(mantissa), exponent);
-        }
-
+        
+        
         public BigDecimal Sqrt()
         {
             if (mantissa < 0)
@@ -200,15 +198,31 @@ namespace Data
             return approx;
         }
 
-        public BigDecimal Power(int power)
+        // Updated Abs method
+        public BigDecimal Abs()
         {
-            if (power < 0) throw new ArgumentOutOfRangeException(nameof(power), "Power must be a non-negative integer.");
-
-            BigInteger newMantissa = BigInteger.Pow(mantissa, power);
-            BigInteger newExponent = exponent * power;
-
-            return new BigDecimal(newMantissa, newExponent).Normalize();
+            return new BigDecimal(BigInteger.Abs(mantissa), exponent);
         }
+
+        // Updated Normalize method
+        private BigDecimal Normalize()
+        {
+            if (mantissa == 0)
+            {
+                exponent = 0;
+                return this;
+            }
+
+            while (mantissa % 10 == 0)
+            {
+                mantissa /= 10;
+                exponent += 1;
+            }
+
+            return this;
+        }
+
+
 
         public BigDecimal Round(BigInteger decimalPlace)
         {
@@ -279,9 +293,6 @@ namespace Data
 
             BigDecimal bigDecimal = this.Round(decimalPlaces);
             string finalNumber = bigDecimal.ToString();
-            
-            bigDecimal= fill? bigDecimal: bigDecimal.Round(0);
-
 
 
             foreach (var item in Suffixes)
@@ -298,6 +309,10 @@ namespace Data
                 }
                 else
                 {
+                    if (item.Value.Equals("K"))
+                    {
+                        return fill? bigDecimal.Round(decimalPlaces).ToString():bigDecimal.Round(0).ToString();
+                    }
                     break;
                 }
             }
@@ -395,6 +410,130 @@ namespace Data
             result = new BigDecimal(mantissa, exponent);
             return true;
         }
+        
+        public BigDecimal Power(BigDecimal exponent)
+{
+    if (this.mantissa.IsZero)
+    {
+        if (exponent.mantissa.IsZero)
+        {
+            throw new ArithmeticException("0^0 is undefined.");
+        }
+        return new BigDecimal(0, 0);
+    }
+
+    // Handle integer exponents efficiently
+    if (exponent.exponent == 0)
+    {
+        // Integer exponentiation
+        BigInteger exp = exponent.mantissa;
+        bool negativeExponent = exp.Sign < 0;
+        exp = BigInteger.Abs(exp);
+
+        BigDecimal result = new BigDecimal(1, 0);
+        BigDecimal baseValue = this.Clone();
+
+        while (exp > 0)
+        {
+            if ((exp % 2) == 1)
+            {
+                result = result * baseValue;
+            }
+            baseValue = baseValue * baseValue;
+            exp /= 2;
+        }
+
+        if (negativeExponent)
+        {
+            // For negative exponents, return 1 / result
+            result = new BigDecimal(1, 0) / result;
+        }
+
+        return result;
+    }
+
+    // For fractional exponents, compute ln(this)
+    // ln(x) = ln(mantissa) + exponent * ln(10)
+    double ln10 = Math.Log(10);
+
+    // Scale mantissa to double range
+    int mantissaDigits = this.mantissa.ToString().Length;
+    int scale = mantissaDigits - 15; // Keep 15 significant digits
+    BigInteger scaledMantissa = this.mantissa;
+    double mantissaDouble;
+
+    if (scale > 0)
+    {
+        scaledMantissa = this.mantissa / BigInteger.Pow(10, scale);
+        mantissaDouble = (double)scaledMantissa;
+    }
+    else
+    {
+        mantissaDouble = (double)this.mantissa;
+        scale = 0;
+    }
+
+    // Adjusted exponent
+    double adjustedExponent = (double)(this.exponent + scale);
+
+    // Compute ln(mantissa)
+    double lnMantissa = Math.Log(mantissaDouble);
+
+    // Compute ln(x)
+    double lnX = lnMantissa + adjustedExponent * ln10;
+
+    // Convert exponent to double
+    double exponentDouble = double.Parse(exponent.ToString());
+
+    // Compute y = exponent * ln(x)
+    double y = exponentDouble * lnX;
+
+    // Compute e^y
+    double resultDouble = Math.Exp(y);
+
+    // Handle cases where resultDouble is too large/small
+    if (double.IsInfinity(resultDouble) || resultDouble == 0)
+    {
+        // Adjust y to get mantissa and exponent
+        double resultExponent = Math.Floor(y / ln10);
+        double resultMantissa = Math.Exp(y - resultExponent * ln10);
+
+        BigInteger bigMantissa = new BigInteger(resultMantissa * 1e15);
+        BigInteger bigExponent = (BigInteger)(resultExponent - 15);
+
+        return new BigDecimal(bigMantissa, bigExponent);
+    }
+    else
+    {
+        // Convert resultDouble to BigDecimal
+        string resultStr = resultDouble.ToString("G17", System.Globalization.CultureInfo.InvariantCulture);
+        if (resultStr.Contains("E") || resultStr.Contains("e"))
+        {
+            // Scientific notation
+            int eIndex = resultStr.IndexOf('E');
+            string mantissaStr = resultStr.Substring(0, eIndex);
+            string exponentStr = resultStr.Substring(eIndex + 1);
+
+            double resultMantissaDouble = double.Parse(mantissaStr, System.Globalization.CultureInfo.InvariantCulture);
+            int resultExponent = int.Parse(exponentStr);
+
+            BigInteger bigMantissa = new BigInteger(resultMantissaDouble * 1e15);
+            BigInteger bigExponent = resultExponent - 15;
+
+            return new BigDecimal(bigMantissa, bigExponent);
+        }
+        else
+        {
+            // No scientific notation
+            BigInteger bigMantissa = new BigInteger(resultDouble * 1e15);
+            BigInteger bigExponent = -15;
+
+            return new BigDecimal(bigMantissa, bigExponent);
+        }
+    }
+}
+
+
 
         #endregion
 
@@ -457,36 +596,25 @@ namespace Data
         public static BigDecimal Random(BigDecimal min, BigDecimal max, Random rng = null)
         {
             rng ??= new Random();
-
+            
+            max = max.Round(3);
+            min = min.Round(3);
+            
             BigInteger rangeMantissa = max.mantissa - min.mantissa;
             BigInteger randomMantissa = min.mantissa + new BigInteger(rng.Next()) % rangeMantissa;
 
             BigInteger randomExponent = min.exponent + rng.Next() % (max.exponent - min.exponent + 1);
+            
+            BigDecimal result = new BigDecimal(randomMantissa, randomExponent);
 
-            return new BigDecimal(randomMantissa, randomExponent);
+            return result;
         }
 
         public BigDecimal Clone()
         {
             return new BigDecimal(mantissa, exponent);
         }
-
-        private BigDecimal Normalize()
-        {
-            if (mantissa == 0)
-            {
-                return new BigDecimal(0, 0);
-            }
-
-            while (mantissa % 10 == 0)
-            {
-                mantissa /= 10;
-                exponent += 1;
-            }
-
-            return this;
-        }
-
+        
         #endregion
     }
 }

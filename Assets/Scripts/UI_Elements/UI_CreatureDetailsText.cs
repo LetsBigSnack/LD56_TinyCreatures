@@ -45,18 +45,18 @@ public class UI_CreatureDetailsText : MonoBehaviour
             return;
         }
         creatureNameText.text = creature.CreatureName;
-        hpText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.MaxHealth, false);
+        hpText.text = creature.MaxHealth.ToNumberSuffix(false);
         hpText.color = new Color(6/255f,40/255f,41/255f,255);
-        atkText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.Attack);
+        atkText.text = creature.CreatureStats.Attack.ToNumberSuffix();
         atkText.color = new Color(6/255f,40/255f,41/255f,255);
-        spdText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.Speed);
+        spdText.text = creature.CreatureStats.Speed.ToNumberSuffix();
         spdText.color = new Color(6/255f,40/255f,41/255f,255);
-        dexText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.Dexterity);
+        dexText.text = creature.CreatureStats.Dexterity.ToNumberSuffix();
         dexText.color = new Color(6/255f,40/255f,41/255f,255);
-        defText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.Defense);
+        defText.text = creature.CreatureStats.Defense.ToNumberSuffix();
         defText.color = new Color(6/255f,40/255f,41/255f,255);
-        powerLevelText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.PowerLevel, false);
-        winsText.text = Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureWins, false);
+        powerLevelText.text = creature.CreatureStats.PowerLevel.ToNumberSuffix(false);
+        winsText.text = creature.CreatureWins.ToNumberSuffix(false);
     }
 
     public void CompareColor(Creature creature1, Creature creature2)

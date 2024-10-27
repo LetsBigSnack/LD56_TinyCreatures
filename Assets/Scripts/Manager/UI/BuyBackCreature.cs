@@ -43,6 +43,6 @@ public class BuyBackCreature : MonoBehaviour
     {
         sprite.SetupRepresentation(creature);
         text.text = creature.CreatureName;
-        priceText.text = "Buy\n" + Util_LargeNumberDisplay.LargerNumberConversion(creature.CreatureStats.PowerLevel,false) + ",-";
+        priceText.text = "Buy\n" + creature.CreatureStats.PowerLevel.ToNumberSuffix(false) + ",-";
     }
 }

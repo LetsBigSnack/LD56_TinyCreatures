@@ -14,7 +14,7 @@ public class UI_PlayerStatManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI slotCountText;
     public void FixedUpdate()
     {
-        moneyText.text = Util_LargeNumberDisplay.LargerNumberConversion(StoreManager.Instance.PlayerMoney, false);
+        moneyText.text = StoreManager.Instance.PlayerMoney.ToNumberSuffix(false);
         InventoryManager temp = InventoryManager.Instance;
         slotCountText.text = temp.InventoryCreatures.Count.ToString() + "/" + temp.InventorySpace.ToString();
         

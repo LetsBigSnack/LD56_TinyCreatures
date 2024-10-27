@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using UnityEngine;
 
 public class StoreManager : MonoBehaviour
@@ -9,29 +10,29 @@ public class StoreManager : MonoBehaviour
     public static StoreManager Instance { get; private set; }
 
     [Header("Prices")] 
-    [SerializeField] private int currentSlotPrice;
-    [SerializeField] private int pricesPerSlot = 10;
-    [SerializeField] private int boughtSlots = 0;
-    [SerializeField] private int basicCreaturePrice = 10;
-    [SerializeField] private int winThreshold = 10;
-    [SerializeField] private int advancedCreaturePrice = 10;
-    [SerializeField] private int pricePerPowerLevel = 2;
-    [SerializeField] private int playerMoney = 50;
+    [SerializeField] private BigDecimal currentSlotPrice;
+    [SerializeField] private BigDecimal pricesPerSlot = 10;
+    [SerializeField] private BigDecimal boughtSlots = 0;
+    [SerializeField] private BigDecimal basicCreaturePrice = 10;
+    [SerializeField] private BigDecimal winThreshold = 0;
+    [SerializeField] private BigDecimal advancedCreaturePrice = 10;
+    [SerializeField] private BigDecimal pricePerPowerLevel = 2;
+    [SerializeField] private BigDecimal playerMoney = 50;
     
     [SerializeField] private List<Creature> soledCreatures;
     [SerializeField] private int soldLimit;
     
-    public int PlayerMoney { get => playerMoney; set => playerMoney = value; }
+    public BigDecimal PlayerMoney { get => playerMoney; set => playerMoney = value; }
     
     
-    public int CurrentSlotPrice { get => currentSlotPrice; set => currentSlotPrice = value; }
-    public int BasicCreaturePrice { get => basicCreaturePrice; set => basicCreaturePrice = value; }
-    public int AdvancedCreaturePrice { get => advancedCreaturePrice; set => advancedCreaturePrice = value; }
+    public BigDecimal CurrentSlotPrice { get => currentSlotPrice; set => currentSlotPrice = value; }
+    public BigDecimal BasicCreaturePrice { get => basicCreaturePrice; set => basicCreaturePrice = value; }
+    public BigDecimal AdvancedCreaturePrice { get => advancedCreaturePrice; set => advancedCreaturePrice = value; }
     
     public List<Creature> SoldCreatures { get => soledCreatures; set => soledCreatures = value; }
     
     
-    public int WinThreshold { get => winThreshold; set => winThreshold = value; }
+    public BigDecimal WinThreshold { get => winThreshold; set => winThreshold = value; }
 
     private void Awake()
     {
@@ -58,7 +59,8 @@ public class StoreManager : MonoBehaviour
 
     public void UpdatePrices()
     {
-        advancedCreaturePrice = Mathf.RoundToInt((BattleManager.Instance.GetPredictedPowerLevel() + 5) * 2f);
+        BigDecimal currentPrice = ((BattleManager.Instance.GetPredictedPowerLevel() + 5) * 2f);
+        advancedCreaturePrice = currentPrice.Round(0);
         currentSlotPrice = pricesPerSlot + pricesPerSlot * boughtSlots;
     }
 
@@ -99,8 +101,8 @@ public class StoreManager : MonoBehaviour
             return false;
         }
 
-        float statMin = BattleManager.Instance.StatMin;
-        float statRange = BattleManager.Instance.StatRange;
+        BigDecimal statMin = BattleManager.Instance.StatMin;
+        BigDecimal statRange = BattleManager.Instance.StatRange;
         
         // Battle Creature
         if (InventoryManager.Instance.AddCreature(CreatureManager.Instance.
@@ -151,11 +153,11 @@ public class StoreManager : MonoBehaviour
         return false;
     }
 
-    public void SpendMoney(int price)
+    public void SpendMoney(BigDecimal price)
     {
         playerMoney -= price;
     }
-    public void EarnMoney(int price)
+    public void EarnMoney(BigDecimal price)
     {
         playerMoney += price;
     }

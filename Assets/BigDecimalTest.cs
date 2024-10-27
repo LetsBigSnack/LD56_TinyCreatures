@@ -10,6 +10,20 @@ public class BigDecimalTest : MonoBehaviour
     
     void Start()
     {
+        Debug.Log("Testing Power Function:");
+
+        BigDecimal baseValue = new BigDecimal(BigInteger.Parse("100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"), 0);
+        BigDecimal exponent = new BigDecimal(25, -2); // 0.1
+
+        BigDecimal result = baseValue.Power(exponent);
+
+        Debug.Log($"Result of {baseValue}^{exponent}: {result}");
+
+        // Testing integer exponent
+        BigDecimal intExponent = new BigDecimal(3, 0); // 3
+        BigDecimal intResult = baseValue.Power(intExponent);
+
+        Debug.Log($"Result of {baseValue}^{intExponent}: {intResult}");
         
         Debug.Log(DekiIsCool);
         // Initializing BigDecimal Instances
@@ -197,4 +211,5 @@ public class BigDecimalTest : MonoBehaviour
         
         Debug.Log("Suffix Tests Complete.");
     }
+    
 }

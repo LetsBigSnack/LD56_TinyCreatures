@@ -52,7 +52,7 @@ public class UI_BreedingManager : MonoBehaviour
         detailsLeft.SetupRepresentation(BreedingManager.Instance.CreaturePod1);
         detailsRight.SetupRepresentation(BreedingManager.Instance.CreaturePod2);
         
-        costText.text = Util_LargeNumberDisplay.LargerNumberConversion(BreedingManager.Instance.BreedingPrice,false);
+        costText.text = BreedingManager.Instance.BreedingPrice.ToNumberSuffix(false);
     }
 
     public void AddCreatureToPod(Creature creature)

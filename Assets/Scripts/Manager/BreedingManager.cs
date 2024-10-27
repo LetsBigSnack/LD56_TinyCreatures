@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Data;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -16,11 +17,11 @@ public class BreedingManager : MonoBehaviour
     [SerializeField] private Creature creaturePod1;
     [SerializeField] private Creature creaturePod2;
     [SerializeField] private Creature result;
-    [SerializeField] private int breedingPrice = 0;
+    [SerializeField] private BigDecimal breedingPrice = 0;
     //TODO: need to think about a better way 
     [SerializeField] private float winFactor = 0.5f;
 
-    public int BreedingPrice
+    public BigDecimal BreedingPrice
     {
         get => breedingPrice;
     }
@@ -162,8 +163,8 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     
     
     CreatureRepresentation creatureRepresentation = new CreatureRepresentation(bodyParts, newHeadColor, newBodyColor, newLegsColor, newArmsColor);
-    int lastGeneration = Mathf.Max(parent1.CreatureGeneration, parent2.CreatureGeneration) + 1;
-    int totalWins = parent1.CreatureWins + parent2.CreatureWins;
+    BigDecimal lastGeneration = BigDecimal.Max(parent1.CreatureGeneration, parent2.CreatureGeneration) + 1;
+    BigDecimal totalWins = parent1.CreatureWins + parent2.CreatureWins;
     
     float totalHealthModifier = bodyParts.Select(c => c.Value).Sum(t => t.healthModifier);
     float totalSpeedModifier = bodyParts.Select(c => c.Value).Sum(t => t.speedModifier);
@@ -173,33 +174,36 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
 
     
     // Combine stats from both parents and apply mutation
-    int newHealth = Mathf.RoundToInt((parent1.MaxHealth + parent2.MaxHealth) / 2f * MutationFactor(totalWins, totalHealthModifier));
-    float newSpeed = ((parent1.CreatureStats.Speed + parent2.CreatureStats.Speed) / 2f) * MutationFactor(totalWins, totalSpeedModifier);
-    float newAttack = ((parent1.CreatureStats.Attack + parent2.CreatureStats.Attack) / 2f) * MutationFactor(totalWins, totalAttackModifier);
-    float newDefense = ((parent1.CreatureStats.Defense + parent2.CreatureStats.Defense) / 2f) * MutationFactor(totalWins, totalDefenseModifier);
-    float newDexterity = ((parent1.CreatureStats.Dexterity + parent2.CreatureStats.Dexterity) / 2f) * MutationFactor(totalWins, totalDexterityModifier);
+    BigDecimal newHealth = (parent1.MaxHealth + parent2.MaxHealth) / 2f * MutationFactor(totalWins, totalHealthModifier);
+    BigDecimal newSpeed = ((parent1.CreatureStats.Speed + parent2.CreatureStats.Speed) / 2f) * MutationFactor(totalWins, totalSpeedModifier);
+    BigDecimal newAttack = ((parent1.CreatureStats.Attack + parent2.CreatureStats.Attack) / 2f) * MutationFactor(totalWins, totalAttackModifier);
+    BigDecimal newDefense = ((parent1.CreatureStats.Defense + parent2.CreatureStats.Defense) / 2f) * MutationFactor(totalWins, totalDefenseModifier);
+    BigDecimal newDexterity = ((parent1.CreatureStats.Dexterity + parent2.CreatureStats.Dexterity) / 2f) * MutationFactor(totalWins, totalDexterityModifier);
 
     // Ensure minimum values for stats
-    newHealth = Mathf.Max(1, newHealth);
-    newSpeed = Mathf.Max(1f, newSpeed);
-    newAttack = Mathf.Max(1f, newAttack);
-    newDefense = Mathf.Max(1f, newDefense);
-    newDexterity = Mathf.Max(1f, newDexterity);
+    newHealth = BigDecimal.Max(1, newHealth);
+    newSpeed = BigDecimal.Max(1f, newSpeed);
+    newAttack = BigDecimal.Max(1f, newAttack);
+    newDefense = BigDecimal.Max(1f, newDefense);
+    newDexterity = BigDecimal.Max(1f, newDexterity);
     CreatureStats creatureStats = new CreatureStats(newSpeed, newAttack, newDefense, newDexterity);
     
-    
-    result = new Creature(lastGeneration, newHealth, creatureStats, creatureRepresentation);
+    result = new Creature(lastGeneration.Round(0), newHealth.Round(0), creatureStats, creatureRepresentation);
     return true;
 }
 
 
 
-    private float MutationFactor(int totalWins, float totalModifier)
+    private BigDecimal MutationFactor(BigDecimal totalWins, BigDecimal totalModifier)
     {
-        float factor = 1f + Random.Range(((-mutationFactor/(1.75f)) / 100f) * (1 - totalModifier), ((mutationFactor + (totalWins * winFactor)) / 100f)* (1 + totalModifier));
+        BigDecimal t = ((-mutationFactor / (1.75f)) / 100f) * (1 - totalModifier);
+        BigDecimal t2 = (((mutationFactor + (totalWins * winFactor)) / 100f) * (1 + totalModifier));
+        
+        t = t.Round(3);
+        t2 = t2.Round(3);
+        
+        BigDecimal factor = 1f + BigDecimal.Random(t, t2);
 
-        var t = ((-mutationFactor / (1.75f)) / 100f) * (1 - totalModifier);
-        var t2 = (((mutationFactor + (totalWins * winFactor)) / 100f) * (1 + totalModifier));
         
         Debug.Log("Lower Bound" + ((-mutationFactor/(1.75f)) / 100f) * (1 - totalModifier));
         Debug.Log("Upper Bound" + (((mutationFactor + (totalWins * winFactor)) / 100f) * (1 + totalModifier)));
@@ -214,7 +218,9 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
             Debug.Log("Test");
             return;
         }
-        breedingPrice = Mathf.RoundToInt((creaturePod1.CreatureStats.PowerLevel + creaturePod2.CreatureStats.PowerLevel)/2)*2;
+        
+        BigDecimal newPrice = ((creaturePod1.CreatureStats.PowerLevel + creaturePod2.CreatureStats.PowerLevel)/2)*2;
+        breedingPrice = (newPrice.Round(0));
     }
 
     public bool Collect()

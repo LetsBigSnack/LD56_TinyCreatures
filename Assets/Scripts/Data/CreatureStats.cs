@@ -23,44 +23,44 @@ namespace Data
         };
         
 
-        private float _speed;
-        private float _attack;
-        private float _defense;
-        private float _dexterity;
-        private int _powerLevel;
+        private BigDecimal _speed;
+        private BigDecimal _attack;
+        private BigDecimal _defense;
+        private BigDecimal _dexterity;
+        private BigDecimal _powerLevel;
         
         
-        public float Speed
+        public BigDecimal Speed
         {
             get => _speed;
             set => _speed = value;
         }
 
-        public float Attack
+        public BigDecimal Attack
         {
             get => _attack;
             set => _attack = value;
         }
 
-        public float Defense
+        public BigDecimal Defense
         {
             get => _defense;
             set => _defense = value;
         }
 
-        public float Dexterity
+        public BigDecimal Dexterity
         {
             get => _dexterity;
             set => _dexterity = value;
         }
 
-        public int PowerLevel
+        public BigDecimal PowerLevel
         {
             get => _powerLevel;
             set => _powerLevel = value;
         }
 
-        public CreatureStats(float speed, float attack, float defense, float dexterity)
+        public CreatureStats(BigDecimal speed, BigDecimal attack, BigDecimal defense, BigDecimal dexterity)
         {
             _speed = speed;
             _attack = attack;
@@ -75,16 +75,16 @@ namespace Data
         {
             
             // Weighted sum of stats to determine the power level
-            float weightedSpeed = _speed * _weights.GetValueOrDefault(StatNames.Speed);
-            float weightedAttack = _attack * _weights.GetValueOrDefault(StatNames.Attack);
-            float weightedDefense = _defense * _weights.GetValueOrDefault(StatNames.Defense);
-            float weightedDexterity = _dexterity * _weights.GetValueOrDefault(StatNames.Dexterity);
+            BigDecimal weightedSpeed = _speed * _weights.GetValueOrDefault(StatNames.Speed);
+            BigDecimal weightedAttack = _attack * _weights.GetValueOrDefault(StatNames.Attack);
+            BigDecimal weightedDefense = _defense * _weights.GetValueOrDefault(StatNames.Defense);
+            BigDecimal weightedDexterity = _dexterity * _weights.GetValueOrDefault(StatNames.Dexterity);
 
             // Calculate the total power level by summing all weighted stats
-            float totalPowerLevel = weightedSpeed + weightedAttack + weightedDefense + weightedDexterity;
+            BigDecimal totalPowerLevel = weightedSpeed + weightedAttack + weightedDefense + weightedDexterity;
 
             // Assign the rounded value to powerLevel
-            _powerLevel = Mathf.RoundToInt(totalPowerLevel);
+            _powerLevel = totalPowerLevel.Round(0);
         }
         
         

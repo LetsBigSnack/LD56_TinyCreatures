@@ -17,10 +17,8 @@ public class CreatureManager : MonoBehaviour
     [SerializeField] private Color[] creatureColors;
     
     [Header("Stat Settings")]
-    [Range(0, 100.0f)]
-    [SerializeField] private float statRange = 3.5f;
-    [Range(0, 100.0f)]
-    [SerializeField] private float statMin = 10f;
+    [SerializeField] private BigDecimal statRange = 3.5f;
+    [SerializeField] private BigDecimal statMin = 10f;
     
     private List<BodyPart> _unlockedHeads = new List<BodyPart>();
     private List<BodyPart> _unlockedBodies = new List<BodyPart>();
@@ -50,11 +48,11 @@ public class CreatureManager : MonoBehaviour
         CreatureRepresentation creatureRepresentation = GetRandomCreatureRepresentation();
         
         float totalHealthModifier = creatureRepresentation.BodyParts.Select(c => c.Value).Sum(t => t.healthModifier);
-        int randomHealth = Mathf.RoundToInt((UnityEngine.Random.Range(-statRange * (1 - totalHealthModifier), statRange * (1 + totalHealthModifier)) + statMin + statMin) * 1.2f);
+        BigDecimal randomHealth = ((BigDecimal.Random(-statRange * (1 - totalHealthModifier), statRange * (1 + totalHealthModifier)) + statMin + statMin) * 1.2f);
 
         CreatureStats creatureStats = CreateCreatureStats(statRange, statMin, creatureRepresentation.BodyParts);
         
-        Creature createdCreature = new Creature(0,randomHealth, creatureStats, creatureRepresentation);
+        Creature createdCreature = new Creature(0,randomHealth.Round(0), creatureStats, creatureRepresentation);
         
         return createdCreature;
     }
@@ -84,7 +82,7 @@ public class CreatureManager : MonoBehaviour
         return creatureRepresentation;
     }
 
-    public CreatureStats CreateCreatureStats(float definedStatRange, float definedStatMin,
+    public CreatureStats CreateCreatureStats(BigDecimal definedStatRange, BigDecimal definedStatMin,
         Dictionary<BodyPartType, BodyPart> bodyParts)
     {
         
@@ -94,27 +92,27 @@ public class CreatureManager : MonoBehaviour
         float totalDefenseModifier = bodyParts.Select(c => c.Value).Sum(t => t.defenseModifier);
 
         
-        float randomSpeed = UnityEngine.Random.Range(-definedStatRange * (1 - totalSpeedModifier), definedStatRange * (1 + totalSpeedModifier)) + definedStatMin / 2;
-        float randomAttack = UnityEngine.Random.Range(-definedStatRange * (1 - totalAttackModifier), definedStatRange * (1 + totalAttackModifier)) + definedStatMin / 2;
-        float randomDefense = UnityEngine.Random.Range(-definedStatRange * (1 - totalDefenseModifier), definedStatRange * (1 + totalDefenseModifier)) + definedStatMin / 2;
-        float randomDexterity = UnityEngine.Random.Range(-definedStatRange * (1 - totalDexterityModifier), definedStatRange * (1 + totalDexterityModifier)) + definedStatMin / 2;
+        BigDecimal randomSpeed = BigDecimal.Random(-definedStatRange * (1 - totalSpeedModifier), definedStatRange * (1 + totalSpeedModifier)) + definedStatMin / new BigDecimal(2000,-3);
+        BigDecimal randomAttack = BigDecimal.Random(-definedStatRange * (1 - totalAttackModifier), definedStatRange * (1 + totalAttackModifier)) + definedStatMin / new BigDecimal(2000,-3);
+        BigDecimal randomDefense = BigDecimal.Random(-definedStatRange * (1 - totalDefenseModifier), definedStatRange * (1 + totalDefenseModifier)) + definedStatMin / new BigDecimal(2000,-3);
+        BigDecimal randomDexterity = BigDecimal.Random(-definedStatRange * (1 - totalDexterityModifier), definedStatRange * (1 + totalDexterityModifier)) + definedStatMin / new BigDecimal(2000,-3);
 
         
         CreatureStats creatureStats = new CreatureStats(randomSpeed, randomAttack, randomDefense, randomDexterity);
         return creatureStats;
     }
 
-    public Creature CreateAdjustedCreature(float definedStatRange, float definedStatMin)
+    public Creature CreateAdjustedCreature(BigDecimal definedStatRange, BigDecimal definedStatMin)
     {
         RefreshUnlockedParts();
         CreatureRepresentation creatureRepresentation = GetRandomCreatureRepresentation();
         
         float totalHealthModifier = creatureRepresentation.BodyParts.Select(c => c.Value).Sum(t => t.healthModifier);
-        int randomHealth = Mathf.RoundToInt((UnityEngine.Random.Range(-definedStatRange * (1 - totalHealthModifier), definedStatRange * (1 + totalHealthModifier)) + definedStatMin + definedStatMin) * 1.2f);
+        BigDecimal randomHealth = ((BigDecimal.Random(-definedStatRange * (1 - totalHealthModifier), definedStatRange * (1 + totalHealthModifier)) + definedStatMin + definedStatMin) * 1.2f);
 
         CreatureStats creatureStats = CreateCreatureStats(definedStatRange, definedStatMin,creatureRepresentation.BodyParts);
         
-        Creature createdCreature = new Creature(0,randomHealth, creatureStats, creatureRepresentation);
+        Creature createdCreature = new Creature(0,randomHealth.Round(0), creatureStats, creatureRepresentation);
         
         return createdCreature;
     }

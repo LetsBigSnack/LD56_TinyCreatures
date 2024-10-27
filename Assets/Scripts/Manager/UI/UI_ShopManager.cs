@@ -39,8 +39,8 @@ public class UI_ShopManager : MonoBehaviour
 
     private void UpdatePrices()
     {
-        slotPriceText.text = "Buy\n"+Util_LargeNumberDisplay.LargerNumberConversion(StoreManager.Instance.CurrentSlotPrice,false)+",-";
-        adjustedPriceText.text = "Buy\n"+Util_LargeNumberDisplay.LargerNumberConversion(StoreManager.Instance.AdvancedCreaturePrice, false)+",-";
+        slotPriceText.text = "Buy\n"+StoreManager.Instance.CurrentSlotPrice.ToNumberSuffix(false)+",-";
+        adjustedPriceText.text = "Buy\n"+StoreManager.Instance.AdvancedCreaturePrice.ToNumberSuffix(false)+",-";
     }
 
     private void UpdateUnlockables()

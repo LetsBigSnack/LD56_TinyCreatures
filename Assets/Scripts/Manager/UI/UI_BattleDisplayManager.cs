@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,8 +52,9 @@ public class UI_BattleDisplayManager : MonoBehaviour
         else
         {
             playerObject.SetActive(true);
-            playerHealthBar.maxValue = battleCreature.MaxHealth;
-            playerHealthBar.value = battleCreature.CurrentHealth;
+            BigDecimal healthPercentage = battleCreature.CurrentHealth.Round(3) / battleCreature.MaxHealth.Round(3);
+            playerHealthBar.maxValue = 1;
+            playerHealthBar.value = (float)healthPercentage;
             playerPL.text = battleCreature.CreatureStats.PowerLevel.ToString();
         }
 
@@ -63,8 +65,9 @@ public class UI_BattleDisplayManager : MonoBehaviour
         else
         {
             enemyObject.SetActive(true);
-            enemyHealthBar.maxValue = enemyCreature.MaxHealth;
-            enemyHealthBar.value = enemyCreature.CurrentHealth;
+            BigDecimal healthPercentage = enemyCreature.CurrentHealth.Round(3) / enemyCreature.MaxHealth.Round(3);
+            enemyHealthBar.maxValue = 1;
+            enemyHealthBar.value = (float)healthPercentage;
             enemyPL.text = enemyCreature.CreatureStats.PowerLevel.ToString();
         }
         

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Data;
 using Helper.Util;
 using UnityEngine;
 
@@ -9,20 +10,19 @@ public class BattleManager : MonoBehaviour
 
     [Header("Battle Parameters")] 
     [SerializeField] private Creature enemyCreature;
-    [Range(0, 100.0f)]
-    [SerializeField] private float statRange = 3.5f;
-    [Range(0, 100.0f)]
-    [SerializeField] private float statMin = 10f;
-    [SerializeField] private float speedFactor = 60f;
-    [SerializeField] private float winFactor = 0.3f;
+    [SerializeField] private BigDecimal statRange = new BigDecimal(35,-1);
+    [SerializeField] private BigDecimal statMin = new BigDecimal(10,0);
+    //how this shit is displayed in the inspector
+    [SerializeField] private BigDecimal speedFactor = 60f;
+    [SerializeField] private BigDecimal winFactor = 0.3f;
 
-    public float StatRange{get{return statRange;}}
-    public float StatMin{get{return statMin;}}
+    public BigDecimal StatRange{get{return statRange;}}
+    public BigDecimal StatMin{get{return statMin;}}
 
     [Header("Battle Information")] 
     [SerializeField] private bool battleRunning = true;
     [SerializeField] private bool hasBattleStarted = false;
-    [SerializeField] private int playerWins = 0;
+    [SerializeField] private BigDecimal playerWins = 0;
     [SerializeField] private float factorMult = 1.5f;
     
     
@@ -30,9 +30,9 @@ public class BattleManager : MonoBehaviour
     private Coroutine _playerAttack;
     private Coroutine _battleCoroutine;
     
-    public int PlayerWins{get{return playerWins;}}
+    public BigDecimal PlayerWins{get{return playerWins;}}
     
-    public float WinFactor{get{return winFactor;}}
+    public BigDecimal WinFactor{get{return winFactor;}}
     
     
     
@@ -156,14 +156,15 @@ public class BattleManager : MonoBehaviour
     {
         while (battleRunning && attacker != null && defender != null && attacker.CurrentHealth > 0 && defender.CurrentHealth > 0)
         {
-            float attackInterval = speedFactor / attacker.CreatureStats.Speed;
-            float attackDamage = attacker.CreatureStats.Attack;
-
+            BigDecimal attackInterval = speedFactor.Round(3) / attacker.CreatureStats.Speed.Round(3);
+            BigDecimal attackDamage = attacker.CreatureStats.Attack.Round(3);
+            BigDecimal critchance = attacker.CreatureStats.Dexterity.Round(3) / new BigDecimal(100000,-3);
             // Calculate critical hit chance based on dexterity using a logistic function
-            float critChance = 1 - Mathf.Exp(-attacker.CreatureStats.Dexterity / 100f); // This approaches 1 but never reaches it
 
-            bool isCriticalHit = UnityEngine.Random.value < critChance; // Random.value gives a value between 0 and 1
-            int attack = 0;
+            critchance = CalculateCritChance(attacker.CreatureStats.Dexterity);
+            
+            bool isCriticalHit = UnityEngine.Random.value < critchance; // Random.value gives a value between 0 and 1
+            BigDecimal attack = 0;
             
             if (isCriticalHit)
             {
@@ -175,15 +176,27 @@ public class BattleManager : MonoBehaviour
                 attack = defender.TakeDamage(attackDamage);
             }
             
-            UI_BattleDisplayManager.Instance.CreateDamagePopUp(Util_LargeNumberDisplay.LargerNumberConversion(attack, false),isCriticalHit, attacker);
+            UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToNumberSuffix(false),isCriticalHit, attacker);
 
 
             // Wait for the attack interval based on the attacker's speed before attacking again
-            yield return new WaitForSeconds(attackInterval);
+            yield return new WaitForSeconds((float)attackInterval);
         }
     }
 
-    
+    private BigDecimal CalculateCritChance(BigDecimal x)
+    {
+        BigDecimal k = 0.100f;
+        BigDecimal p = 0.100f;
+        BigDecimal inside = (1.000 + k * x);
+        BigDecimal insidePower = inside.Power(p);
+        BigDecimal minusPart = (new BigDecimal(1000,-3) / insidePower);
+        
+        BigDecimal critChance = (1.000 - minusPart);
+
+        return critChance;
+    }
+
 
     public void StopBattle()
     {
@@ -205,18 +218,18 @@ public class BattleManager : MonoBehaviour
         battleRunning = true;
     }
 
-    public int GetPredictedPowerLevel()
+    public BigDecimal GetPredictedPowerLevel()
     {
         // Adjust stat range and minimum based on player wins and win factor
-        float adjustedStatRange = statRange + (playerWins * winFactor);
-        float adjustedStatMin = statMin + (playerWins * winFactor * 2);
+        BigDecimal adjustedStatRange = statRange + (playerWins * winFactor);
+        BigDecimal adjustedStatMin = statMin + (playerWins * winFactor * 2);
 
         // Calculate the average of the adjusted stat range for each individual stat
-        float averageMaxHealth = adjustedStatMin;
-        float averageSpeed = adjustedStatMin;
-        float averageAttack = adjustedStatMin;
-        float averageDefense = adjustedStatMin;
-        float averageDexterity = adjustedStatMin;
+        BigDecimal averageMaxHealth = adjustedStatMin;
+        BigDecimal averageSpeed = adjustedStatMin;
+        BigDecimal averageAttack = adjustedStatMin;
+        BigDecimal averageDefense = adjustedStatMin;
+        BigDecimal averageDexterity = adjustedStatMin;
 
         // Define weights for each stat component
         float healthWeight = 0.10f;    // Weight for HP
@@ -226,14 +239,14 @@ public class BattleManager : MonoBehaviour
         float dexterityWeight = 0.2f; // Weight for dexterity
 
         // Calculate the weighted average power level using the actual average stats
-        float averagePowerLevel = (averageMaxHealth * healthWeight) +
-                                  (averageSpeed * speedWeight) +
-                                  (averageAttack * attackWeight) +
-                                  (averageDefense * defenseWeight) +
-                                  (averageDexterity * dexterityWeight);
+        BigDecimal averagePowerLevel = (averageMaxHealth * healthWeight) +
+                                       (averageSpeed * speedWeight) +
+                                       (averageAttack * attackWeight) +
+                                       (averageDefense * defenseWeight) +
+                                       (averageDexterity * dexterityWeight);
 
         // Return the rounded average power level
         Debug.Log(averagePowerLevel);
-        return Mathf.RoundToInt(averagePowerLevel);
+        return averagePowerLevel.Round(0);
     }
 }

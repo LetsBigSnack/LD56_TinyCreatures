@@ -8,10 +8,10 @@ public class Creature
     
     [Header("Stats")]
     private string _creatureName;
-    private int _creatureGeneration;
-    private int _currentHealth;
-    private int _maxHealth;
-    private int _creatureWins;
+    private BigDecimal _creatureGeneration;
+    private BigDecimal _currentHealth;
+    private BigDecimal _maxHealth;
+    private BigDecimal _creatureWins;
     
     private CreatureStats _creatureStats;
     private CreatureRepresentation _representation;
@@ -22,19 +22,19 @@ public class Creature
         set => _creatureName = value;
     }
 
-    public int CreatureGeneration
+    public BigDecimal CreatureGeneration
     {
         get => _creatureGeneration;
         set => _creatureGeneration = value;
     }
 
-    public int CurrentHealth
+    public BigDecimal CurrentHealth
     {
         get => _currentHealth;
         set => _currentHealth = value;
     }
 
-    public int MaxHealth
+    public BigDecimal MaxHealth
     {
         get => _maxHealth;
         set => _maxHealth = value;
@@ -52,7 +52,7 @@ public class Creature
         set => _representation = value;
     }
     
-    public int CreatureWins
+    public BigDecimal CreatureWins
     {
         get => _creatureWins;
         set => _creatureWins = value;
@@ -64,7 +64,7 @@ public class Creature
     private string[] suffixes = { "ium", "on", "us", "or", "ic", "ex", "is", "ax", "um", "ox" };
 
 
-    public Creature(int generation, int maxHealth, CreatureStats creatureStats, CreatureRepresentation representation)
+    public Creature(BigDecimal generation, BigDecimal maxHealth, CreatureStats creatureStats, CreatureRepresentation representation)
     {
         _creatureName = GenerateRandomName();
         _maxHealth = maxHealth;
@@ -76,15 +76,15 @@ public class Creature
     }
     
     
-    public int TakeDamage(float damage)
+    public BigDecimal TakeDamage(BigDecimal damage)
     {
-        float finalDamage = damage * (1 - (_creatureStats.Defense / (_creatureStats.Defense  + 200)));
-        finalDamage = Mathf.Max(1, finalDamage);
-        finalDamage = Mathf.RoundToInt(finalDamage);
-        _currentHealth -= Mathf.RoundToInt(finalDamage);
-        _currentHealth = Mathf.Max(0, _currentHealth);
+        BigDecimal finalDamage = damage * (1 - (_creatureStats.Defense / (_creatureStats.Defense  + 200)));
+        finalDamage = BigDecimal.Max(1, finalDamage);
+        finalDamage = finalDamage.Round(0);
+        _currentHealth = _currentHealth - finalDamage;
+        _currentHealth = BigDecimal.Max(0, _currentHealth);
 
-        return (int)finalDamage;
+        return finalDamage;
     }
     
     public string GenerateRandomName()
