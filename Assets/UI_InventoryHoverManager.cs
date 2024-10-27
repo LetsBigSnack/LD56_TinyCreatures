@@ -65,7 +65,7 @@ public class UI_InventoryHoverManager : MonoBehaviour
         spdText.text = creature.CreatureStats.Speed.ToNumberSuffix();
         dexText.text = creature.CreatureStats.Dexterity.ToNumberSuffix();
         defText.text = creature.CreatureStats.Defense.ToNumberSuffix();
-        winsText.text = Creature.CreatureWins.ToNumberSuffix(false);
+        winsText.text = creature.CreatureWins.ToNumberSuffix(false);
     }
 
     public void ResetDetails()
