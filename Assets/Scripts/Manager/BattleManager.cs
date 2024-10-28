@@ -246,9 +246,7 @@ public class BattleManager : MonoBehaviour
                                        (averageAttack * attackWeight) +
                                        (averageDefense * defenseWeight) +
                                        (averageDexterity * dexterityWeight);
-
-        // Return the rounded average power level
-        Debug.Log(averagePowerLevel);
+        
         return averagePowerLevel.Round(0);
     }
 }
