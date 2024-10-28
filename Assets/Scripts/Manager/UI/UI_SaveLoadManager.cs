@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UI_Save_Load_Manager : MonoBehaviour
+public class UI_SaveLoadManager : MonoBehaviour
 {
     [SerializeField] private UI_Save_Slot currentSlot;
     // Start is called before the first frame update

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_BattleBackground_Manager : MonoBehaviour
+public class UI_BattleBackgroundManager : MonoBehaviour
 {
 
     public Image battleBackground;
