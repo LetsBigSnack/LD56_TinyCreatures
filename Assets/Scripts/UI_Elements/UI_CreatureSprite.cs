@@ -10,6 +10,26 @@ public class UI_CreatureSprite : MonoBehaviour
     [SerializeField] private Image creatureArms;
     [SerializeField] private Image creatureLegs;
 
+    public Image CreatureHead
+    {
+        get => creatureHead;
+        set => creatureHead = value;
+    }
+    public Image CreatureBody
+    {
+        get => creatureBody;
+        set => creatureBody = value;
+    }
+    public Image CreatureArms
+    {
+        get => creatureArms;
+        set => creatureArms = value;
+    }
+    public Image CreatureLegs
+    {
+        get => creatureLegs;
+        set => creatureLegs = value;
+    }
 
     public void Reset()
     {
