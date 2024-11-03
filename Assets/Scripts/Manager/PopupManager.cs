@@ -73,7 +73,6 @@ public class PopupManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
 
         soundManager = FindObjectOfType<SoundManager>();

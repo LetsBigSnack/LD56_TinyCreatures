@@ -96,7 +96,7 @@ public class UI_BattleDisplayManager : MonoBehaviour
         if (isCrit)
         {
             GameObject critEntry = Instantiate(critPrefab, new Vector2(creature.position.x, creature.position.y) , Quaternion.identity);
-            critEntry.transform.parent = creature.transform;
+            critEntry.transform.SetParent(creature.transform, false);
             critEntry.transform.position = new Vector2(creature.position.x, creature.position.y + 100);
             critEntry.GetComponentInChildren<TextMeshProUGUI>().text = damage + "!!";
             Destroy(critEntry, 1);
@@ -104,7 +104,7 @@ public class UI_BattleDisplayManager : MonoBehaviour
         }
 
         GameObject attackEntry = Instantiate(attackPrefab, new Vector2(creature.position.x, creature.position.y) , Quaternion.identity);
-        attackEntry.transform.parent = creature.transform;
+        attackEntry.transform.SetParent(creature.transform, false);
         attackEntry.transform.position = new Vector2(creature.position.x, creature.position.y + 100);
         attackEntry.GetComponentInChildren<TextMeshProUGUI>().text = damage;
         Destroy(attackEntry, 1);
