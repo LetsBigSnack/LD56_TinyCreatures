@@ -150,6 +150,8 @@ GameObject:
   - component: {fileID: 1484544416488143741}
   - component: {fileID: 3377384050612487786}
   - component: {fileID: 263084654137056515}
+  - component: {fileID: -6165659196414914716}
+  - component: {fileID: 3557050152720453144}
   m_Layer: 5
   m_Name: Creature_Dex_Entry_Item_Container
   m_TagString: Untagged
@@ -175,7 +177,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 30, y: -503.23}
-  m_SizeDelta: {x: 610, y: 188}
+  m_SizeDelta: {x: 610, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3377384050612487786
 MonoBehaviour:
@@ -217,6 +219,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 0
+--- !u!114 &-6165659196414914716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604630889228009185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87ec3a5903003d4fb2077984124217c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyPartSet: {fileID: 0}
+  headImage: {fileID: 4960663241383736592}
+  bodyImage: {fileID: 2989944267091742566}
+  armsImage: {fileID: 5140754154708781473}
+  legsImage: {fileID: 8599637270673036239}
+  nameText: {fileID: 5992106232875226271}
+--- !u!114 &3557050152720453144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604630889228009185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 1
 --- !u!1 &1896791472866233149
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,7 +369,7 @@ GameObject:
   - component: {fileID: 1723209436808011427}
   - component: {fileID: 5992106232875226271}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Name_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
