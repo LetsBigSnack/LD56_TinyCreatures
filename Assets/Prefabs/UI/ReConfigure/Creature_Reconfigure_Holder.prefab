@@ -1710,31 +1710,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creaturePreviewSprite: {fileID: 5160843894176904176}
-  bodyParts:
-  - {fileID: 11400000, guid: 9cbf4bd9dc2b5a08f9ded98f0bc40391, type: 2}
-  - {fileID: 11400000, guid: 08856df236e0b8a79a2409ea67836a79, type: 2}
-  - {fileID: 11400000, guid: 5998a683525d1426285b5dd31f245de0, type: 2}
-  - {fileID: 11400000, guid: 45032c98da9368114b600685ae1a7103, type: 2}
-  - {fileID: 11400000, guid: a0480ddcaee67997ba4eba0f0cfa0962, type: 2}
-  - {fileID: 11400000, guid: 674f8d446505a98a3a998c22280bdbda, type: 2}
-  - {fileID: 11400000, guid: ddc8c92642b8382c6946a8100225dc36, type: 2}
-  - {fileID: 11400000, guid: fe96690eecb61114da9f48555afa0af3, type: 2}
-  - {fileID: 11400000, guid: 5dd7235b34730122ba17e62ad2da6636, type: 2}
-  - {fileID: 11400000, guid: 51a081211af61b82e8c12ad8e4d2c46b, type: 2}
-  - {fileID: 11400000, guid: 03bf3366a5d00dfa4a203cbe0e6b5be3, type: 2}
-  - {fileID: 11400000, guid: 488fe12b6aefad26e8f68423288124d9, type: 2}
-  heads: []
-  bodies: []
-  arms: []
-  legs: []
   headIndex: 0
   bodyIndex: 0
   armIndex: 0
   legIndex: 0
-  currentHead: {fileID: 0}
-  currentBody: {fileID: 0}
-  currentArms: {fileID: 0}
-  currentLegs: {fileID: 0}
   headItem: {fileID: 2098451359789925338}
   bodyItem: {fileID: 1141331406500466766}
   armsItem: {fileID: 1261893538020668800}
@@ -1860,7 +1839,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8279471256178346195}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 135916378738020860}
+        m_TargetAssemblyTypeName: UI_CreatureReconfigureManager, Assembly-CSharp
+        m_MethodName: BuyCreature
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2927420195004519217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2944,7 +2935,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4551021620785652137}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 135916378738020860}
+        m_TargetAssemblyTypeName: UI_CreatureReconfigureManager, Assembly-CSharp
+        m_MethodName: CancleReconfiguration
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1089535237579847333
 MonoBehaviour:
   m_ObjectHideFlags: 0

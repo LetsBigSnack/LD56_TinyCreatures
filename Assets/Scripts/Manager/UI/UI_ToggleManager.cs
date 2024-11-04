@@ -9,7 +9,8 @@ public enum ToggleState
     Battle,
     Inspector,
     Fusion,
-    Materials
+    Materials,
+    ReConfigure
 }
 
 public class UI_ToggleManager : MonoBehaviour
@@ -21,6 +22,7 @@ public class UI_ToggleManager : MonoBehaviour
     [SerializeField] private GameObject inspector;
     [SerializeField] private GameObject fuse;
     [SerializeField] private GameObject materials;
+    [SerializeField] private GameObject reconfigure;
 
     [SerializeField] private ToggleState currentState = ToggleState.Battle;
 
@@ -56,6 +58,7 @@ public class UI_ToggleManager : MonoBehaviour
                 inspector.SetActive(false);
                 fuse.SetActive(false);
                 materials.SetActive(false);
+                reconfigure.SetActive(false);
                 currentState = ToggleState.Shop;
                 popupManager.ViewPopup(state);
                 break;
@@ -65,6 +68,7 @@ public class UI_ToggleManager : MonoBehaviour
                 inspector.SetActive(false);
                 fuse.SetActive(false);
                 materials.SetActive(false);
+                reconfigure.SetActive(false);
                 currentState = ToggleState.Battle;
                 break;
             case "Inspector":
@@ -73,6 +77,7 @@ public class UI_ToggleManager : MonoBehaviour
                 shop.SetActive(false);
                 fuse.SetActive(false);
                 materials.SetActive(false);
+                reconfigure.SetActive(false);
                 currentState = ToggleState.Inspector;
                 popupManager.ViewPopup(state);
                 break;
@@ -82,6 +87,7 @@ public class UI_ToggleManager : MonoBehaviour
                 battle.SetActive(false);
                 shop.SetActive(false);
                 materials.SetActive(false);
+                reconfigure.SetActive(false);
                 currentState = ToggleState.Fusion;
                 popupManager.ViewPopup(state);
                 break;
@@ -90,8 +96,19 @@ public class UI_ToggleManager : MonoBehaviour
                 inspector.SetActive(false);
                 battle.SetActive(false);
                 shop.SetActive(false);
+                reconfigure.SetActive(false);
                 materials.SetActive(true);
                 currentState = ToggleState.Materials;
+                //popupManager.ViewPopup(state);
+                break;
+            case "Reconfigure":
+                fuse.SetActive(false);
+                inspector.SetActive(false);
+                battle.SetActive(false);
+                shop.SetActive(false);
+                materials.SetActive(false);
+                reconfigure.SetActive(true);
+                currentState = ToggleState.ReConfigure;
                 //popupManager.ViewPopup(state);
                 break;
         }

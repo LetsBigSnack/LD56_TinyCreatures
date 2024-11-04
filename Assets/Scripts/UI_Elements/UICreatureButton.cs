@@ -61,6 +61,16 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler
                 soundManager.PlaySFX("Error");
             }
         }
+
+        if(UI_ToggleManager.Instance.CurrentState == ToggleState.ReConfigure)
+        {
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                InventoryManager.Instance.AddToReconfigure(creature);
+            }
+            UI_InventoryManager.Instance.RefreshInventory();
+            soundManager.PlaySFX("Click");
+        }
     }
 
     public void OnHover()

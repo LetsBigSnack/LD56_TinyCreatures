@@ -7,7 +7,6 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
 
-    
     [Header("Inventory")]
     [SerializeField] private List<Creature> inventoryCreatures;
     [SerializeField] private int inventorySpace = 8;
@@ -15,11 +14,11 @@ public class InventoryManager : MonoBehaviour
 
     [SerializeField] private Creature creatureInspectorLeft;
     [SerializeField] private Creature creatureInspectorRight;
-    
+
+    [SerializeField] private Creature selectedCreatureForReConfigure;
     
     public Creature SelectedCreatureForBattle 
     { get => selectedCreatureForBattle; set => selectedCreatureForBattle = value; }
-    
     
     public Creature CreatureInspectorLeft 
     { get => creatureInspectorLeft; set => creatureInspectorLeft = value; }
@@ -27,7 +26,9 @@ public class InventoryManager : MonoBehaviour
     public Creature CreatureInspectorRight 
     { get => creatureInspectorRight; set => creatureInspectorRight = value; }
 
-    
+    public Creature SelectedCreatureForReConfigure
+    { get => selectedCreatureForReConfigure; set => selectedCreatureForReConfigure = value; }
+
     public List<Creature> InventoryCreatures
     {
         get { return inventoryCreatures; }
@@ -83,6 +84,27 @@ public class InventoryManager : MonoBehaviour
             RemoveCreature(creature);
         };
         
+    }
+
+    public void AddToReconfigure(Creature creature)
+    {
+        if (UI_BattleManager.Instance.SelectedCreature != creature && selectedCreatureForReConfigure == null)
+        {
+            if (ReconfigureManager.Instance.AddToReconfigure(creature))
+            {
+                RemoveCreature(creature);
+                selectedCreatureForReConfigure = creature;
+            }
+        }
+    }
+
+    public void RemoveFromReconfigure(Creature creature)
+    {
+        if(selectedCreatureForReConfigure != null)
+        {
+            AddCreature(creature);
+            selectedCreatureForReConfigure = null;
+        }
     }
     
     public void ChoiceCreatureForBattle(Creature creatureToChose)
