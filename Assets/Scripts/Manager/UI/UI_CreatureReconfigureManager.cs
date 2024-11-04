@@ -151,7 +151,8 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
 
     private Sprite SetItemSprite(UI_CreatureReconfigurItem item, List<BodyPartEntry> parts, int currentIndex)
     {
-       return item.CurrentPart.sprite = parts[currentIndex].bodyPart.bodyPartSprite;
+        item.NameText.text = parts[currentIndex].bodyPart.name;
+        return item.CurrentPart.sprite = parts[currentIndex].bodyPart.bodyPartSprite;
     }
 
     private int OutOfBoundPrevention(List<BodyPartEntry> parts, int currentIndex, int value)
