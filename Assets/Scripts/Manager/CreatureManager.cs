@@ -24,6 +24,7 @@ public class CreatureManager : MonoBehaviour
     private List<BodyPart> _unlockedBodies = new List<BodyPart>();
     private List<BodyPart> _unlockedArms = new List<BodyPart>();
     private List<BodyPart> _unlockedLegs = new List<BodyPart>();
+    public List<BodyPartSet> BodyPartSets { get => bodyPartSets.ToList();}
     
     private void Awake()
     {

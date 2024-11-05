@@ -8,7 +8,6 @@ public class UI_CreatureDexManager : MonoBehaviour
     public static UI_CreatureDexManager Instance;
 
     //list of all sets existing
-    [SerializeField] private List<BodyPartSet> bodySets;
     [SerializeField] private List<GameObject> displayedSets;
     [SerializeField] private Dictionary<int, BodyPartSet> indexedBodyParts = new Dictionary<int, BodyPartSet>();
 
@@ -45,7 +44,7 @@ public class UI_CreatureDexManager : MonoBehaviour
     //creating an entry based on the status of the bodySet
     private void CreateEntries()
     {
-        foreach(BodyPartSet bodySet in bodySets)
+        foreach(BodyPartSet bodySet in CreatureManager.Instance.BodyPartSets)
         {
             GameObject newBodySetItem;
 
@@ -53,7 +52,7 @@ public class UI_CreatureDexManager : MonoBehaviour
             newBodySetItem.transform.SetParent(scrollViewParent.transform, false);
             SetEntry(newBodySetItem, bodySet, bodySet.unlocked);
             displayedSets.Add(newBodySetItem);
-            indexedBodyParts.Add(displayedSets.FindIndex(item => item.Equals(newBodySetItem)), bodySet);            
+            indexedBodyParts.Add(displayedSets.FindIndex(item => item.Equals(newBodySetItem)), bodySet);         
         }
     }
 
