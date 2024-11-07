@@ -24,6 +24,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private bool hasBattleStarted = false;
     [SerializeField] private BigDecimal playerWins = 0;
     [SerializeField] private float factorMult = 1.5f;
+    [SerializeField] private bool autoBattle = true;
     
     
     private Coroutine _enemyAttack;
@@ -64,7 +65,10 @@ public class BattleManager : MonoBehaviour
         }
         if (InventoryManager.Instance.SelectedCreatureForBattle != null && !hasBattleStarted)
         {
-            StartBattle();
+            if(autoBattle) 
+            {
+                StartBattle();
+            }
         }
     }
 
@@ -218,6 +222,12 @@ public class BattleManager : MonoBehaviour
     public void ResumeBattle()
     {
         battleRunning = true;
+    }
+
+    public void SwitchAutoBattle()
+    {
+        autoBattle = !autoBattle;
+        Debug.Log("Auto batteling = " + autoBattle);
     }
 
     public BigDecimal GetPredictedPowerLevel()
