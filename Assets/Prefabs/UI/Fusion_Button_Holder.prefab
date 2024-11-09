@@ -194,6 +194,7 @@ GameObject:
   - component: {fileID: 4962314848171458936}
   - component: {fileID: 1172620777464042716}
   - component: {fileID: 5291750436067293547}
+  - component: {fileID: 6673182536268348396}
   m_Layer: 5
   m_Name: Fusion_Button_Image
   m_TagString: Untagged
@@ -360,6 +361,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6673182536268348396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3757998931672439818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c00e87d4fc5f98148856a09a3fdece89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6104458748360939327
 GameObject:
   m_ObjectHideFlags: 0

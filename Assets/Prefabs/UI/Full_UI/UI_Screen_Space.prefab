@@ -1562,6 +1562,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5291750436067293547, guid: d198aaa4619e58f4095930bc025d1cf1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5291750436067293547, guid: d198aaa4619e58f4095930bc025d1cf1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 7798294174532920553}
+    - target: {fileID: 5291750436067293547, guid: d198aaa4619e58f4095930bc025d1cf1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: FuseCreatures
+      objectReference: {fileID: 0}
+    - target: {fileID: 5291750436067293547, guid: d198aaa4619e58f4095930bc025d1cf1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UI_FusionButtonManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 6104458748360939327, guid: d198aaa4619e58f4095930bc025d1cf1, type: 3}
       propertyPath: m_Name
       value: Fusion_Button_Holder
@@ -1576,6 +1592,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3611145380883398650, guid: d198aaa4619e58f4095930bc025d1cf1, type: 3}
   m_PrefabInstance: {fileID: 3504630732315500293}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7798294174532920553 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6673182536268348396, guid: d198aaa4619e58f4095930bc025d1cf1, type: 3}
+  m_PrefabInstance: {fileID: 3504630732315500293}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c00e87d4fc5f98148856a09a3fdece89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3995233667217792381
 PrefabInstance:
   m_ObjectHideFlags: 0
