@@ -14,9 +14,9 @@ public class BreedingManager : MonoBehaviour
 
     [Header("Breeding")] 
     [SerializeField] private GameObject breedingPrefab;
-    [SerializeField] private Creature creaturePod1;
-    [SerializeField] private Creature creaturePod2;
-    [SerializeField] private Creature result;
+    private Creature creaturePod1;
+    private Creature creaturePod2;
+    private Creature result;
     [SerializeField] private BigDecimal breedingPrice = 0;
     //TODO: need to think about a better way 
     [SerializeField] private float winFactor = 0.5f;

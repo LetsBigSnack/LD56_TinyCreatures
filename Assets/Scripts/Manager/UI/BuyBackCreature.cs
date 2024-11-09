@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class BuyBackCreature : MonoBehaviour
 {
-    [SerializeField] private Creature creature;
+    private Creature creature;
     [SerializeField] private UI_CreatureSprite sprite;
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private TextMeshProUGUI priceText;

@@ -9841,6 +9841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb1fd3a62f02da94abac1ab23a9f9b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryCreatures: []
   inventorySpace: 8
 --- !u!1 &802810530
 GameObject:
@@ -25948,6 +25949,18 @@ PrefabInstance:
     - target: {fileID: 8669891742279402900, guid: 631d96d5d79efb2468f34825714b22f9, type: 3}
       propertyPath: m_SizeDelta.y
       value: 340
+      objectReference: {fileID: 0}
+    - target: {fileID: 8778327015504356974, guid: 631d96d5d79efb2468f34825714b22f9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8778327015504356974, guid: 631d96d5d79efb2468f34825714b22f9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 357379357}
+    - target: {fileID: 8778327015504356974, guid: 631d96d5d79efb2468f34825714b22f9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: FuseCreature
       objectReference: {fileID: 0}
     - target: {fileID: 8908430763335565397, guid: 631d96d5d79efb2468f34825714b22f9, type: 3}
       propertyPath: m_AnchorMax.y

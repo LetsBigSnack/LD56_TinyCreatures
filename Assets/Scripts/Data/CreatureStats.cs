@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Data
@@ -11,6 +13,8 @@ namespace Data
         Defense,
         Dexterity
     }
+    
+    [Serializable]
     public class CreatureStats
     {
         //"constants for the weights"
@@ -23,10 +27,17 @@ namespace Data
         };
         
 
+        
+
         private BigDecimal _speed;
+
         private BigDecimal _attack;
+
         private BigDecimal _defense;
+ 
         private BigDecimal _dexterity;
+
+        [JsonIgnore]
         private BigDecimal _powerLevel;
         
         
@@ -53,7 +64,8 @@ namespace Data
             get => _dexterity;
             set => _dexterity = value;
         }
-
+    
+        [JsonIgnore]
         public BigDecimal PowerLevel
         {
             get => _powerLevel;
@@ -86,7 +98,5 @@ namespace Data
             // Assign the rounded value to powerLevel
             _powerLevel = totalPowerLevel.Round(0);
         }
-        
-        
     }
 }

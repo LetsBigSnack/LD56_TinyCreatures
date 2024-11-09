@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,13 +12,11 @@ public class InventoryManager : MonoBehaviour
     [Header("Inventory")]
     [SerializeField] private List<Creature> inventoryCreatures;
     [SerializeField] private int inventorySpace = 8;
-    [SerializeField] private Creature selectedCreatureForBattle;
-
-    [SerializeField] private Creature creatureInspectorLeft;
-    [SerializeField] private Creature creatureInspectorRight;
-
-    [SerializeField] private Creature selectedCreatureForReConfigure;
     
+    private Creature selectedCreatureForBattle;
+    private Creature creatureInspectorLeft;
+    private Creature creatureInspectorRight;
+    private Creature selectedCreatureForReConfigure;
     public Creature SelectedCreatureForBattle 
     { get => selectedCreatureForBattle; set => selectedCreatureForBattle = value; }
     
@@ -45,8 +45,8 @@ public class InventoryManager : MonoBehaviour
         else
         {
             Instance = this;
-            inventoryCreatures = new List<Creature>();
-            
+            //inventoryCreatures = SaveLoadManager.Instance.LoadInventory();
+            //AddCreature(SaveLoadManager.Instance.LoadCreature());
             AddCreature(CreatureManager.Instance.CreateBasicCreature());
             AddCreature(CreatureManager.Instance.CreateBasicCreature());
             AddCreature(CreatureManager.Instance.CreateBasicCreature());
@@ -145,7 +145,12 @@ public class InventoryManager : MonoBehaviour
         }
         creatureInspectorLeft = creatureToSelect;
     }
-    
+
+    private void OnDestroy()
+    {
+        SaveLoadManager.Instance.StoreInventory();
+    }
+
     public void SelectCreatureRight(Creature creatureToSelect)
     {
         if (creatureToSelect == creatureInspectorLeft)
