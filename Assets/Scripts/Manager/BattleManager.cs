@@ -9,7 +9,7 @@ public class BattleManager : MonoBehaviour
     public static BattleManager Instance { get; private set; }
 
     [Header("Battle Parameters")] 
-    [SerializeField] private Creature enemyCreature;
+    private Creature enemyCreature;
     [SerializeField] private BigDecimal statRange = new BigDecimal(35,-1);
     [SerializeField] private BigDecimal statMin = new BigDecimal(10,0);
     //how this shit is displayed in the inspector

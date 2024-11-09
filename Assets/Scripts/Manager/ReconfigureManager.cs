@@ -7,7 +7,7 @@ public class ReconfigureManager : MonoBehaviour
 {
     public static ReconfigureManager Instance;
 
-    [SerializeField] private Creature selectedCreature = null;
+    private Creature selectedCreature = null;
 
     [SerializeField] private List<BodyPartSet> bodyParts;
 

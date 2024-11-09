@@ -1,18 +1,21 @@
+using System;
 using Data;
+using Newtonsoft.Json;
+using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
+[Serializable]
 public class Creature
 {
     
-    
-    
     [Header("Stats")]
     private string _creatureName;
+
     private BigDecimal _creatureGeneration;
     private BigDecimal _currentHealth;
     private BigDecimal _maxHealth;
     private BigDecimal _creatureWins;
-    
     private CreatureStats _creatureStats;
     private CreatureRepresentation _representation;
 
@@ -27,7 +30,8 @@ public class Creature
         get => _creatureGeneration;
         set => _creatureGeneration = value;
     }
-
+    
+    [JsonIgnore]
     public BigDecimal CurrentHealth
     {
         get => _currentHealth;
@@ -67,12 +71,12 @@ public class Creature
     public Creature(BigDecimal generation, BigDecimal maxHealth, CreatureStats creatureStats, CreatureRepresentation representation)
     {
         _creatureName = GenerateRandomName();
+        _creatureGeneration = generation;
         _maxHealth = maxHealth;
         _currentHealth = _maxHealth;
         _creatureStats = creatureStats;
         _representation = representation;
         _creatureWins = 0;
-
     }
     
     
@@ -94,6 +98,11 @@ public class Creature
         string suffix = suffixes[Random.Range(0, suffixes.Length)];
 
         return prefix + middle + suffix;
+    }
+
+    public bool IsNull()
+    {
+        return _creatureName == null;
     }
     
 }

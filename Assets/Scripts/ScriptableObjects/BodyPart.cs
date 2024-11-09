@@ -1,3 +1,5 @@
+using System;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public enum BodyPartType
@@ -10,6 +12,8 @@ public enum BodyPartType
 
 
 [CreateAssetMenu(fileName = "NewBodyPart", menuName = "Game/BodyPart")]
+[Serializable]
+[JsonConverter(typeof(BodyPartHandler))]
 public class BodyPart : ScriptableObject
 {
     public Sprite bodyPartSprite;
@@ -22,5 +26,6 @@ public class BodyPart : ScriptableObject
     public float dexterityModifier;
 
     // Creature Dex Entry
+    public string bodyPartName;
     public bool unlocked = true;
 }

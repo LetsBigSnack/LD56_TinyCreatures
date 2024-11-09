@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Data
@@ -6,8 +7,8 @@ namespace Data
     using System;
     using System.Numerics;
     
-    [Serializable]
-    public struct BigDecimal: IComparable<BigDecimal>, IEquatable<BigDecimal>
+    [System.Serializable]
+    public class BigDecimal: IComparable<BigDecimal>, IEquatable<BigDecimal>
     {
         
         private static readonly Dictionary<BigDecimal, string> Suffixes = new Dictionary<BigDecimal, string>()
@@ -38,13 +39,15 @@ namespace Data
         
         [SerializeField]
         private string mantissaString;
+        
+        
         [SerializeField]
         private string exponentString;
         
         // Core Fields
-        [SerializeField]
+        [JsonProperty]
         private BigInteger mantissa;
-        [SerializeField]
+        [JsonProperty]
         private BigInteger exponent;
         
         // Constructor
@@ -52,6 +55,11 @@ namespace Data
         {
             this.mantissa = mantissa;
             this.exponent = exponent;
+            
+        }
+
+        private void UpdateStrings()
+        {
             mantissaString = mantissa.ToString();
             exponentString = exponent.ToString();
         }
