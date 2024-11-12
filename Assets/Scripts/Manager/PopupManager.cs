@@ -163,17 +163,16 @@ public class PopupManager : MonoBehaviour
     public void MainMenu(string scenename)
     {
         soundManager.PlaySFX("Click");
-        SceneManager.LoadScene(scenename);
+        SaveLoadManager.Instance.SaveGame();
+        SceneChangeManager.Instance.ChangeScene(scenename);
         ContinuePopup();
     }
-
     
     
     public void ReloadScene()
     {
         soundManager.PlaySFX("Click");
-        // Get the active scene and reload it
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneChangeManager.Instance.ChangeScene(SceneManager.GetActiveScene().name);
         ContinuePopup();
     }
 }

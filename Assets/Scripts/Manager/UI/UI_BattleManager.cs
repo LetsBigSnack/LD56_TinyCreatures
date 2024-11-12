@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,16 +65,28 @@ public class UI_BattleManager : MonoBehaviour
             battleCreatureDetails.SetupRepresentation(_selectedCreature);
             activeBattleCreatureButton.SetupRepresentation(InventoryManager.Instance.SelectedCreatureForBattle);
         }
+
+        if (InventoryManager.Instance.SelectedCreatureForBattle != null)
+        {
+            battleCreatureSprite.SetupRepresentation(InventoryManager.Instance.SelectedCreatureForBattle);
+            battleCreatureDetails.SetupRepresentation(InventoryManager.Instance.SelectedCreatureForBattle);
+            activeBattleCreatureButton.SetupRepresentation(InventoryManager.Instance.SelectedCreatureForBattle);
+        }
+        
         
         UI_InventoryManager.Instance.RefreshInventory();
     }
-    
-    
+
+    private void OnEnable()
+    {
+        Refresh();
+    }
+
     public void SetBattleCreature()
     {
         BattleManager.Instance.ResumeBattle();
         
-        if (_selectedCreature != null)
+        if (_selectedCreature != null && InventoryManager.Instance.SelectedCreatureForBattle == null)
         {
             InventoryManager.Instance.ChoiceCreatureForBattle(_selectedCreature);
 
@@ -107,6 +120,13 @@ public class UI_BattleManager : MonoBehaviour
         {
             BattleManager.Instance.StopBattle();
             InventoryManager.Instance.RetreatFormBattle(_selectedCreature);
+            activeBattleCreature.Creature = null;
+            _selectedCreature = null;
+            soundManager.PlaySFX("Click");
+        }else if (InventoryManager.Instance.SelectedCreatureForBattle != null)
+        {
+            BattleManager.Instance.StopBattle();
+            InventoryManager.Instance.RetreatFormBattle(InventoryManager.Instance.SelectedCreatureForBattle);
             activeBattleCreature.Creature = null;
             _selectedCreature = null;
             soundManager.PlaySFX("Click");

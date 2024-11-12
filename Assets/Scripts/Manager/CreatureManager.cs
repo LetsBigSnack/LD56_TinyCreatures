@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Data;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CreatureManager : MonoBehaviour
 {
@@ -24,8 +25,13 @@ public class CreatureManager : MonoBehaviour
     private List<BodyPart> _unlockedBodies = new List<BodyPart>();
     private List<BodyPart> _unlockedArms = new List<BodyPart>();
     private List<BodyPart> _unlockedLegs = new List<BodyPart>();
-    public List<BodyPartSet> BodyPartSets { get => bodyPartSets.ToList();}
     
+    public List<BodyPartSet> BodyPartSets
+    {
+        get => bodyPartSets.ToList();
+        set => bodyPartSets = value.ToArray();
+    }
+
     private void Awake()
     {
         
@@ -126,16 +132,16 @@ public class CreatureManager : MonoBehaviour
         {
             case BodyPartType.Head:
                 return _unlockedHeads[UnityEngine.Random.Range(0, _unlockedHeads.Count)];
-                break;
+            
             case BodyPartType.Body:
                 return _unlockedBodies[UnityEngine.Random.Range(0, _unlockedBodies.Count)];
-                break;
+                
             case BodyPartType.Legs:
                 return _unlockedLegs[UnityEngine.Random.Range(0, _unlockedLegs.Count)];
-                break;
+                
             case BodyPartType.Arms:
                 return _unlockedArms[UnityEngine.Random.Range(0, _unlockedArms.Count)];
-                break;
+                
         }
 
         return null;
@@ -177,5 +183,14 @@ public class CreatureManager : MonoBehaviour
     {
         Color headColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
         return headColor;
+    }
+
+    public void CheckCollectedParts(Creature newCreature)
+    { 
+        List<BodyPart> newBodyParts = newCreature.Representation.BodyParts
+            .Select(c => c.Value)
+            .ToList();
+        
+        newBodyParts.ForEach(bodyPart => bodyPart.collected = true);
     }
 }

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 
@@ -10,11 +12,15 @@ public class BodyPartEntry
 }
 
 [CreateAssetMenu(fileName = "NewBodyPartSet", menuName = "Game/BodyPartSet")]
+[Serializable]
+[JsonObject(MemberSerialization.OptIn)]
 public class BodyPartSet : ScriptableObject
 {
     public List<BodyPartEntry> bodyPartEntries;
-    public bool unlocked = false;
-    public string setName = "";
-    public string setText = "";
+    public bool unlocked;
+    public bool unlockedByDefault;
+    [JsonProperty]
+    public string setName;
+    public string setText;
 }
 

@@ -32,7 +32,9 @@ public class StoreManager : MonoBehaviour
     
     
     public BigDecimal WinThreshold { get => winThreshold; set => winThreshold = value; }
-
+    
+    public BigDecimal BoughtSlots { get => boughtSlots; set => boughtSlots = value; }
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)

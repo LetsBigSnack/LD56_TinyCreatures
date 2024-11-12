@@ -1,11 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//TODO: why just once
 public class SceneChangeManager : MonoBehaviour
 {
+    
+    public static SceneChangeManager Instance;
+    
     private bool isSceneChanging = false;
+
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void ChangeScene(string sceneName)
     {
@@ -21,6 +39,8 @@ public class SceneChangeManager : MonoBehaviour
         {
             Debug.Log("Loading scene: " + sceneName);
             SceneManager.LoadScene(sceneName);
+            GameManager.Instance.ChangeState(sceneName);
+            isSceneChanging = false;
         }
         else
         {

@@ -32,10 +32,15 @@ public class InventoryManager : MonoBehaviour
     public List<Creature> InventoryCreatures
     {
         get { return inventoryCreatures; }
+        set => inventoryCreatures = value;
     }
-    
-    public int InventorySpace {get => inventorySpace;}
-    
+
+    public int InventorySpace
+    {
+        get => inventorySpace;
+        set => inventorySpace = value;
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -45,11 +50,6 @@ public class InventoryManager : MonoBehaviour
         else
         {
             Instance = this;
-            //inventoryCreatures = SaveLoadManager.Instance.LoadInventory();
-            //AddCreature(SaveLoadManager.Instance.LoadCreature());
-            AddCreature(CreatureManager.Instance.CreateBasicCreature());
-            AddCreature(CreatureManager.Instance.CreateBasicCreature());
-            AddCreature(CreatureManager.Instance.CreateBasicCreature());
         }
     }
 
@@ -60,6 +60,7 @@ public class InventoryManager : MonoBehaviour
             if (inventoryCreatures.Count < inventorySpace)
             {
                 inventoryCreatures.Add(newCreature);
+                CreatureManager.Instance.CheckCollectedParts(newCreature);
                 return true;
             }
         }
@@ -145,12 +146,7 @@ public class InventoryManager : MonoBehaviour
         }
         creatureInspectorLeft = creatureToSelect;
     }
-
-    private void OnDestroy()
-    {
-        SaveLoadManager.Instance.StoreInventory();
-    }
-
+    
     public void SelectCreatureRight(Creature creatureToSelect)
     {
         if (creatureToSelect == creatureInspectorLeft)

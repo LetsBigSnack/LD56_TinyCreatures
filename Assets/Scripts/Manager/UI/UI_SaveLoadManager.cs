@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,16 +7,59 @@ using TMPro;
 
 public class UI_SaveLoadManager : MonoBehaviour
 {
-    [SerializeField] private UI_Save_Slot currentSlot;
-    // Start is called before the first frame update
-    void Start()
+    
+    public static UI_SaveLoadManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+
+        }
+    }
+    
+    [SerializeField] private UI_Save_Slot slot1;
+    [SerializeField] private UI_Save_Slot slot2;
+    [SerializeField] private UI_Save_Slot slot3;
+    [SerializeField] private TextMeshProUGUI selectedSlotText;
+    [SerializeField] private GameObject selectScreen;
+    
+    private void Start()
+    {
+        SetupRepresentation();
+    }
+    
+    public void SetupRepresentation()
     {
         
+        
+        slot1.Reset();
+        slot2.Reset();
+        slot3.Reset();
+        
+        slot1.SetupRepresentation(SaveLoadManager.Instance.SaveSlot1);
+        slot2.SetupRepresentation(SaveLoadManager.Instance.SaveSlot2);
+        slot3.SetupRepresentation(SaveLoadManager.Instance.SaveSlot3);
+
+        if (SaveLoadManager.Instance.SaveIndex != -1)
+        {
+            SetSelectedSlot(SaveLoadManager.Instance.SaveIndex);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetSelectedSlot(int slot)
     {
-        
+        selectedSlotText.text = slot.ToString();
     }
+
+    public void SetActiveSelectScreen(bool active)
+    {
+        selectScreen.SetActive(active);
+    }
+    
 }

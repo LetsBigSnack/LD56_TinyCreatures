@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -9,25 +11,33 @@ public class UI_Save_Slot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI playtimeText;
     [SerializeField] private TextMeshProUGUI achievmentText;
+    [SerializeField] private TextMeshProUGUI slotText;
+    [SerializeField] private int slotNumber;
 
-    // Start is called before the first frame update
-    void Start()
+    
+    public void Reset()
     {
-        //load stuff from SaveLoadManager to get all text necessary
+        slotText.text = slotNumber.ToString();
+        nameText.text = "";
+        playtimeText.text = "";
+        achievmentText.text = "";
     }
-
-    public void SetSlot()
+    
+    public void SetupRepresentation(SaveState saveState)
     {
-        //Set text here
+        if (saveState == null)
+        {
+            return;
+        }
+        nameText.text = saveState.saveName;
+        //playtimeText.text = "";
+        //achievmentText.text = "";
+        
     }
-
+    
     public void OnSelectSlot()
     {
-        //check if the slot has something stored
-        //Y: accept input and close menu
-        //N: openpopup to name it
-        //after submit change to slot
-        //close menu
+        SaveLoadManager.Instance.SelectSlot(slotNumber);
     }
 
     public void RenameSlot(string text)
@@ -37,7 +47,8 @@ public class UI_Save_Slot : MonoBehaviour
 
     public void DeleteSlot()
     {
-        //delete slot here
+        //TODO: add Confirm PopUp
+        SaveLoadManager.Instance.DeleteSlot(slotNumber);
+        UI_SaveLoadManager.Instance.SetupRepresentation();
     }
-
 }

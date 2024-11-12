@@ -78,7 +78,7 @@ public class UI_CreatureDexEntryItem : MonoBehaviour
 
         imageToManipulate.sprite = part.bodyPart.bodyPartSprite;
         Color imageColor = imageToManipulate.color;
-        imageColor.a = part.bodyPart.unlocked ?  1f : 0.5f;
+        imageColor.a = part.bodyPart.collected ?  1f : 0.5f;
         imageToManipulate.color = imageColor;
     }
 }

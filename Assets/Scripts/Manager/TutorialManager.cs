@@ -1,21 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager Instance { get; private set; }
+    private TutorialData _tutorialData;
 
-    [SerializeField]
-    bool entryDone = false;
-    [SerializeField]
-    bool battleDone = false;
-    [SerializeField]
-    bool inspectorDone = false;
-    [SerializeField]
-    bool fusionDone = false;
-    [SerializeField]
-    bool shopDone = false;
+    public TutorialData TutorialData
+    {
+        get => _tutorialData;
+        set => _tutorialData = value;
+    }
+
 
     private void Awake()
     {
@@ -33,11 +31,11 @@ public class TutorialManager : MonoBehaviour
 
     public void resetTutorial()
     {
-        entryDone = false;
-        battleDone = false;
-        inspectorDone = false;
-        fusionDone = false;
-        shopDone = false;
+        _tutorialData.EntryDone = false;
+        _tutorialData.BattleDone = false;
+        _tutorialData.InspectorDone = false;
+        _tutorialData.FusionDone = false;
+        _tutorialData.ShopDone = false;
     }
 
     public bool CheckBool(string boolToCheck)
@@ -47,19 +45,19 @@ public class TutorialManager : MonoBehaviour
         switch (boolToCheck)
         {
             case "Entry":
-                returnCase = entryDone;
+                returnCase = _tutorialData.EntryDone;
                 break;
             case "Battle":
-                returnCase = battleDone;
+                returnCase = _tutorialData.BattleDone;
                 break;
             case "Inspector":
-                returnCase = inspectorDone;
+                returnCase = _tutorialData.InspectorDone;
                 break;
             case "Fusion":
-                returnCase = fusionDone;
+                returnCase = _tutorialData.FusionDone;
                 break;
             case "Shop":
-                returnCase = shopDone;
+                returnCase = _tutorialData.ShopDone;
                 break;
         }
         return returnCase;
@@ -70,19 +68,19 @@ public class TutorialManager : MonoBehaviour
         switch (boolToCheck)
         {
             case "Entry":
-                entryDone = true;
+                _tutorialData.EntryDone = true;
                 break;
             case "Battle":
-                battleDone = true;
+                _tutorialData.BattleDone = true;
                 break;
             case "Inspector":
-                inspectorDone = true;
+                _tutorialData.InspectorDone = true;
                 break;
             case "Fusion":
-                fusionDone = true;
+                _tutorialData.FusionDone = true;
                 break;
             case "Shop":
-                shopDone = true;
+                _tutorialData.ShopDone = true;
                 break;
         }
     }

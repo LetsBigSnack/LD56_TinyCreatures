@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Helper;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -44,13 +45,20 @@ namespace Data
         [SerializeField]
         private string exponentString;
         
-        // Core Fields
         [JsonProperty]
-        private BigInteger mantissa;
+        private BigInteger mantissa = BigInteger.Zero;
+
         [JsonProperty]
-        private BigInteger exponent;
+        private BigInteger exponent = BigInteger.Zero;
         
         // Constructor
+        // Constructor
+        public BigDecimal()
+        {
+            mantissa = BigInteger.Zero;
+            exponent = BigInteger.Zero;
+        }
+        
         public BigDecimal(BigInteger mantissa, BigInteger exponent)
         {
             this.mantissa = mantissa;

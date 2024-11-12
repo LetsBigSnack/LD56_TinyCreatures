@@ -25,14 +25,23 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private BigDecimal playerWins = 0;
     [SerializeField] private float factorMult = 1.5f;
     [SerializeField] private bool autoBattle = true;
-    
-    
+
+    public bool HasBattleStarted
+    {
+        get => hasBattleStarted;
+        set => hasBattleStarted = value;
+    }
+
     private Coroutine _enemyAttack;
     private Coroutine _playerAttack;
     private Coroutine _battleCoroutine;
     
-    public BigDecimal PlayerWins{get{return playerWins;}}
-    
+    public BigDecimal PlayerWins
+    {
+        get{return playerWins;}
+        set => playerWins = value;
+    }
+
     public BigDecimal WinFactor{get{return winFactor;}}
     
     
@@ -40,10 +49,11 @@ public class BattleManager : MonoBehaviour
     public Creature EnemyCreature
     {
         get => enemyCreature;
+        set => enemyCreature = value;
     }
-    
-    
 
+    public bool BattleRunning { get => battleRunning; set => battleRunning = value; }
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -59,7 +69,7 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
-        if (!battleRunning)
+        if (!battleRunning || GameManager.Instance.CurrentState != State.Game)
         {
             return;
         }
@@ -74,8 +84,12 @@ public class BattleManager : MonoBehaviour
 
     public void StartBattle()
     {
+        Debug.Log("StartBattle");
         Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
-        UI_InventoryHoverManager.Instance.BattleText.text = "BATTLE ONGOING!";
+        if (UI_BattleManager.Instance != null)
+        {
+            UI_InventoryHoverManager.Instance.BattleText.text = "BATTLE ONGOING!";
+        }
         hasBattleStarted = true;
         playerCreature.CurrentHealth = playerCreature.MaxHealth;
 
@@ -206,7 +220,10 @@ public class BattleManager : MonoBehaviour
     public void StopBattle()
     {
         battleRunning = false;
-        UI_InventoryHoverManager.Instance.BattleText.text = "NO DATA FOUND!";
+        if (UI_BattleManager.Instance != null)
+        {
+            UI_InventoryHoverManager.Instance.BattleText.text = "NO DATA FOUND!";
+        }
         StopAllRoutines();
     }
 

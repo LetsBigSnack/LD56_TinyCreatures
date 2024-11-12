@@ -24,8 +24,8 @@ public class BodyPart : ScriptableObject
     public float attackModifier;
     public float defenseModifier;
     public float dexterityModifier;
-
+    
     // Creature Dex Entry
     public string bodyPartName;
-    public bool unlocked = true;
+    public bool collected = false;
 }
