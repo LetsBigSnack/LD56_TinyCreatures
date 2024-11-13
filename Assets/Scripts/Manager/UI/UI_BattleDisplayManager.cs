@@ -78,8 +78,9 @@ public class UI_BattleDisplayManager : MonoBehaviour
     public void CreateDamagePopUp(string text, bool isCrit, Creature creature)
     {
         Transform spawnPosition;
-
-        if(creature.CreatureName == playerObject.GetComponentInChildren<UICreatureButton>().creature.CreatureName)
+        
+        //TODO: magic constant
+        if(creature.CreatureName == "Enemy")
         {
             spawnPosition = enemyObject.transform;
             chooseAttackPrefab(text, isCrit, spawnPosition);
