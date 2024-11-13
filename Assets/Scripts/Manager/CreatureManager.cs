@@ -19,7 +19,7 @@ public class CreatureManager : MonoBehaviour
     
     [Header("Stat Settings")]
     private BigDecimal statRange = 3.5f;
-    private BigDecimal statMin = 10f;
+    private BigDecimal statMin = 12f;
     
     private List<BodyPart> _unlockedHeads = new List<BodyPart>();
     private List<BodyPart> _unlockedBodies = new List<BodyPart>();

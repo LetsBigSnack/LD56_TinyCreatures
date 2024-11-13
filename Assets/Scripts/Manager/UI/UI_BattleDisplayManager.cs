@@ -80,7 +80,7 @@ public class UI_BattleDisplayManager : MonoBehaviour
         Transform spawnPosition;
         
         //TODO: magic constant
-        if(creature.CreatureName == "Enemy")
+        if(creature.CreatureName != "Enemy")
         {
             spawnPosition = enemyObject.transform;
             chooseAttackPrefab(text, isCrit, spawnPosition);

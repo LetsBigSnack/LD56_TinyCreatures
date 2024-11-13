@@ -17692,6 +17692,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Managers
       objectReference: {fileID: 0}
+    - target: {fileID: 1651183181217393191, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: mutationFactor
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 5230948555505397506, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 415.75232
@@ -17731,6 +17735,78 @@ PrefabInstance:
     - target: {fileID: 5230948555505397506, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6298739330990959353, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: statMin.exponentString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6298739330990959353, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: statMin.mantissaString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6298739330990959353, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: statRange.exponentString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6298739330990959353, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: statRange.mantissaString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: boughtSlots.exponentString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: boughtSlots.mantissaString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: playerMoney.exponentString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: playerMoney.mantissaString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: winThreshold.exponentString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: winThreshold.mantissaString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: pricesPerSlot.exponentString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: pricesPerSlot.mantissaString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: basicCreaturePrice.exponentString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: basicCreaturePrice.mantissaString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: pricePerPowerLevel.exponentString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: pricePerPowerLevel.mantissaString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: advancedCreaturePrice.exponentString
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: advancedCreaturePrice.mantissaString
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
