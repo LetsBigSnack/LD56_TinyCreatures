@@ -147,8 +147,14 @@ public class BattleManager : MonoBehaviour
             if (enemyCreature.CurrentHealth <= 0)
             {
                 WinBattle();
-                StopCoroutine(_playerAttack);
-                StopCoroutine(_enemyAttack);
+                if (_playerAttack != null)
+                {
+                    StopCoroutine(_playerAttack);
+                }
+                if (_enemyAttack != null)
+                {
+                    StopCoroutine(_enemyAttack); 
+                }
                 yield break;
             }
 
@@ -161,8 +167,14 @@ public class BattleManager : MonoBehaviour
                 UI_BattleManager.Instance.SelectedCreature = null;
                 UI_BattleManager.Instance.Refresh();
                 UI_InventoryHoverManager.Instance.BattleText.text = playerCreature.CreatureName + " died!";
-                StopCoroutine(_playerAttack);
-                StopCoroutine(_enemyAttack);
+                if (_playerAttack != null)
+                {
+                    StopCoroutine(_playerAttack);
+                }
+                if (_enemyAttack != null)
+                {
+                    StopCoroutine(_enemyAttack); 
+                }
                 yield break;
             }
 
