@@ -18,8 +18,8 @@ public class CreatureManager : MonoBehaviour
     [SerializeField] private Color[] creatureColors;
     
     [Header("Stat Settings")]
-    [SerializeField] private BigDecimal statRange = 3.5f;
-    [SerializeField] private BigDecimal statMin = 10f;
+    private BigDecimal statRange = 3.5f;
+    private BigDecimal statMin = 10f;
     
     private List<BodyPart> _unlockedHeads = new List<BodyPart>();
     private List<BodyPart> _unlockedBodies = new List<BodyPart>();

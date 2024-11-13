@@ -10,11 +10,11 @@ public class BattleManager : MonoBehaviour
 
     [Header("Battle Parameters")] 
     private Creature enemyCreature;
-    [SerializeField] private BigDecimal statRange = new BigDecimal(35,-1);
-    [SerializeField] private BigDecimal statMin = new BigDecimal(10,0);
+    private BigDecimal statRange = new BigDecimal(35,-1);
+    private BigDecimal statMin = new BigDecimal(8,0);
     //how this shit is displayed in the inspector
-    [SerializeField] private BigDecimal speedFactor = 60f;
-    [SerializeField] private BigDecimal winFactor = 0.3f;
+    private BigDecimal speedFactor = 60f;
+    private BigDecimal winFactor = 0.25f;
 
     public BigDecimal StatRange{get{return statRange;}}
     public BigDecimal StatMin{get{return statMin;}}
@@ -22,7 +22,7 @@ public class BattleManager : MonoBehaviour
     [Header("Battle Information")] 
     [SerializeField] private bool battleRunning = true;
     [SerializeField] private bool hasBattleStarted = false;
-    [SerializeField] private BigDecimal playerWins = 0;
+    private BigDecimal playerWins = 0;
     [SerializeField] private float factorMult = 1.5f;
     [SerializeField] private bool autoBattle = true;
 

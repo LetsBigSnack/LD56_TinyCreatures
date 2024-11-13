@@ -17,7 +17,7 @@ public class BreedingManager : MonoBehaviour
     private Creature creaturePod1;
     private Creature creaturePod2;
     private Creature result;
-    [SerializeField] private BigDecimal breedingPrice = 0;
+    private BigDecimal breedingPrice = 0;
     //TODO: need to think about a better way 
     [SerializeField] private float winFactor = 0.5f;
 
@@ -174,11 +174,11 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
 
     
     // Combine stats from both parents and apply mutation
-    BigDecimal newHealth = (parent1.MaxHealth + parent2.MaxHealth) / 2f * MutationFactor(totalWins, totalHealthModifier);
-    BigDecimal newSpeed = ((parent1.CreatureStats.Speed + parent2.CreatureStats.Speed) / 2f) * MutationFactor(totalWins, totalSpeedModifier);
-    BigDecimal newAttack = ((parent1.CreatureStats.Attack + parent2.CreatureStats.Attack) / 2f) * MutationFactor(totalWins, totalAttackModifier);
-    BigDecimal newDefense = ((parent1.CreatureStats.Defense + parent2.CreatureStats.Defense) / 2f) * MutationFactor(totalWins, totalDefenseModifier);
-    BigDecimal newDexterity = ((parent1.CreatureStats.Dexterity + parent2.CreatureStats.Dexterity) / 2f) * MutationFactor(totalWins, totalDexterityModifier);
+    BigDecimal newHealth = (parent1.MaxHealth + parent2.MaxHealth) / 2f * MutationFactor(totalHealthModifier);
+    BigDecimal newSpeed = ((parent1.CreatureStats.Speed + parent2.CreatureStats.Speed) / 2f) * MutationFactor(totalSpeedModifier);
+    BigDecimal newAttack = ((parent1.CreatureStats.Attack + parent2.CreatureStats.Attack) / 2f) * MutationFactor(totalAttackModifier);
+    BigDecimal newDefense = ((parent1.CreatureStats.Defense + parent2.CreatureStats.Defense) / 2f) * MutationFactor(totalDefenseModifier);
+    BigDecimal newDexterity = ((parent1.CreatureStats.Dexterity + parent2.CreatureStats.Dexterity) / 2f) * MutationFactor(totalDexterityModifier);
 
     // Ensure minimum values for stats
     newHealth = BigDecimal.Max(1, newHealth);
@@ -194,10 +194,10 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
 
 
 
-    private BigDecimal MutationFactor(BigDecimal totalWins, BigDecimal totalModifier)
+    private BigDecimal MutationFactor(BigDecimal totalModifier)
     {
         BigDecimal t = ((-mutationFactor / (1.75f)) / 100f) * (1 - totalModifier);
-        BigDecimal t2 = (((mutationFactor + (totalWins * winFactor)) / 100f) * (1 + totalModifier));
+        BigDecimal t2 = (((mutationFactor)) / 100f) * (1 + totalModifier);
         
         t = t.Round(3);
         t2 = t2.Round(3);
@@ -206,7 +206,7 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
 
         
         Debug.Log("Lower Bound" + ((-mutationFactor/(1.75f)) / 100f) * (1 - totalModifier));
-        Debug.Log("Upper Bound" + (((mutationFactor + (totalWins * winFactor)) / 100f) * (1 + totalModifier)));
+        Debug.Log("Upper Bound" + (((mutationFactor) / 100f) * (1 + totalModifier)));
         Debug.Log("Factor: " + factor);
         return factor;
     }

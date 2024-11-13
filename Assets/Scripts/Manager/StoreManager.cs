@@ -10,14 +10,14 @@ public class StoreManager : MonoBehaviour
     public static StoreManager Instance { get; private set; }
 
     [Header("Prices")] 
-    [SerializeField] private BigDecimal currentSlotPrice;
-    [SerializeField] private BigDecimal pricesPerSlot = 10;
-    [SerializeField] private BigDecimal boughtSlots = 0;
-    [SerializeField] private BigDecimal basicCreaturePrice = 10;
-    [SerializeField] private BigDecimal winThreshold = 10;
-    [SerializeField] private BigDecimal advancedCreaturePrice = 10;
-    [SerializeField] private BigDecimal pricePerPowerLevel = 2;
-    [SerializeField] private BigDecimal playerMoney = 70;
+    private BigDecimal currentSlotPrice;
+    private BigDecimal pricesPerSlot = 10;
+    private BigDecimal boughtSlots = 0;
+    private BigDecimal basicCreaturePrice = 10;
+    private BigDecimal winThreshold = 10;
+    private BigDecimal advancedCreaturePrice = 10;
+    private BigDecimal pricePerPowerLevel = 2;
+    private BigDecimal playerMoney = 70;
     private List<Creature> soledCreatures;
     [SerializeField] private int soldLimit;
     
