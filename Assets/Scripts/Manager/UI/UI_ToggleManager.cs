@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum ToggleState
 {
@@ -23,6 +24,10 @@ public class UI_ToggleManager : MonoBehaviour
     [SerializeField] private GameObject fuse;
     [SerializeField] private GameObject materials;
     [SerializeField] private GameObject reconfigure;
+    
+    [SerializeField] private Sprite clickedSprite;
+    [SerializeField] private Sprite notClickedSprite;
+    [SerializeField] private List<GameObject> tabButtons;
 
     [SerializeField] private ToggleState currentState = ToggleState.Battle;
 
@@ -49,7 +54,7 @@ public class UI_ToggleManager : MonoBehaviour
     public void SwitchState(string state)
     {  
         soundManager.PlaySFX("Click");
-
+        UpdateButtonSprite(state);
         switch (state)
         {
             case "Shop":  
@@ -113,6 +118,26 @@ public class UI_ToggleManager : MonoBehaviour
                 break;
         }
         
+    }
+
+    private void UpdateButtonSprite(string currentState)
+    {
+        for (int i = 0; i < tabButtons.Count; i++)
+        {
+            if (tabButtons[i].activeSelf)
+            {
+                var buttonSprite = tabButtons[i].GetComponent<Image>();
+                var buttonName = tabButtons[i].name;
+                if (buttonName.Contains(currentState))
+                {
+                    buttonSprite.sprite = clickedSprite;
+                }
+                else
+                {
+                    buttonSprite.sprite = notClickedSprite;
+                }
+            }
+        }
     }
     
 }
