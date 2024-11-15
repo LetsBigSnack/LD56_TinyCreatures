@@ -66,7 +66,7 @@ public class ReconfigureManager : MonoBehaviour
     {
         selectedCreature = creature;
         Debug.Log(creature);
-        CreaturePicked();
+        CreaturePicked(creature);
         return true;
     }
 
@@ -133,14 +133,14 @@ public class ReconfigureManager : MonoBehaviour
         legs.Clear();
     }
 
-    public void CreaturePicked()
+    public void CreaturePicked(Creature creature)
     {
-        currentHead = selectedCreature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Head).FirstOrDefault().Value;
-        currentBody = selectedCreature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Body).FirstOrDefault().Value;
-        currentArms = selectedCreature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Arms).FirstOrDefault().Value;
-        currentLegs = selectedCreature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Legs).FirstOrDefault().Value;
+        currentHead = creature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Head).FirstOrDefault().Value;
+        currentBody = creature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Body).FirstOrDefault().Value;
+        currentArms = creature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Arms).FirstOrDefault().Value;
+        currentLegs = creature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Legs).FirstOrDefault().Value;
 
-        UI_CreatureReconfigureManager.Instance.CreaturePicked();
+        UI_CreatureReconfigureManager.Instance.CreaturePicked(creature);
     }
 
     public Sprite ReturnSelectedRepresentation(BodyPartType partType)

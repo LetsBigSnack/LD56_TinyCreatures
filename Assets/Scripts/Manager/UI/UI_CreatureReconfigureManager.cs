@@ -19,6 +19,8 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
     [SerializeField] private UI_CreatureReconfigurItem armsItem;
     [SerializeField] private UI_CreatureReconfigurItem legsItem;
 
+    //TODO: REWRITE WHOLE CODE!
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -72,7 +74,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
         creaturePreviewSprite.CreatureLegs.color = Color.clear;
     }
 
-    public void CreaturePicked()
+    public void CreaturePicked(Creature creature)
     {
         headIndex = ReconfigureManager.Instance.ReturnIndex(BodyPartType.Head);
         bodyIndex = ReconfigureManager.Instance.ReturnIndex(BodyPartType.Body);
@@ -88,13 +90,11 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
         creaturePreviewSprite.CreatureBody.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Body);
         creaturePreviewSprite.CreatureArms.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Arms);
         creaturePreviewSprite.CreatureLegs.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Legs);
-        
-        var currentCreature = InventoryManager.Instance.SelectedCreatureForReConfigure.Representation;
             
-        creaturePreviewSprite.CreatureHead.color = currentCreature.HeadColor;
-        creaturePreviewSprite.CreatureBody.color = currentCreature.BodyColor;
-        creaturePreviewSprite.CreatureArms.color = currentCreature.ArmsColor;
-        creaturePreviewSprite.CreatureLegs.color = currentCreature.LegsColor;
+        creaturePreviewSprite.CreatureHead.color = creature.Representation.HeadColor;
+        creaturePreviewSprite.CreatureBody.color = creature.Representation.BodyColor;
+        creaturePreviewSprite.CreatureArms.color = creature.Representation.ArmsColor;
+        creaturePreviewSprite.CreatureLegs.color = creature.Representation.LegsColor;
     }
 
     private void ResetCreaturePicked()
