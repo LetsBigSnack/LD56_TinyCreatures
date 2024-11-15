@@ -19,10 +19,13 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
     [SerializeField] private UI_CreatureReconfigurItem armsItem;
     [SerializeField] private UI_CreatureReconfigurItem legsItem;
 
+    private SoundManager soundManager;
+    
     //TODO: REWRITE WHOLE CODE!
 
     private void Awake()
     {
+        soundManager = FindObjectOfType<SoundManager>();
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -144,6 +147,8 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
                 ReconfigureManager.Instance.SetCurrentParts(BodyPartType.Legs, legIndex);
                 break;
         }
+
+        soundManager.PlaySFX("Click");
     }
 
     public void PreviousEntry(string part)
@@ -175,6 +180,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
                 ReconfigureManager.Instance.SetCurrentParts(BodyPartType.Legs, legIndex);
                 break;
         }
+        soundManager.PlaySFX("Click");
     }
 
     private Sprite SetItemSprite(UI_CreatureReconfigurItem item, List<BodyPartEntry> parts, int currentIndex)
@@ -206,7 +212,10 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
             ReconfigureManager.Instance.ReconfigureSelectedCreature();
             ResetCreaturePicked();
             UI_InventoryManager.Instance.RefreshInventory();
+            soundManager.PlaySFX("Transaction");
+            return;
         }
+        soundManager.PlaySFX("Error");
     }
 
     public void CancleReconfiguration()
@@ -216,6 +225,9 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
             ResetCreaturePicked();
             ReconfigureManager.Instance.RemoveFromReconfigure();
             UI_InventoryManager.Instance.RefreshInventory();
+            soundManager.PlaySFX("Transaction");
+            return;
         }
+        soundManager.PlaySFX("Error");
     }
 }
