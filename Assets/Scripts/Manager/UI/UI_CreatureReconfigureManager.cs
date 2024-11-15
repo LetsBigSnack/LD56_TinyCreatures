@@ -35,10 +35,8 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
     {
         ReconfigureManager.Instance.ClearEntries();
         ReconfigureManager.Instance.CreateEntries();
-        if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
-        {
-         SetImages();
-        }
+        SetImages();
+        
     }
 
     private void OnDisable()
@@ -48,10 +46,30 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
 
     private void SetImages()
     {
-        creaturePreviewSprite.CreatureHead.sprite = SetItemSprite(headItem, ReconfigureManager.Instance.Heads, headIndex);
-        creaturePreviewSprite.CreatureBody.sprite = SetItemSprite(bodyItem, ReconfigureManager.Instance.Bodies, bodyIndex);
-        creaturePreviewSprite.CreatureArms.sprite = SetItemSprite(armsItem, ReconfigureManager.Instance.Arms, armIndex);
-        creaturePreviewSprite.CreatureLegs.sprite = SetItemSprite(legsItem, ReconfigureManager.Instance.Legs, legIndex);
+        
+        if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
+        {
+            var currentCreature = InventoryManager.Instance.SelectedCreatureForReConfigure.Representation;
+            
+            creaturePreviewSprite.CreatureHead.color = currentCreature.HeadColor;
+            creaturePreviewSprite.CreatureBody.color = currentCreature.BodyColor;
+            creaturePreviewSprite.CreatureArms.color = currentCreature.ArmsColor;
+            creaturePreviewSprite.CreatureLegs.color = currentCreature.LegsColor;
+            
+            creaturePreviewSprite.CreatureHead.sprite =
+                SetItemSprite(headItem, ReconfigureManager.Instance.Heads, headIndex);
+            creaturePreviewSprite.CreatureBody.sprite =
+                SetItemSprite(bodyItem, ReconfigureManager.Instance.Bodies, bodyIndex);
+            creaturePreviewSprite.CreatureArms.sprite =
+                SetItemSprite(armsItem, ReconfigureManager.Instance.Arms, armIndex);
+            creaturePreviewSprite.CreatureLegs.sprite =
+                SetItemSprite(legsItem, ReconfigureManager.Instance.Legs, legIndex);
+            return;
+        }
+        creaturePreviewSprite.CreatureHead.color = Color.clear;
+        creaturePreviewSprite.CreatureBody.color = Color.clear;
+        creaturePreviewSprite.CreatureArms.color = Color.clear;
+        creaturePreviewSprite.CreatureLegs.color = Color.clear;
     }
 
     public void CreaturePicked()
@@ -70,6 +88,13 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
         creaturePreviewSprite.CreatureBody.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Body);
         creaturePreviewSprite.CreatureArms.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Arms);
         creaturePreviewSprite.CreatureLegs.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Legs);
+        
+        var currentCreature = InventoryManager.Instance.SelectedCreatureForReConfigure.Representation;
+            
+        creaturePreviewSprite.CreatureHead.color = currentCreature.HeadColor;
+        creaturePreviewSprite.CreatureBody.color = currentCreature.BodyColor;
+        creaturePreviewSprite.CreatureArms.color = currentCreature.ArmsColor;
+        creaturePreviewSprite.CreatureLegs.color = currentCreature.LegsColor;
     }
 
     private void ResetCreaturePicked()
@@ -83,11 +108,11 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
         creaturePreviewSprite.CreatureBody.sprite = SetItemSprite(bodyItem, ReconfigureManager.Instance.Bodies, bodyIndex);
         creaturePreviewSprite.CreatureArms.sprite = SetItemSprite(armsItem, ReconfigureManager.Instance.Arms, armIndex);
         creaturePreviewSprite.CreatureLegs.sprite = SetItemSprite(legsItem, ReconfigureManager.Instance.Legs, legIndex);
-        
-        SetImages();
 
         ReconfigureManager.Instance.RemoveFromReconfigure();
         UI_InventoryManager.Instance.RefreshInventory();
+        
+        SetImages();
     }
 
     public void NextEntry(string part)
