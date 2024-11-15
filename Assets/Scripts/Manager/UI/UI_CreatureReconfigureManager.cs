@@ -35,7 +35,10 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
     {
         ReconfigureManager.Instance.ClearEntries();
         ReconfigureManager.Instance.CreateEntries();
-        SetImages();
+        if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
+        {
+         SetImages();
+        }
     }
 
     private void OnDisable()

@@ -25,7 +25,7 @@ public class ReconfigureManager : MonoBehaviour
     public List<BodyPartEntry> Bodies { get => bodies; }
     public List<BodyPartEntry> Arms { get => arms; }
     public List<BodyPartEntry> Legs { get => legs; }
-
+    
     public BodyPart CurrentHead
     {
         get => currentHead;
