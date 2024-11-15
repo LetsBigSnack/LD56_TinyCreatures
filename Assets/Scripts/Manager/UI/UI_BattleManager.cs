@@ -140,5 +140,23 @@ public class UI_BattleManager : MonoBehaviour
         
         Refresh();
     }
+
+    public void SwitchAutoBattle()
+    {
+        BattleManager.Instance.SwitchAutoBattle();
+        soundManager.PlaySFX("Click");
+    }
+
+    public void NextBatlle()
+    {
+        if (BattleManager.Instance.NextBattle())
+        {
+            soundManager.PlaySFX("Click");
+        }
+        else 
+        { 
+            soundManager.PlaySFX("Error");
+        }
+    }
     
 }

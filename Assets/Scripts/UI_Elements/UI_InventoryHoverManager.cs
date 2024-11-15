@@ -10,7 +10,7 @@ public class UI_InventoryHoverManager : MonoBehaviour
 
     [SerializeField] private GameObject detailsWindow;
     [SerializeField] private GameObject battleWindow;
-
+    
     [SerializeField] private TextMeshProUGUI battleTitleText;
 
     [SerializeField] private TextMeshProUGUI creatureNameText;
@@ -73,13 +73,18 @@ public class UI_InventoryHoverManager : MonoBehaviour
         detailsWindow.SetActive(false);
         if (InventoryManager.Instance.SelectedCreatureForBattle != null)
         {
-            battleTitleText.text = "BATTLE ONGOING!";
+            ChangeBattleText("BATTLE ONGOING!");
         } 
         else
         {
-            battleTitleText.text = "NO DATA!";
+            ChangeBattleText("NO DATA!");
         }
         battleWindow.SetActive(true);
         
+    }
+
+    public void ChangeBattleText(string text)
+    {
+        battleTitleText.text = text;
     }
 }

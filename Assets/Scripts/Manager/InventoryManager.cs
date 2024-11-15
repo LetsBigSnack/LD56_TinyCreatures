@@ -115,7 +115,7 @@ public class InventoryManager : MonoBehaviour
             RemoveCreatureFormBattle();
             selectedCreatureForBattle = creatureToChose;
             RemoveCreature(creatureToChose);
-            BattleManager.Instance.StartBattle();
+            BattleManager.Instance.NextBattle();
         }
     }
     

@@ -82,13 +82,13 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void StartBattle()
+    private void StartBattle()
     {
         Debug.Log("StartBattle");
         Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
         if (UI_BattleManager.Instance != null)
         {
-            UI_InventoryHoverManager.Instance.BattleText.text = "BATTLE ONGOING!";
+            UI_InventoryHoverManager.Instance.ChangeBattleText("BATTLE ONGOING!");
         }
         hasBattleStarted = true;
         playerCreature.CurrentHealth = playerCreature.MaxHealth;
@@ -128,6 +128,8 @@ public class BattleManager : MonoBehaviour
         {
             StopCoroutine(_battleCoroutine);
         }
+
+        UI_InventoryHoverManager.Instance.ChangeBattleText("READY TO BATTLE");
     }
 
     private IEnumerator BattleCoroutine()
@@ -232,6 +234,7 @@ public class BattleManager : MonoBehaviour
     public void StopBattle()
     {
         battleRunning = false;
+        hasBattleStarted = false;
         if (UI_BattleManager.Instance != null)
         {
             UI_InventoryHoverManager.Instance.BattleText.text = "NO DATA FOUND!";
@@ -256,7 +259,21 @@ public class BattleManager : MonoBehaviour
     public void SwitchAutoBattle()
     {
         autoBattle = !autoBattle;
-        Debug.Log("Auto batteling = " + autoBattle);
+    }
+
+    public bool NextBattle()
+    {
+        Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
+        if (playerCreature == null || hasBattleStarted)
+        {
+            Debug.Log("Creature = "+ playerCreature);
+            Debug.Log("hasBattleStarted = " + hasBattleStarted);
+            return false;
+        }
+
+        StopAllCoroutines();
+        StartBattle();
+        return true;
     }
 
     public BigDecimal GetPredictedPowerLevel()
