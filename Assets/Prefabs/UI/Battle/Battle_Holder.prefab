@@ -1202,10 +1202,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Next
+  m_text: NEXT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fe91528e6a17c864b92f60d96a54f80e, type: 2}
+  m_sharedMaterial: {fileID: 7493332143323499303, guid: fe91528e6a17c864b92f60d96a54f80e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1455,6 +1455,7 @@ MonoBehaviour:
   activeBattleCreatureButton: {fileID: 1720816843631731580}
   activeBattleCreature: {fileID: 1961575607707096308}
   nextBattleButton: {fileID: 6271890873334818484}
+  toggleButton: {fileID: 1970119453346690561}
 --- !u!114 &3721139499782345110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3448,7 +3449,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Toggle
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7060,6 +7061,7 @@ GameObject:
   - component: {fileID: 2218124176415924628}
   - component: {fileID: 1737748859886508898}
   - component: {fileID: 5950670888713091810}
+  - component: {fileID: 1970119453346690561}
   m_Layer: 5
   m_Name: Pause
   m_TagString: Untagged
@@ -7084,8 +7086,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -184.08, y: -154}
-  m_SizeDelta: {x: 120.7997, y: 30}
+  m_AnchoredPosition: {x: -155, y: -154}
+  m_SizeDelta: {x: 180, y: 36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2218124176415924628
 CanvasRenderer:
@@ -7115,8 +7117,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 326325310, guid: ca8233799a6b8e348992bb35ec387bfb, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -7181,6 +7183,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1970119453346690561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8959784872463753234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f9ace6cea4be0e47911faf1ac5b9541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeSprite: {fileID: 326325310, guid: ca8233799a6b8e348992bb35ec387bfb, type: 3}
+  deactiveSprite: {fileID: 286907971, guid: ca8233799a6b8e348992bb35ec387bfb, type: 3}
 --- !u!1 &9008553685597781827
 GameObject:
   m_ObjectHideFlags: 0

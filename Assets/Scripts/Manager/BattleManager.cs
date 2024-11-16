@@ -24,7 +24,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private bool hasBattleStarted = false;
     private BigDecimal playerWins = 0;
     [SerializeField] private float factorMult = 1.5f;
-    private bool autoBattle = false;
+    private bool autoBattle;
 
     public bool HasBattleStarted
     {
@@ -42,9 +42,9 @@ public class BattleManager : MonoBehaviour
         set => playerWins = value;
     }
 
-    public BigDecimal WinFactor{get{return winFactor;}}
+    public BigDecimal WinFactor{ get{ return winFactor;} }
     
-    
+    public bool AutoBattle { get { return autoBattle;} }
     
     public Creature EnemyCreature
     {
@@ -63,7 +63,7 @@ public class BattleManager : MonoBehaviour
         else
         {
             Instance = this;
-
+            autoBattle = true;
         }
     }
 

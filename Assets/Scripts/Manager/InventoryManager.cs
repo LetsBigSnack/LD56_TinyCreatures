@@ -124,6 +124,9 @@ public class InventoryManager : MonoBehaviour
         if (creatureToChose != null && selectedCreatureForBattle == creatureToChose)
         {
             RemoveCreatureFormBattle();
+            if (UI_BattleManager.Instance != null) {
+                UI_BattleManager.Instance.SetNextBattleButtonActive(false);
+            }
         }
     }
     

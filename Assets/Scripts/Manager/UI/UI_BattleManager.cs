@@ -14,6 +14,7 @@ public class UI_BattleManager : MonoBehaviour
     [SerializeField] private UI_CreatureSprite activeBattleCreatureButton;
     [SerializeField] private UICreatureButton activeBattleCreature;
     [SerializeField] private GameObject nextBattleButton;
+    [SerializeField] private UI_ToggleButton toggleButton;
 
     private SoundManager soundManager;
 
@@ -85,6 +86,7 @@ public class UI_BattleManager : MonoBehaviour
     {
         Refresh();
         BattleManager.Instance.SetNextBattleButton();
+        toggleButton.SetToggleState(BattleManager.Instance.AutoBattle);
     }
 
     public void SetBattleCreature()
@@ -147,6 +149,7 @@ public class UI_BattleManager : MonoBehaviour
     public void SwitchAutoBattle()
     {
         BattleManager.Instance.SwitchAutoBattle();
+        toggleButton.SetToggleState(BattleManager.Instance.AutoBattle);
         soundManager.PlaySFX("Click");
     }
 
