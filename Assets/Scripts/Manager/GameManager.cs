@@ -39,6 +39,10 @@ public class GameManager : MonoBehaviour
         {
             case "DekisScene":
                 _currentState = State.Game;
+                if (!BattleManager.Instance.SetNextBattleButton())
+                {
+                    BattleManager.Instance.NextBattle();
+                }
                 break;
             default:
                 _currentState = State.MainMenu;

@@ -24,7 +24,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private bool hasBattleStarted = false;
     private BigDecimal playerWins = 0;
     [SerializeField] private float factorMult = 1.5f;
-    [SerializeField] private bool autoBattle = true;
+    private bool autoBattle = false;
 
     public bool HasBattleStarted
     {
@@ -80,15 +80,17 @@ public class BattleManager : MonoBehaviour
                 StartBattle();
             }
         }
+        Debug.Log("AutoBattle = " + autoBattle);
     }
 
     private void StartBattle()
     {
         Debug.Log("StartBattle");
         Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
-        if (UI_BattleManager.Instance != null)
+        if (UI_BattleManager.Instance != null && UI_InventoryHoverManager.Instance != null)
         {
             UI_InventoryHoverManager.Instance.ChangeBattleText("BATTLE ONGOING!");
+            UI_BattleManager.Instance.SetNextBattleButtonActive(false);
         }
         hasBattleStarted = true;
         playerCreature.CurrentHealth = playerCreature.MaxHealth;
@@ -129,7 +131,11 @@ public class BattleManager : MonoBehaviour
             StopCoroutine(_battleCoroutine);
         }
 
-        UI_InventoryHoverManager.Instance.ChangeBattleText("READY TO BATTLE");
+        if(UI_BattleManager.Instance != null && UI_InventoryHoverManager.Instance != null)
+        {
+            UI_InventoryHoverManager.Instance.ChangeBattleText("READY TO BATTLE");
+            UI_BattleManager.Instance.SetNextBattleButtonActive(true);
+        }
     }
 
     private IEnumerator BattleCoroutine()
@@ -273,6 +279,20 @@ public class BattleManager : MonoBehaviour
 
         StopAllCoroutines();
         StartBattle();
+        return true;
+    }
+
+    public bool SetNextBattleButton()
+    {
+        Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
+        if(playerCreature == null || enemyCreature != null)
+        {
+            return false;
+        }
+        if(UI_BattleManager.Instance != null)
+        {
+            UI_BattleManager.Instance.SetNextBattleButtonActive(true);
+        }
         return true;
     }
 

@@ -13,6 +13,7 @@ public class UI_BattleManager : MonoBehaviour
     [SerializeField] private UI_CreatureDetailsText battleCreatureDetails;
     [SerializeField] private UI_CreatureSprite activeBattleCreatureButton;
     [SerializeField] private UICreatureButton activeBattleCreature;
+    [SerializeField] private GameObject nextBattleButton;
 
     private SoundManager soundManager;
 
@@ -29,6 +30,7 @@ public class UI_BattleManager : MonoBehaviour
         {
             Instance = this;
             soundManager = FindObjectOfType<SoundManager>();
+            SetNextBattleButtonActive(false);
         }
     }
     
@@ -82,6 +84,7 @@ public class UI_BattleManager : MonoBehaviour
     private void OnEnable()
     {
         Refresh();
+        BattleManager.Instance.SetNextBattleButton();
     }
 
     public void SetBattleCreature()
@@ -157,6 +160,12 @@ public class UI_BattleManager : MonoBehaviour
         { 
             soundManager.PlaySFX("Error");
         }
+    }
+
+    public void SetNextBattleButtonActive(bool isActive)
+    {
+        Debug.Log("Next button called" + nextBattleButton);
+        nextBattleButton.SetActive(isActive);
     }
     
 }
