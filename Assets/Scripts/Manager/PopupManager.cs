@@ -17,6 +17,8 @@ public class PopupManager : MonoBehaviour
     private GameObject _settingsPopup;
     [SerializeField]
     private GameObject _textPopup;
+    [SerializeField]
+    private GameObject _inputPopup;
 
     private SoundManager soundManager;
 
@@ -51,6 +53,10 @@ public class PopupManager : MonoBehaviour
     [SerializeField]
     private int currentPage;
 
+    [SerializeField] private TMP_InputField inputField;
+    private string inputName;
+
+    public string InputName { get { return inputName; } }
 
     public enum StringState
     {
@@ -59,7 +65,8 @@ public class PopupManager : MonoBehaviour
         Inspector,
         Fusion,
         Shop,
-        Settings
+        Settings,
+        Input
     }
 
     public Dictionary<string, StringState> stateDictonary;
@@ -84,8 +91,37 @@ public class PopupManager : MonoBehaviour
             { "Fusion", StringState.Fusion },
             { "Shop", StringState.Shop },
             { "Settings", StringState.Settings },
+            { "Input", StringState.Input },
         };
 
+    }
+
+    private void OnEnable()
+    {
+        inputField.onValueChanged.AddListener(data => { OnInputChanges(data); });
+    }
+
+    public void OnInputChanges(string data)
+    {
+        inputName = data;
+    }
+
+    public void ClearInput()
+    {
+        inputName = "";
+        inputField.text = "";
+    }
+
+    public void ConfirmSlotName()
+    {
+        UI_Save_Slot currSlot = UI_SaveSlotHelper.Instance.SelectSlot();
+        Debug.Log("Currslot = "+ currSlot);
+        if (currSlot != null) 
+        {
+            currSlot.OnConfirmSlot();
+            _popupContainer.SetActive(false);
+            ClearInput();
+        }
     }
 
     public void SetString(StringState currentState)
@@ -133,6 +169,7 @@ public class PopupManager : MonoBehaviour
         else
         {
             _popupContainer.SetActive(false);
+            ClearInput();
         }        
     }
 
@@ -140,7 +177,7 @@ public class PopupManager : MonoBehaviour
     {
         StringState newState = stateDictonary.GetValueOrDefault(state);
 
-        if (newState != StringState.Settings && !TutorialManager.Instance.CheckBool(state))
+        if (newState != StringState.Settings && !TutorialManager.Instance.CheckBool(state) && newState != StringState.Input)
         {
             robot.SetActive(true);
             TutorialManager.Instance.SetBool(state);
@@ -150,6 +187,7 @@ public class PopupManager : MonoBehaviour
             _popupContainer.SetActive(true);
             _settingsPopup.SetActive(false);
             _textPopup.SetActive(true);
+            _inputPopup.SetActive(false);
         }
         else if(newState == StringState.Settings)
         {
@@ -157,6 +195,15 @@ public class PopupManager : MonoBehaviour
             _popupContainer.SetActive(true);
             _textPopup.SetActive(false);
             _settingsPopup.SetActive(true);
+            _inputPopup.SetActive(false);
+        }
+        else if(newState == StringState.Input)
+        {
+            robot.SetActive(false);
+            _popupContainer.SetActive(true);
+            _textPopup.SetActive(false);
+            _settingsPopup.SetActive(false);
+            _inputPopup.SetActive(true);
         }
     }
 

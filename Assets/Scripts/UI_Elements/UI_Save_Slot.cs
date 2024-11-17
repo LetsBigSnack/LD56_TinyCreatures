@@ -14,7 +14,6 @@ public class UI_Save_Slot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI slotText;
     [SerializeField] private int slotNumber;
 
-    
     public void Reset()
     {
         slotText.text = slotNumber.ToString();
@@ -37,13 +36,32 @@ public class UI_Save_Slot : MonoBehaviour
     
     public void OnSelectSlot()
     {
-        SaveLoadManager.Instance.SelectSlot(slotNumber);
+        if (!SaveLoadManager.Instance.SaveStateExists(slotNumber))
+        {
+            UI_SaveSlotHelper.Instance.CurrSlot = slotNumber;
+            PopupManager.Instance.ViewPopup("Input");
+            return;
+        }
+        SaveLoadManager.Instance.SelectSlot(slotNumber, "");
+    }
+
+    public void OnConfirmSlot() 
+    {
+        string newName = PopupManager.Instance.InputName;
+        if(!string.IsNullOrEmpty(newName)) 
+        {
+            SaveLoadManager.Instance.SelectSlot(slotNumber, newName);
+            SoundManager.Instance.PlaySFX("Click");
+            return;
+        }
+        SoundManager.Instance.PlaySFX("Error");
     }
 
     public void RenameSlot(string text)
     {
         nameText.text = text;
     }
+
 
     public void DeleteSlot()
     {

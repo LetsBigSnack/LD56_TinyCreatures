@@ -45,7 +45,7 @@ public class SaveLoadManager : MonoBehaviour
         set => _saveIndex = value;
     }
 
-    
+
     private void Awake()
     {
         if (Instance == null)
@@ -107,7 +107,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         SaveState saveState = new SaveState();
         saveState.InitializeDefaults();
-        
+
         saveState.savedSets = CreatureManager.Instance.BodyPartSets
             .Where(set => set.unlocked)
             .Select(set => new TransientBodyPartSet
@@ -138,7 +138,6 @@ public class SaveLoadManager : MonoBehaviour
         saveState.selectedCreaturePodTwo = BreedingManager.Instance.CreaturePod2;
         saveState.breedingCreatureResult = BreedingManager.Instance.Result;
         saveState.selectedCreatureReconfigure = InventoryManager.Instance.SelectedCreatureForReConfigure;
-        
 
         JsonSerializerSettings settings = new JsonSerializerSettings
         {
@@ -253,15 +252,16 @@ public class SaveLoadManager : MonoBehaviour
         }
     }
 
-    public void SelectSlot(int slotNumber)
+    public void SelectSlot(int slotNumber, string newName)
     {
         string filePath = $"{_savePath}/SaveSlot{slotNumber}.json";
 
-        if (!File.Exists(filePath))
+        if (!SaveStateExists(slotNumber))
         {
             ResetCollectedAndUnlockedStates();
             SaveState newSaveState = new SaveState();
             newSaveState.InitializeDefaults();
+            newSaveState.saveName = newName;
             JsonSerializerSettings settings = new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
@@ -301,6 +301,17 @@ public class SaveLoadManager : MonoBehaviour
         UI_SaveLoadManager.Instance.SetActiveSelectScreen(false);
         LoadGame();
         
+    }
+
+    public bool SaveStateExists(int slotNumber)
+    {
+        string filePath = $"{_savePath}/SaveSlot{slotNumber}.json";
+
+        if (File.Exists(filePath))
+        {
+            return true ;
+        }
+        return false ;
     }
     
     private void ResetCollectedAndUnlockedStates()
