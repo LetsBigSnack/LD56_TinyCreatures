@@ -22,6 +22,7 @@ public class UI_CreatureDetailsText : MonoBehaviour
     {
         // Subscribe to the win battle event
         BattleManager.OnPlayerWinsChanged += UpdateWinsText;
+        Reset();
     }
     
     private void OnDisable()
@@ -29,12 +30,7 @@ public class UI_CreatureDetailsText : MonoBehaviour
         // Unsubscribe from the win battle
         BattleManager.OnPlayerWinsChanged -= UpdateWinsText;
     }
-    
-    private void Start()
-    {
-        Reset();
-    }
-
+      
     public void Reset()
     {
         creatureNameText.text = "   ";
