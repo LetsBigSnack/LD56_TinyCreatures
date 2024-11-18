@@ -17,11 +17,11 @@ public class UI_CreatureDetailsText : MonoBehaviour
     [SerializeField] private TextMeshProUGUI winsText;
     [SerializeField] private GameObject[] attributes;
 
-    private void Start()
+    private void OnEnable()
     {
         Reset();
     }
-
+    
     public void Reset()
     {
         creatureNameText.text = "   ";
