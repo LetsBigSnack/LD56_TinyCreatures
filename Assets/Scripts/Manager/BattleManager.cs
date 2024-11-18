@@ -135,7 +135,7 @@ public class BattleManager : MonoBehaviour
             StopCoroutine(_battleCoroutine);
         }
 
-        if(UI_BattleManager.Instance != null && UI_InventoryHoverManager.Instance != null)
+        if(!autoBattle && UI_BattleManager.Instance != null && UI_InventoryHoverManager.Instance != null)
         {
             UI_InventoryHoverManager.Instance.ChangeBattleText("READY TO BATTLE");
             UI_BattleManager.Instance.SetNextBattleButtonActive(true);
