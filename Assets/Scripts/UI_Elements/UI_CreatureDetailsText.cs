@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using Helper.Util;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,12 +17,20 @@ public class UI_CreatureDetailsText : MonoBehaviour
     [SerializeField] private TextMeshProUGUI defText;
     [SerializeField] private TextMeshProUGUI winsText;
     [SerializeField] private GameObject[] attributes;
-
+    
     private void OnEnable()
     {
+        // Subscribe to the win battle event
+        BattleManager.OnPlayerWinsChanged += UpdateWinsText;
         Reset();
     }
     
+    private void OnDisable()
+    {
+        // Unsubscribe from the win battle
+        BattleManager.OnPlayerWinsChanged -= UpdateWinsText;
+    }
+      
     public void Reset()
     {
         creatureNameText.text = "   ";
@@ -147,6 +156,15 @@ public class UI_CreatureDetailsText : MonoBehaviour
             }
         }
         
+    }
+    
+    private void UpdateWinsText(BigDecimal newWinCount)
+    {
+        // Update the wins text with the new win count
+        if (winsText != null)
+        {
+            winsText.text = newWinCount.ToNumberSuffix(false);
+        }
     }
 
 }

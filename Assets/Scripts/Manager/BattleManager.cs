@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
+    public static event Action<BigDecimal> OnPlayerWinsChanged;
     public static BattleManager Instance { get; private set; }
 
     [Header("Battle Parameters")] 
@@ -120,6 +121,9 @@ public class BattleManager : MonoBehaviour
         hasBattleStarted = false;
 
         InventoryManager.Instance.SelectedCreatureForBattle.CreatureWins++;
+
+        // Trigger to notify listeners in UI about the win count change
+        OnPlayerWinsChanged?.Invoke(playerWins);
         
         if (playerWins == StoreManager.Instance.WinThreshold)
         {
