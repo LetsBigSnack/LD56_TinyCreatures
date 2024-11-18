@@ -7,6 +7,7 @@ using System.Net;
 using System.Numerics;
 using Data;
 using Newtonsoft.Json;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -105,9 +106,27 @@ public class SaveLoadManager : MonoBehaviour
 
     public void SaveGame()
     {
+        
+        SaveState tempSaveState;
+        switch (_saveIndex)
+        {
+            case 0:
+                tempSaveState = _saveSlot1;
+                break;
+            case 1: 
+                tempSaveState = _saveSlot2;
+                break;
+            case 2: 
+                tempSaveState = _saveSlot3;
+                break;
+            default:
+                Debug.LogWarning("Invalid slot number provided.");
+                return;
+        }
+        
         SaveState saveState = new SaveState();
         saveState.InitializeDefaults();
-
+        saveState.saveName = tempSaveState.saveName;
         saveState.savedSets = CreatureManager.Instance.BodyPartSets
             .Where(set => set.unlocked)
             .Select(set => new TransientBodyPartSet
@@ -252,7 +271,7 @@ public class SaveLoadManager : MonoBehaviour
         }
     }
 
-    public void SelectSlot(int slotNumber, string newName)
+    public void SelectSlot(int slotNumber)
     {
         string filePath = $"{_savePath}/SaveSlot{slotNumber}.json";
 
@@ -261,7 +280,6 @@ public class SaveLoadManager : MonoBehaviour
             ResetCollectedAndUnlockedStates();
             SaveState newSaveState = new SaveState();
             newSaveState.InitializeDefaults();
-            newSaveState.saveName = newName;
             JsonSerializerSettings settings = new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
@@ -298,7 +316,6 @@ public class SaveLoadManager : MonoBehaviour
         }
         _saveIndex = slotNumber;
         UI_SaveLoadManager.Instance.SetSelectedSlot(slotNumber);
-        UI_SaveLoadManager.Instance.SetActiveSelectScreen(false);
         LoadGame();
         
     }
@@ -327,6 +344,38 @@ public class SaveLoadManager : MonoBehaviour
                 entry.bodyPart.collected = false; // Reset part to uncollected
             }
         }
+    }
+
+    public void RenameSaveSlot(string saveName, int slotIndex)
+    {
+        SaveState tempSaveState;
+        switch (slotIndex)
+        {
+            case 0:
+                tempSaveState = _saveSlot1;
+                break;
+            case 1: 
+                tempSaveState = _saveSlot2;
+                break;
+            case 2: 
+                tempSaveState = _saveSlot3;
+                break;
+            default:
+                Debug.LogWarning("Invalid slot number provided.");
+                return;
+        }
+        
+        //FAIL SAVE
+        tempSaveState.saveName = saveName;
+        
+        JsonSerializerSettings settings = new JsonSerializerSettings
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            Formatting = Formatting.Indented
+        };
+        
+        string json = JsonConvert.SerializeObject(tempSaveState, settings);
+        File.WriteAllText(_savePath+"/SaveSlot"+slotIndex+".json", json);
     }
 
     private void OnDestroy()

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Manager;
 using UnityEngine;
 
 public class EntryCall : MonoBehaviour
@@ -8,6 +9,6 @@ public class EntryCall : MonoBehaviour
     private void Start()
     {
         popupManager = FindObjectOfType<PopupManager>();
-        popupManager.ViewPopup("Entry");
+        popupManager.ViewPopup(StringState.Entry);
     }
 }

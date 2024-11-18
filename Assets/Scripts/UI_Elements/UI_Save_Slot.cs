@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Data;
+using Manager;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -36,36 +37,57 @@ public class UI_Save_Slot : MonoBehaviour
     
     public void OnSelectSlot()
     {
-        if (!SaveLoadManager.Instance.SaveStateExists(slotNumber))
+        bool notCreated = !SaveLoadManager.Instance.SaveStateExists(slotNumber);
+        if (notCreated)
         {
             UI_SaveSlotHelper.Instance.CurrSlot = slotNumber;
-            PopupManager.Instance.ViewPopup("Input");
-            return;
+            PopupManager.Instance.ViewPopup(StringState.Input);
         }
-        SaveLoadManager.Instance.SelectSlot(slotNumber, "");
+        else
+        {
+            SaveLoadManager.Instance.SelectSlot(slotNumber);
+            UI_SaveLoadManager.Instance.SetActiveSelectScreen(false);
+        }
     }
 
-    public void OnConfirmSlot() 
+    public bool OnConfirmSlot() 
     {
         string newName = PopupManager.Instance.InputName;
+        bool notCreated = !SaveLoadManager.Instance.SaveStateExists(slotNumber);
+        
         if(!string.IsNullOrEmpty(newName)) 
         {
-            SaveLoadManager.Instance.SelectSlot(slotNumber, newName);
+            if (notCreated)
+            {
+                SaveLoadManager.Instance.SelectSlot(slotNumber);
+            }
+            SaveLoadManager.Instance.RenameSaveSlot(newName, slotNumber);
             SoundManager.Instance.PlaySFX("Click");
-            return;
+            UI_SaveLoadManager.Instance.SetupRepresentation();
+            return true;
         }
         SoundManager.Instance.PlaySFX("Error");
+        return false;
     }
 
-    public void RenameSlot(string text)
+    public void RenameSlot()
     {
-        nameText.text = text;
+        SoundManager.Instance.PlaySFX("Click");
+        UI_SaveSlotHelper.Instance.CurrSlot = slotNumber;
+        PopupManager.Instance.SetInputText(nameText.text);
+        PopupManager.Instance.ViewPopup(StringState.Input);
     }
 
 
+    public void OnDeselectSlot()
+    {
+        UI_SaveSlotHelper.Instance.CurrSlot = slotNumber;
+        PopupManager.Instance.ViewPopup(StringState.Delete);
+    }
+    
+    
     public void DeleteSlot()
     {
-        //TODO: add Confirm PopUp
         SaveLoadManager.Instance.DeleteSlot(slotNumber);
         UI_SaveLoadManager.Instance.SetupRepresentation();
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Data;
+using Manager;
 using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
@@ -38,48 +39,48 @@ public class TutorialManager : MonoBehaviour
         _tutorialData.ShopDone = false;
     }
 
-    public bool CheckBool(string boolToCheck)
+    public bool CheckBool(StringState boolToCheck)
     {
         bool returnCase = false;
 
         switch (boolToCheck)
         {
-            case "Entry":
+            case StringState.Entry:
                 returnCase = _tutorialData.EntryDone;
                 break;
-            case "Battle":
+            case StringState.Battle:
                 returnCase = _tutorialData.BattleDone;
                 break;
-            case "Inspector":
+            case StringState.Inspector:
                 returnCase = _tutorialData.InspectorDone;
                 break;
-            case "Fusion":
+            case StringState.Fusion:
                 returnCase = _tutorialData.FusionDone;
                 break;
-            case "Shop":
+            case StringState.Shop:
                 returnCase = _tutorialData.ShopDone;
                 break;
         }
         return returnCase;
     }
 
-    public void SetBool(string boolToCheck)
+    public void SetBool(StringState boolToCheck)
     {
         switch (boolToCheck)
         {
-            case "Entry":
+            case StringState.Entry:
                 _tutorialData.EntryDone = true;
                 break;
-            case "Battle":
+            case StringState.Battle:
                 _tutorialData.BattleDone = true;
                 break;
-            case "Inspector":
+            case StringState.Inspector:
                 _tutorialData.InspectorDone = true;
                 break;
-            case "Fusion":
+            case StringState.Fusion:
                 _tutorialData.FusionDone = true;
                 break;
-            case "Shop":
+            case StringState.Shop:
                 _tutorialData.ShopDone = true;
                 break;
         }

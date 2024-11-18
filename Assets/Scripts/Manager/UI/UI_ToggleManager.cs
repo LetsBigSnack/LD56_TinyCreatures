@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Manager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -65,7 +66,7 @@ public class UI_ToggleManager : MonoBehaviour
                 materials.SetActive(false);
                 reconfigure.SetActive(false);
                 currentState = ToggleState.Shop;
-                popupManager.ViewPopup(state);
+                popupManager.ViewPopup(StringState.Shop);
                 break;
             case "Battle":
                 battle.SetActive(true);
@@ -84,7 +85,7 @@ public class UI_ToggleManager : MonoBehaviour
                 materials.SetActive(false);
                 reconfigure.SetActive(false);
                 currentState = ToggleState.Inspector;
-                popupManager.ViewPopup(state);
+                popupManager.ViewPopup(StringState.Inspector);
                 break;
             case "Fusion":
                 fuse.SetActive(true);
@@ -94,7 +95,7 @@ public class UI_ToggleManager : MonoBehaviour
                 materials.SetActive(false);
                 reconfigure.SetActive(false);
                 currentState = ToggleState.Fusion;
-                popupManager.ViewPopup(state);
+                popupManager.ViewPopup(StringState.Fusion);
                 break;
             case "Materials":
                 fuse.SetActive(false);

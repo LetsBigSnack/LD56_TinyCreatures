@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Manager;
 using UnityEngine;
 
 public class PopupHelper : MonoBehaviour
@@ -13,6 +14,6 @@ public class PopupHelper : MonoBehaviour
 
     public void SettingsBtnPressed()
     {
-        popupManager.ViewPopup("Settings");
+        popupManager.ViewPopup(StringState.Settings);
     }
 }
