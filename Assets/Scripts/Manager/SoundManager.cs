@@ -39,8 +39,28 @@ public class SoundManager : MonoBehaviour
     private void Start()
     {
         PlayBackgroundMusic();
-        SetMusicVolume();
-        SetSfxVolume();
+
+        if (PlayerPrefs.HasKey("music") && PlayerPrefs.HasKey("sfx"))
+        {
+            SetVolumesFromPrefs();
+        }
+        else
+        {
+            SetMusicVolume();
+            SetSfxVolume();
+        }
+        
+    }
+
+    private void SetVolumesFromPrefs()
+    {
+        float musicVolume = PlayerPrefs.GetFloat("music");
+        float sfxVolume = PlayerPrefs.GetFloat("sfx");
+        musicSlider.value = musicVolume;
+        sfxSlider.value = sfxVolume;
+        myMixer.SetFloat("music", Mathf.Log10(musicVolume) * 20);
+        myMixer.SetFloat("sfx", Mathf.Log10(sfxVolume) * 20);
+
     }
 
     public void PlayBackgroundMusic()
@@ -88,6 +108,7 @@ public class SoundManager : MonoBehaviour
         else{
             float volume = musicSlider.value;
             myMixer.SetFloat("music", Mathf.Log10(volume) * 20);
+            PlayerPrefs.SetFloat("music", volume);
         }
     }
 
@@ -101,6 +122,7 @@ public class SoundManager : MonoBehaviour
         {
             float volume = sfxSlider.value;
             myMixer.SetFloat("sfx", Mathf.Log10(volume) * 20);
+            PlayerPrefs.SetFloat("sfx", volume);
         }
     }
 
