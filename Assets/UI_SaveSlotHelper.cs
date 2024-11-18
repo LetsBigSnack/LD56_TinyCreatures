@@ -31,7 +31,6 @@ public class UI_SaveSlotHelper : MonoBehaviour
 
     public UI_Save_Slot SelectSlot()
     {
-        Debug.Log(currSlot);
         switch (currSlot)
         {
             case 0:

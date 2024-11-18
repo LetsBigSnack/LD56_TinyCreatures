@@ -73,14 +73,12 @@ public class ReconfigureManager : MonoBehaviour
     public bool AddToReconfigure(Creature creature)
     {
         selectedCreature = creature;
-        Debug.Log(creature);
         CreaturePicked(creature);
         return true;
     }
 
     public bool ReconfigureSelectedCreature()
     {
-        Debug.Log(selectedCreature);
 
         if(currentHead != null) selectedCreature.Representation.BodyParts[BodyPartType.Head] = currentHead;
 

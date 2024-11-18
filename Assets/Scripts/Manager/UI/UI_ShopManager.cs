@@ -80,7 +80,6 @@ public class UI_ShopManager : MonoBehaviour
         else
         {
             soundManager.PlaySFX("Error");
-            Debug.Log("No money");
         }
         UI_InventoryManager.Instance.RefreshInventory();
     }

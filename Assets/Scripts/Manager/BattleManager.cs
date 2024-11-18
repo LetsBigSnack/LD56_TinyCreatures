@@ -81,12 +81,10 @@ public class BattleManager : MonoBehaviour
                 StartBattle();
             }
         }
-        Debug.Log("AutoBattle = " + autoBattle);
     }
 
     private void StartBattle()
     {
-        Debug.Log("StartBattle");
         Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
         if (UI_BattleManager.Instance != null && UI_InventoryHoverManager.Instance != null)
         {
@@ -98,7 +96,6 @@ public class BattleManager : MonoBehaviour
 
         if (enemyCreature == null)
         {
-            Debug.Log("Create Creature");
             enemyCreature = CreatureManager.Instance.
                 CreateAdjustedCreature(statRange + (playerWins * winFactor), 
                                         statMin + (playerWins * winFactor * 2));
@@ -276,8 +273,6 @@ public class BattleManager : MonoBehaviour
         Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
         if (playerCreature == null || hasBattleStarted)
         {
-            Debug.Log("Creature = "+ playerCreature);
-            Debug.Log("hasBattleStarted = " + hasBattleStarted);
             return false;
         }
 

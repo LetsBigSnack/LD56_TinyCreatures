@@ -56,7 +56,6 @@ public class SaveLoadManager : MonoBehaviour
             LoadSaveSlots();
             if (_saveIndex != -1)
             {
-                Debug.Log($"Loading save at {_savePath}");
                 UI_SaveLoadManager.Instance.SetSelectedSlot(_saveIndex);
                 LoadGame();
             }

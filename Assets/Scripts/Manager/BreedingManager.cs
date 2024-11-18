@@ -203,11 +203,7 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
         t2 = t2.Round(3);
         
         BigDecimal factor = 1f + BigDecimal.Random(t, t2);
-
         
-        Debug.Log("Lower Bound" + ((-mutationFactor/(1.75f)) / 100f) * (1 - totalModifier));
-        Debug.Log("Upper Bound" + (((mutationFactor) / 100f) * (1 + totalModifier)));
-        Debug.Log("Factor: " + factor);
         return factor;
     }
 
@@ -215,7 +211,6 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     {
         if (creaturePod1 == null || creaturePod2 == null)
         {
-            Debug.Log("Test");
             return;
         }
         

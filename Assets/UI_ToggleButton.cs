@@ -16,8 +16,6 @@ public class UI_ToggleButton : MonoBehaviour
     }
     public void SetToggleState(bool state)
     {
-        Debug.Log("SetToggleState called");
-        Debug.Log("_renderer " + _image);
         if (_image == null) return;
         
         if(state) {

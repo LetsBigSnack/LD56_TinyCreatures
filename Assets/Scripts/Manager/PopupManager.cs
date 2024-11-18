@@ -114,7 +114,6 @@ namespace Manager
         public void ConfirmSlotName()
         {
             UI_Save_Slot currSlot = UI_SaveSlotHelper.Instance.SelectSlot();
-            Debug.Log("Currslot = "+ currSlot);
             if (currSlot != null) 
             {
                 if (currSlot.OnConfirmSlot())
@@ -128,7 +127,6 @@ namespace Manager
         public void ConfirmDeletion()
         {
             UI_Save_Slot currSlot = UI_SaveSlotHelper.Instance.SelectSlot();
-            Debug.Log("Currslot = "+ currSlot);
             if (currSlot != null)
             {
                 currSlot.DeleteSlot();
@@ -167,7 +165,6 @@ namespace Manager
         public void SkipToNextString()
         {
             _popupText.text = currentTexts[currentPage];
-            Debug.Log(currentPage);
         }
 
         public void ContinuePopup()

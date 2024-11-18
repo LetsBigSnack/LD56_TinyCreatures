@@ -167,7 +167,6 @@ public class UI_BattleManager : MonoBehaviour
 
     public void SetNextBattleButtonActive(bool isActive)
     {
-        Debug.Log("Next button called" + nextBattleButton);
         nextBattleButton.SetActive(isActive);
     }
     

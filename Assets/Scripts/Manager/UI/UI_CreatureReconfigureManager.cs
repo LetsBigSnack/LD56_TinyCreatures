@@ -120,7 +120,6 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
 
     public void NextEntry(string part)
     {
-        Debug.Log("next entry");
         switch (part)
         {
             case "head":
@@ -153,7 +152,6 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
 
     public void PreviousEntry(string part)
     {
-        Debug.Log("previousEntry");
         switch (part)
         {
             case "head":

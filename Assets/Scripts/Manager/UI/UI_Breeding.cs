@@ -57,7 +57,6 @@ public class UI_BreedingManager : MonoBehaviour
 
     public void AddCreatureToPod(Creature creature)
     {
-        Debug.Log("Adding creature to Pod");
         InventoryManager.Instance.AddToBreed(creature);
     }
 
