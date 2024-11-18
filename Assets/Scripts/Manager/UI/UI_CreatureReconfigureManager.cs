@@ -46,7 +46,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
 
     private void OnDisable()
     {
-        ResetCreaturePicked();
+        //ResetCreaturePicked();
     }
 
     private void SetImages()
