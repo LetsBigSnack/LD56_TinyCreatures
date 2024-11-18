@@ -12,6 +12,7 @@ public class UI_ToggleButton : MonoBehaviour
     private void OnEnable()
     {
         _image = GetComponent<Image>();
+        SetToggleState(BattleManager.Instance.AutoBattle);
     }
     public void SetToggleState(bool state)
     {

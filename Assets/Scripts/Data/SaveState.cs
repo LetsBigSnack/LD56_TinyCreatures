@@ -35,6 +35,7 @@ namespace Data
         // Battle
         public BigDecimal playerWins;
         public Creature enemyCreature;
+        public bool autoBattle;
         
         // Shop
         public BigDecimal playerMoney;
@@ -58,6 +59,7 @@ namespace Data
         {
             saveName = "Save";
             gameVersion = "1.0.0";
+            autoBattle = true;
             playerWins = new BigDecimal(0, 0);
             playerMoney = new BigDecimal(70, 0);
             boughtSlots = new BigDecimal(0, 0);

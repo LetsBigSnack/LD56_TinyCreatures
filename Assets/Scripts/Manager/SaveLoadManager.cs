@@ -142,6 +142,7 @@ public class SaveLoadManager : MonoBehaviour
         
         saveState.playerWins = BattleManager.Instance.PlayerWins;
         saveState.enemyCreature = BattleManager.Instance.EnemyCreature;
+        saveState.autoBattle = BattleManager.Instance.AutoBattle;
         
         saveState.tutorialData = TutorialManager.Instance.TutorialData;
         
@@ -224,6 +225,7 @@ public class SaveLoadManager : MonoBehaviour
         
         BattleManager.Instance.PlayerWins = loadedSaveState.playerWins;
         BattleManager.Instance.EnemyCreature = loadedSaveState.enemyCreature;
+        BattleManager.Instance.AutoBattle = loadedSaveState.autoBattle;
 
         StoreManager.Instance.BoughtSlots = loadedSaveState.boughtSlots;
         StoreManager.Instance.PlayerMoney = loadedSaveState.playerMoney;
