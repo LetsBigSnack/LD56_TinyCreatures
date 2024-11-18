@@ -350,7 +350,7 @@ namespace Data
             bool isNegative = value < 0;
             value = Math.Abs(value);
 
-            string valueStr = value.ToString("R");
+            string valueStr = value.ToString("R", System.Globalization.CultureInfo.InvariantCulture);
             int decimalIndex = valueStr.IndexOf('.');
 
             BigInteger mantissa;
@@ -386,7 +386,7 @@ namespace Data
             {
                 return result;
             }
-            throw new FormatException("Input string was not in a correct format.");
+            throw new FormatException("Input string was not in a correct format. String given:" + s);
         }
 
         public static bool TryParse(string s, out BigDecimal result)
@@ -415,12 +415,12 @@ namespace Data
             }
 
             string mantissaStr = integerPart + fractionalPart;
-
-            if (!BigInteger.TryParse(mantissaStr, out BigInteger mantissa))
+            
+            if (!BigInteger.TryParse(mantissaStr, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out BigInteger mantissa))
             {
                 return false;
             }
-
+            
             BigInteger exponent = -fractionalPart.Length;
 
             result = new BigDecimal(mantissa, exponent);
