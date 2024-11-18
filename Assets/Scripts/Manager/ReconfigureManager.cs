@@ -62,6 +62,14 @@ public class ReconfigureManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        if(InventoryManager.Instance.SelectedCreatureForReConfigure != null)
+        {
+            selectedCreature = InventoryManager.Instance.SelectedCreatureForReConfigure;
+        }
+    }
+
     public bool AddToReconfigure(Creature creature)
     {
         selectedCreature = creature;
