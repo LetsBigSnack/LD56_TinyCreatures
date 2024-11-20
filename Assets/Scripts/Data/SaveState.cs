@@ -25,6 +25,7 @@ namespace Data
     {
         public string saveName;
         public string gameVersion;
+        public DateTime lastUpdate;
         
         // Tutorial and Achievements sections
         public TutorialData tutorialData;
@@ -59,6 +60,7 @@ namespace Data
         {
             saveName = "Save";
             gameVersion = "1.0.0";
+            lastUpdate = DateTime.Now;
             autoBattle = true;
             playerWins = new BigDecimal(0, 0);
             playerMoney = new BigDecimal(70, 0);
