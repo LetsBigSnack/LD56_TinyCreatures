@@ -195,6 +195,7 @@ GameObject:
   - component: {fileID: 1172620777464042716}
   - component: {fileID: 5291750436067293547}
   - component: {fileID: 6673182536268348396}
+  - component: {fileID: 8352746058601738275}
   m_Layer: 5
   m_Name: Fusion_Button_Image
   m_TagString: Untagged
@@ -337,25 +338,13 @@ MonoBehaviour:
           m_StringArgument: Press
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UI_BreedingManager, Assembly-CSharp
-        m_MethodName: FuseCreature
+      - m_Target: {fileID: 8352746058601738275}
+        m_TargetAssemblyTypeName: UI_FuseButtonHelper, Assembly-CSharp
+        m_MethodName: FuseCreatures
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 11500000, guid: 83d27bfdfd1ce1d47a445a2221c1daaa, type: 3}
-        m_TargetAssemblyTypeName: UI_BreedingManager, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -371,6 +360,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c00e87d4fc5f98148856a09a3fdece89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8352746058601738275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3757998931672439818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afafcac5427d7334eaaae4c3b1a41e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6104458748360939327

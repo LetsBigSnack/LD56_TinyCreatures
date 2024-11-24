@@ -15,8 +15,7 @@ public class UI_FuseManager : MonoBehaviour
       _soundManager = FindObjectOfType<SoundManager>();
    }
 
-
-   private void FixedUpdate()
+    private void FixedUpdate()
    {
       fuseSprite.Reset();
       fuseDetailsText.Reset();

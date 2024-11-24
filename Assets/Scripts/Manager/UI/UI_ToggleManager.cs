@@ -118,7 +118,6 @@ public class UI_ToggleManager : MonoBehaviour
                 //popupManager.ViewPopup(state);
                 break;
         }
-        
     }
 
     private void UpdateButtonSprite(string currentState)

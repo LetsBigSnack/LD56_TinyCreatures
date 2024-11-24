@@ -29,6 +29,11 @@ public class UI_CompareManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        SetInspector();
+    }
+
     public void SetInspector()
     {
         leftCreatureSprite.Reset();
