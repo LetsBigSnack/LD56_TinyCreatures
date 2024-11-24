@@ -8,7 +8,7 @@ public class UI_InventoryManager : MonoBehaviour
     public static UI_InventoryManager Instance;
     [SerializeField] private GameObject uiCreaturePrefabs;
     [SerializeField] private List<GameObject> uiCreatures;
-    [SerializeField] private Transform uiCreatureContainer;
+    [SerializeField] private GameObject uiCreatureContainer;
     
     
     public void Awake()
@@ -27,18 +27,17 @@ public class UI_InventoryManager : MonoBehaviour
     
     public void RefreshInventory()
     {
-        
         foreach (GameObject uiCrt in uiCreatures)
         {
             Destroy(uiCrt);
         }
-        
+
         uiCreatures = new List<GameObject>();
         
         foreach (Creature creature in InventoryManager.Instance.InventoryCreatures)
         {
-            GameObject uiCreature = Instantiate(uiCreaturePrefabs, uiCreatureContainer.position, Quaternion.identity);
-            uiCreature.transform.SetParent(uiCreatureContainer, false);
+            GameObject uiCreature = Instantiate(uiCreaturePrefabs, uiCreatureContainer.transform.position, Quaternion.identity);
+            uiCreature.transform.SetParent(uiCreatureContainer.transform, false);
             UICreatureButton uiCreatureButton = uiCreature.GetComponentInChildren<UICreatureButton>();
             uiCreatureButton.Creature = creature;
             uiCreatureButton.GetComponent<UI_CreatureSprite>().SetupRepresentation(creature);
