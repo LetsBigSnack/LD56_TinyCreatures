@@ -1,0 +1,8 @@
+{
+  "linkerFlags": [
+    "-sASYNCIFY",
+    "-sASYNCIFY_IMPORTS=[\"JS_SaveGameToIndexedDB\",\"JS_LoadSaveSlotFromIndexedDB\",\"JS_SaveStateExistsInIndexedDB\"]",
+    "-sASYNCIFY_EXPORTS=[\"SaveGame\",\"LoadGame\"]"
+  ]
+}
+

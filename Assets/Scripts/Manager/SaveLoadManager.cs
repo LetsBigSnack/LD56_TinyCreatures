@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using Data;
 using Newtonsoft.Json;
 using Unity.Burst.Intrinsics;
@@ -13,6 +14,19 @@ using UnityEngine.InputSystem;
 
 public class SaveLoadManager : MonoBehaviour
 {
+    
+    [DllImport("__Internal")]
+    private static extern void JS_SaveGameToIndexedDB(string jsonString, int slotIndex);
+
+    [DllImport("__Internal")]
+    private static extern string JS_LoadSaveSlotFromIndexedDB(int slotIndex);
+
+    [DllImport("__Internal")]
+    private static extern bool JS_DeleteSaveFromIndexedDB(int slotIndex);
+
+    [DllImport("__Internal")]
+    private static extern int JS_SaveStateExistsInIndexedDB(int slotIndex);
+    
     public static SaveLoadManager Instance;
     private string _savePath;
     
@@ -131,6 +145,12 @@ public class SaveLoadManager : MonoBehaviour
 
     private SaveState LoadSaveSlotFromIndexedDB(int slotIndex)
     {
+        Debug.Log("Unity Call for Slot"+slotIndex+"::"+SaveStateExistsInIndexedDB(slotIndex));
+        if (SaveStateExistsInIndexedDB(slotIndex))
+        {
+            string json = JS_LoadSaveSlotFromIndexedDB(slotIndex);
+            return JsonConvert.DeserializeObject<SaveState>(json);
+        }
         return null;
     }
     
@@ -224,7 +244,8 @@ public class SaveLoadManager : MonoBehaviour
 
     private void SaveGameToIndexedDB(string jsonString, int slotIndex = -1)
     {
-        
+        if (slotIndex == -1) slotIndex = _saveIndex;
+        JS_SaveGameToIndexedDB(jsonString, slotIndex);
     }
     
     public void LoadGame()
@@ -353,7 +374,7 @@ public class SaveLoadManager : MonoBehaviour
     
     private bool DeleteSaveFromIndexedDB(int slotNumber)
     {
-        return false;
+        return JS_DeleteSaveFromIndexedDB(slotNumber);
     }
 
 
@@ -429,10 +450,11 @@ public class SaveLoadManager : MonoBehaviour
     }
 
     private bool SaveStateExistsInIndexedDB(int slotNumber)
-    {
-        return false;
+    { 
+        int t = JS_SaveStateExistsInIndexedDB(slotNumber);
+        Debug.Log("Unity Call Exists: "+t);
+        return t == 1;
     }
-    
     
     private void ResetCollectedAndUnlockedStates()
     {
