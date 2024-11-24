@@ -2,29 +2,8 @@ mergeInto(LibraryManager.library, {
     JS_SaveGameToIndexedDB: function (jsonStringPtr, slotIndex) {
         return Asyncify.handleAsync(() => {
             const jsonString = UTF8ToString(jsonStringPtr);
-            console.log(`Saving data: JSON-STRING: ${jsonString}, Slot: ${slotIndex}`);
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open("MonkepokSaveData", 1);
-
-                request.onsuccess = function () {
-                    console.log("IndexedDB opened successfully.");
-                    const db = request.result;
-                    const transaction = db.transaction(["saves"], "readwrite");
-                    const store = transaction.objectStore("saves");
-                    const key = `SaveSlot${slotIndex}`;
-                    console.log(`Saving key: ${key}, value: ${jsonString}`);
-                    store.put(jsonString, key);
-
-                    transaction.oncomplete = function () {
-                        console.log(`Saved data to key: ${key}`);
-                        resolve();
-                    };
-
-                    transaction.onerror = function (event) {
-                        console.error(`Transaction error: ${event.target.error}`);
-                        reject(event.target.error);
-                    };
-                };
 
                 request.onupgradeneeded = function () {
                     console.log("Upgrading IndexedDB...");
@@ -35,8 +14,27 @@ mergeInto(LibraryManager.library, {
                     }
                 };
 
+                request.onsuccess = function () {
+                    console.log("IndexedDB opened successfully.");
+                    const db = request.result;
+                    const transaction = db.transaction(["saves"], "readwrite");
+                    const store = transaction.objectStore("saves");
+                    const key = `SaveSlot${slotIndex}`;
+                    const putRequest = store.put(jsonString, key);
+
+                    putRequest.onsuccess = function () {
+                        console.log(`Saved data to key: ${key}`);
+                        resolve();
+                    };
+
+                    putRequest.onerror = function (event) {
+                        console.error(`Put request error: ${event.target.error}`);
+                        reject(event.target.error);
+                    };
+                };
+
                 request.onerror = function (event) {
-                    console.error(`IndexedDB open error: ${event.target.errorCode}`);
+                    console.error("Error opening IndexedDB:", event.target.error);
                     reject(event.target.error);
                 };
             });
@@ -64,11 +62,11 @@ mergeInto(LibraryManager.library, {
 
                     getRequest.onsuccess = function () {
                         if (getRequest.result) {
-                            console.log(`Loaded data from key: ${key}`);
-                            resolve(getRequest.result);
+                            console.log(`Loaded data for key: ${key}`);
+                            resolve(allocateUTF8(getRequest.result));
                         } else {
                             console.log(`No data found for key: ${key}`);
-                            resolve(null);
+                            resolve(0); // Null or no data
                         }
                     };
 
@@ -79,7 +77,7 @@ mergeInto(LibraryManager.library, {
                 };
 
                 request.onerror = function (event) {
-                    console.error(`IndexedDB open error: ${event.target.errorCode}`);
+                    console.error("Error opening IndexedDB:", event.target.error);
                     reject(event.target.error);
                 };
             });
@@ -106,7 +104,7 @@ mergeInto(LibraryManager.library, {
                     const deleteRequest = store.delete(key);
 
                     deleteRequest.onsuccess = function () {
-                        console.log(`Deleted data from key: ${key}`);
+                        console.log(`Deleted data for key: ${key}`);
                         resolve(true);
                     };
 
@@ -117,7 +115,7 @@ mergeInto(LibraryManager.library, {
                 };
 
                 request.onerror = function (event) {
-                    console.error(`IndexedDB open error: ${event.target.errorCode}`);
+                    console.error("Error opening IndexedDB:", event.target.error);
                     reject(event.target.error);
                 };
             });
@@ -125,7 +123,6 @@ mergeInto(LibraryManager.library, {
     },
 
     JS_SaveStateExistsInIndexedDB: function (slotIndex) {
-        // Asyncify ensures Unity pauses execution until the promise resolves
         return Asyncify.handleAsync(() => {
             return new Promise((resolve) => {
                 const request = indexedDB.open("MonkepokSaveData", 1);

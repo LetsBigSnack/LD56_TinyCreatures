@@ -548,7 +548,8 @@ PlayerSettings:
   webGLShowDiagnostics: 0
   webGLDataCaching: 0
   webGLDebugSymbols: 0
-  webGLEmscriptenArgs: 
+  webGLEmscriptenArgs: -s ASYNCIFY -s ASYNCIFY_IMPORTS=[JS_SaveGameToIndexedDB,JS_LoadSaveSlotFromIndexedDB,JS_DeleteSaveFromIndexedDB,JS_SaveStateExistsInIndexedDB]
+    -s TOTAL_STACK=5242880
   webGLModulesDirectory: 
   webGLTemplate: PROJECT:CustomTemplate
   webGLAnalyzeBuildSize: 0
