@@ -14,11 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievementName: THE FIRST FISH
   description: Defeat 10 creatures with a single creature.
-  lockedSprite: {fileID: 21300000, guid: ba39ae1b12c721b4db5b13cdaa1be0bd, type: 3}
   unlockedSprite: {fileID: 21300000, guid: 81fccc7856037584ca4d1865a6382d34, type: 3}
   unlockValue:
     mantissaString: 10
     exponentString: 0
   reward: Each creature starts with +1% ATK.
-  isAchieved: 0
+  isAchieved: 1
   type: 0
