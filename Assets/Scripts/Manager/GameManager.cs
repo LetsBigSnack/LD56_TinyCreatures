@@ -52,4 +52,11 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
+    public void OnBrowserClose()
+    {
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            SaveLoadManager.Instance.SaveGame();
+        #endif
+    }
 }

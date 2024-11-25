@@ -85,8 +85,6 @@
 #endif
         streamingAssetsUrl: "StreamingAssets",
         companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
-        productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
-        productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
         asmLibraryArg: { },
         showBanner: unityShowBanner,
       };
@@ -156,6 +154,15 @@
                 fullscreenButton.onclick = () => {
                   unityInstance.SetFullscreen(1);
                 };
+
+        //Added By David
+        window.addEventListener('beforeunload', function (e) {
+          console.log("Browser is unloading...");
+          if (unityInstance) {
+            unityInstance.SendMessage('GameManager', 'OnBrowserClose', '');
+          }
+        });
+
               }).catch((message) => {
                 alert(message);
               });
