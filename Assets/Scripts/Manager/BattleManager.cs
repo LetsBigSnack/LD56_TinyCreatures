@@ -112,6 +112,7 @@ public class BattleManager : MonoBehaviour
     public void WinBattle()
     {
 
+        Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
         StoreManager.Instance.EarnMoney(enemyCreature.CreatureStats.PowerLevel * 5);
         enemyCreature = null;
         playerWins++;
@@ -120,7 +121,7 @@ public class BattleManager : MonoBehaviour
         InventoryManager.Instance.SelectedCreatureForBattle.CreatureWins++;
 
         // Trigger to notify listeners in UI about the win count change
-        OnPlayerWinsChanged?.Invoke(playerWins);
+        OnPlayerWinsChanged?.Invoke(playerCreature.CreatureWins);
         
         if (playerWins == StoreManager.Instance.WinThreshold)
         {
