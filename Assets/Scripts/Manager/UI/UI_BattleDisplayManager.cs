@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Helper.Util;
 using Data;
 using TMPro;
 using UnityEngine;
@@ -55,7 +56,7 @@ public class UI_BattleDisplayManager : MonoBehaviour
             BigDecimal healthPercentage = battleCreature.CurrentHealth.Round(3) / battleCreature.MaxHealth.Round(3);
             playerHealthBar.maxValue = 1;
             playerHealthBar.value = (float)healthPercentage;
-            playerPL.text = battleCreature.CreatureStats.PowerLevel.ToString();
+            playerPL.text = battleCreature.CreatureStats.PowerLevel.ToNumberSuffix(false);
         }
 
         if (enemyCreature == null)
@@ -68,7 +69,7 @@ public class UI_BattleDisplayManager : MonoBehaviour
             BigDecimal healthPercentage = enemyCreature.CurrentHealth.Round(3) / enemyCreature.MaxHealth.Round(3);
             enemyHealthBar.maxValue = 1;
             enemyHealthBar.value = (float)healthPercentage;
-            enemyPL.text = enemyCreature.CreatureStats.PowerLevel.ToString();
+            enemyPL.text = enemyCreature.CreatureStats.PowerLevel.ToNumberSuffix(false);
         }
         
         battleCreatureSprite.SetupRepresentation(battleCreature);
