@@ -317,7 +317,16 @@ public class SaveLoadManager : MonoBehaviour
         BreedingManager.Instance.CreaturePod2 = loadedSaveState.selectedCreaturePodTwo;
         BreedingManager.Instance.Result = loadedSaveState.breedingCreatureResult;
         InventoryManager.Instance.SelectedCreatureForReConfigure = loadedSaveState.selectedCreatureReconfigure;
+        
+        // Clear for you
+        
+        InventoryManager.Instance.CreatureInspectorLeft = null;
+        InventoryManager.Instance.CreatureInspectorRight = null;
 
+        BreedingManager.Instance.UpdatePrice();
+        
+        //
+        
         Debug.Log("Game loaded successfully from slot " + _saveIndex);
     }
 
