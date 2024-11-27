@@ -13,6 +13,7 @@ public enum achievementType
 [CreateAssetMenu(fileName = "NewAchievement", menuName = "Game/Achievement")]
 public class Achievement : ScriptableObject
 {
+    //TODO add ID
     // visible attributes
     public string achievementName;
     public string description;

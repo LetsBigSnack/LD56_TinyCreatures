@@ -32,6 +32,8 @@ public class UI_AchievementManager : MonoBehaviour
 
     public void SetSelected()
     {
+        //TODO make it an enum
+        //TODO Fill dropdown menu from the script
         selecetedOption = dropdown.options[dropdown.value].text;
         SortAchievements(selecetedOption);
         Debug.Log(selecetedOption);
