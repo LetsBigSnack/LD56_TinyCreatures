@@ -37,6 +37,7 @@ public class TutorialManager : MonoBehaviour
         _tutorialData.InspectorDone = false;
         _tutorialData.FusionDone = false;
         _tutorialData.ShopDone = false;
+        _tutorialData.ConfigDone = false;
     }
 
     public bool CheckBool(StringState boolToCheck)
@@ -60,6 +61,9 @@ public class TutorialManager : MonoBehaviour
             case StringState.Shop:
                 returnCase = _tutorialData.ShopDone;
                 break;
+            case StringState.Config:
+                returnCase = _tutorialData.ConfigDone;
+                break;
         }
         return returnCase;
     }
@@ -82,6 +86,9 @@ public class TutorialManager : MonoBehaviour
                 break;
             case StringState.Shop:
                 _tutorialData.ShopDone = true;
+                break;
+            case StringState.Config:
+                _tutorialData.ConfigDone = true;
                 break;
         }
     }
