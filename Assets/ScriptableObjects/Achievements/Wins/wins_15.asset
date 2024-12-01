@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievementName: MORE FISH
   description: Defeat 15 creatures with a single creature.
-  lockedSprite: {fileID: 21300000, guid: ba39ae1b12c721b4db5b13cdaa1be0bd, type: 3}
   unlockedSprite: {fileID: 613259844, guid: 8160140cc5f5ee5488d73f5ed2249975, type: 3}
+  collectedValue:
+    mantissaString: 0
+    exponentString: 0
   unlockValue:
     mantissaString: 15
     exponentString: 0

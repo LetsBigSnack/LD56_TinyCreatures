@@ -22,9 +22,12 @@ public class UI_AchievementManager : MonoBehaviour
     [SerializeField] List<Achievement> achievements;
     [SerializeField] TMP_Dropdown dropdown1;
     [SerializeField] TMP_Dropdown dropdown2;
+    
+    [SerializeField] private GameObject achievementUIPrefab;
+    [SerializeField] private Transform achievementListContainer;
 
-    dropdown_1 dropdown1Seleceted = dropdown_1.All;
-    achievementType dropdown2Seleceted = 0;
+    dropdown_1 dropdown1Selected = dropdown_1.All;
+    achievementType dropdown2Selected = 0;
     List<Achievement> filtertAchievements;
 
 
@@ -41,12 +44,15 @@ public class UI_AchievementManager : MonoBehaviour
             Instance = this;
             fillDropdowns();
             filtertAchievements = achievements;
-            SortAchievements(dropdown1Seleceted, dropdown2Seleceted -1);
+            SortAchievements(dropdown1Selected, dropdown2Selected -1);
         }
     }
 
     public void fillDropdowns()
     {
+        dropdown1.options.Clear();
+        dropdown2.options.Clear();
+        
         Array values_1 = Enum.GetValues(typeof(dropdown_1));
         foreach(dropdown_1 val in  values_1) 
         {
@@ -63,21 +69,31 @@ public class UI_AchievementManager : MonoBehaviour
 
     public void dropdownChange()
     {
-        dropdown1Seleceted = (dropdown_1)dropdown1.value;
-        dropdown2Seleceted = (achievementType)dropdown2.value - 1;
-        Debug.Log("Value for left dd = "+ dropdown1Seleceted + " --- Value for right dd = " +  dropdown2Seleceted);
-        SortAchievements(dropdown1Seleceted, dropdown2Seleceted);
+        dropdown1Selected = (dropdown_1)dropdown1.value;
+        dropdown2Selected = (achievementType)dropdown2.value - 1;
+        Debug.Log("Value for left dd = "+ dropdown1Selected + " --- Value for right dd = " +  dropdown2Selected);
+        SortAchievements(dropdown1Selected, dropdown2Selected);
     }
 
     public void ShowAchievements(List<Achievement> sortedAchievements)
     {
-        Debug.Log("---- ---- ---- ----");
+        // Debug.Log("---- ---- ---- ----");
+        // foreach (Achievement achievement in sortedAchievements)
+        // {
+        //     Debug.Log(achievement.name);
+        // }
+        // Debug.Log("---- ---- ---- ----");
+        
         foreach (Achievement achievement in sortedAchievements)
         {
-            Debug.Log(achievement.name);
+            GameObject achievementUI = Instantiate(achievementUIPrefab, achievementListContainer);
+            UI_Achievement_UI achievementUIComponent = achievementUI.GetComponent<UI_Achievement_UI>();
+            achievementUIComponent.PopulateAchievements(achievement);
         }
-        Debug.Log("---- ---- ---- ----");
+            
     }
+    
+    
 
     public void SortAchievements(dropdown_1 sortBy, achievementType sortBy2)
     {

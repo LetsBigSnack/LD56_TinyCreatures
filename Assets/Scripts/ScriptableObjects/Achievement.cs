@@ -18,6 +18,7 @@ public class Achievement : ScriptableObject
     public string achievementName;
     public string description;
     public Sprite unlockedSprite;
+    public BigDecimal collectedValue;
     public BigDecimal unlockValue;
     public DateTime dateAchieved;
     public string reward;

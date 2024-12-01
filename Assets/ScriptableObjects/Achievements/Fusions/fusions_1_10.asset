@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievementName: GIGA CHAD
   description: Use 1 creature to create fusions 10 times.
-  lockedSprite: {fileID: 21300000, guid: ba39ae1b12c721b4db5b13cdaa1be0bd, type: 3}
   unlockedSprite: {fileID: 21300000, guid: 008fc3f578f331d4cb75265bad5a374c, type: 3}
+  collectedValue:
+    mantissaString: 0
+    exponentString: 0
   unlockValue:
     mantissaString: 10
     exponentString: 0
