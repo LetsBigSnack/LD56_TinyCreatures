@@ -33,9 +33,9 @@ public class UI_Achievement_UI : MonoBehaviour
     [SerializeField] private int maxTitleLength = 15;
     [SerializeField] private int maxDescriptionLength = 50;
     
-    [Header("Buttons")]
-    [SerializeField] private Button expandButton; 
-    [SerializeField] private Button collapseButton; 
+    //[Header("Buttons")]
+    //[SerializeField] private Button expandButton; 
+   // [SerializeField] private Button collapseButton; 
     
     private bool isExpanded = false;
     
@@ -46,21 +46,6 @@ public class UI_Achievement_UI : MonoBehaviour
 
         collapsedHolder.SetActive(true);
         expandedHolder.SetActive(false); 
-        
-        // Assign button listeners
-        if (expandButton != null)
-        {
-            expandButton.onClick.AddListener(Expand);
-        }
-
-        if (collapseButton != null)
-        {
-            collapseButton.onClick.AddListener(Collapse);
-        }
-        else
-        {
-            Debug.LogWarning("Collapse Button not assigned in the inspector.");
-        }
         
         collapsedHolder.SetActive(true);
         expandedHolder.SetActive(false);
@@ -122,7 +107,7 @@ public class UI_Achievement_UI : MonoBehaviour
         return text;
     }
     
-    private void Expand()
+    public void Expand()
     {
         // Only switch to expanded if it's not already expanded
         if (!isExpanded)
@@ -132,10 +117,11 @@ public class UI_Achievement_UI : MonoBehaviour
             isExpanded = true;
             
             LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
+            Debug.Log("Expanded successfully");
         }
     }
 
-    private void Collapse()
+    public void Collapse()
     {
         if (isExpanded)
         {
