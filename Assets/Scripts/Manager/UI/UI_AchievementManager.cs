@@ -29,19 +29,19 @@ public class UI_AchievementManager : MonoBehaviour
     dropdown_1 dropdown1Selected = dropdown_1.All;
     achievementType dropdown2Selected = 0;
     List<Achievement> filtertAchievements;
+    private List<GameObject> instantiatedAchievements;
 
 
     private void Awake()
     {
-
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
         else
         {
-
             Instance = this;
+            instantiatedAchievements = new List<GameObject>();
             fillDropdowns();
             filtertAchievements = achievements;
             SortAchievements(dropdown1Selected, dropdown2Selected -1);
@@ -50,9 +50,6 @@ public class UI_AchievementManager : MonoBehaviour
 
     public void fillDropdowns()
     {
-        dropdown1.options.Clear();
-        dropdown2.options.Clear();
-        
         Array values_1 = Enum.GetValues(typeof(dropdown_1));
         foreach(dropdown_1 val in  values_1) 
         {
@@ -77,17 +74,19 @@ public class UI_AchievementManager : MonoBehaviour
 
     public void ShowAchievements(List<Achievement> sortedAchievements)
     {
-        // Debug.Log("---- ---- ---- ----");
-        // foreach (Achievement achievement in sortedAchievements)
-        // {
-        //     Debug.Log(achievement.name);
-        // }
-        // Debug.Log("---- ---- ---- ----");
+        ClearAchievements();
+        Debug.Log("---- ---- ---- ----");
+        foreach (Achievement achievement in sortedAchievements)
+        {
+            Debug.Log(achievement.name);
+        }
+        Debug.Log("---- ---- ---- ----");
         
         foreach (Achievement achievement in sortedAchievements)
         {
             GameObject achievementUI = Instantiate(achievementUIPrefab, achievementListContainer);
             UI_Achievement_UI achievementUIComponent = achievementUI.GetComponent<UI_Achievement_UI>();
+            instantiatedAchievements.Add(achievementUI);
             achievementUIComponent.PopulateAchievements(achievement);
         }
             
@@ -142,4 +141,12 @@ public class UI_AchievementManager : MonoBehaviour
         ShowAchievements(filtertAchievements);
     }
 
+    private void ClearAchievements()
+    {
+        foreach (GameObject achievementUI in instantiatedAchievements)
+        {
+            Destroy(achievementUI);
+        }
+        instantiatedAchievements.Clear();
+    }
 }

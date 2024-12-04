@@ -47,32 +47,59 @@ public class UI_Achievement_UI : MonoBehaviour
         collapsedHolder.SetActive(true);
         expandedHolder.SetActive(false); 
         
-        collapsedHolder.SetActive(true);
-        expandedHolder.SetActive(false);
-        
     }
     
+    //SetupRepresentation
     public void PopulateAchievements(Achievement achievement)
     {
-        UpdateAchievementIcon(achievement);
-
-        // Update collapsed and expanded UI components
-        if (isExpanded)
-        {
+        //UpdateAchievementIcon(achievement);
+        
             expandedAchievementNameText.text = achievement.achievementName;
             expandedAchievementDescriptionText.text = achievement.description;
             expandedCollectedText.text = achievement.collectedValue.ToString();
             expandedUnlockValueText.text = achievement.unlockValue.ToString();
             expandedRewardText.text = string.IsNullOrEmpty(achievement.reward) ? "No reward" : achievement.reward;
-        }
-        else
-        {
+            
             collapsedAchievementNameText.text = TruncateText(achievement.achievementName, maxTitleLength);
             collapsedAchievementDescriptionText.text = TruncateText(achievement.description, maxDescriptionLength);
             collapsedCollectedText.text = achievement.isAchieved ? achievement.collectedValue.ToString() : "0";
             collapsedUnlockValueText.text = achievement.unlockValue.ToString();
-        }
+        
     }
+
+    public void SetupRepresentation()
+    {
+        // Fill header
+        // Fill short description
+        // Star List
+        // Date Achieved - > only visible when achieved
+        
+        // Fill  full description
+        // Fill list of thing to  do
+          // List -> Populating  the space with items [array with strings]
+          // instantiate at the transform of the parent (like in content box)
+          // Flexible size
+        //  Fill bonus
+        
+    }
+
+    public void ToggleExpandCollapse()
+    {
+        // !is Expanded  = isExpanded
+        
+        // if  is Expanded false
+          // Disable Full Description Parent
+          // Enable Short Description
+          
+          
+        // if  is Expanded true
+          // Enable Full Description
+          // Disable short description
+        
+        
+        // Refresh
+    }
+    
     
     
     public void ToggleExpandCollapseAchievement()
@@ -87,19 +114,9 @@ public class UI_Achievement_UI : MonoBehaviour
         }
     }
     
-    private void UpdateAchievementIcon(Achievement achievement)
-    {
-        // Use the unlocked icon if the achievement is achieved, otherwise use the locked icon
-        Sprite iconToUse = achievement.isAchieved ? achievement.unlockedSprite : lockedIcon;
-
-        // Update the icon for both collapsed and expanded views
-        collapsedIcon.sprite = iconToUse;
-        expandedIcon.sprite = iconToUse;
-    }
-    
+    //TODO: Check with Text Mesh
     private string TruncateText(string text, int maxLength)
     {
-        // Only truncate if it's collapsed and the text is longer than maxLength
         if (!isExpanded && text.Length > maxLength)
         {
             return text.Substring(0, maxLength) + "...";
@@ -109,14 +126,13 @@ public class UI_Achievement_UI : MonoBehaviour
     
     public void Expand()
     {
-        // Only switch to expanded if it's not already expanded
+        
         if (!isExpanded)
         {
             collapsedHolder.SetActive(false);
             expandedHolder.SetActive(true);
             isExpanded = true;
             
-            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
             Debug.Log("Expanded successfully");
         }
     }
@@ -128,8 +144,6 @@ public class UI_Achievement_UI : MonoBehaviour
             collapsedHolder.SetActive(true);
             expandedHolder.SetActive(false);
             isExpanded = false;
-            
-            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
         }
     }
     
