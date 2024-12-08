@@ -3,7 +3,7 @@ using Data;
 using UnityEngine;
 
 
-public enum achievementType
+public enum AchievementType
 {
     Wins,
     Fusions,
@@ -25,5 +25,5 @@ public class Achievement : ScriptableObject
 
     // not visible attributes
     public bool isAchieved;
-    public achievementType type;
+    public AchievementType type;
 }

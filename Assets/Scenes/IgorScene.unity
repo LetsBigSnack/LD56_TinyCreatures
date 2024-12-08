@@ -842,8 +842,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6a307c574ffe77d4d871faeec894c0e3, type: 2}
   - {fileID: 11400000, guid: 64e434dcdd49e9d428a46c7fb9060607, type: 2}
   - {fileID: 11400000, guid: 92ee42a98630e3149abe7f0cc0ebb214, type: 2}
-  dropdown1: {fileID: 1375597724}
-  dropdown2: {fileID: 1716751066}
+  dropdownAchieved: {fileID: 1375597724}
+  dropdownAchievementType: {fileID: 1716751066}
+  achievementUIPrefab: {fileID: 7126797484321864385, guid: 6e46b1ff469c6c248a893c9d0eaab277, type: 3}
+  achievementListContainer: {fileID: 0}
 --- !u!4 &337412323
 Transform:
   m_ObjectHideFlags: 0
@@ -3800,7 +3802,7 @@ GameObject:
   - component: {fileID: 1375597725}
   - component: {fileID: 1375597724}
   m_Layer: 5
-  m_Name: Dropdown1
+  m_Name: DropdownAchieved
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3883,7 +3885,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 337412322}
         m_TargetAssemblyTypeName: UI_AchievementManager, Assembly-CSharp
-        m_MethodName: dropdownChange
+        m_MethodName: DropdownChange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4559,7 +4561,7 @@ GameObject:
   - component: {fileID: 1716751068}
   - component: {fileID: 1716751066}
   m_Layer: 5
-  m_Name: Dropdown2
+  m_Name: DropdownAchievementType
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4622,7 +4624,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 337412322}
         m_TargetAssemblyTypeName: UI_AchievementManager, Assembly-CSharp
-        m_MethodName: dropdownChange
+        m_MethodName: DropdownChange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

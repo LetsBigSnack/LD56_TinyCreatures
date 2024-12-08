@@ -6,9 +6,10 @@ using UnityEngine.UI;
 using System.Linq;
 using System;
 using UnityEngine.SocialPlatforms.Impl;
+using System.Globalization;
 
 
-public enum dropdown_1
+public enum OptionFilterAchieved
 {
     All,
     Unlocked,
@@ -20,15 +21,16 @@ public class UI_AchievementManager : MonoBehaviour
     public static UI_AchievementManager Instance { get; private set; }
 
     [SerializeField] List<Achievement> achievements;
-    [SerializeField] TMP_Dropdown dropdown1;
-    [SerializeField] TMP_Dropdown dropdown2;
+
+    [SerializeField] TMP_Dropdown dropdownAchieved;
+    [SerializeField] TMP_Dropdown dropdownAchievementType;
     
     [SerializeField] private GameObject achievementUIPrefab;
     [SerializeField] private Transform achievementListContainer;
 
-    dropdown_1 dropdown1Selected = dropdown_1.All;
-    achievementType dropdown2Selected = 0;
-    List<Achievement> filtertAchievements;
+    private OptionFilterAchieved selectedAchieved = OptionFilterAchieved.All;
+    private AchievementType selectedAchievementType = 0;
+
     private List<GameObject> instantiatedAchievements;
 
 
@@ -42,38 +44,43 @@ public class UI_AchievementManager : MonoBehaviour
         {
             Instance = this;
             instantiatedAchievements = new List<GameObject>();
-            fillDropdowns();
-            filtertAchievements = achievements;
-            SortAchievements(dropdown1Selected, dropdown2Selected -1);
+            selectedAchievementType -= 1;
+            FillDropdowns();
+            SortAchievements();
         }
     }
 
-    public void fillDropdowns()
+    public void FillDropdowns()
     {
-        Array values_1 = Enum.GetValues(typeof(dropdown_1));
-        foreach(dropdown_1 val in  values_1) 
+        Array values_1 = Enum.GetValues(typeof(OptionFilterAchieved));
+        foreach(OptionFilterAchieved val in  values_1) 
         {
-            dropdown1.options.Add(new TMP_Dropdown.OptionData(Enum.GetName(typeof(dropdown_1), val), null));
+            dropdownAchieved.options.Add(new TMP_Dropdown.OptionData(Enum.GetName(typeof(OptionFilterAchieved), val), null));
         }
 
         //Takes enum from Achievement scriptable obj
-        Array values_2 = Enum.GetValues(typeof(achievementType));
-        foreach (achievementType val in values_2)
+        Array values_2 = Enum.GetValues(typeof(AchievementType));
+        foreach (AchievementType val in values_2)
         {
-            dropdown2.options.Add(new TMP_Dropdown.OptionData(Enum.GetName(typeof(achievementType), val), null));
+            dropdownAchievementType.options.Add(new TMP_Dropdown.OptionData(Enum.GetName(typeof(AchievementType), val), null));
         }
     }
 
-    public void dropdownChange()
+    public void DropdownChange()
     {
-        dropdown1Selected = (dropdown_1)dropdown1.value;
-        dropdown2Selected = (achievementType)dropdown2.value - 1;
-        Debug.Log("Value for left dd = "+ dropdown1Selected + " --- Value for right dd = " +  dropdown2Selected);
-        SortAchievements(dropdown1Selected, dropdown2Selected);
+        selectedAchieved = (OptionFilterAchieved)dropdownAchieved.value;
+        selectedAchievementType = (AchievementType)dropdownAchievementType.value - 1;
+
+        #if UNITY_EDITOR
+        Debug.Log("Value for left dd = "+ selectedAchieved + " --- Value for right dd = " +  selectedAchievementType);
+        #endif
+
+        SortAchievements();
     }
 
     public void ShowAchievements(List<Achievement> sortedAchievements)
     {
+        #if UNITY_EDITOR
         ClearAchievements();
         Debug.Log("---- ---- ---- ----");
         foreach (Achievement achievement in sortedAchievements)
@@ -81,7 +88,8 @@ public class UI_AchievementManager : MonoBehaviour
             Debug.Log(achievement.name);
         }
         Debug.Log("---- ---- ---- ----");
-        
+
+        #endif
         foreach (Achievement achievement in sortedAchievements)
         {
             GameObject achievementUI = Instantiate(achievementUIPrefab, achievementListContainer);
@@ -92,54 +100,48 @@ public class UI_AchievementManager : MonoBehaviour
             
     }
     
-    
-
-    public void SortAchievements(dropdown_1 sortBy, achievementType sortBy2)
+    public void SortAchievements()
     {
-        if(sortBy2 < 0)
+        List<Achievement> filtertAchievements = achievements;
+
+        // Sieve filtering method
+        // First sieve unlocked or locked
+
+        switch (selectedAchieved)
         {
-            switch (sortBy)
-            {
-                case dropdown_1.All:
-                    filtertAchievements = achievements.Where(achievement => achievement.isAchieved || !achievement.isAchieved).OrderBy(achievement => achievement.name).ToList();
-                    break;
-                case dropdown_1.Unlocked:
-                    filtertAchievements = achievements.Where(achievement => achievement.isAchieved).OrderBy(achievement => achievement.name).ToList();
-                    break;
-                case dropdown_1.Locked:
-                    filtertAchievements = achievements.Where(achievement => !achievement.isAchieved).OrderBy(achievement => achievement.name).ToList();
-                    break;
-            }
-            ShowAchievements(filtertAchievements);
-            return;
-        }
-        switch (sortBy)
-        {
-            case dropdown_1.All:
-                filtertAchievements = achievements.Where(achievement => achievement.isAchieved || !achievement.isAchieved).Where(achievement => achievement.type == sortBy2).OrderBy(achievement => achievement.name).ToList();
+            case OptionFilterAchieved.Unlocked:
+                filtertAchievements = filtertAchievements.Where(achievement => achievement.isAchieved).ToList();
                 break;
-            case dropdown_1.Unlocked:
-                filtertAchievements = achievements.Where(achievement => achievement.isAchieved).Where(achievement => achievement.type == sortBy2).OrderBy(achievement => achievement.name).ToList();
-                break;
-            case dropdown_1.Locked:
-                filtertAchievements = achievements.Where(achievement => !achievement.isAchieved).Where(achievement => achievement.type == sortBy2).OrderBy(achievement => achievement.name).ToList();
+            case OptionFilterAchieved.Locked:
+                filtertAchievements = filtertAchievements.Where(achievement => !achievement.isAchieved).ToList();
                 break;
         }
+
+        // Second sieve achievement type
+
+        switch (selectedAchievementType)
+        {
+            case AchievementType.Wins:
+                filtertAchievements = filtertAchievements.Where(achievement => achievement.type == AchievementType.Wins).ToList();
+                break;
+            case AchievementType.Fusions:
+                filtertAchievements = filtertAchievements.Where(achievement => achievement.type == AchievementType.Fusions).ToList();
+                break;
+            case AchievementType.Speed:
+                filtertAchievements = filtertAchievements.Where(achievement => achievement.type == AchievementType.Speed).ToList();
+                break;
+            default:
+                break;
+        }
+
+        // Third sieve for searchbar
+        // TODO: make searchbar filter
+       
+        filtertAchievements.OrderBy(achievement => achievement.name);
+
         ShowAchievements(filtertAchievements);
     }
 
-    public void SortDd2Achievements(achievementType sortBy, List<Achievement> sortByDd1)
-    {
-        if(sortBy < 0)
-        {
-            filtertAchievements = sortByDd1.Where(achievement => achievement.isAchieved || !achievement.isAchieved).OrderBy(achievement => achievement.name).ToList();
-            ShowAchievements(filtertAchievements);
-            return;
-        }
-
-        filtertAchievements = sortByDd1.Where(achievement => achievement.type == sortBy).ToList();
-        ShowAchievements(filtertAchievements);
-    }
 
     private void ClearAchievements()
     {
