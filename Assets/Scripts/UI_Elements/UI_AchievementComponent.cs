@@ -110,7 +110,7 @@ public class UI_AchievementComponent : MonoBehaviour
         UpdateButtonSprite();
         
         // I have to use it because otherwise size of holder not getting resized when collapsing unless scroll ;/
-        LayoutRebuilder.ForceRebuildLayoutImmediate(achievementHolder.GetComponent<RectTransform>());
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(achievementHolder.GetComponent<RectTransform>());
     }
     
     private void SetCollapsedState()
