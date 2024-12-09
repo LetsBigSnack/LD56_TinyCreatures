@@ -17,6 +17,12 @@ public class InventoryManager : MonoBehaviour
     private Creature creatureInspectorLeft;
     private Creature creatureInspectorRight;
     private Creature selectedCreatureForReConfigure;
+
+    private Creature selectedCreatureForMaterial_1;
+    private Creature selectedCreatureForMaterial_2;
+    private Creature selectedCreatureForMaterial_3;
+    private Creature selectedCreatureForMaterial_4;
+
     public Creature SelectedCreatureForBattle 
     { get => selectedCreatureForBattle; set => selectedCreatureForBattle = value; }
     
@@ -61,6 +67,7 @@ public class InventoryManager : MonoBehaviour
             {
                 inventoryCreatures.Add(newCreature);
                 CreatureManager.Instance.CheckCollectedParts(newCreature);
+                UI_InventoryManager.Instance.RefreshInventory();
                 return true;
             }
         }
@@ -73,6 +80,7 @@ public class InventoryManager : MonoBehaviour
         if (creatureToRemove != null && inventoryCreatures.Contains(creatureToRemove))
         {
             inventoryCreatures.Remove(creatureToRemove);
+            UI_InventoryManager.Instance.RefreshInventory();
             return true;
         }
         return false;
