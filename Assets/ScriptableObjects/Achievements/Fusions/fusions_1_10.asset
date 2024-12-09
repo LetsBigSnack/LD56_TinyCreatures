@@ -12,17 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f935f05f69fb56c4db31d5644e6a1a6e, type: 3}
   m_Name: fusions_1_10
   m_EditorClassIdentifier: 
-  achievementName: GIGA CHAD
+  achievementID: 
+  achievementName: GIGA CHAD GIGA CHAD GIGA CHAD GIGA CHAD GIGA CHAD
   description: Use 1 creature to create fusions 10 times.Use 1 creature to create
     fusions 10 times.Use 1 creature to create fusions 10 times. Use 1 creature to
     create fusions 10 times.Use 1 creature to create fusions 10 times.
   unlockedSprite: {fileID: 21300000, guid: 008fc3f578f331d4cb75265bad5a374c, type: 3}
-  collectedValue:
-    mantissaString: 0
-    exponentString: 0
-  unlockValue:
-    mantissaString: 10
-    exponentString: 0
+  collectedValue: 10
+  unlockValue: 10
   reward: Unlock new bodypart.
-  isAchieved: 0
+  isAchieved: 1
   type: 1
+  tasks:
+  - collected:
+      mantissaString: 10
+      exponentString: 10
+    totalRequired:
+      mantissaString: 10
+      exponentString: 10
+    taskText: kills
+  - collected:
+      mantissaString: 10
+      exponentString: 10
+    totalRequired:
+      mantissaString: 10
+      exponentString: 10
+    taskText: creatures
+  - collected:
+      mantissaString: 10
+      exponentString: 10
+    totalRequired:
+      mantissaString: 10
+      exponentString: 10
+    taskText: will to  live

@@ -2,115 +2,145 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UI_Achievement_UI : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] private GameObject collapsedHolder; 
-    [SerializeField] private GameObject expandedHolder; 
+    [SerializeField] private GameObject achievementHolder; 
 
     [Header("References for UI")]
-    [Header("Text References for Collapsed State")]
-    [SerializeField] private TMP_Text collapsedAchievementNameText;
-    [SerializeField] private TMP_Text collapsedAchievementDescriptionText;
-    [SerializeField] private TMP_Text collapsedCollectedText; 
-    [SerializeField] private TMP_Text collapsedUnlockValueText; 
+    [Header("Text References")]
+    [SerializeField] private TMP_Text achievementNameText;
+    [SerializeField] private TMP_Text shortAchievementDescriptionText;
+    [SerializeField] private TMP_Text fullAchievementDescriptionText;
+    [SerializeField] private TMP_Text collectedStarsText; 
+    [SerializeField] private TMP_Text unlockValueStarsText; 
+    [SerializeField] private TMP_Text bonusText;
+    [SerializeField] private TMP_Text rewardText; 
+    [SerializeField] private TMP_Text dateAchievedText;
     
-    [Header("Text References for Expanded State")]
-    [SerializeField] private TMP_Text expandedAchievementNameText; 
-    [SerializeField] private TMP_Text expandedAchievementDescriptionText;
-    [SerializeField] private TMP_Text expandedCollectedText; 
-    [SerializeField] private TMP_Text expandedUnlockValueText;
-    [SerializeField] private TMP_Text expandedRewardText; 
+    [Header("Task List")]
+    [SerializeField] private Transform taskListParent;
+    [SerializeField] private GameObject taskPrefab; 
     
     [Header("Icons")]
-    [SerializeField] private Image collapsedIcon;
-    [SerializeField] private Image expandedIcon; 
-
+    [SerializeField] private Image unlockedIcon; 
     [SerializeField] private Sprite lockedIcon;
     
-    [SerializeField] private int maxTitleLength = 15;
+    [Header("Button Image for Expanding/Collapsing")]
+    [SerializeField] private Image expandCollapseButtonImage;
+    [SerializeField] private Sprite collapsedButtonSprite;
+    [SerializeField] private Sprite expandedButtonSprite;
+
+    
+    [SerializeField] private int maxTitleLength = 20;
     [SerializeField] private int maxDescriptionLength = 50;
+    private Achievement achievement;
     
-    //[Header("Buttons")]
-    //[SerializeField] private Button expandButton; 
-   // [SerializeField] private Button collapseButton; 
-    
+
     private bool isExpanded = false;
+    
+    private List<GameObject> instantiatedTasks;
     
     private void Awake()
     {
-        collapsedHolder = transform.Find("Collapsed").gameObject;
-        expandedHolder = transform.Find("Expanded").gameObject;
-
-        collapsedHolder.SetActive(true);
-        expandedHolder.SetActive(false); 
-        
-    }
-    
-    //SetupRepresentation
-    public void PopulateAchievements(Achievement achievement)
-    {
-        //UpdateAchievementIcon(achievement);
-        
-            expandedAchievementNameText.text = achievement.achievementName;
-            expandedAchievementDescriptionText.text = achievement.description;
-            expandedCollectedText.text = achievement.collectedValue.ToString();
-            expandedUnlockValueText.text = achievement.unlockValue.ToString();
-            expandedRewardText.text = string.IsNullOrEmpty(achievement.reward) ? "No reward" : achievement.reward;
-            
-            collapsedAchievementNameText.text = TruncateText(achievement.achievementName, maxTitleLength);
-            collapsedAchievementDescriptionText.text = TruncateText(achievement.description, maxDescriptionLength);
-            collapsedCollectedText.text = achievement.isAchieved ? achievement.collectedValue.ToString() : "0";
-            collapsedUnlockValueText.text = achievement.unlockValue.ToString();
-        
+        SetCollapsedState();
+        instantiatedTasks = new List<GameObject>();
     }
 
-    public void SetupRepresentation()
+    public void SetupAchievement(Achievement achievement)
     {
-        // Fill header
-        // Fill short description
-        // Star List
-        // Date Achieved - > only visible when achieved
-        
-        // Fill  full description
-        // Fill list of thing to  do
-          // List -> Populating  the space with items [array with strings]
-          // instantiate at the transform of the parent (like in content box)
-          // Flexible size
-        //  Fill bonus
-        
-    }
+        this.achievement = achievement;
+        // Set achievements
+        achievementNameText.text = achievement.achievementName;
+        shortAchievementDescriptionText.text = achievement.description;
+        fullAchievementDescriptionText.text = achievement.description;
+        collectedStarsText.text = achievement.collectedValue.ToString();
+        unlockValueStarsText.text = achievement.unlockValue.ToString();
 
-    public void ToggleExpandCollapse()
-    {
-        // !is Expanded  = isExpanded
+        // Set achievement icon
+        unlockedIcon.sprite = achievement.isAchieved ? achievement.unlockedSprite : lockedIcon;
         
-        // if  is Expanded false
-          // Disable Full Description Parent
-          // Enable Short Description
-          
-          
-        // if  is Expanded true
-          // Enable Full Description
-          // Disable short description
-        
-        
-        // Refresh
-    }
-    
-    
-    
-    public void ToggleExpandCollapseAchievement()
-    {
-        if (isExpanded)
+        if (achievement.isAchieved)
         {
-            Collapse();
+            dateAchievedText.text = achievement.dateAchieved.ToString("MMMM dd, yyyy");
         }
         else
         {
-            Expand();
+            dateAchievedText.text = "Not Achieved";
+        }
+
+        // Populate tasks list dynamically
+        PopulateTaskList(achievement.tasks);
+
+        // Set reward text
+        rewardText.text = string.IsNullOrEmpty(achievement.reward) ? "No reward" : achievement.reward;
+
+        SetCollapsedState();
+    }
+    
+    private void PopulateTaskList(List<Task> tasks)
+    {
+        Debug.Log("Clearing tasks...");
+        ClearTasks();
+        
+        foreach (Task task in tasks)
+        {
+            GameObject taskItem = Instantiate(taskPrefab, taskListParent);
+            UI_TaskComponent taskComponent = taskItem.GetComponent<UI_TaskComponent>();
+            instantiatedTasks.Add(taskItem);
+            taskComponent.SetupTask(task);
+        }
+    }
+    
+    public void ToggleExpandCollapse()
+    {
+        isExpanded = !isExpanded;
+
+        if (isExpanded)
+        {
+            SetExpandedState();
+        }
+        else
+        {
+            SetCollapsedState();
+        }
+        UpdateButtonSprite();
+        
+        // I have to use it because otherwise size of holder not getting resized when collapsing unless scroll ;/
+        LayoutRebuilder.ForceRebuildLayoutImmediate(achievementHolder.GetComponent<RectTransform>());
+    }
+    
+    private void SetCollapsedState()
+    {
+        if (achievement != null) {
+        
+            achievementNameText.text = TruncateText(achievement.achievementName, maxTitleLength); 
+            shortAchievementDescriptionText.gameObject.SetActive(true); 
+            fullAchievementDescriptionText.gameObject.SetActive(false); 
+            taskListParent.gameObject.SetActive(false); 
+            bonusText.gameObject.SetActive(false); 
+            rewardText.gameObject.SetActive(false);
+        }
+    }
+    
+    private void SetExpandedState()
+    {
+        achievementNameText.text = achievement.achievementName;
+        shortAchievementDescriptionText.gameObject.SetActive(false);
+        fullAchievementDescriptionText.gameObject.SetActive(true);
+        taskListParent.gameObject.SetActive(true); 
+        bonusText.gameObject.SetActive(true);
+        rewardText.gameObject.SetActive(true);
+    }
+    
+    private void UpdateButtonSprite()
+    {
+        if (expandCollapseButtonImage != null)
+        {
+            expandCollapseButtonImage.sprite = isExpanded ? expandedButtonSprite : collapsedButtonSprite;
         }
     }
     
@@ -124,27 +154,13 @@ public class UI_Achievement_UI : MonoBehaviour
         return text;
     }
     
-    public void Expand()
+    private void ClearTasks()
     {
-        
-        if (!isExpanded)
+        foreach (GameObject taskItem in instantiatedTasks)
         {
-            collapsedHolder.SetActive(false);
-            expandedHolder.SetActive(true);
-            isExpanded = true;
-            
-            Debug.Log("Expanded successfully");
+            Destroy(taskItem);
         }
-    }
-
-    public void Collapse()
-    {
-        if (isExpanded)
-        {
-            collapsedHolder.SetActive(true);
-            expandedHolder.SetActive(false);
-            isExpanded = false;
-        }
+        instantiatedTasks.Clear();
     }
     
 }

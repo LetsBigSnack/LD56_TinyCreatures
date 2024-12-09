@@ -95,7 +95,7 @@ public class UI_AchievementManager : MonoBehaviour
             GameObject achievementUI = Instantiate(achievementUIPrefab, achievementListContainer);
             UI_Achievement_UI achievementUIComponent = achievementUI.GetComponent<UI_Achievement_UI>();
             instantiatedAchievements.Add(achievementUI);
-            achievementUIComponent.PopulateAchievements(achievement);
+            achievementUIComponent.SetupAchievement(achievement);
         }
             
     }

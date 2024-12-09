@@ -12,15 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f935f05f69fb56c4db31d5644e6a1a6e, type: 3}
   m_Name: Speed_1
   m_EditorClassIdentifier: 
+  achievementID: 
   achievementName: IM FAST
   description: Get a creature with speed over 50
-  unlockedSprite: {fileID: 0}
-  collectedValue:
-    mantissaString: 0
-    exponentString: 0
-  unlockValue:
-    mantissaString: 50
-    exponentString: 0
-  reward: Something
+  unlockedSprite: {fileID: 21300000, guid: c51e3f05fdf3134419832e579b391634, type: 3}
+  collectedValue: 0
+  unlockValue: 0
+  reward: 
   isAchieved: 1
   type: 2
+  tasks: []

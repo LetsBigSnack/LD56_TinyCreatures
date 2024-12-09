@@ -12,15 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f935f05f69fb56c4db31d5644e6a1a6e, type: 3}
   m_Name: wins_15
   m_EditorClassIdentifier: 
+  achievementID: 
   achievementName: MORE FISH
   description: Defeat 15 creatures with a single creature.
   unlockedSprite: {fileID: 613259844, guid: 8160140cc5f5ee5488d73f5ed2249975, type: 3}
-  collectedValue:
-    mantissaString: 0
-    exponentString: 0
-  unlockValue:
-    mantissaString: 15
-    exponentString: 0
+  collectedValue: 0
+  unlockValue: 0
   reward: Each creature starts with +2% ATK.
   isAchieved: 0
   type: 0
+  tasks: []
