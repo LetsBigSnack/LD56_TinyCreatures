@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class UI_Achievement_UI : MonoBehaviour
+public class UI_AchievementComponent : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private GameObject achievementHolder; 

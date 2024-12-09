@@ -93,7 +93,7 @@ public class UI_AchievementManager : MonoBehaviour
         foreach (Achievement achievement in sortedAchievements)
         {
             GameObject achievementUI = Instantiate(achievementUIPrefab, achievementListContainer);
-            UI_Achievement_UI achievementUIComponent = achievementUI.GetComponent<UI_Achievement_UI>();
+            UI_AchievementComponent achievementUIComponent = achievementUI.GetComponent<UI_AchievementComponent>();
             instantiatedAchievements.Add(achievementUI);
             achievementUIComponent.SetupAchievement(achievement);
         }
