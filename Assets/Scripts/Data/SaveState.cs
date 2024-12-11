@@ -68,6 +68,14 @@ namespace Data
             soledCreatures = new List<Creature>();
             inventorySpace = 8;
             tutorialData = new TutorialData();
+#if UNITY_EDITOR
+            tutorialData.BattleDone = true;
+            tutorialData.ConfigDone = true;
+            tutorialData.EntryDone = true;
+            tutorialData.FusionDone = true;
+            tutorialData.InspectorDone = true;
+            tutorialData.ShopDone = true;
+#endif
             inventory = new List<Creature>
             {
                 CreatureManager.Instance.CreateBasicCreature(),

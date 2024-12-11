@@ -34,11 +34,12 @@ public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
         if(eventData.pointerDrag != null)
         {
             UICreatureButton uiCreatureButton = eventData.pointerDrag.GetComponent<UICreatureButton>();
-            if(uiCreatureButton != null && !uiCreatureButton.IsDragable)
+            if(uiCreatureButton == null || !uiCreatureButton.IsDragable || uiCreatureButton.Creature == null)
             {
                 SoundManager.Instance.PlaySFX("Error");
                 return;
             }
+            Debug.Log("AMINA");
             SetNewCreature(uiCreatureButton.Creature);
             SoundManager.Instance.PlaySFX("Click");
         }
@@ -80,16 +81,20 @@ public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
 
     public void StartFarming()
     {
-       //Start Coroutine in the Materials Backend
+        MaterialManager.Instance.StartFarming(selectedMaterial);
     }
 
-    //ButtonAction
+    public void StopFarming()
+    {
+        MaterialManager.Instance.StopFarming(selectedMaterial);
+    }
+
     public void Withdraw(bool isExchanged = false)
     {
         if (currentCreature != null)
         {
-            InventoryManager.Instance.RemoveCreatureFromMaterialSlot(selectedMaterial);
             ResetCreatureRepresentation();
+            StopFarming();
             creatureButton.Creature = null;
             currentCreature = null;
             SetMiningAnimation();

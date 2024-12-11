@@ -1,3 +1,4 @@
+using Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,12 @@ public class InventoryManager : MonoBehaviour
     [Header("Inventory")]
     [SerializeField] private List<Creature> inventoryCreatures;
     [SerializeField] private int inventorySpace = 8;
-    
+
+    private BigDecimal materialA = 0;
+    private BigDecimal materialB = 0;
+    private BigDecimal materialC = 0;
+    private BigDecimal materialD = 0;
+
     private Creature selectedCreatureForBattle;
     private Creature creatureInspectorLeft;
     private Creature creatureInspectorRight;
@@ -44,6 +50,14 @@ public class InventoryManager : MonoBehaviour
     public Creature SelectedCreatureForMaterial_4
     { get => selectedCreatureForMaterial_4; set => selectedCreatureForMaterial_4 = value; }
 
+    public BigDecimal MaterialA
+    { get => materialA; set => materialA = value; }
+    public BigDecimal MaterialB
+    { get => materialB; set => materialB = value; }
+    public BigDecimal MaterialC
+    { get => materialC; set => materialC = value; }
+    public BigDecimal MaterialD
+    { get => materialD; set => materialD = value; }
 
     public List<Creature> InventoryCreatures
     {
@@ -67,6 +81,14 @@ public class InventoryManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    private void Update()
+    {
+        Debug.Log("A :" + materialA);
+        Debug.Log("B :" + materialB);
+        Debug.Log("C :" + materialC);
+        Debug.Log("D :" + materialD);
     }
 
     public bool AddCreature(Creature newCreature)
