@@ -4,12 +4,22 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+//TODO: refactor as soon as theme has been set
+public enum MaterialType
+{
+    MaterialA,
+    MaterialB,
+    MaterialC,
+    MaterialD
+}
+
 public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
 {
+    private Creature currentCreature;
     [SerializeField] private UICreatureButton creatureButton;
     [SerializeField] private UI_CreatureSprite creatureSprite;
-    [SerializeField] private Creature currentCreature;
     [SerializeField] private Image miningAnimObject;
+    [SerializeField] private MaterialType selectedMaterial;
 
     public void Awake()
     {
@@ -21,8 +31,17 @@ public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        SetNewCreature(eventData.pointerDrag.GetComponentInChildren<UICreatureButton>().Creature);
-        SoundManager.Instance.PlaySFX("Click");
+        if(eventData.pointerDrag != null)
+        {
+            UICreatureButton uiCreatureButton = eventData.pointerDrag.GetComponent<UICreatureButton>();
+            if(uiCreatureButton != null && !uiCreatureButton.IsDragable)
+            {
+                SoundManager.Instance.PlaySFX("Error");
+                return;
+            }
+            SetNewCreature(uiCreatureButton.Creature);
+            SoundManager.Instance.PlaySFX("Click");
+        }
     }
 
     public void SetMiningAnimation()
@@ -37,12 +56,12 @@ public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
 
     public void SetNewCreature(Creature creature)
     {
-        if(currentCreature != null && !currentCreature.IsNull())
+        if(currentCreature != null)
         {
             Withdraw(true);
         }
-
-        InventoryManager.Instance.RemoveCreature(creature);
+        InventoryManager.Instance.AddCreatureToMaterialSlot(creature, selectedMaterial);
+        StartFarming();
         SetCreatureRepresentation(creature);
         SetMiningAnimation();
     }
@@ -67,10 +86,9 @@ public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
     //ButtonAction
     public void Withdraw(bool isExchanged = false)
     {
-        if (currentCreature != null && !currentCreature.IsNull())
+        if (currentCreature != null)
         {
-            InventoryManager.Instance.AddCreature(currentCreature);
-            //stop current coroutine of the material
+            InventoryManager.Instance.RemoveCreatureFromMaterialSlot(selectedMaterial);
             ResetCreatureRepresentation();
             creatureButton.Creature = null;
             currentCreature = null;

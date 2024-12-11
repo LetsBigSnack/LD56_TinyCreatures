@@ -35,6 +35,16 @@ public class InventoryManager : MonoBehaviour
     public Creature SelectedCreatureForReConfigure
     { get => selectedCreatureForReConfigure; set => selectedCreatureForReConfigure = value; }
 
+    public Creature SelectedCreatureForMaterial_1
+    { get => selectedCreatureForMaterial_1; set => selectedCreatureForMaterial_1 = value; }
+    public Creature SelectedCreatureForMaterial_2
+    { get => selectedCreatureForMaterial_2; set => selectedCreatureForMaterial_2 = value; }
+    public Creature SelectedCreatureForMaterial_3
+    { get => selectedCreatureForMaterial_3; set => selectedCreatureForMaterial_3 = value; }
+    public Creature SelectedCreatureForMaterial_4
+    { get => selectedCreatureForMaterial_4; set => selectedCreatureForMaterial_4 = value; }
+
+
     public List<Creature> InventoryCreatures
     {
         get { return inventoryCreatures; }
@@ -71,8 +81,106 @@ public class InventoryManager : MonoBehaviour
                 return true;
             }
         }
-
         return false;
+    }
+
+    public bool AddCreatureToMaterialSlot(Creature creature, MaterialType selectedMaterial)
+    {
+        if (creature != null && inventoryCreatures.Contains(creature))
+        {
+            switch (selectedMaterial)
+            {
+                case MaterialType.MaterialA:
+                    RemoveCreatureFromMaterialSlot(selectedMaterial);
+                    selectedCreatureForMaterial_1 = creature;
+                    break;
+
+                case MaterialType.MaterialB:
+                    RemoveCreatureFromMaterialSlot(selectedMaterial);
+                    selectedCreatureForMaterial_2 = creature;
+                    break;
+
+                case MaterialType.MaterialC:
+                    RemoveCreatureFromMaterialSlot(selectedMaterial);
+                    selectedCreatureForMaterial_3 = creature;
+                    break;
+
+                case MaterialType.MaterialD:
+                    RemoveCreatureFromMaterialSlot(selectedMaterial);
+                    selectedCreatureForMaterial_4 = creature;
+                    break;
+            }
+            inventoryCreatures.Remove(creature);
+            UI_InventoryManager.Instance.RefreshInventory();
+            return true;
+        }
+        return false;
+    }
+
+    public void RemoveCreatureFromMaterialSlot(MaterialType materialType)
+    {
+        switch (materialType)
+        {
+            case MaterialType.MaterialA:
+                RemoveCreatureFromMaterialSlot(selectedCreatureForMaterial_1, materialType);
+                break;
+
+            case MaterialType.MaterialB:
+                RemoveCreatureFromMaterialSlot(selectedCreatureForMaterial_2, materialType);
+                break;
+
+            case MaterialType.MaterialC:
+                RemoveCreatureFromMaterialSlot(selectedCreatureForMaterial_3, materialType);
+                break;
+
+            case MaterialType.MaterialD:
+                RemoveCreatureFromMaterialSlot(selectedCreatureForMaterial_4, materialType);
+                break;
+        }
+    }
+
+    public void RemoveCreatureFromMaterialSlot(Creature creature, MaterialType materialType)
+    {
+        if (creature == null)
+        {
+            return;
+        }
+
+        switch (materialType)
+        {
+            case MaterialType.MaterialA:
+                if(selectedCreatureForMaterial_1 != creature)
+                {
+                    return;
+                }
+                selectedCreatureForMaterial_1 = null;
+                break;
+
+            case MaterialType.MaterialB:
+                if (selectedCreatureForMaterial_2 != creature)
+                {
+                    return;
+                }
+                selectedCreatureForMaterial_2 = null;
+                break;
+
+            case MaterialType.MaterialC:
+                if (selectedCreatureForMaterial_3 != creature)
+                {
+                    return;
+                }
+                selectedCreatureForMaterial_3 = null;
+                break;
+
+            case MaterialType.MaterialD:
+                if (selectedCreatureForMaterial_4 != creature)
+                {
+                    return;
+                }
+                selectedCreatureForMaterial_4 = null;
+                break;
+        }
+        AddCreature(creature);
     }
 
     public bool RemoveCreature(Creature creatureToRemove)

@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     [SerializeField] private Canvas canvas;
-    [SerializeField] public Creature creature;
-    [SerializeField] public bool isHoverable;
+    private Creature creature;
+    [SerializeField] private bool isHoverable;
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Transform parentAfterDrag;
-    public bool isDragable = true;
+    [SerializeField] private bool isDragable = true;
 
     private SoundManager soundManager;
         
