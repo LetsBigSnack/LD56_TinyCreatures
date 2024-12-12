@@ -77,6 +77,16 @@ public class UI_AchievementManager : MonoBehaviour
         Debug.Log("Value for left dd = "+ selectedAchieved + " --- Value for right dd = " +  selectedAchievementType);
         #endif
 
+        // Option to fix double spaces in searchbar
+        //if(searchBar.text.Length >= 2)
+        //{
+        //    if (searchBar.text[searchBar.text.Length - 1] == ' ' && searchBar.text[searchBar.text.Length - 2] == ' ')
+        //    {
+        //        searchBar.text = searchBar.text.Substring(0, searchBar.text.Length - 2);
+        //        return;
+        //    }
+        //}
+
         SortAchievements();
     }
 
@@ -139,7 +149,7 @@ public class UI_AchievementManager : MonoBehaviour
 
         // Third sieve for searchbar
         string searchText = searchBar.text;
-        if(searchText.Length >= 0)
+        if(searchText.Length >= 0 && searchText != "  ")
         {
             List<Achievement> helperListNames = new List<Achievement>();
             List<Achievement> helperListDescriptions = new List<Achievement>();
