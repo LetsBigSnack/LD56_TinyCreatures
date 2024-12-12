@@ -28,6 +28,8 @@ public class UI_AchievementManager : MonoBehaviour
     [SerializeField] private GameObject achievementUIPrefab;
     [SerializeField] private Transform achievementListContainer;
 
+    [SerializeField] private TMP_InputField searchBar;
+
     private OptionFilterAchieved selectedAchieved = OptionFilterAchieved.All;
     private AchievementType selectedAchievementType = 0;
 
@@ -66,7 +68,7 @@ public class UI_AchievementManager : MonoBehaviour
         }
     }
 
-    public void DropdownChange()
+    public void OnChange()
     {
         selectedAchieved = (OptionFilterAchieved)dropdownAchieved.value;
         selectedAchievementType = (AchievementType)dropdownAchievementType.value - 1;
@@ -80,14 +82,15 @@ public class UI_AchievementManager : MonoBehaviour
 
     public void ShowAchievements(List<Achievement> sortedAchievements)
     {
-        #if UNITY_EDITOR
         ClearAchievements();
-        Debug.Log("---- ---- ---- ----");
-        foreach (Achievement achievement in sortedAchievements)
-        {
-            Debug.Log(achievement.name);
-        }
-        Debug.Log("---- ---- ---- ----");
+
+        #if UNITY_EDITOR
+        //Debug.Log("---- ---- ---- ----");
+        //foreach (Achievement achievement in sortedAchievements)
+        //{
+        //    Debug.Log(achievement.name);
+        //}
+        //Debug.Log("---- ---- ---- ----");
 
         #endif
         foreach (Achievement achievement in sortedAchievements)
@@ -135,8 +138,19 @@ public class UI_AchievementManager : MonoBehaviour
         }
 
         // Third sieve for searchbar
-        // TODO: make searchbar filter
-       
+        string searchText = searchBar.text;
+        if(searchText.Length >= 0)
+        {
+            List<Achievement> helperListNames = new List<Achievement>();
+            List<Achievement> helperListDescriptions = new List<Achievement>();
+
+            helperListNames = filtertAchievements.Where(achievement => achievement.achievementName.ToLower().Contains(searchText.ToLower())).ToList();
+            helperListDescriptions = filtertAchievements.Where(achievement => achievement.description.ToLower().Contains(searchText.ToLower())).ToList();
+            
+            filtertAchievements = helperListNames.Concat(helperListDescriptions).Distinct().ToList();
+        }
+
+
         filtertAchievements.OrderBy(achievement => achievement.name);
 
         ShowAchievements(filtertAchievements);

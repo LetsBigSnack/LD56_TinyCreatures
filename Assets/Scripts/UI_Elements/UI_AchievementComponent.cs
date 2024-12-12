@@ -83,7 +83,7 @@ public class UI_AchievementComponent : MonoBehaviour
     
     private void PopulateTaskList(List<Task> tasks)
     {
-        Debug.Log("Clearing tasks...");
+        //Debug.Log("Clearing tasks...");
         ClearTasks();
         
         foreach (Task task in tasks)
