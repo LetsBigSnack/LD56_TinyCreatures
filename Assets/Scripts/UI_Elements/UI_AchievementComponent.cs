@@ -20,6 +20,7 @@ public class UI_AchievementComponent : MonoBehaviour
     [SerializeField] private TMP_Text bonusText;
     [SerializeField] private TMP_Text rewardText; 
     [SerializeField] private TMP_Text dateAchievedText;
+    [SerializeField] private GameObject expandedText;
     
     [Header("Task List")]
     [SerializeField] private Transform taskListParent;
@@ -28,6 +29,10 @@ public class UI_AchievementComponent : MonoBehaviour
     [Header("Icons")]
     [SerializeField] private Image unlockedIcon; 
     [SerializeField] private Sprite lockedIcon;
+    
+    [Header("Outline Images")]
+    [SerializeField] private Image collapsedOutline; 
+    [SerializeField] private Sprite expandedOutline;
     
     [Header("Button Image for Expanding/Collapsing")]
     [SerializeField] private Image expandCollapseButtonImage;
@@ -119,10 +124,8 @@ public class UI_AchievementComponent : MonoBehaviour
         
             achievementNameText.text = TruncateText(achievement.achievementName, maxTitleLength); 
             shortAchievementDescriptionText.gameObject.SetActive(true); 
-            fullAchievementDescriptionText.gameObject.SetActive(false); 
             taskListParent.gameObject.SetActive(false); 
-            bonusText.gameObject.SetActive(false); 
-            rewardText.gameObject.SetActive(false);
+            expandedText.gameObject.SetActive(false);
         }
     }
     
@@ -130,10 +133,8 @@ public class UI_AchievementComponent : MonoBehaviour
     {
         achievementNameText.text = achievement.achievementName;
         shortAchievementDescriptionText.gameObject.SetActive(false);
-        fullAchievementDescriptionText.gameObject.SetActive(true);
         taskListParent.gameObject.SetActive(true); 
-        bonusText.gameObject.SetActive(true);
-        rewardText.gameObject.SetActive(true);
+        expandedText.gameObject.SetActive(true);
     }
     
     private void UpdateButtonSprite()
