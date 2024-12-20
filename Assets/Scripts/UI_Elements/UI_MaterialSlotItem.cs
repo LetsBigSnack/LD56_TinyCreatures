@@ -29,6 +29,11 @@ public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
         SetMiningAnimation();
     }
 
+    public void OnEnable()
+    {
+        SetCurrentCreature();
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
         if(eventData.pointerDrag != null)
@@ -64,6 +69,26 @@ public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
         InventoryManager.Instance.AddCreatureToMaterialSlot(creature, selectedMaterial);
         StartFarming();
         SetCreatureRepresentation(creature);
+        SetMiningAnimation();
+    }
+
+    private void SetCurrentCreature()
+    {
+        switch (selectedMaterial)
+        {
+            case MaterialType.MaterialA:
+                SetCreatureRepresentation(InventoryManager.Instance.SelectedCreatureForMaterial_1);
+                break;
+            case MaterialType.MaterialB:
+                SetCreatureRepresentation(InventoryManager.Instance.SelectedCreatureForMaterial_2);
+                break;
+            case MaterialType.MaterialC:
+                SetCreatureRepresentation(InventoryManager.Instance.SelectedCreatureForMaterial_3);
+                break;
+            case MaterialType.MaterialD:
+                SetCreatureRepresentation(InventoryManager.Instance.SelectedCreatureForMaterial_4);
+                break;
+        }
         SetMiningAnimation();
     }
 

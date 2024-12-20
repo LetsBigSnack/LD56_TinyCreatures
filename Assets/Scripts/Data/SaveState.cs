@@ -45,7 +45,11 @@ namespace Data
         
         // Inventory
         public int inventorySpace;
-        
+        public BigDecimal material_1;
+        public BigDecimal material_2;
+        public BigDecimal material_3;
+        public BigDecimal material_4;
+
         // Creatures
         public List<Creature> inventory;
         public Creature selectedCreatureBattle;
@@ -53,9 +57,12 @@ namespace Data
         public Creature selectedCreaturePodTwo;
         public Creature breedingCreatureResult;
         public Creature selectedCreatureReconfigure;
-
+        public Creature selectedCreatureMaterial_1;
+        public Creature selectedCreatureMaterial_2;
+        public Creature selectedCreatureMaterial_3;
+        public Creature selectedCreatureMaterial_4;
         // Constructor to set default values
-        
+
         public void InitializeDefaults()
         {
             saveName = "Save";
@@ -67,6 +74,10 @@ namespace Data
             boughtSlots = new BigDecimal(0, 0);
             soledCreatures = new List<Creature>();
             inventorySpace = 8;
+            material_1 = 0;
+            material_2 = 0;
+            material_3 = 0;
+            material_4 = 0;
             tutorialData = new TutorialData();
 #if UNITY_EDITOR
             tutorialData.BattleDone = true;

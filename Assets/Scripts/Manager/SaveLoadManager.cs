@@ -203,12 +203,21 @@ public class SaveLoadManager : MonoBehaviour
         saveState.inventorySpace = InventoryManager.Instance.InventorySpace;
         
         saveState.inventory = InventoryManager.Instance.InventoryCreatures;
-        
+        saveState.material_1 = InventoryManager.Instance.MaterialA;
+        saveState.material_2 = InventoryManager.Instance.MaterialB;
+        saveState.material_3 = InventoryManager.Instance.MaterialC;
+        saveState.material_4 = InventoryManager.Instance.MaterialD;
+
         saveState.selectedCreatureBattle = InventoryManager.Instance.SelectedCreatureForBattle;
         saveState.selectedCreaturePodOne = BreedingManager.Instance.CreaturePod1;
         saveState.selectedCreaturePodTwo = BreedingManager.Instance.CreaturePod2;
         saveState.breedingCreatureResult = BreedingManager.Instance.Result;
         saveState.selectedCreatureReconfigure = InventoryManager.Instance.SelectedCreatureForReConfigure;
+
+        saveState.selectedCreatureMaterial_1 = InventoryManager.Instance.SelectedCreatureForMaterial_1;
+        saveState.selectedCreatureMaterial_2 = InventoryManager.Instance.SelectedCreatureForMaterial_2;
+        saveState.selectedCreatureMaterial_3 = InventoryManager.Instance.SelectedCreatureForMaterial_3;
+        saveState.selectedCreatureMaterial_4 = InventoryManager.Instance.SelectedCreatureForMaterial_4;
 
         JsonSerializerSettings settings = new JsonSerializerSettings
         {
@@ -311,15 +320,24 @@ public class SaveLoadManager : MonoBehaviour
 
         InventoryManager.Instance.InventorySpace = loadedSaveState.inventorySpace;
         InventoryManager.Instance.InventoryCreatures = loadedSaveState.inventory;
+        InventoryManager.Instance.MaterialA = loadedSaveState.material_1;
+        InventoryManager.Instance.MaterialB = loadedSaveState.material_2;
+        InventoryManager.Instance.MaterialC = loadedSaveState.material_3;
+        InventoryManager.Instance.MaterialD = loadedSaveState.material_4;
 
         InventoryManager.Instance.SelectedCreatureForBattle = loadedSaveState.selectedCreatureBattle;
         BreedingManager.Instance.CreaturePod1 = loadedSaveState.selectedCreaturePodOne;
         BreedingManager.Instance.CreaturePod2 = loadedSaveState.selectedCreaturePodTwo;
         BreedingManager.Instance.Result = loadedSaveState.breedingCreatureResult;
         InventoryManager.Instance.SelectedCreatureForReConfigure = loadedSaveState.selectedCreatureReconfigure;
-        
+
+        InventoryManager.Instance.SelectedCreatureForMaterial_1 = loadedSaveState.selectedCreatureMaterial_1;
+        InventoryManager.Instance.SelectedCreatureForMaterial_2 = loadedSaveState.selectedCreatureMaterial_2;
+        InventoryManager.Instance.SelectedCreatureForMaterial_3 = loadedSaveState.selectedCreatureMaterial_3;
+        InventoryManager.Instance.SelectedCreatureForMaterial_4 = loadedSaveState.selectedCreatureMaterial_4;
+
         // Clear for you
-        
+
         InventoryManager.Instance.CreatureInspectorLeft = null;
         InventoryManager.Instance.CreatureInspectorRight = null;
 

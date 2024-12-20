@@ -40,7 +40,7 @@ public class MaterialManager : MonoBehaviour
                 break;
 
             case MaterialType.MaterialB:
-                creature = InventoryManager.Instance.SelectedCreatureForMaterial_1;
+                creature = InventoryManager.Instance.SelectedCreatureForMaterial_2;
                 if (creature == null)
                 {
                     return;
@@ -51,7 +51,7 @@ public class MaterialManager : MonoBehaviour
                 break;
 
             case MaterialType.MaterialC:
-                creature = InventoryManager.Instance.SelectedCreatureForMaterial_1;
+                creature = InventoryManager.Instance.SelectedCreatureForMaterial_3;
                 if (creature == null)
                 {
                     return;
@@ -62,7 +62,7 @@ public class MaterialManager : MonoBehaviour
                 break;
 
             case MaterialType.MaterialD:
-                creature = InventoryManager.Instance.SelectedCreatureForMaterial_1;
+                creature = InventoryManager.Instance.SelectedCreatureForMaterial_4;
                 if (creature == null)
                 {
                     return;
@@ -90,7 +90,7 @@ public class MaterialManager : MonoBehaviour
                 break;
 
             case MaterialType.MaterialB:
-                creature = InventoryManager.Instance.SelectedCreatureForMaterial_1;
+                creature = InventoryManager.Instance.SelectedCreatureForMaterial_2;
                 if (creature == null)
                 {
                     return;
@@ -100,7 +100,7 @@ public class MaterialManager : MonoBehaviour
                 break;
 
             case MaterialType.MaterialC:
-                creature = InventoryManager.Instance.SelectedCreatureForMaterial_1;
+                creature = InventoryManager.Instance.SelectedCreatureForMaterial_3;
                 if (creature == null)
                 {
                     return;
@@ -110,7 +110,7 @@ public class MaterialManager : MonoBehaviour
                 break;
 
             case MaterialType.MaterialD:
-                creature = InventoryManager.Instance.SelectedCreatureForMaterial_1;
+                creature = InventoryManager.Instance.SelectedCreatureForMaterial_4;
                 if (creature == null)
                 {
                     return;
@@ -121,6 +121,41 @@ public class MaterialManager : MonoBehaviour
         }
     }
 
+    public void StopAllMaterialCoroutines()
+    {
+        if(materialA != null)
+        {
+            StopCoroutine(materialA);
+            materialA = null;
+        }
+
+        if (materialB != null)
+        {
+            StopCoroutine(materialB);
+            materialB = null;
+        }
+
+        if (materialC != null)
+        {
+            StopCoroutine(materialC);
+            materialC = null;
+        }
+
+        if (materialD != null)
+        {
+            StopCoroutine(materialD);
+            materialD = null;
+        }
+    }
+
+    public void StartAllMaterialCoroutines()
+    {
+        StartFarming(MaterialType.MaterialA);
+        StartFarming(MaterialType.MaterialB);
+        StartFarming(MaterialType.MaterialC);
+        StartFarming(MaterialType.MaterialD);
+    }
+
     public IEnumerator MaterialA(Creature creature)
     {
         float amountToGenerate = (float)creature.CreatureStats.Attack / 60f;
@@ -128,7 +163,7 @@ public class MaterialManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(timeUntilNextGeneration);
-            InventoryManager.Instance.MaterialA++;
+            InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialA, 1);
         }
     }
 
@@ -139,7 +174,7 @@ public class MaterialManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(timeUntilNextGeneration);
-            InventoryManager.Instance.MaterialB++;
+            InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialB, 1);
         }
     }
 
@@ -150,7 +185,7 @@ public class MaterialManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(timeUntilNextGeneration);
-            InventoryManager.Instance.MaterialC++;
+            InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialC, 1);
         }
     }
 
@@ -161,7 +196,7 @@ public class MaterialManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(timeUntilNextGeneration);
-            InventoryManager.Instance.MaterialD++;
+            InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialD, 1);
         }
     }
 }

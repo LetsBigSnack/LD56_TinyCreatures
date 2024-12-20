@@ -19,6 +19,11 @@ public class InventoryManager : MonoBehaviour
     private BigDecimal materialC = 0;
     private BigDecimal materialD = 0;
 
+    public static event Action<BigDecimal> OnChangesMaterialA;
+    public static event Action<BigDecimal> OnChangesMaterialB;
+    public static event Action<BigDecimal> OnChangesMaterialC;
+    public static event Action<BigDecimal> OnChangesMaterialD;
+
     private Creature selectedCreatureForBattle;
     private Creature creatureInspectorLeft;
     private Creature creatureInspectorRight;
@@ -83,14 +88,6 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        Debug.Log("A :" + materialA);
-        Debug.Log("B :" + materialB);
-        Debug.Log("C :" + materialC);
-        Debug.Log("D :" + materialD);
-    }
-
     public bool AddCreature(Creature newCreature)
     {
         if (newCreature != null && !inventoryCreatures.Contains(newCreature))
@@ -104,6 +101,76 @@ public class InventoryManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void AddMaterialToInventory(MaterialType material, BigDecimal amount)
+    {
+        switch (material)
+        {
+            case MaterialType.MaterialA:
+                materialA += amount;
+                OnChangesMaterialA?.Invoke(materialA);
+                break;
+
+            case MaterialType.MaterialB:
+                materialB += amount;
+                OnChangesMaterialB?.Invoke(materialB);
+                break;
+
+            case MaterialType.MaterialC:
+                materialC += amount;
+                OnChangesMaterialC?.Invoke(materialC);
+                break;
+
+            case MaterialType.MaterialD:
+                materialD += amount;
+                OnChangesMaterialD?.Invoke(materialD);
+                break;
+        }
+    }
+
+    public bool ReduceMaterialToInventory(MaterialType material, BigDecimal amount)
+    {
+        switch (material)
+        {
+            case MaterialType.MaterialA:
+                if((materialA - amount) < 0)
+                {
+                    return false;
+                }
+                materialA -= amount;
+                OnChangesMaterialA?.Invoke(materialA);
+                break;
+
+            case MaterialType.MaterialB:
+                if ((materialB - amount) < 0)
+                {
+                    return false;
+                }
+                materialB -= amount;
+                OnChangesMaterialB?.Invoke(materialB);
+                break;
+
+            case MaterialType.MaterialC:
+                if ((materialC - amount) < 0)
+                {
+                    return false;
+                }
+                materialC -= amount;
+                OnChangesMaterialC?.Invoke(materialC);
+                break;
+
+            case MaterialType.MaterialD:
+                if ((materialD - amount) < 0)
+                {
+                    return false;
+                }
+                materialD -= amount;
+                OnChangesMaterialD?.Invoke(materialD);
+                break;
+        }
+
+        return true;
     }
 
     public bool AddCreatureToMaterialSlot(Creature creature, MaterialType selectedMaterial)
