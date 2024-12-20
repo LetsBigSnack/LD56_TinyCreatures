@@ -99,10 +99,13 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragH
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (UI_ToggleManager.Instance.CurrentState == ToggleState.Materials && isDragable)
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
-            rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
-            canvasGroup.alpha = 0.6f;
+            if (UI_ToggleManager.Instance.CurrentState == ToggleState.Materials && isDragable)
+            {
+                rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                canvasGroup.alpha = 0.6f;
+            }
         }
     }
 

@@ -21,8 +21,6 @@ public class UI_InventoryHoverManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dexText;
     [SerializeField] private TextMeshProUGUI defText;
     [SerializeField] private TextMeshProUGUI winsText;
-
-    private Creature hoveredCreature;
     
     public TextMeshProUGUI BattleText
     {
