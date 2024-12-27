@@ -7,6 +7,7 @@ using System.Net;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using Data;
+using Manager;
 using Newtonsoft.Json;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
@@ -219,6 +220,8 @@ public class SaveLoadManager : MonoBehaviour
         saveState.selectedCreatureMaterial_3 = InventoryManager.Instance.SelectedCreatureForMaterial_3;
         saveState.selectedCreatureMaterial_4 = InventoryManager.Instance.SelectedCreatureForMaterial_4;
 
+        saveState.achievement = AchievementManager.Instance.AchievementJson;
+
         JsonSerializerSettings settings = new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
@@ -344,6 +347,9 @@ public class SaveLoadManager : MonoBehaviour
         BreedingManager.Instance.UpdatePrice();
         
         //
+        AchievementManager.Instance.UnsubscribeAll();
+        AchievementManager.Instance.AchievementJson = loadedSaveState.achievement;
+        AchievementManager.Instance.SubscribeAll();
         
         Debug.Log("Game loaded successfully from slot " + _saveIndex);
     }

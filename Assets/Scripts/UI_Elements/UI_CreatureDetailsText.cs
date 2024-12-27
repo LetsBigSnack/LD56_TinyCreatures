@@ -21,14 +21,14 @@ public class UI_CreatureDetailsText : MonoBehaviour
     private void OnEnable()
     {
         // Subscribe to the win battle event
-        BattleManager.OnPlayerWinsChanged += UpdateWinsText;
+        BattleManager.OnCreatureWinsChanged += UpdateWinsText;
         Reset();
     }
     
     private void OnDisable()
     {
         // Unsubscribe from the win battle
-        BattleManager.OnPlayerWinsChanged -= UpdateWinsText;
+        BattleManager.OnCreatureWinsChanged -= UpdateWinsText;
     }
       
     public void Reset()

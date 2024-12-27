@@ -4,12 +4,6 @@ using Data;
 using UnityEngine;
 
 
-public enum AchievementType
-{
-    Wins,
-    Fusions,
-    Speed
-}
 
 [CreateAssetMenu(fileName = "NewAchievement", menuName = "Game/Achievement")]
 public class Achievement : ScriptableObject

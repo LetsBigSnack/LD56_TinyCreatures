@@ -1,0 +1,32 @@
+{
+    "id": 0,
+    "name": "Big Fish",
+    "description": "Desc.",
+    "sprite": "sprite_Name",
+    "date": "20/04/1889",
+    "unlocked" : false,
+    "reward" : "get some MTG Cards",
+    "requirements": [
+        {
+            "id":0,
+            "type": "Wins",
+            "completed" : true,
+            "trackValues": true,
+            "neededAmount" : 100,
+            "currentAmount" : 0
+        },
+        {
+            "id":0,
+            "type": "Creatures",
+            "completed" : false,
+            "neededAmount" : 100,
+            "currentAmount" : 0
+        }
+    ]
+}
+
+
+
+
+
+//achievements only per SaveGame !!!!!👉👈🥺👉👈🥺👉👈🥺👉👈🥺

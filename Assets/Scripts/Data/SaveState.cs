@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Manager;
 using Newtonsoft.Json;
 
 namespace Data
@@ -61,6 +62,9 @@ namespace Data
         public Creature selectedCreatureMaterial_2;
         public Creature selectedCreatureMaterial_3;
         public Creature selectedCreatureMaterial_4;
+        
+        public List<AchievementJSON> achievement;
+        
         // Constructor to set default values
 
         public void InitializeDefaults()
@@ -111,7 +115,8 @@ namespace Data
                         collected = entry.bodyPart.collected
                     }).ToList()
                 }).ToList();
-            
+
+            achievement = AchievementManager.Instance.TemplateAchievement;
         }
     }
 }
