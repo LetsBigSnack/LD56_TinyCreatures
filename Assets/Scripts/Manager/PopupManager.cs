@@ -13,6 +13,7 @@ namespace Manager
         Inspector,
         Fusion,
         Shop,
+        Config,
         Settings,
         Input,
         Delete
@@ -56,6 +57,8 @@ namespace Manager
         private string[] inspectorTexts;
         [SerializeField]
         private string[] fusionTexts;
+        [SerializeField]
+        private string[] configTexts;
         [SerializeField]
         private string[] shopTexts;
 
@@ -152,6 +155,9 @@ namespace Manager
                     break;
                 case StringState.Shop:
                     currentTexts = shopTexts;
+                    break;
+                case StringState.Config:
+                    currentTexts = configTexts;
                     break;
             }
         }

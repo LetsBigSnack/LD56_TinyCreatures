@@ -115,7 +115,7 @@ public class UI_ToggleManager : MonoBehaviour
                 materials.SetActive(false);
                 reconfigure.SetActive(true);
                 currentState = ToggleState.ReConfigure;
-                //popupManager.ViewPopup(state);
+                popupManager.ViewPopup(StringState.Config);
                 break;
         }
     }

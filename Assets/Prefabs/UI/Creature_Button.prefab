@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 8792882132501065738}
   - component: {fileID: 8565825482338371458}
   - component: {fileID: 9159522543882503881}
+  - component: {fileID: 6393426832433838422}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -193,10 +194,10 @@ RectTransform:
   - {fileID: 2355974083552297340}
   m_Father: {fileID: 3713537836985909687}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 150}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1978315517361363156
 CanvasRenderer:
@@ -378,6 +379,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHoverable: 1
+  rectTransform: {fileID: 0}
+  canvasGroup: {fileID: 0}
+  parentAfterDrag: {fileID: 0}
 --- !u!114 &8565825482338371458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -415,6 +419,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!225 &6393426832433838422
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2499411820491973088}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4138983044439920299
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,6 +441,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7014640335746948191}
   - component: {fileID: 7126648702697876061}
+  - component: {fileID: 1020813501343143181}
   m_Layer: 5
   m_Name: Creature_Picture
   m_TagString: Untagged
@@ -459,6 +476,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4138983044439920299}
   m_CullTransparentMesh: 1
+--- !u!114 &1020813501343143181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4138983044439920299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 1
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &4694898748170186563
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,6 +754,7 @@ GameObject:
   - component: {fileID: 3713537836985909687}
   - component: {fileID: 8689516954065587287}
   - component: {fileID: 1059505843441549227}
+  - component: {fileID: 3427507181624170401}
   m_Layer: 5
   m_Name: Creature_Button
   m_TagString: Untagged
@@ -783,6 +821,30 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3427507181624170401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7843208254596767153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 150, y: 150}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &8897646874638370740
 GameObject:
   m_ObjectHideFlags: 0

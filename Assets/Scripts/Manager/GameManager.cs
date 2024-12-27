@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
         {
             case "DekisScene":
                 _currentState = State.Game;
+                MaterialManager.Instance.StartAllMaterialCoroutines();
                 if (!BattleManager.Instance.SetNextBattleButton())
                 {
                     BattleManager.Instance.NextBattle();
@@ -49,7 +50,15 @@ public class GameManager : MonoBehaviour
                 BattleManager.Instance.StopBattle();
                 BattleManager.Instance.BattleRunning = true;
                 BattleManager.Instance.HasBattleStarted = false;
+                MaterialManager.Instance.StopAllMaterialCoroutines();
                 break;
         }
+    }
+
+    public void OnBrowserClose()
+    {
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            SaveLoadManager.Instance.SaveGame();
+        #endif
     }
 }

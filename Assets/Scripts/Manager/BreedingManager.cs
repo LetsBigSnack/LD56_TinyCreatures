@@ -211,6 +211,7 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     {
         if (creaturePod1 == null || creaturePod2 == null)
         {
+            breedingPrice = 0;
             return;
         }
         

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using Data;
 using Newtonsoft.Json;
 using Unity.Burst.Intrinsics;
@@ -13,6 +14,19 @@ using UnityEngine.InputSystem;
 
 public class SaveLoadManager : MonoBehaviour
 {
+    
+    [DllImport("__Internal")]
+    private static extern void JS_SaveGameToIndexedDB(string jsonString, int slotIndex);
+
+    [DllImport("__Internal")]
+    private static extern string JS_LoadSaveSlotFromIndexedDB(int slotIndex);
+
+    [DllImport("__Internal")]
+    private static extern bool JS_DeleteSaveFromIndexedDB(int slotIndex);
+
+    [DllImport("__Internal")]
+    private static extern int JS_SaveStateExistsInIndexedDB(int slotIndex);
+    
     public static SaveLoadManager Instance;
     private string _savePath;
     
@@ -53,7 +67,7 @@ public class SaveLoadManager : MonoBehaviour
         {
             Instance = this;
             _savePath = Application.persistentDataPath;
-            LoadSaveSlots();
+            LoadAllSaveSlots();
             if (_saveIndex != -1)
             {
                 UI_SaveLoadManager.Instance.SetSelectedSlot(_saveIndex);
@@ -71,37 +85,75 @@ public class SaveLoadManager : MonoBehaviour
         }
     }
     
-    private void LoadSaveSlots()
+    private void LoadAllSaveSlots()
     {
-        DateTime latestSaveTime = DateTime.MinValue;
-        
+
         for (int i = 0; i < 3; i++) // Start from slot 3 and go down to 1
         {
-            string filePath = $"{_savePath}/SaveSlot{i}.json";
-            if (File.Exists(filePath))
+
+            SaveState saveState = LoadSaveSlot(i);
+            
+            switch (i)
             {
-                DateTime saveTime = File.GetLastWriteTime(filePath);
-                
-                if (saveTime > latestSaveTime)
-                {
-                    latestSaveTime = saveTime;
-                    _saveIndex = i;
-                }
-                
-                string json = File.ReadAllText(filePath);
-                SaveState saveState = JsonConvert.DeserializeObject<SaveState>(json);
-                
-                switch (i)
-                {
-                    case 0: _saveSlot1 = saveState; break;
-                    case 1: _saveSlot2 = saveState; break;
-                    case 2: _saveSlot3 = saveState; break;
-                }
-                
+                case 0: _saveSlot1 = saveState; break;
+                case 1: _saveSlot2 = saveState; break;
+                case 2: _saveSlot3 = saveState; break;
             }
         }
         
+        List<SaveState> tempSaveStates = new List<SaveState>();
+        tempSaveStates.Add(_saveSlot1);
+        tempSaveStates.Add(_saveSlot2);
+        tempSaveStates.Add(_saveSlot3);
+        tempSaveStates = tempSaveStates
+            .Where(element => element != null)
+            .ToList();
+
+        if (tempSaveStates.Count <= 0)
+        {
+            return;
+        }
+        
+        SaveState indexElement = tempSaveStates.OrderByDescending(c => c.lastUpdate).First();
+        
+        _saveIndex = tempSaveStates.IndexOf(indexElement);
+
     }
+
+    private SaveState LoadSaveSlot(int slotIndex)
+    {
+        SaveState saveState;
+        #if !UNITY_EDITOR && UNITY_WEBGL
+                saveState = LoadSaveSlotFromIndexedDB(slotIndex);
+        #else
+                saveState = LoadSaveSlotFromFile(slotIndex);
+        #endif
+        
+        return saveState;
+    }
+
+    private SaveState LoadSaveSlotFromFile(int slotIndex)
+    {
+        string filePath = $"{_savePath}/SaveSlot{slotIndex}.json";
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<SaveState>(json);
+        }
+        return null;
+    }
+
+    private SaveState LoadSaveSlotFromIndexedDB(int slotIndex)
+    {
+        Debug.Log("Unity Call for Slot"+slotIndex+"::"+SaveStateExistsInIndexedDB(slotIndex));
+        if (SaveStateExistsInIndexedDB(slotIndex))
+        {
+            string json = JS_LoadSaveSlotFromIndexedDB(slotIndex);
+            return JsonConvert.DeserializeObject<SaveState>(json);
+        }
+        return null;
+    }
+    
 
     public void SaveGame()
     {
@@ -151,12 +203,21 @@ public class SaveLoadManager : MonoBehaviour
         saveState.inventorySpace = InventoryManager.Instance.InventorySpace;
         
         saveState.inventory = InventoryManager.Instance.InventoryCreatures;
-        
+        saveState.material_1 = InventoryManager.Instance.MaterialA;
+        saveState.material_2 = InventoryManager.Instance.MaterialB;
+        saveState.material_3 = InventoryManager.Instance.MaterialC;
+        saveState.material_4 = InventoryManager.Instance.MaterialD;
+
         saveState.selectedCreatureBattle = InventoryManager.Instance.SelectedCreatureForBattle;
         saveState.selectedCreaturePodOne = BreedingManager.Instance.CreaturePod1;
         saveState.selectedCreaturePodTwo = BreedingManager.Instance.CreaturePod2;
         saveState.breedingCreatureResult = BreedingManager.Instance.Result;
         saveState.selectedCreatureReconfigure = InventoryManager.Instance.SelectedCreatureForReConfigure;
+
+        saveState.selectedCreatureMaterial_1 = InventoryManager.Instance.SelectedCreatureForMaterial_1;
+        saveState.selectedCreatureMaterial_2 = InventoryManager.Instance.SelectedCreatureForMaterial_2;
+        saveState.selectedCreatureMaterial_3 = InventoryManager.Instance.SelectedCreatureForMaterial_3;
+        saveState.selectedCreatureMaterial_4 = InventoryManager.Instance.SelectedCreatureForMaterial_4;
 
         JsonSerializerSettings settings = new JsonSerializerSettings
         {
@@ -165,8 +226,35 @@ public class SaveLoadManager : MonoBehaviour
         };
         
         string json = JsonConvert.SerializeObject(saveState, settings);
-        File.WriteAllText(_savePath+"/SaveSlot"+_saveIndex+".json", json);
+        
+        SaveSlot(json);
+
+    }
+
+    private void SaveSlot(string jsonString, int slotIndex = -1)
+    {
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            SaveGameToIndexedDB(jsonString, slotIndex);
+        #else
+            SaveGameToFile(jsonString, slotIndex);
+        #endif
+    }
+
+    private void SaveGameToFile(string jsonString, int slotIndex = -1)
+    {
+        if (slotIndex == -1)
+        {
+            slotIndex = _saveIndex;
+        }
+        
+        File.WriteAllText(_savePath+"/SaveSlot"+slotIndex+".json", jsonString);
         Debug.Log("Saved!" + _savePath);
+    }
+
+    private void SaveGameToIndexedDB(string jsonString, int slotIndex = -1)
+    {
+        if (slotIndex == -1) slotIndex = _saveIndex;
+        JS_SaveGameToIndexedDB(jsonString, slotIndex);
     }
     
     public void LoadGame()
@@ -232,6 +320,10 @@ public class SaveLoadManager : MonoBehaviour
 
         InventoryManager.Instance.InventorySpace = loadedSaveState.inventorySpace;
         InventoryManager.Instance.InventoryCreatures = loadedSaveState.inventory;
+        InventoryManager.Instance.MaterialA = loadedSaveState.material_1;
+        InventoryManager.Instance.MaterialB = loadedSaveState.material_2;
+        InventoryManager.Instance.MaterialC = loadedSaveState.material_3;
+        InventoryManager.Instance.MaterialD = loadedSaveState.material_4;
 
         InventoryManager.Instance.SelectedCreatureForBattle = loadedSaveState.selectedCreatureBattle;
         BreedingManager.Instance.CreaturePod1 = loadedSaveState.selectedCreaturePodOne;
@@ -239,16 +331,36 @@ public class SaveLoadManager : MonoBehaviour
         BreedingManager.Instance.Result = loadedSaveState.breedingCreatureResult;
         InventoryManager.Instance.SelectedCreatureForReConfigure = loadedSaveState.selectedCreatureReconfigure;
 
+        InventoryManager.Instance.SelectedCreatureForMaterial_1 = loadedSaveState.selectedCreatureMaterial_1;
+        InventoryManager.Instance.SelectedCreatureForMaterial_2 = loadedSaveState.selectedCreatureMaterial_2;
+        InventoryManager.Instance.SelectedCreatureForMaterial_3 = loadedSaveState.selectedCreatureMaterial_3;
+        InventoryManager.Instance.SelectedCreatureForMaterial_4 = loadedSaveState.selectedCreatureMaterial_4;
+
+        // Clear for you
+
+        InventoryManager.Instance.CreatureInspectorLeft = null;
+        InventoryManager.Instance.CreatureInspectorRight = null;
+
+        BreedingManager.Instance.UpdatePrice();
+        
+        //
+        
         Debug.Log("Game loaded successfully from slot " + _saveIndex);
     }
 
     public void DeleteSlot(int slotNumber)
     {
-        string filePath = $"{_savePath}/SaveSlot{slotNumber}.json";
-        if (File.Exists(filePath))
+        bool deletedSuccess = false;
+        
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            deletedSuccess = DeleteSaveFromIndexedDB(slotNumber);
+        #else
+            deletedSuccess = DeleteSaveFromFiles(slotNumber);
+        #endif
+
+
+        if (deletedSuccess)
         {
-            File.Delete(filePath);
-            Debug.Log($"Save slot {slotNumber} deleted successfully.");
             switch (slotNumber)
             {
                 case 0:
@@ -264,18 +376,38 @@ public class SaveLoadManager : MonoBehaviour
                     Debug.LogWarning("Invalid slot number provided.");
                     return;
             }
+        
             if (_saveIndex == slotNumber)
             {
                 _saveIndex = -1;
                 Debug.Log("Most recent save slot deleted. No save slot currently loaded.");
             }
         }
+        
     }
+
+    private bool DeleteSaveFromFiles(int slotNumber)
+    {
+        string filePath = $"{_savePath}/SaveSlot{slotNumber}.json";
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+            Debug.Log($"Save slot {slotNumber} deleted successfully.");
+            return true;
+        }
+
+        return false;
+    }
+    
+    private bool DeleteSaveFromIndexedDB(int slotNumber)
+    {
+        return JS_DeleteSaveFromIndexedDB(slotNumber);
+    }
+
 
     public void SelectSlot(int slotNumber)
     {
-        string filePath = $"{_savePath}/SaveSlot{slotNumber}.json";
-
+        
         if (!SaveStateExists(slotNumber))
         {
             ResetCollectedAndUnlockedStates();
@@ -287,8 +419,9 @@ public class SaveLoadManager : MonoBehaviour
                 Formatting = Formatting.Indented
             };
             string json = JsonConvert.SerializeObject(newSaveState, settings);
-            File.WriteAllText(filePath, json);
-            Debug.Log($"New save slot created at {filePath}");
+            
+            SaveSlot(json, slotNumber);
+
             switch (slotNumber)
             {
                 case 0: _saveSlot1 = newSaveState; break;
@@ -301,8 +434,9 @@ public class SaveLoadManager : MonoBehaviour
         }
         else
         {
-            string json = File.ReadAllText(filePath);
-            SaveState loadedSaveState = JsonConvert.DeserializeObject<SaveState>(json);
+            
+            SaveState loadedSaveState = LoadSaveSlot(slotNumber);
+            
             switch (slotNumber)
             {
                 case 0: _saveSlot1 = loadedSaveState; break;
@@ -323,6 +457,16 @@ public class SaveLoadManager : MonoBehaviour
 
     public bool SaveStateExists(int slotNumber)
     {
+        #if !UNITY_EDITOR && UNITY_WEBGL
+            return SaveStateExistsInIndexedDB(slotNumber);
+        #else
+            return SaveStateExistsInFile(slotNumber);
+        #endif
+
+    }
+
+    private bool SaveStateExistsInFile(int slotNumber)
+    {
         string filePath = $"{_savePath}/SaveSlot{slotNumber}.json";
 
         if (File.Exists(filePath))
@@ -330,6 +474,13 @@ public class SaveLoadManager : MonoBehaviour
             return true ;
         }
         return false ;
+    }
+
+    private bool SaveStateExistsInIndexedDB(int slotNumber)
+    { 
+        int t = JS_SaveStateExistsInIndexedDB(slotNumber);
+        Debug.Log("Unity Call Exists: "+t);
+        return t == 1;
     }
     
     private void ResetCollectedAndUnlockedStates()
@@ -368,6 +519,7 @@ public class SaveLoadManager : MonoBehaviour
         
         //FAIL SAVE
         tempSaveState.saveName = saveName;
+        tempSaveState.lastUpdate = DateTime.Now;
         
         JsonSerializerSettings settings = new JsonSerializerSettings
         {
@@ -376,7 +528,9 @@ public class SaveLoadManager : MonoBehaviour
         };
         
         string json = JsonConvert.SerializeObject(tempSaveState, settings);
-        File.WriteAllText(_savePath+"/SaveSlot"+slotIndex+".json", json);
+        
+        SaveSlot(json, slotIndex);
+        
     }
 
     private void OnDestroy()

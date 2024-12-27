@@ -4,11 +4,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UICreatureButton : MonoBehaviour, IPointerClickHandler
+public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    
-    [SerializeField] public Creature creature;
-    [SerializeField] public bool isHoverable;
+    [SerializeField] private Canvas canvas;
+    private Creature creature;
+    [SerializeField] private bool isHoverable;
+    [SerializeField] private RectTransform rectTransform;
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private Transform parentAfterDrag;
+    [SerializeField] private bool isDragable = true;
 
     private SoundManager soundManager;
         
@@ -24,9 +28,18 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler
         set => isHoverable = value;
     }
 
+    public bool IsDragable
+    {
+        get => isDragable;
+        set => isDragable = value;
+    }
+
     private void Awake()
     {
         soundManager = FindObjectOfType<SoundManager>();
+        rectTransform = GetComponent<RectTransform>();
+        canvasGroup = GetComponent<CanvasGroup>();
+        canvas = FindObjectOfType<UI_MainCanvasManager>().GetComponent<Canvas>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -73,6 +86,40 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (isDragable)
+        {
+            canvasGroup.blocksRaycasts = false;
+            parentAfterDrag = transform.parent;
+            transform.SetParent(transform.root);
+            transform.SetAsLastSibling();
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            if (UI_ToggleManager.Instance.CurrentState == ToggleState.Materials && isDragable)
+            {
+                rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                canvasGroup.alpha = 0.6f;
+            }
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (isDragable)
+        {
+            canvasGroup.alpha = 1f;
+            transform.SetParent(parentAfterDrag);
+            canvasGroup.blocksRaycasts = true;
+        }
+
+    }
+
     public void OnHover()
     {
         if (isHoverable)
@@ -88,5 +135,4 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler
             UI_InventoryHoverManager.Instance.ResetDetails();
         }
     }
-    
 }

@@ -7,5 +7,6 @@ namespace Data
         public bool InspectorDone;
         public bool FusionDone;
         public bool ShopDone;
+        public bool ConfigDone;
     }
 }
