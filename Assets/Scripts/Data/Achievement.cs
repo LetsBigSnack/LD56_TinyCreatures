@@ -21,10 +21,10 @@ namespace Data
         public string description;
         public string sprite;
         public string date;
-        public string reward;
-        public int rewardId;
+        public List<Reward> rewards;
         //Logic
         public bool unlocked;
         public List<AchievementRequirement> requirements;
+        public int nextAchievement;
     }
 }

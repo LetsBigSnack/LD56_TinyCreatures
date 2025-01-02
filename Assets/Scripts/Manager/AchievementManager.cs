@@ -119,6 +119,18 @@ namespace Manager
             }
             
             achievement.unlocked = achieved;
+
+            if (achieved)
+            {
+                
+                List<Reward> rewards = achievement.rewards.ToList();
+
+                foreach (Reward reward in rewards)
+                {
+                    RewardManager.Instance.GetRewards(reward);
+                }
+                //POPUP
+            }
         }
     }
 }
