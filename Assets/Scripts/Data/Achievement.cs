@@ -19,6 +19,7 @@ namespace Data
         public int id;
         public string name;
         public string description;
+        public AchievementType type;
         public string sprite;
         public string date;
         public List<Reward> rewards;

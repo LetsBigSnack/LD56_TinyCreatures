@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Data;
+using System.Linq;
 
 public class UI_AchievementComponent : MonoBehaviour
 {
@@ -42,7 +44,7 @@ public class UI_AchievementComponent : MonoBehaviour
     
     [SerializeField] private int maxTitleLength = 20;
     [SerializeField] private int maxDescriptionLength = 50;
-    private Achievement achievement;
+    private AchievementJSON achievement;
     
 
     private bool isExpanded = false;
@@ -55,22 +57,29 @@ public class UI_AchievementComponent : MonoBehaviour
         instantiatedTasks = new List<GameObject>();
     }
 
-    public void SetupAchievement(Achievement achievement)
+    public void SetupAchievement(AchievementJSON achievement)
     {
         this.achievement = achievement;
         // Set achievements
-        achievementNameText.text = achievement.achievementName;
+        achievementNameText.text = achievement.name;
         shortAchievementDescriptionText.text = achievement.description;
         fullAchievementDescriptionText.text = achievement.description;
-        collectedStarsText.text = achievement.collectedValue.ToString();
-        unlockValueStarsText.text = achievement.unlockValue.ToString();
+        collectedStarsText.text = achievement.requirements.Where(x => x.completed).Count().ToString();
+        unlockValueStarsText.text = achievement.requirements.Count().ToString();
 
-        // Set achievement icon
-        unlockedIcon.sprite = achievement.isAchieved ? achievement.unlockedSprite : lockedIcon;
-        
-        if (achievement.isAchieved)
+        //Set achievement icon
+        if (UI_AchievementManager.Instance.GetReferancedImage(achievement.sprite) !=  null)
         {
-            dateAchievedText.text = achievement.dateAchieved.ToString("MMMM dd, yyyy");
+            unlockedIcon.sprite = achievement.unlocked ? UI_AchievementManager.Instance.GetReferancedImage(achievement.sprite) : lockedIcon;
+        }
+        else
+        {
+            throw new System.Exception("Something went wrong when loading the image! for the achievement: " + achievement.name);
+        }
+        
+        if (achievement.unlocked)
+        {
+            dateAchievedText.text = achievement.date;
         }
         else
         {
@@ -78,25 +87,30 @@ public class UI_AchievementComponent : MonoBehaviour
         }
 
         // Populate tasks list dynamically
-        PopulateTaskList(achievement.tasks);
+        PopulateTaskList(achievement.requirements);
 
-        // Set reward text
-        rewardText.text = string.IsNullOrEmpty(achievement.reward) ? "No reward" : achievement.reward;
+        if(achievement.rewards.Count > 0) {
+            // Set reward text
+            List<Reward> rewards = achievement.rewards;
+            List<string> rewardDescriptions = rewards.Select(x => x.description).ToList();
+            string finalRewardText = string.Join("\n", rewardDescriptions);
+            rewardText.text = finalRewardText;
+        }
 
         SetCollapsedState();
     }
-    
-    private void PopulateTaskList(List<Task> tasks)
+
+    private void PopulateTaskList(List<AchievementRequirement> requirements)
     {
         //Debug.Log("Clearing tasks...");
         ClearTasks();
         
-        foreach (Task task in tasks)
+        foreach (AchievementRequirement requirement in requirements)
         {
             GameObject taskItem = Instantiate(taskPrefab, taskListParent);
             UI_TaskComponent taskComponent = taskItem.GetComponent<UI_TaskComponent>();
             instantiatedTasks.Add(taskItem);
-            taskComponent.SetupTask(task);
+            taskComponent.SetupRequirement(requirement);
         }
     }
     
@@ -122,7 +136,7 @@ public class UI_AchievementComponent : MonoBehaviour
     {
         if (achievement != null) {
         
-            achievementNameText.text = TruncateText(achievement.achievementName, maxTitleLength); 
+            achievementNameText.text = TruncateText(achievement.name, maxTitleLength); 
             shortAchievementDescriptionText.gameObject.SetActive(true); 
             taskListParent.gameObject.SetActive(false); 
             expandedText.gameObject.SetActive(false);
@@ -131,7 +145,7 @@ public class UI_AchievementComponent : MonoBehaviour
     
     private void SetExpandedState()
     {
-        achievementNameText.text = achievement.achievementName;
+        achievementNameText.text = achievement.name;
         shortAchievementDescriptionText.gameObject.SetActive(false);
         taskListParent.gameObject.SetActive(true); 
         expandedText.gameObject.SetActive(true);

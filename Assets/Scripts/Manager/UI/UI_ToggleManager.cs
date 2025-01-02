@@ -12,7 +12,8 @@ public enum ToggleState
     Inspector,
     Fusion,
     Materials,
-    ReConfigure
+    ReConfigure,
+    Achievements
 }
 
 public class UI_ToggleManager : MonoBehaviour
@@ -25,6 +26,7 @@ public class UI_ToggleManager : MonoBehaviour
     [SerializeField] private GameObject fuse;
     [SerializeField] private GameObject materials;
     [SerializeField] private GameObject reconfigure;
+    [SerializeField] private GameObject achievements;
     
     [SerializeField] private Sprite clickedSprite;
     [SerializeField] private Sprite notClickedSprite;
@@ -59,31 +61,34 @@ public class UI_ToggleManager : MonoBehaviour
         switch (state)
         {
             case "Shop":  
-                shop.SetActive(true);
                 battle.SetActive(false);
                 inspector.SetActive(false);
                 fuse.SetActive(false);
                 materials.SetActive(false);
                 reconfigure.SetActive(false);
+                achievements.SetActive(false);
+                shop.SetActive(true);
                 currentState = ToggleState.Shop;
                 popupManager.ViewPopup(StringState.Shop);
                 break;
             case "Battle":
-                battle.SetActive(true);
                 shop.SetActive(false);
                 inspector.SetActive(false);
                 fuse.SetActive(false);
                 materials.SetActive(false);
                 reconfigure.SetActive(false);
+                achievements.SetActive(false);
+                battle.SetActive(true);
                 currentState = ToggleState.Battle;
                 break;
             case "Inspector":
-                inspector.SetActive(true);
                 battle.SetActive(false);
                 shop.SetActive(false);
                 fuse.SetActive(false);
                 materials.SetActive(false);
+                achievements.SetActive(false);
                 reconfigure.SetActive(false);
+                inspector.SetActive(true);
                 currentState = ToggleState.Inspector;
                 popupManager.ViewPopup(StringState.Inspector);
                 break;
@@ -103,6 +108,7 @@ public class UI_ToggleManager : MonoBehaviour
                 battle.SetActive(false);
                 shop.SetActive(false);
                 reconfigure.SetActive(false);
+                achievements.SetActive(false);
                 materials.SetActive(true);
                 currentState = ToggleState.Materials;
                 //popupManager.ViewPopup(state);
@@ -113,10 +119,22 @@ public class UI_ToggleManager : MonoBehaviour
                 battle.SetActive(false);
                 shop.SetActive(false);
                 materials.SetActive(false);
+                achievements.SetActive(false);
                 reconfigure.SetActive(true);
                 currentState = ToggleState.ReConfigure;
                 popupManager.ViewPopup(StringState.Config);
                 break;
+            case "Achievements":
+                fuse.SetActive(false);
+                inspector.SetActive(false);
+                battle.SetActive(false);
+                shop.SetActive(false);
+                materials.SetActive(false);
+                reconfigure.SetActive(false);
+                achievements.SetActive(true);
+                currentState = ToggleState.Achievements;
+                break;
+
         }
     }
 

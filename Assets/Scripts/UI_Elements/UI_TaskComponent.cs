@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Data;
 
 public class UI_TaskComponent : MonoBehaviour
 {
@@ -11,11 +12,11 @@ public class UI_TaskComponent : MonoBehaviour
     [SerializeField] private TMP_Text taskText;
 
     // This method will be used to assign task data
-    public void SetupTask(Task task)
+    public void SetupRequirement(AchievementRequirement requirement)
     {
         // Set the text fields based on the task data
-        taskProgressText.text = task.collected.ToString();
-        taskNeededText.text = task.totalRequired.ToString();
-        taskText.text = task.taskText;                    
+        taskProgressText.text = requirement.currentAmount.ToNumberSuffix(false);
+        taskNeededText.text = requirement.neededAmount.ToNumberSuffix(false);
+        taskText.text = requirement.type.ToString();                    
     }
 }

@@ -122,12 +122,16 @@ namespace Manager
 
             if (achieved)
             {
-                
+                achievement.date = DateTime.Now.ToString("dd/MM/yyyy");
                 List<Reward> rewards = achievement.rewards.ToList();
 
                 foreach (Reward reward in rewards)
                 {
                     RewardManager.Instance.GetRewards(reward);
+                }
+                if(UI_AchievementManager.Instance != null) { 
+                    //TODO:think of better solution!
+                    UI_AchievementManager.Instance.SortAchievements();
                 }
                 //POPUP
             }

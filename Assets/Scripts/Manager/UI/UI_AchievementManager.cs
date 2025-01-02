@@ -7,6 +7,8 @@ using System.Linq;
 using System;
 using UnityEngine.SocialPlatforms.Impl;
 using System.Globalization;
+using Data;
+using Manager;
 
 
 public enum OptionFilterAchieved
@@ -16,11 +18,16 @@ public enum OptionFilterAchieved
     Locked
 }
 
+[Serializable]
+public struct AchievementImages
+{
+    public string name;
+    public Sprite sprite;
+}
+
 public class UI_AchievementManager : MonoBehaviour
 {
     public static UI_AchievementManager Instance { get; private set; }
-
-    [SerializeField] List<Achievement> achievements;
 
     [SerializeField] TMP_Dropdown dropdownAchieved;
     [SerializeField] TMP_Dropdown dropdownAchievementType;
@@ -34,6 +41,8 @@ public class UI_AchievementManager : MonoBehaviour
     private AchievementType selectedAchievementType = 0;
 
     private List<GameObject> instantiatedAchievements;
+
+    [SerializeField] private List<AchievementImages> achievementSprites;
 
 
     private void Awake()
@@ -90,7 +99,7 @@ public class UI_AchievementManager : MonoBehaviour
         SortAchievements();
     }
 
-    public void ShowAchievements(List<Achievement> sortedAchievements)
+    public void ShowAchievements(List<AchievementJSON> sortedAchievements)
     {
         ClearAchievements();
 
@@ -103,8 +112,9 @@ public class UI_AchievementManager : MonoBehaviour
         //Debug.Log("---- ---- ---- ----");
 
         #endif
-        foreach (Achievement achievement in sortedAchievements)
+        foreach (AchievementJSON achievement in sortedAchievements)
         {
+            Debug.Log("GENERATED ACHIEVEMENT");
             GameObject achievementUI = Instantiate(achievementUIPrefab, achievementListContainer);
             UI_AchievementComponent achievementUIComponent = achievementUI.GetComponent<UI_AchievementComponent>();
             instantiatedAchievements.Add(achievementUI);
@@ -115,7 +125,7 @@ public class UI_AchievementManager : MonoBehaviour
     
     public void SortAchievements()
     {
-        List<Achievement> filtertAchievements = achievements;
+        List<AchievementJSON> filtertAchievements = AchievementManager.Instance.AchievementJson;
 
         // Sieve filtering method
         // First sieve unlocked or locked
@@ -123,10 +133,10 @@ public class UI_AchievementManager : MonoBehaviour
         switch (selectedAchieved)
         {
             case OptionFilterAchieved.Unlocked:
-                filtertAchievements = filtertAchievements.Where(achievement => achievement.isAchieved).ToList();
+                filtertAchievements = filtertAchievements.Where(achievement => achievement.unlocked).ToList();
                 break;
             case OptionFilterAchieved.Locked:
-                filtertAchievements = filtertAchievements.Where(achievement => !achievement.isAchieved).ToList();
+                filtertAchievements = filtertAchievements.Where(achievement => !achievement.unlocked).ToList();
                 break;
         }
 
@@ -151,10 +161,10 @@ public class UI_AchievementManager : MonoBehaviour
         string searchText = searchBar.text;
         if(searchText.Length >= 0 && searchText != "  ")
         {
-            List<Achievement> helperListNames = new List<Achievement>();
-            List<Achievement> helperListDescriptions = new List<Achievement>();
+            List<AchievementJSON> helperListNames = new List<AchievementJSON>();
+            List<AchievementJSON> helperListDescriptions = new List<AchievementJSON>();
 
-            helperListNames = filtertAchievements.Where(achievement => achievement.achievementName.ToLower().Contains(searchText.ToLower())).ToList();
+            helperListNames = filtertAchievements.Where(achievement => achievement.name.ToLower().Contains(searchText.ToLower())).ToList();
             helperListDescriptions = filtertAchievements.Where(achievement => achievement.description.ToLower().Contains(searchText.ToLower())).ToList();
             
             filtertAchievements = helperListNames.Concat(helperListDescriptions).Distinct().ToList();
@@ -174,5 +184,11 @@ public class UI_AchievementManager : MonoBehaviour
             Destroy(achievementUI);
         }
         instantiatedAchievements.Clear();
+    }
+
+    public Sprite GetReferancedImage(string imageName)
+    {
+        Sprite sprite = achievementSprites.Where(x => x.name == imageName).Select(y => y.sprite).FirstOrDefault();
+        return sprite;
     }
 }
