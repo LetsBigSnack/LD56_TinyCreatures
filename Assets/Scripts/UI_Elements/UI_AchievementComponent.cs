@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Data;
 using System.Linq;
+using Manager;
 
 public class UI_AchievementComponent : MonoBehaviour
 {
@@ -68,9 +69,9 @@ public class UI_AchievementComponent : MonoBehaviour
         unlockValueStarsText.text = achievement.requirements.Count().ToString();
 
         //Set achievement icon
-        if (UI_AchievementManager.Instance.GetReferancedImage(achievement.sprite) !=  null)
+        if (AchievementManager.Instance.GetReferancedImage(achievement.sprite) !=  null)
         {
-            unlockedIcon.sprite = achievement.unlocked ? UI_AchievementManager.Instance.GetReferancedImage(achievement.sprite) : lockedIcon;
+            unlockedIcon.sprite = achievement.unlocked ? AchievementManager.Instance.GetReferancedImage(achievement.sprite) : lockedIcon;
         }
         else
         {

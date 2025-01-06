@@ -8,15 +8,22 @@ using UnityEngine;
 
 namespace Manager
 {
+    [Serializable]
+    public struct AchievementImages
+    {
+        public string name;
+        public Sprite sprite;
+    }
     public class AchievementManager : MonoBehaviour
     {
         public static AchievementManager Instance;
         
-        
         private string _filePath;
         private List<AchievementJSON> _templateAchievement;
         private List<AchievementJSON> _achievementJson;
-        
+
+        [SerializeField] private List<AchievementImages> achievementSprites;
+
         public  List<AchievementJSON> TemplateAchievement
         {
             get { return _templateAchievement; }
@@ -133,8 +140,14 @@ namespace Manager
                     //TODO:think of better solution!
                     UI_AchievementManager.Instance.SortAchievements();
                 }
-                //POPUP
+                UI_ToastManager.Instance.CreateToast(achievement);
             }
+        }
+
+        public Sprite GetReferancedImage(string imageName)
+        {
+            Sprite sprite = achievementSprites.Where(x => x.name == imageName).Select(y => y.sprite).FirstOrDefault();
+            return sprite;
         }
     }
 }

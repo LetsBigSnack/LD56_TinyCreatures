@@ -18,13 +18,6 @@ public enum OptionFilterAchieved
     Locked
 }
 
-[Serializable]
-public struct AchievementImages
-{
-    public string name;
-    public Sprite sprite;
-}
-
 public class UI_AchievementManager : MonoBehaviour
 {
     public static UI_AchievementManager Instance { get; private set; }
@@ -41,8 +34,6 @@ public class UI_AchievementManager : MonoBehaviour
     private AchievementType selectedAchievementType = 0;
 
     private List<GameObject> instantiatedAchievements;
-
-    [SerializeField] private List<AchievementImages> achievementSprites;
 
 
     private void Awake()
@@ -184,11 +175,5 @@ public class UI_AchievementManager : MonoBehaviour
             Destroy(achievementUI);
         }
         instantiatedAchievements.Clear();
-    }
-
-    public Sprite GetReferancedImage(string imageName)
-    {
-        Sprite sprite = achievementSprites.Where(x => x.name == imageName).Select(y => y.sprite).FirstOrDefault();
-        return sprite;
     }
 }
