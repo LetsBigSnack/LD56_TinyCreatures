@@ -31,6 +31,23 @@ public class RewardManager : MonoBehaviour
             case RewardType.Material:
                 RewardMaterial(reward.material, reward.amount);
                 break;
+            case RewardType.BodyParts:
+                RewardBodyParts(reward.bodyParts);
+                break;
+            case RewardType.Bonus:
+                //TODO
+                break;
+            case RewardType.Misc:
+                //TODO
+                break;
+        }
+    }
+
+    private void RewardBodyParts(List<string> rewardBodyParts)
+    {
+        foreach (string bodyPartName in rewardBodyParts)
+        {
+            CreatureManager.Instance.UnlockBodyPart(bodyPartName);
         }
     }
 

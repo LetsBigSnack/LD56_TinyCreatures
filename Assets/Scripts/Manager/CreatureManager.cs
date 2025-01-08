@@ -193,4 +193,10 @@ public class CreatureManager : MonoBehaviour
         
         newBodyParts.ForEach(bodyPart => bodyPart.collected = true);
     }
+
+    public void UnlockBodyPart(string bodyPartName)
+    {
+        BodyPartSet set = bodyPartSets.FirstOrDefault(c => c.setName == bodyPartName);
+        if (set != null) set.unlocked = true;
+    }
 }

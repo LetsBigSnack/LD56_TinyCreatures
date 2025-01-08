@@ -50,12 +50,12 @@ public class UI_AchievementComponent : MonoBehaviour
 
     private bool isExpanded = false;
     
-    private List<GameObject> instantiatedTasks;
+    private List<GameObject> instantiatedTasks = new List<GameObject>();
     
     private void Awake()
     {
         SetCollapsedState();
-        instantiatedTasks = new List<GameObject>();
+        
     }
 
     public void SetupAchievement(AchievementJSON achievement)
@@ -105,7 +105,7 @@ public class UI_AchievementComponent : MonoBehaviour
     {
         //Debug.Log("Clearing tasks...");
         ClearTasks();
-        
+           
         foreach (AchievementRequirement requirement in requirements)
         {
             GameObject taskItem = Instantiate(taskPrefab, taskListParent);
@@ -172,6 +172,11 @@ public class UI_AchievementComponent : MonoBehaviour
     
     private void ClearTasks()
     {
+        if (instantiatedTasks == null)
+        {
+            return;
+        }
+        
         foreach (GameObject taskItem in instantiatedTasks)
         {
             Destroy(taskItem);
