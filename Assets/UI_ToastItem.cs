@@ -41,7 +41,6 @@ public class UI_ToastItem : MonoBehaviour
 
     private void OnDestroy()
     {
-        Debug.Log("I have been destroyed");
         UI_ToastManager.Instance.CurrToast = null;
         UI_ToastManager.Instance.PushNextToast();
     }
