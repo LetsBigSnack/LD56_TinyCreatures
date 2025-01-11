@@ -141,6 +141,11 @@ namespace Manager
                     UI_AchievementManager.Instance.SortAchievements();
                 }
                 UI_ToastManager.Instance.CreateToast(achievement);
+                UI_ToastManager.Instance.CreateToast("1", "cheese");
+                UI_ToastManager.Instance.CreateToast("2", "burger");
+                UI_ToastManager.Instance.CreateToast("3", "pizza");
+                UI_ToastManager.Instance.CreateToast("4", "bread");
+                UI_ToastManager.Instance.CreateToast("5", "beer");
             }
         }
 

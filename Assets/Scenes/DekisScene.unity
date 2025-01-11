@@ -10888,7 +10888,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -400}
+  m_AnchoredPosition: {x: 531, y: 396}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1097054257
@@ -10929,7 +10929,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d818265d224851b439ca32920c6d1604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toastPrefab: {fileID: 4642049109376315151, guid: a20e2a4236cd62a4d91563bdb29cf04d, type: 3}
+  achievementToastPrefab: {fileID: 4642049109376315151, guid: a20e2a4236cd62a4d91563bdb29cf04d, type: 3}
+  notificationToastPrefab: {fileID: 4642049109376315151, guid: 46f8bcabdb7a54049b0bf53058de7472, type: 3}
 --- !u!1 &1100825571
 GameObject:
   m_ObjectHideFlags: 0
