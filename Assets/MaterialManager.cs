@@ -1,11 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using UnityEngine;
 
 public class MaterialManager : MonoBehaviour
 {
     public static MaterialManager Instance { get; private set; }
+    
+    
+    [SerializeField] 
+    [Range(0,1f)]
+    private float statFactor = 0.9f;
+    
+    [SerializeField] 
+    [Range(0,1f)]
+    private float speedFactor = 0.6f;
+    
+    [SerializeField] 
+    [Range(0,1f)]
+    private float dampeningFactor = 0.6f;
 
+    
+    
+    //add to SaveState also change via SaveState
+    [SerializeField] private float yieldSpeedMat1 = 60f;
+    [SerializeField] private float yieldSpeedMat2 = 60f;
+    [SerializeField] private float yieldSpeedMat3 = 60f;
+    [SerializeField] private float yieldSpeedMat4 = 60f;
+    
+    
     private IEnumerator materialA;
     private IEnumerator materialB;
     private IEnumerator materialC;
@@ -156,47 +179,60 @@ public class MaterialManager : MonoBehaviour
         StartFarming(MaterialType.MaterialD);
     }
 
+    
+    private BigDecimal CalculateYield(BigDecimal stat, BigDecimal speed)
+    {
+        BigDecimal scaledStat = stat.Power(statFactor);
+        BigDecimal scaledSpeed = speed.Power(speedFactor);
+        
+        BigDecimal yield = (scaledStat + scaledSpeed) * (scaledStat * scaledSpeed) ;
+        BigDecimal dampenedYield = yield.Power(dampeningFactor);
+        
+        return dampenedYield;
+    }
+    
+    
     public IEnumerator MaterialA(Creature creature)
     {
-        float amountToGenerate = (float)creature.CreatureStats.Attack / 60f;
-        float timeUntilNextGeneration = 60f / (amountToGenerate + (float)creature.CreatureStats.Speed);
+        BigDecimal amountToGenerate = CalculateYield(creature.CreatureStats.Attack, creature.CreatureStats.Speed);
+        
         while (true)
         {
-            yield return new WaitForSeconds(timeUntilNextGeneration);
-            InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialA, 1);
+            yield return new WaitForSeconds(yieldSpeedMat1);
+            InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialA, amountToGenerate);
         }
     }
 
     public IEnumerator MaterialB(Creature creature)
     {
-        float amountToGenerate = (float)creature.CreatureStats.Dexterity / 60f;
-        float timeUntilNextGeneration = 60f / (amountToGenerate + (float)creature.CreatureStats.Speed);
+        BigDecimal amountToGenerate = CalculateYield(creature.MaxHealth, creature.CreatureStats.Speed);
+        
         while (true)
         {
-            yield return new WaitForSeconds(timeUntilNextGeneration);
-            InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialB, 1);
+            yield return new WaitForSeconds(yieldSpeedMat2);
+            InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialB, amountToGenerate);
         }
     }
 
     public IEnumerator MaterialC(Creature creature)
     {
-        float amountToGenerate = (float)creature.CreatureStats.Defense / 60f;
-        float timeUntilNextGeneration = 60f / (amountToGenerate + (float)creature.CreatureStats.Speed);
+        BigDecimal amountToGenerate = CalculateYield(creature.CreatureStats.Defense, creature.CreatureStats.Speed);
+
         while (true)
         {
-            yield return new WaitForSeconds(timeUntilNextGeneration);
-            InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialC, 1);
+            yield return new WaitForSeconds(yieldSpeedMat3);
+            InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialC, amountToGenerate);
         }
     }
 
     public IEnumerator MaterialD(Creature creature)
     {
-        float amountToGenerate = (float)creature.MaxHealth / 60f;
-        float timeUntilNextGeneration = 60f / (amountToGenerate + (float)creature.CreatureStats.Speed);
+        BigDecimal amountToGenerate = CalculateYield(creature.CreatureStats.Dexterity, creature.CreatureStats.Speed);
+
         while (true)
         {
-            yield return new WaitForSeconds(timeUntilNextGeneration);
-            InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialD, 1);
+            yield return new WaitForSeconds(yieldSpeedMat4);
+            InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialD, amountToGenerate);
         }
     }
 }
