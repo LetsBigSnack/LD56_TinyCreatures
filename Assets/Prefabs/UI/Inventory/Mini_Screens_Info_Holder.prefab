@@ -1304,6 +1304,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2782023562144633003}
   - component: {fileID: 8883398714657246288}
+  - component: {fileID: 8129869586850837588}
   m_Layer: 5
   m_Name: Resources_Container
   m_TagString: Untagged
@@ -1360,6 +1361,30 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &8129869586850837588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446636476788573178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62f25dc5e0897de49842769c955ead5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialSlotA: {fileID: 0}
+  materialSlotB: {fileID: 0}
+  materialSlotC: {fileID: 0}
+  materialSlotD: {fileID: 0}
+  materialText_1: {fileID: 2086127753677780955}
+  materialText_2: {fileID: 5076618473611871358}
+  materialText_3: {fileID: 2662119121534057689}
+  materialText_4: {fileID: 7461949878641822}
+  sliderMaterialA: {fileID: 0}
+  sliderMaterialB: {fileID: 0}
+  sliderMaterialC: {fileID: 0}
+  sliderMaterialD: {fileID: 0}
 --- !u!1 &7670725220577023647
 GameObject:
   m_ObjectHideFlags: 0
