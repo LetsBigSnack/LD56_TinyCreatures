@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine.UI;
 using Manager;
 using UnityEngine.SocialPlatforms.Impl;
+using System.Threading.Tasks;
 
 public class Toast
 {
@@ -28,13 +29,21 @@ public class UI_ToastManager : MonoBehaviour
     public static UI_ToastManager Instance;
     [SerializeField] GameObject achievementToastPrefab;
     [SerializeField] GameObject notificationToastPrefab;
+    [SerializeField] private List<Toast> achievementToasts = new List<Toast>();
+    [SerializeField] private List<Toast> notificationToasts = new List<Toast>();
 
-    private GameObject currToast;
-    [SerializeField] private List<Toast> toasts = new List<Toast>();
+    private GameObject currAchievementToast;
+    private GameObject currNotificationToast;
 
-    public GameObject CurrToast {
-        get { return currToast; }
-        set { currToast = value; }
+    public GameObject CurrAchievementToast {
+        get { return currAchievementToast; }
+        set { currAchievementToast = value; }
+    }
+
+    public GameObject CurrNotificationToast
+    {
+        get { return currNotificationToast; }
+        set { currNotificationToast = value; }
     }
 
     public void Awake()
@@ -49,13 +58,27 @@ public class UI_ToastManager : MonoBehaviour
         }
     }
 
-    public void PushNextToast()
+    public void PushNextToast(bool isAchievement)
     {
-        if(toasts.Count > 0)
+        StartCoroutine(ForceWait(isAchievement));
+    }
+
+    public void PushNewToast(bool isAchievement)
+    {
+        Toast toast;
+
+        if (isAchievement && achievementToasts.Count > 0)
         {
-            Toast toast = toasts[0];
-            toasts.RemoveAt(0);
+            toast = achievementToasts[0];
+            achievementToasts.RemoveAt(0);
             CreateToast(toast.achievementJSON, toast.title, toast.description);
+            return;
+        } 
+        else if(!isAchievement && notificationToasts.Count > 0)
+        {
+            toast = notificationToasts[0];
+            notificationToasts.RemoveAt(0);
+            CreateToast(toast.title, toast.description);
         }
     }
 
@@ -65,25 +88,37 @@ public class UI_ToastManager : MonoBehaviour
     }
     public void CreateToast(AchievementJSON achievement = null, string title = "", string description = "")
     {
-        if (currToast == null)
+        if (currAchievementToast == null && achievement != null)
         {
-            if (achievement != null)
-            {
-                CreateAchievmentToast(achievement);
-                return;
-            }
+            CreateAchievmentToast(achievement);
+            return;
+        }
+
+        if(currNotificationToast == null && achievement == null)
+        {
             CreateNotificationToast(title, description);
             return;
         }
-        
+
+        StashToast(achievement,title,description);
+    }
+
+    private void StashToast(AchievementJSON achievement = null, string title = "", string description = "")
+    {
         Toast toast = new Toast(achievement, title, description);
-        toasts.Add(toast);
+
+        if (toast.achievementJSON != null)
+        {
+            achievementToasts.Add(toast);
+            return;
+        }
+        notificationToasts.Add(toast);
     }
 
     private void CreateAchievmentToast(AchievementJSON achievement)
     {
         GameObject newToast = Instantiate(achievementToastPrefab, gameObject.transform);
-        currToast = newToast;
+        currAchievementToast = newToast;
 
         UI_ToastItem toastItem = newToast.GetComponent<UI_ToastItem>();
 
@@ -105,13 +140,19 @@ public class UI_ToastManager : MonoBehaviour
     private void CreateNotificationToast(string title, string description)
     {
         GameObject newToast = Instantiate(notificationToastPrefab, gameObject.transform);
-        currToast = newToast;
+        currNotificationToast = newToast;
 
         UI_ToastItem toastItem = newToast.GetComponent<UI_ToastItem>();
 
         toastItem.TitelText.text = title;
 
         toastItem.RewardText.text = description;
+    }
+
+    private IEnumerator ForceWait(bool isAchievement)
+    {
+        yield return new WaitForSeconds(0.5f);
+        PushNewToast(isAchievement);
     }
 
 }
