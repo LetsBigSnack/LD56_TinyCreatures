@@ -3,30 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Data;
 using System.Linq;
-using TMPro;
-using UnityEngine.UI;
 using Manager;
-using UnityEngine.SocialPlatforms.Impl;
-using System.Threading.Tasks;
-
-public class Toast
-{
-    public AchievementJSON achievementJSON = null;
-    public string title = "";
-    public string description = "";
-
-    public Toast(AchievementJSON achievement, string title, string description)
-    {
-        this.achievementJSON = achievement;
-        this.title = title;
-        this.description = description;
-    }
-}
-
 
 public class UI_ToastManager : MonoBehaviour
 {
     public static UI_ToastManager Instance;
+    
     [SerializeField] GameObject achievementToastPrefab;
     [SerializeField] GameObject notificationToastPrefab;
     [SerializeField] private List<Toast> achievementToasts = new List<Toast>();
@@ -71,8 +53,7 @@ public class UI_ToastManager : MonoBehaviour
         {
             toast = achievementToasts[0];
             achievementToasts.RemoveAt(0);
-            CreateToast(toast.achievementJSON, toast.title, toast.description);
-            return;
+            CreateToast(toast.title, toast.description,toast.achievementJSON);
         } 
         else if(!isAchievement && notificationToasts.Count > 0)
         {
@@ -80,13 +61,10 @@ public class UI_ToastManager : MonoBehaviour
             notificationToasts.RemoveAt(0);
             CreateToast(toast.title, toast.description);
         }
+        
     }
-
-    public void CreateToast(string title = "", string description = "")
-    {
-        CreateToast(null, title, description);
-    }
-    public void CreateToast(AchievementJSON achievement = null, string title = "", string description = "")
+    
+    public void CreateToast(string title = "", string description = "",AchievementJSON achievement = null)
     {
         if (currAchievementToast == null && achievement != null)
         {
@@ -102,7 +80,7 @@ public class UI_ToastManager : MonoBehaviour
 
         StashToast(achievement,title,description);
     }
-
+    
     private void StashToast(AchievementJSON achievement = null, string title = "", string description = "")
     {
         Toast toast = new Toast(achievement, title, description);
