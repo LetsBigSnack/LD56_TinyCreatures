@@ -89,10 +89,10 @@ namespace Data
             material_3 = 0;
             material_4 = 0;
             tutorialData = new TutorialData();
-            materialA = new MaterialStats(MaterialType.MaterialA, 60, 0, 0);
-            materialB = new MaterialStats(MaterialType.MaterialB, 60, 0, 0);
-            materialC = new MaterialStats(MaterialType.MaterialC, 60, 0, 0);
-            materialD = new MaterialStats(MaterialType.MaterialD, 60, 0, 0);
+            materialA = new MaterialStats(60, 0);
+            materialB = new MaterialStats(60, 0);
+            materialC = new MaterialStats(60, 0);
+            materialD = new MaterialStats(60, 0);
 #if UNITY_EDITOR
             tutorialData.BattleDone = true;
             tutorialData.ConfigDone = true;
