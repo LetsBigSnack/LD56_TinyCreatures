@@ -19,27 +19,16 @@ public class MaterialManager : MonoBehaviour
     [SerializeField] 
     [Range(0,1f)]
     private float dampeningFactor = 0.6f;
-    
-    //add to SaveState also change via SaveState
-    [SerializeField] private float yieldSpeedMat1 = 60f;
-    [SerializeField] private float yieldSpeedMat2 = 60f;
-    [SerializeField] private float yieldSpeedMat3 = 60f;
-    [SerializeField] private float yieldSpeedMat4 = 60f;
+
+    private MaterialStats materialStatsA;
+    private MaterialStats materialStatsB;
+    private MaterialStats materialStatsC;
+    private MaterialStats materialStatsD;
 
     public static event Action<int> OnChangesYieldTimeMat1;
     public static event Action<int> OnChangesYieldTimeMat2;
     public static event Action<int> OnChangesYieldTimeMat3;
     public static event Action<int> OnChangesYieldTimeMat4;
-
-    [SerializeField] private int curYieldTimeMat1;
-    [SerializeField] private int curYieldTimeMat2;
-    [SerializeField] private int curYieldTimeMat3;
-    [SerializeField] private int curYieldTimeMat4;
-
-    [SerializeField] private BigDecimal curYieldAmountMat1;
-    [SerializeField] private BigDecimal curYieldAmountMat2;
-    [SerializeField] private BigDecimal curYieldAmountMat3;
-    [SerializeField] private BigDecimal curYieldAmountMat4;
 
     public static event Action<BigDecimal> OnChangesYieldAmountMat1;
     public static event Action<BigDecimal> OnChangesYieldAmountMat2;
@@ -51,28 +40,28 @@ public class MaterialManager : MonoBehaviour
     private IEnumerator materialC;
     private IEnumerator materialD;
 
-    public float YieldSpeedMat1
+    public MaterialStats MaterialStatsA
     {
-        get { return yieldSpeedMat1; }
-        set { yieldSpeedMat1 = value; }
+        get { return materialStatsA; }
+        set { materialStatsA = value; }
     }
 
-    public float YieldSpeedMat2
+    public MaterialStats MaterialStatsB
     {
-        get { return yieldSpeedMat2; }
-        set { yieldSpeedMat2 = value; }
+        get { return materialStatsB; }
+        set { materialStatsB = value; }
     }
 
-    public float YieldSpeedMat3
+    public MaterialStats MaterialStatsC
     {
-        get { return yieldSpeedMat3; }
-        set { yieldSpeedMat3 = value; }
+        get { return materialStatsC; }
+        set { materialStatsC = value; }
     }
 
-    public float YieldSpeedMat4
+    public MaterialStats MaterialStatsD
     {
-        get { return yieldSpeedMat4; }
-        set { yieldSpeedMat4 = value; }
+        get { return materialStatsD; }
+        set { materialStatsD = value; }
     }
 
     private void Awake()
@@ -100,8 +89,6 @@ public class MaterialManager : MonoBehaviour
                 }
                 InventoryManager.Instance.AddCreatureToMaterialSlot(creature, materialType);
                 materialA = MaterialA(creature);
-                curYieldTimeMat1 = 0;
-                OnChangesYieldTimeMat1?.Invoke(curYieldTimeMat1);
                 StartCoroutine(materialA);
                 break;
 
@@ -113,8 +100,6 @@ public class MaterialManager : MonoBehaviour
                 }
                 InventoryManager.Instance.AddCreatureToMaterialSlot(creature, materialType);
                 materialB = MaterialB(creature);
-                curYieldTimeMat2 = 0;
-                OnChangesYieldTimeMat2?.Invoke(curYieldTimeMat2);
                 StartCoroutine(materialB);
                 break;
 
@@ -126,8 +111,6 @@ public class MaterialManager : MonoBehaviour
                 }
                 InventoryManager.Instance.AddCreatureToMaterialSlot(creature, materialType);
                 materialC = MaterialC(creature);
-                curYieldTimeMat3 = 0;
-                OnChangesYieldTimeMat3?.Invoke(curYieldTimeMat3);
                 StartCoroutine(materialC);
                 break;
 
@@ -139,8 +122,6 @@ public class MaterialManager : MonoBehaviour
                 }
                 InventoryManager.Instance.AddCreatureToMaterialSlot(creature, materialType);
                 materialD = MaterialD(creature);
-                curYieldTimeMat4 = 0;
-                OnChangesYieldTimeMat4?.Invoke(curYieldTimeMat4);
                 StartCoroutine(materialD);
                 break;
         }
@@ -158,10 +139,10 @@ public class MaterialManager : MonoBehaviour
                     return;
                 }
                 InventoryManager.Instance.RemoveCreatureFromMaterialSlot(materialType);
-                curYieldTimeMat1 = 0;
-                curYieldAmountMat1 = 0;
-                OnChangesYieldAmountMat1?.Invoke(curYieldAmountMat1);
-                OnChangesYieldTimeMat1?.Invoke(curYieldTimeMat1);
+                materialStatsA.yieldTime = 0;
+                OnChangesYieldTimeMat1?.Invoke(materialStatsA.yieldTime);
+                materialStatsA.yieldAmount = 0;
+                OnChangesYieldAmountMat1?.Invoke(materialStatsA.yieldAmount);
                 StopCoroutine(materialA);
                 break;
 
@@ -173,10 +154,10 @@ public class MaterialManager : MonoBehaviour
                 }
                 InventoryManager.Instance.RemoveCreatureFromMaterialSlot(materialType);
                 StopCoroutine(materialB);
-                curYieldTimeMat2 = 0;
-                OnChangesYieldTimeMat2?.Invoke(curYieldTimeMat2);
-                curYieldAmountMat2 = 0;
-                OnChangesYieldAmountMat2?.Invoke(curYieldAmountMat2);
+                materialStatsB.yieldTime = 0;
+                OnChangesYieldTimeMat2?.Invoke(materialStatsB.yieldTime);
+                materialStatsB.yieldAmount = 0;
+                OnChangesYieldAmountMat2?.Invoke(materialStatsB.yieldAmount);
                 break;
 
             case MaterialType.MaterialC:
@@ -187,10 +168,10 @@ public class MaterialManager : MonoBehaviour
                 }
                 InventoryManager.Instance.RemoveCreatureFromMaterialSlot(materialType);
                 StopCoroutine(materialC);
-                curYieldTimeMat3 = 0;
-                OnChangesYieldTimeMat3?.Invoke(curYieldTimeMat3);
-                curYieldAmountMat3 = 0;
-                OnChangesYieldAmountMat3?.Invoke(curYieldAmountMat3);
+                materialStatsC.yieldTime = 0;
+                OnChangesYieldTimeMat3?.Invoke(materialStatsC.yieldTime);
+                materialStatsC.yieldAmount = 0;
+                OnChangesYieldAmountMat3?.Invoke(materialStatsC.yieldAmount);
                 break;
 
             case MaterialType.MaterialD:
@@ -200,10 +181,10 @@ public class MaterialManager : MonoBehaviour
                     return;
                 }
                 InventoryManager.Instance.RemoveCreatureFromMaterialSlot(materialType);
-                curYieldTimeMat4 = 0;
-                OnChangesYieldTimeMat4?.Invoke(curYieldTimeMat4);
-                curYieldAmountMat4 = 0;
-                OnChangesYieldAmountMat4?.Invoke(curYieldAmountMat4);
+                materialStatsD.yieldTime = 0;
+                OnChangesYieldTimeMat4?.Invoke(materialStatsD.yieldTime);
+                materialStatsD.yieldAmount = 0;
+                OnChangesYieldAmountMat4?.Invoke(materialStatsD.yieldAmount);
                 StopCoroutine(materialD);
                 break;
         }
@@ -258,84 +239,84 @@ public class MaterialManager : MonoBehaviour
     
     public IEnumerator MaterialA(Creature creature)
     {
-        curYieldAmountMat1 = CalculateYield(creature.CreatureStats.Attack, creature.CreatureStats.Speed);
-        OnChangesYieldAmountMat1?.Invoke(curYieldAmountMat1);
+        materialStatsA.yieldAmount = CalculateYield(creature.CreatureStats.Attack, creature.CreatureStats.Speed);
+        OnChangesYieldAmountMat1?.Invoke(materialStatsA.yieldAmount);
         
         while (true)
         {
-            if (curYieldTimeMat1 >= yieldSpeedMat1)
+            if (materialStatsA.yieldTime >= materialStatsA.yieldSpeed)
             {
-                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialA, curYieldAmountMat1);
-                curYieldTimeMat1 = 0;
+                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialA, materialStatsA.yieldAmount);
+                materialStatsA.yieldTime = 0;
             } 
             else
             {
-                curYieldTimeMat1++;
+                materialStatsA.yieldTime++;
             }
-            OnChangesYieldTimeMat1?.Invoke(curYieldTimeMat1);
+            OnChangesYieldTimeMat1?.Invoke(materialStatsA.yieldTime);
             yield return new WaitForSeconds(1f);
         }
     }
 
     public IEnumerator MaterialB(Creature creature)
     {
-        curYieldAmountMat2 = CalculateYield(creature.MaxHealth, creature.CreatureStats.Speed);
-        OnChangesYieldAmountMat2?.Invoke(curYieldAmountMat2);
+        materialStatsB.yieldAmount = CalculateYield(creature.MaxHealth, creature.CreatureStats.Speed);
+        OnChangesYieldAmountMat2?.Invoke(materialStatsB.yieldAmount);
 
         while (true)
         {
-            if (curYieldTimeMat2 >= yieldSpeedMat2)
+            if (materialStatsB.yieldTime >= materialStatsB.yieldSpeed)
             {
-                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialB, curYieldAmountMat2);
-                curYieldTimeMat2 = 0;
+                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialB, materialStatsB.yieldAmount);
+                materialStatsB.yieldTime = 0;
             }
             else
             {
-                curYieldTimeMat2++;
+                materialStatsB.yieldTime++;
             }
-            OnChangesYieldTimeMat2?.Invoke(curYieldTimeMat2);
+            OnChangesYieldTimeMat2?.Invoke(materialStatsB.yieldTime);
             yield return new WaitForSeconds(1f);
         }
     }
 
     public IEnumerator MaterialC(Creature creature)
     {
-        curYieldAmountMat3 = CalculateYield(creature.CreatureStats.Defense, creature.CreatureStats.Speed);
-        OnChangesYieldAmountMat3?.Invoke(curYieldAmountMat3);
+        materialStatsC.yieldAmount = CalculateYield(creature.CreatureStats.Defense, creature.CreatureStats.Speed);
+        OnChangesYieldAmountMat3?.Invoke(materialStatsC.yieldAmount);
 
         while (true)
         {
-            if (curYieldTimeMat3 >= yieldSpeedMat3)
+            if (materialStatsC.yieldTime >= materialStatsC.yieldSpeed)
             {
-                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialC, curYieldAmountMat3);
-                curYieldTimeMat3 = 0;
+                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialC, materialStatsC.yieldAmount);
+                materialStatsC.yieldTime = 0;
             }
             else
             {
-                curYieldTimeMat3++;
+                materialStatsC.yieldTime++;
             }
-            OnChangesYieldTimeMat3?.Invoke(curYieldTimeMat3);
+            OnChangesYieldTimeMat3?.Invoke(materialStatsC.yieldTime);
             yield return new WaitForSeconds(1f);
         }
     }
 
     public IEnumerator MaterialD(Creature creature)
     {
-        curYieldAmountMat4 = CalculateYield(creature.CreatureStats.Dexterity, creature.CreatureStats.Speed);
-        OnChangesYieldAmountMat4?.Invoke(curYieldAmountMat4);
+        materialStatsD.yieldAmount = CalculateYield(creature.CreatureStats.Dexterity, creature.CreatureStats.Speed);
+        OnChangesYieldAmountMat4?.Invoke(materialStatsD.yieldAmount);
 
         while (true)
         {
-            if (curYieldTimeMat4 >= yieldSpeedMat4)
+            if (materialStatsD.yieldTime >= materialStatsD.yieldSpeed)
             {
-                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialD, curYieldAmountMat4);
-                curYieldTimeMat4 = 0;
+                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialD, materialStatsD.yieldAmount);
+                materialStatsD.yieldTime = 0;
             }
             else
             {
-                curYieldTimeMat4++;
+                materialStatsD.yieldTime++;
             }
-            OnChangesYieldTimeMat4?.Invoke(curYieldTimeMat4);
+            OnChangesYieldTimeMat4?.Invoke(materialStatsD.yieldTime);
             yield return new WaitForSeconds(1f);
         }
     }

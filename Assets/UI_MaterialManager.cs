@@ -85,6 +85,14 @@ public class UI_MaterialManager : MonoBehaviour
         materialText_2.text = InventoryManager.Instance.MaterialB.ToNumberSuffix(false);
         materialText_3.text = InventoryManager.Instance.MaterialC.ToNumberSuffix(false);
         materialText_4.text = InventoryManager.Instance.MaterialD.ToNumberSuffix(false);
+        yieldText_1.text = MaterialManager.Instance.MaterialStatsA.yieldAmount.ToNumberSuffix(false) + "/" 
+            + MaterialManager.Instance.MaterialStatsA.yieldSpeed + "s";
+        yieldText_2.text = MaterialManager.Instance.MaterialStatsB.yieldAmount.ToNumberSuffix(false) + "/" 
+            + MaterialManager.Instance.MaterialStatsB.yieldSpeed + "s";
+        yieldText_3.text = MaterialManager.Instance.MaterialStatsC.yieldAmount.ToNumberSuffix(false) + "/" 
+            + MaterialManager.Instance.MaterialStatsC.yieldSpeed + "s";
+        yieldText_4.text = MaterialManager.Instance.MaterialStatsD.yieldAmount.ToNumberSuffix(false) + "/" 
+            + MaterialManager.Instance.MaterialStatsD.yieldSpeed + "s";
     }
 
     private void UpdateMaterialText1(BigDecimal amount) {
@@ -113,46 +121,46 @@ public class UI_MaterialManager : MonoBehaviour
 
     private void UpdateMaterialSlider1(int currentAmount)
     {
-        sliderMaterialA.maxValue = MaterialManager.Instance.YieldSpeedMat1;
+        sliderMaterialA.maxValue = MaterialManager.Instance.MaterialStatsA.yieldSpeed;
         sliderMaterialA.value = currentAmount;
     }
 
     private void UpdateMaterialSlider2(int currentAmount)
     {
-        sliderMaterialB.maxValue = MaterialManager.Instance.YieldSpeedMat2;
+        sliderMaterialB.maxValue = MaterialManager.Instance.MaterialStatsB.yieldSpeed;
         sliderMaterialB.value = currentAmount;
     }
 
     private void UpdateMaterialSlider3(int currentAmount)
     {
-        sliderMaterialC.maxValue = MaterialManager.Instance.YieldSpeedMat3;
+        sliderMaterialC.maxValue = MaterialManager.Instance.MaterialStatsC.yieldSpeed;
         sliderMaterialC.value = currentAmount;
     }
 
     private void UpdateMaterialSlider4(int currentAmount)
     {
-        sliderMaterialD.maxValue = MaterialManager.Instance.YieldSpeedMat4;
+        sliderMaterialD.maxValue = MaterialManager.Instance.MaterialStatsD.yieldSpeed;
         sliderMaterialD.value = currentAmount;
     }
 
     private void UpdateMaterialYieldText1(BigDecimal amount)
     {
-        yieldText_1.text = amount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.YieldSpeedMat1 + "s";
+        yieldText_1.text = amount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsA.yieldSpeed + "s";
     }
 
     private void UpdateMaterialYieldText2(BigDecimal amount)
     {
-        yieldText_2.text = amount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.YieldSpeedMat2 + "s";
+        yieldText_2.text = amount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsB.yieldSpeed + "s";
     }
 
     private void UpdateMaterialYieldText3(BigDecimal amount)
     {
-        yieldText_3.text = amount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.YieldSpeedMat3 + "s";
+        yieldText_3.text = amount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsC.yieldSpeed + "s";
     }
 
     private void UpdateMaterialYieldText4(BigDecimal amount)
     {
-        yieldText_4.text = amount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.YieldSpeedMat4 + "s";
+        yieldText_4.text = amount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsD.yieldSpeed + "s";
     }
 
 }
