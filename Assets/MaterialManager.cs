@@ -30,11 +30,15 @@ public class MaterialManager : MonoBehaviour
     public static event Action<BigDecimal> OnChangesYieldAmountMat3;
     public static event Action<BigDecimal> OnChangesYieldAmountMat4;
 
+    public static event Action<float> OnChangesYieldTimeMat1;
+    public static event Action<float> OnChangesYieldTimeMat2;
+    public static event Action<float> OnChangesYieldTimeMat3;
+    public static event Action<float> OnChangesYieldTimeMat4;
+
     private IEnumerator materialA;
     private IEnumerator materialB;
     private IEnumerator materialC;
     private IEnumerator materialD;
-
     public MaterialStats MaterialStatsA
     {
         get { return materialStatsA; }
@@ -136,7 +140,6 @@ public class MaterialManager : MonoBehaviour
                 }
                 InventoryManager.Instance.RemoveCreatureFromMaterialSlot(materialType);
                 StopCoroutine(materialA);
-                StopCoroutine(UI_MaterialManager.Instance.SliderA);
                 OnChangesYieldAmountMat1?.Invoke(0);
                 materialStatsA.yieldTime = 0;
 
@@ -150,7 +153,6 @@ public class MaterialManager : MonoBehaviour
                 }
                 InventoryManager.Instance.RemoveCreatureFromMaterialSlot(materialType);
                 StopCoroutine(materialB);
-                StopCoroutine(UI_MaterialManager.Instance.SliderB);
                 materialStatsB.yieldTime = 0;
                 OnChangesYieldAmountMat2?.Invoke(0);
                 break;
@@ -163,7 +165,6 @@ public class MaterialManager : MonoBehaviour
                 }
                 InventoryManager.Instance.RemoveCreatureFromMaterialSlot(materialType);
                 StopCoroutine(materialC);
-                StopCoroutine(UI_MaterialManager.Instance.SliderC);
                 materialStatsC.yieldTime = 0;
                 OnChangesYieldAmountMat3?.Invoke(0);
                 break;
@@ -176,7 +177,6 @@ public class MaterialManager : MonoBehaviour
                 }
                 InventoryManager.Instance.RemoveCreatureFromMaterialSlot(materialType);
                 StopCoroutine(materialD);
-                StopCoroutine(UI_MaterialManager.Instance.SliderD);
                 materialStatsD.yieldTime = 0;
                 OnChangesYieldAmountMat4?.Invoke(0);
                 break;
@@ -188,7 +188,6 @@ public class MaterialManager : MonoBehaviour
         if(materialA != null)
         {
             StopCoroutine(materialA);
-            StopCoroutine(UI_MaterialManager.Instance.SliderA);
             OnChangesYieldAmountMat1?.Invoke(0);
             materialA = null;
         }
@@ -196,7 +195,6 @@ public class MaterialManager : MonoBehaviour
         if (materialB != null)
         {
             StopCoroutine(materialB);
-            StopCoroutine(UI_MaterialManager.Instance.SliderB);
             OnChangesYieldAmountMat2?.Invoke(0);
             materialB = null;
         }
@@ -204,7 +202,6 @@ public class MaterialManager : MonoBehaviour
         if (materialC != null)
         {
             StopCoroutine(materialC);
-            StopCoroutine(UI_MaterialManager.Instance.SliderC);
             OnChangesYieldAmountMat3?.Invoke(0);
             materialC = null;
         }
@@ -212,7 +209,6 @@ public class MaterialManager : MonoBehaviour
         if (materialD != null)
         {
             StopCoroutine(materialD);
-            StopCoroutine(UI_MaterialManager.Instance.SliderD);
             OnChangesYieldAmountMat4?.Invoke(0);
             materialD = null;
         }
@@ -242,42 +238,35 @@ public class MaterialManager : MonoBehaviour
     {
         BigDecimal amount = CalculateYield(creature.CreatureStats.Attack, creature.CreatureStats.Speed);
         OnChangesYieldAmountMat1?.Invoke(amount);
-        UI_MaterialManager.Instance.SliderA = StartCoroutine(UI_MaterialManager.Instance.SliderMatA());
 
         while (true)
         {
+            materialStatsA.yieldTime += 0.1f;
             if (materialStatsA.yieldTime >= materialStatsA.yieldSpeed)
             {
                 InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialA, amount);
                 materialStatsA.yieldTime = 0;
-            } 
-            else
-            {
-                materialStatsA.yieldTime++;
             }
-            yield return new WaitForSeconds(1f);
+            OnChangesYieldTimeMat1?.Invoke(materialStatsA.yieldTime);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
     public IEnumerator MaterialB(Creature creature)
     {
-        Debug.Log("I started this!");
         BigDecimal amount = CalculateYield(creature.MaxHealth, creature.CreatureStats.Speed);
         OnChangesYieldAmountMat2?.Invoke(amount);
-        UI_MaterialManager.Instance.SliderB = StartCoroutine(UI_MaterialManager.Instance.SliderMatB());
 
         while (true)
         {
+            materialStatsB.yieldTime += 0.1f;
             if (materialStatsB.yieldTime >= materialStatsB.yieldSpeed)
             {
                 InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialB, amount);
                 materialStatsB.yieldTime = 0;
             }
-            else
-            {
-                materialStatsB.yieldTime++;
-            }
-            yield return new WaitForSeconds(1f);
+            OnChangesYieldTimeMat2?.Invoke(materialStatsB.yieldTime);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
@@ -285,20 +274,17 @@ public class MaterialManager : MonoBehaviour
     {
         BigDecimal amount = CalculateYield(creature.CreatureStats.Defense, creature.CreatureStats.Speed);
         OnChangesYieldAmountMat3?.Invoke(amount);
-        UI_MaterialManager.Instance.SliderC = StartCoroutine(UI_MaterialManager.Instance.SliderMatC());
 
         while (true)
         {
+            materialStatsC.yieldTime += 0.1f;
             if (materialStatsC.yieldTime >= materialStatsC.yieldSpeed)
             {
                 InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialC, amount);
                 materialStatsC.yieldTime = 0;
             }
-            else
-            {
-                materialStatsC.yieldTime++;
-            }
-            yield return new WaitForSeconds(1f);
+            OnChangesYieldTimeMat3?.Invoke(materialStatsC.yieldTime);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
@@ -306,20 +292,17 @@ public class MaterialManager : MonoBehaviour
     {
         BigDecimal amount = CalculateYield(creature.CreatureStats.Dexterity, creature.CreatureStats.Speed);
         OnChangesYieldAmountMat4?.Invoke(amount);
-        UI_MaterialManager.Instance.SliderD = StartCoroutine(UI_MaterialManager.Instance.SliderMatD());
 
         while (true)
         {
+            materialStatsD.yieldTime += 0.1f;
             if (materialStatsD.yieldTime >= materialStatsD.yieldSpeed)
             {
                 InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialD, amount);
                 materialStatsD.yieldTime = 0;
             }
-            else
-            {
-                materialStatsD.yieldTime++;
-            }
-            yield return new WaitForSeconds(1f);
+            OnChangesYieldTimeMat4?.Invoke(materialStatsD.yieldTime);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }

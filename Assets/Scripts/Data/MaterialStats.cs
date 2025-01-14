@@ -3,9 +3,9 @@
     public class MaterialStats
     {
         public float yieldSpeed = 60f;
-        public int yieldTime = 0;
+        public float yieldTime = 0;
 
-        public MaterialStats(float yieldSpeed, int yieldTime)
+        public MaterialStats(float yieldSpeed, float yieldTime)
         {
             this.yieldSpeed = yieldSpeed;
             this.yieldTime = yieldTime;
