@@ -84,6 +84,11 @@ public class UI_MaterialManager : MonoBehaviour
         materialText_2.text = InventoryManager.Instance.MaterialB.ToNumberSuffix(false);
         materialText_3.text = InventoryManager.Instance.MaterialC.ToNumberSuffix(false);
         materialText_4.text = InventoryManager.Instance.MaterialD.ToNumberSuffix(false);
+
+        yieldText_1.text = MaterialManager.Instance.MaterialStatsA.yieldAmount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsA.yieldSpeed + "s";
+        yieldText_2.text = MaterialManager.Instance.MaterialStatsB.yieldAmount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsB.yieldSpeed + "s";
+        yieldText_3.text = MaterialManager.Instance.MaterialStatsC.yieldAmount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsC.yieldSpeed + "s";
+        yieldText_4.text = MaterialManager.Instance.MaterialStatsD.yieldAmount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsD.yieldSpeed + "s";
     }
 
     public void ResetMiningData()

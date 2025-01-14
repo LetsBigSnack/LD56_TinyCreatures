@@ -75,7 +75,6 @@ public class MaterialManager : MonoBehaviour
         }
     }
 
-
     public void StartFarming(MaterialType materialType)
     {
         Creature creature = null;
@@ -142,7 +141,6 @@ public class MaterialManager : MonoBehaviour
                 StopCoroutine(materialA);
                 OnChangesYieldAmountMat1?.Invoke(0);
                 materialStatsA.yieldTime = 0;
-
                 break;
 
             case MaterialType.MaterialB:
@@ -222,7 +220,6 @@ public class MaterialManager : MonoBehaviour
         StartFarming(MaterialType.MaterialD);
     }
 
-    
     public BigDecimal CalculateYield(BigDecimal stat, BigDecimal speed)
     {
         BigDecimal scaledStat = stat.Power(statFactor);
@@ -236,15 +233,15 @@ public class MaterialManager : MonoBehaviour
     
     public IEnumerator MaterialA(Creature creature)
     {
-        BigDecimal amount = CalculateYield(creature.CreatureStats.Attack, creature.CreatureStats.Speed);
-        OnChangesYieldAmountMat1?.Invoke(amount);
+        materialStatsA.yieldAmount = CalculateYield(creature.CreatureStats.Attack, creature.CreatureStats.Speed);
+        OnChangesYieldAmountMat1?.Invoke(materialStatsA.yieldAmount);
 
         while (true)
         {
             materialStatsA.yieldTime += 0.1f;
             if (materialStatsA.yieldTime >= materialStatsA.yieldSpeed)
             {
-                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialA, amount);
+                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialA, materialStatsA.yieldAmount);
                 materialStatsA.yieldTime = 0;
             }
             OnChangesYieldTimeMat1?.Invoke(materialStatsA.yieldTime);
@@ -254,15 +251,15 @@ public class MaterialManager : MonoBehaviour
 
     public IEnumerator MaterialB(Creature creature)
     {
-        BigDecimal amount = CalculateYield(creature.MaxHealth, creature.CreatureStats.Speed);
-        OnChangesYieldAmountMat2?.Invoke(amount);
+        materialStatsB.yieldAmount = CalculateYield(creature.MaxHealth, creature.CreatureStats.Speed);
+        OnChangesYieldAmountMat2?.Invoke(materialStatsB.yieldAmount);
 
         while (true)
         {
             materialStatsB.yieldTime += 0.1f;
             if (materialStatsB.yieldTime >= materialStatsB.yieldSpeed)
             {
-                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialB, amount);
+                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialB, materialStatsB.yieldAmount);
                 materialStatsB.yieldTime = 0;
             }
             OnChangesYieldTimeMat2?.Invoke(materialStatsB.yieldTime);
@@ -272,15 +269,15 @@ public class MaterialManager : MonoBehaviour
 
     public IEnumerator MaterialC(Creature creature)
     {
-        BigDecimal amount = CalculateYield(creature.CreatureStats.Defense, creature.CreatureStats.Speed);
-        OnChangesYieldAmountMat3?.Invoke(amount);
+        materialStatsC.yieldAmount = CalculateYield(creature.CreatureStats.Defense, creature.CreatureStats.Speed);
+        OnChangesYieldAmountMat3?.Invoke(materialStatsC.yieldAmount);
 
         while (true)
         {
             materialStatsC.yieldTime += 0.1f;
             if (materialStatsC.yieldTime >= materialStatsC.yieldSpeed)
             {
-                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialC, amount);
+                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialC, materialStatsC.yieldAmount);
                 materialStatsC.yieldTime = 0;
             }
             OnChangesYieldTimeMat3?.Invoke(materialStatsC.yieldTime);
@@ -290,15 +287,15 @@ public class MaterialManager : MonoBehaviour
 
     public IEnumerator MaterialD(Creature creature)
     {
-        BigDecimal amount = CalculateYield(creature.CreatureStats.Dexterity, creature.CreatureStats.Speed);
-        OnChangesYieldAmountMat4?.Invoke(amount);
+        materialStatsD.yieldAmount = CalculateYield(creature.CreatureStats.Dexterity, creature.CreatureStats.Speed);
+        OnChangesYieldAmountMat4?.Invoke(materialStatsD.yieldAmount);
 
         while (true)
         {
             materialStatsD.yieldTime += 0.1f;
             if (materialStatsD.yieldTime >= materialStatsD.yieldSpeed)
             {
-                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialD, amount);
+                InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialD, materialStatsD.yieldAmount);
                 materialStatsD.yieldTime = 0;
             }
             OnChangesYieldTimeMat4?.Invoke(materialStatsD.yieldTime);
