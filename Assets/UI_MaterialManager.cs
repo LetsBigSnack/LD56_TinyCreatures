@@ -19,6 +19,16 @@ public class UI_MaterialManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI materialText_3;
     [SerializeField] private TextMeshProUGUI materialText_4;
 
+    [SerializeField] private TextMeshProUGUI yieldText_1;
+    [SerializeField] private TextMeshProUGUI yieldText_2;
+    [SerializeField] private TextMeshProUGUI yieldText_3;
+    [SerializeField] private TextMeshProUGUI yieldText_4;
+
+    [SerializeField] private Slider sliderMaterialA;
+    [SerializeField] private Slider sliderMaterialB;
+    [SerializeField] private Slider sliderMaterialC;
+    [SerializeField] private Slider sliderMaterialD;
+
     private void Awake()
     {
         if (Instance == null)
@@ -38,6 +48,16 @@ public class UI_MaterialManager : MonoBehaviour
         InventoryManager.OnChangesMaterialB += UpdateMaterialText2;
         InventoryManager.OnChangesMaterialC += UpdateMaterialText3;
         InventoryManager.OnChangesMaterialD += UpdateMaterialText4;
+
+        MaterialManager.OnChangesYieldAmountMat1 += UpdateMaterialYieldText1;
+        MaterialManager.OnChangesYieldAmountMat2 += UpdateMaterialYieldText2;
+        MaterialManager.OnChangesYieldAmountMat3 += UpdateMaterialYieldText3;
+        MaterialManager.OnChangesYieldAmountMat4 += UpdateMaterialYieldText4;
+
+        MaterialManager.OnChangesYieldTimeMat1 += UpdateMaterialSlider1;
+        MaterialManager.OnChangesYieldTimeMat2 += UpdateMaterialSlider2;
+        MaterialManager.OnChangesYieldTimeMat3 += UpdateMaterialSlider3;
+        MaterialManager.OnChangesYieldTimeMat4 += UpdateMaterialSlider4;
     }
 
     private void OnDisable()
@@ -46,6 +66,16 @@ public class UI_MaterialManager : MonoBehaviour
         InventoryManager.OnChangesMaterialB -= UpdateMaterialText2;
         InventoryManager.OnChangesMaterialC -= UpdateMaterialText3;
         InventoryManager.OnChangesMaterialD -= UpdateMaterialText4;
+
+        MaterialManager.OnChangesYieldAmountMat1 -= UpdateMaterialYieldText1;
+        MaterialManager.OnChangesYieldAmountMat2 -= UpdateMaterialYieldText2;
+        MaterialManager.OnChangesYieldAmountMat3 -= UpdateMaterialYieldText3;
+        MaterialManager.OnChangesYieldAmountMat4 -= UpdateMaterialYieldText4;
+
+        MaterialManager.OnChangesYieldTimeMat1 -= UpdateMaterialSlider1;
+        MaterialManager.OnChangesYieldTimeMat2 -= UpdateMaterialSlider2;
+        MaterialManager.OnChangesYieldTimeMat3 -= UpdateMaterialSlider3;
+        MaterialManager.OnChangesYieldTimeMat4 -= UpdateMaterialSlider4;
     }
 
     private void SetCurrentValues()
@@ -54,6 +84,16 @@ public class UI_MaterialManager : MonoBehaviour
         materialText_2.text = InventoryManager.Instance.MaterialB.ToNumberSuffix(false);
         materialText_3.text = InventoryManager.Instance.MaterialC.ToNumberSuffix(false);
         materialText_4.text = InventoryManager.Instance.MaterialD.ToNumberSuffix(false);
+
+        yieldText_1.text = MaterialManager.Instance.MaterialStatsA.yieldAmount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsA.yieldSpeed + "s";
+        yieldText_2.text = MaterialManager.Instance.MaterialStatsB.yieldAmount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsB.yieldSpeed + "s";
+        yieldText_3.text = MaterialManager.Instance.MaterialStatsC.yieldAmount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsC.yieldSpeed + "s";
+        yieldText_4.text = MaterialManager.Instance.MaterialStatsD.yieldAmount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsD.yieldSpeed + "s";
+    }
+
+    public void ResetMiningData()
+    {
+
     }
 
     private void UpdateMaterialText1(BigDecimal amount) {
@@ -78,5 +118,73 @@ public class UI_MaterialManager : MonoBehaviour
     {
 
         materialText_4.text = amount.ToNumberSuffix(false);
+    }
+
+    private void UpdateMaterialYieldText1(BigDecimal amount)
+    {
+        if(amount == 0)
+        {
+            yieldText_1.text = "NO DATA";
+            sliderMaterialA.value = 0;
+            return;
+        }
+        yieldText_1.text = amount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsA.yieldSpeed + "s";
+    }
+
+    private void UpdateMaterialYieldText2(BigDecimal amount)
+    {
+        if (amount == 0)
+        {
+            yieldText_2.text = "NO DATA";
+            sliderMaterialB.value = 0;
+            return;
+        }
+        yieldText_2.text = amount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsB.yieldSpeed + "s";
+    }
+
+    private void UpdateMaterialYieldText3(BigDecimal amount)
+    {
+        if (amount == 0)
+        {
+            yieldText_3.text = "NO DATA";
+            sliderMaterialC.value = 0;
+            return;
+        }
+        yieldText_3.text = amount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsC.yieldSpeed + "s";
+    }
+
+    private void UpdateMaterialYieldText4(BigDecimal amount)
+    {
+        if (amount == 0)
+        {
+            yieldText_4.text = "NO DATA";
+            sliderMaterialD.value = 0;
+            return;
+        }
+        yieldText_4.text = amount.ToNumberSuffix(false) + "/" + MaterialManager.Instance.MaterialStatsD.yieldSpeed + "s";
+    }
+
+    private void UpdateMaterialSlider1(float amount)
+    {
+        sliderMaterialA.maxValue = MaterialManager.Instance.MaterialStatsA.yieldSpeed;
+        sliderMaterialA.value = amount;
+    }
+
+    private void UpdateMaterialSlider2(float amount)
+    {
+        sliderMaterialB.maxValue = MaterialManager.Instance.MaterialStatsB.yieldSpeed;
+        sliderMaterialB.value = amount;
+    }
+
+    private void UpdateMaterialSlider3(float amount)
+    {
+        sliderMaterialC.maxValue = MaterialManager.Instance.MaterialStatsC.yieldSpeed;
+        sliderMaterialC.value = amount;
+    }
+
+    private void UpdateMaterialSlider4(float amount)
+    {
+        sliderMaterialD.maxValue = MaterialManager.Instance.MaterialStatsD.yieldSpeed;
+        sliderMaterialD.value = amount;
     }
 }
