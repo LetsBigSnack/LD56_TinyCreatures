@@ -238,14 +238,14 @@ public class MaterialManager : MonoBehaviour
 
         while (true)
         {
-            materialStatsA.yieldTime += 0.1f;
+            materialStatsA.yieldTime += Time.deltaTime;
             if (materialStatsA.yieldTime >= materialStatsA.yieldSpeed)
             {
                 InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialA, materialStatsA.yieldAmount);
                 materialStatsA.yieldTime = 0;
             }
             OnChangesYieldTimeMat1?.Invoke(materialStatsA.yieldTime);
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
         }
     }
 
@@ -256,14 +256,14 @@ public class MaterialManager : MonoBehaviour
 
         while (true)
         {
-            materialStatsB.yieldTime += 0.1f;
+            materialStatsB.yieldTime += Time.deltaTime;
             if (materialStatsB.yieldTime >= materialStatsB.yieldSpeed)
             {
                 InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialB, materialStatsB.yieldAmount);
                 materialStatsB.yieldTime = 0;
             }
             OnChangesYieldTimeMat2?.Invoke(materialStatsB.yieldTime);
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
         }
     }
 
@@ -274,14 +274,14 @@ public class MaterialManager : MonoBehaviour
 
         while (true)
         {
-            materialStatsC.yieldTime += 0.1f;
+            materialStatsC.yieldTime += Time.deltaTime;
             if (materialStatsC.yieldTime >= materialStatsC.yieldSpeed)
             {
                 InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialC, materialStatsC.yieldAmount);
                 materialStatsC.yieldTime = 0;
             }
             OnChangesYieldTimeMat3?.Invoke(materialStatsC.yieldTime);
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
         }
     }
 
@@ -292,14 +292,14 @@ public class MaterialManager : MonoBehaviour
 
         while (true)
         {
-            materialStatsD.yieldTime += 0.1f;
+            materialStatsD.yieldTime += Time.deltaTime;
             if (materialStatsD.yieldTime >= materialStatsD.yieldSpeed)
             {
                 InventoryManager.Instance.AddMaterialToInventory(MaterialType.MaterialD, materialStatsD.yieldAmount);
                 materialStatsD.yieldTime = 0;
             }
             OnChangesYieldTimeMat4?.Invoke(materialStatsD.yieldTime);
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
         }
     }
 }

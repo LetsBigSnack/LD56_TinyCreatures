@@ -166,25 +166,25 @@ public class UI_MaterialManager : MonoBehaviour
 
     private void UpdateMaterialSlider1(float amount)
     {
-        sliderMaterialA.maxValue = MaterialManager.Instance.MaterialStatsA.yieldSpeed;
-        sliderMaterialA.value = amount;
+        sliderMaterialA.maxValue = 1;
+        sliderMaterialA.value = amount/MaterialManager.Instance.MaterialStatsA.yieldSpeed;
     }
 
     private void UpdateMaterialSlider2(float amount)
     {
-        sliderMaterialB.maxValue = MaterialManager.Instance.MaterialStatsB.yieldSpeed;
-        sliderMaterialB.value = amount;
+        sliderMaterialB.maxValue = 1;
+        sliderMaterialB.value = amount/MaterialManager.Instance.MaterialStatsB.yieldSpeed;
     }
 
     private void UpdateMaterialSlider3(float amount)
     {
-        sliderMaterialC.maxValue = MaterialManager.Instance.MaterialStatsC.yieldSpeed;
-        sliderMaterialC.value = amount;
+        sliderMaterialC.maxValue = 1;
+        sliderMaterialC.value = amount/MaterialManager.Instance.MaterialStatsC.yieldSpeed;
     }
 
     private void UpdateMaterialSlider4(float amount)
     {
-        sliderMaterialD.maxValue = MaterialManager.Instance.MaterialStatsD.yieldSpeed;
-        sliderMaterialD.value = amount;
+        sliderMaterialD.maxValue = 1;
+        sliderMaterialD.value = amount/MaterialManager.Instance.MaterialStatsD.yieldSpeed;
     }
 }
