@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_RadioManager : MonoBehaviour
 {
@@ -24,6 +25,11 @@ public class UI_RadioManager : MonoBehaviour
             Instance = this;
         }
     }
+
+    private void Start()
+    {
+        SetupInitalState();
+    }
     public void EnableTrack()
     {
         Track track = RadioManager.Instance.GetTrack(viewedTrack.name);
@@ -32,19 +38,23 @@ public class UI_RadioManager : MonoBehaviour
 
     public void PausePlayTrack()
     {
-        if (viewedTrack.source.isPlaying)
+        if (IsTrackPlaying())
         {
             viewedTrack.source.Pause();
+            UI_RadioItem.Instance.PlayButtonChange();
             return;
         }
-        if(viewedTrack == playedTrack)
+        if(IsTrackEqual() && IsSongPaused())
         {
             viewedTrack.source.UnPause();
+            UI_RadioItem.Instance.PlayButtonChange();
             return;
         }
+
         playedTrack.source.Stop();
         viewedTrack.source.Play();
         playedTrack = viewedTrack;
+        UI_RadioItem.Instance.PlayButtonChange();
 
         OnChangePlayedTrackValue?.Invoke(playedTrack);
     }
@@ -119,4 +129,24 @@ public class UI_RadioManager : MonoBehaviour
         OnChangeViewedTrackValue?.Invoke(viewedTrack);
     }
 
+    public bool IsTrackEqual()
+    {
+        return viewedTrack == playedTrack;
+    }
+    public bool IsTrackPlaying()
+    {
+        return viewedTrack.source.isPlaying;
+    }
+    private void SetupInitalState()
+    {
+        viewedTrack = RadioManager.Instance.Tracks[0];
+        playedTrack = RadioManager.Instance.Tracks[0];
+        OnChangeViewedTrackValue?.Invoke(viewedTrack);
+        OnChangePlayedTrackValue?.Invoke(playedTrack);
+    }
+
+    private bool IsSongPaused()
+    {
+        return viewedTrack.source.time > 0;
+    }
 }

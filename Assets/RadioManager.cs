@@ -59,9 +59,10 @@ public class RadioManager : MonoBehaviour
             return;
         }
 
-        SavedTrack currSavedTrack = new SavedTrack();
         for (int i = 0; i < tracks.Count; i++)
         {
+            SavedTrack currSavedTrack = new SavedTrack();
+
             currSavedTrack.name = tracks[i].name;
             currSavedTrack.isEnabled = tracks[i].isEnabled;
             currSavedTrack.isUnlocked = tracks[i].isUnlocked;
