@@ -16,6 +16,8 @@ public class UI_RadioItem : MonoBehaviour
     [SerializeField] private Sprite pauseSprite;
     [SerializeField] private Image playBtnSprite;
 
+    private string currentTrackMaxTime;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -30,38 +32,45 @@ public class UI_RadioItem : MonoBehaviour
 
     private void Start()
     {
-        if(UI_RadioManager.Instance != null)
+        if(RadioManager.Instance != null)
         {
-            UI_RadioManager.Instance.OnChangePlayedTrackValue += PlayedTrackChanged;
-            UI_RadioManager.Instance.OnChangeViewedTrackValue += ViewedTrackChanged;
+            RadioManager.Instance.OnChangePlayedTrackValue += PlayedTrackChanged;
+            RadioManager.Instance.OnChangeViewedTrackValue += ViewedTrackChanged;
+            RadioManager.Instance.OnChangeCurrentPlayedTimeValue += ViewedTrackTimeChanged;
         }
+
+        RadioManager.Instance.SetupInitialState();
     }
 
     private void OnDisable()
     {
-        UI_RadioManager.Instance.OnChangePlayedTrackValue -= PlayedTrackChanged;
-        UI_RadioManager.Instance.OnChangeViewedTrackValue -= ViewedTrackChanged;
+        RadioManager.Instance.OnChangePlayedTrackValue -= PlayedTrackChanged;
+        RadioManager.Instance.OnChangeViewedTrackValue -= ViewedTrackChanged;
+        RadioManager.Instance.OnChangeCurrentPlayedTimeValue -= ViewedTrackTimeChanged;
     }
 
     private void ViewedTrackChanged(Track viewedTrack)
     {
-        titleViewedTxt.text = viewedTrack.name;
+        titleViewedTxt.text = "Currently viewed: " + viewedTrack.name;
         PlayButtonChange();
     }
 
     private void PlayedTrackChanged(Track playedTrack)
     {
-        titleTxt.text = playedTrack.name;
-        timeTxt.text = playedTrack.source.time + " - " + playedTrack.source.clip.length.ToString();
+        titleTxt.text = "Currently playing: " + playedTrack.name;
+        currentTrackMaxTime = TranslateToMinutes(playedTrack.source.clip.length);
         PlayButtonChange();
+    }
+
+    private void ViewedTrackTimeChanged(float time)
+    {
+        timeTxt.text = TranslateToMinutes(time) + " - " + currentTrackMaxTime;
     }
 
     public void PlayButtonChange()
     {
-        Debug.Log("IsTrackEqual: " + UI_RadioManager.Instance.IsTrackEqual());
-        Debug.Log("IsTrackPlaying: " + UI_RadioManager.Instance.IsTrackPlaying());
 
-        if (!UI_RadioManager.Instance.IsTrackEqual() || !UI_RadioManager.Instance.IsTrackPlaying())
+        if (!RadioManager.Instance.IsTrackEqual() || !RadioManager.Instance.IsViewedTrackPlaying())
         {
             playBtnSprite.sprite = playSprite;
             return;
@@ -69,4 +78,11 @@ public class UI_RadioItem : MonoBehaviour
         playBtnSprite.sprite = pauseSprite;
     }
 
+    public string TranslateToMinutes(float time)
+    {
+        int timeInSecondsInt = (int)time; 
+        int minutes = timeInSecondsInt / 60;
+        int seconds = timeInSecondsInt - (minutes * 60);
+        return minutes.ToString("D2") + ":" + seconds.ToString("D2");
+    }
 }
