@@ -4,28 +4,13 @@ using UnityEngine;
 using System;
 using Unity.VisualScripting;
 using System.Linq;
-
-[Serializable] public class Track
-{
-    public string name;
-    public AudioSource source;
-    public bool isEnabled;
-    public bool isUnlocked;
-}
-[Serializable]
-public class SavedTrack
-{
-    public string name;
-    public bool isEnabled;
-    public bool isUnlocked;
-}
-
+using Data;
 public class RadioManager : MonoBehaviour
 {
     public static RadioManager Instance { get; private set; }
 
     [SerializeField] private List<Track> tracks = new List<Track>();
-    [SerializeField] private List<SavedTrack> savedTracks = new List<SavedTrack>();
+    [SerializeField] private List<TrackState> savedTracks = new List<TrackState>();
 
     private Track playedTrack;
     private Track viewedTrack;
@@ -38,7 +23,7 @@ public class RadioManager : MonoBehaviour
 
     private IEnumerator timeUntilNextSong;
 
-    public List<SavedTrack> SavedTracks
+    public List<TrackState> SavedTracks
     {
         get => savedTracks;
         set => savedTracks = value;
@@ -80,7 +65,7 @@ public class RadioManager : MonoBehaviour
 
         for (int i = 0; i < tracks.Count; i++)
         {
-            SavedTrack currSavedTrack = new SavedTrack();
+            TrackState currSavedTrack = new TrackState();
 
             currSavedTrack.name = tracks[i].name;
             currSavedTrack.isEnabled = tracks[i].isEnabled;
