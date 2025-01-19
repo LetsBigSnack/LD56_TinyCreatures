@@ -83,7 +83,7 @@ public class UI_RadioItem : MonoBehaviour
     {
         int timeInSecondsInt = (int)time; 
         int minutes = timeInSecondsInt / 60;
-        int seconds = timeInSecondsInt - (minutes * 60);
+        int seconds = timeInSecondsInt % 60;
         return minutes.ToString("D2") + ":" + seconds.ToString("D2");
     }
 }

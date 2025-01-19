@@ -1028,7 +1028,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 186395068}
         m_TargetAssemblyTypeName: RadioManager, Assembly-CSharp
-        m_MethodName: EnableTrack
+        m_MethodName: ToggleEnableTrack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2549,7 +2549,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 186395068}
         m_TargetAssemblyTypeName: RadioManager, Assembly-CSharp
-        m_MethodName: LoopTrack
+        m_MethodName: ToggleLoopTrack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

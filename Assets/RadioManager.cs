@@ -13,9 +13,8 @@ public class RadioManager : MonoBehaviour
 
     private Track playedTrack;
     private Track viewedTrack;
-    public bool isPaused;
-    public float currentPlayedTime;
-
+    private bool isPaused;
+    
     public Action<Track> OnChangePlayedTrackValue;
     public Action<Track> OnChangeViewedTrackValue;
     public Action<float> OnChangeCurrentPlayedTimeValue;
@@ -47,21 +46,15 @@ public class RadioManager : MonoBehaviour
         }
     }
 
-    public void SetupInitialState()
-    {
-        viewedTrack = tracks[0];
-        playedTrack = tracks[0];
-        OnChangeViewedTrackValue?.Invoke(viewedTrack);
-        OnChangePlayedTrackValue?.Invoke(playedTrack);
-        StartTrackCoroutine(false);
-    }
 
     public void CreateSavedTracks()
     {
+        //SaveState --> SavedTracks
+        //how to handle new songs / etc.
         if(savedTracks.Count > 0) {
             return;
         }
-
+        
         for (int i = 0; i < tracks.Count; i++)
         {
             TrackState currSavedTrack = new TrackState();
@@ -84,6 +77,15 @@ public class RadioManager : MonoBehaviour
         }
     }
 
+    public void SetupInitialState()
+    {
+        viewedTrack = tracks[0];
+        playedTrack = tracks[0];
+        OnChangeViewedTrackValue?.Invoke(viewedTrack);
+        OnChangePlayedTrackValue?.Invoke(playedTrack);
+        StartTrackCoroutine(false);
+    }
+
     public Track GetTrack(string trackName)
     {
         return tracks.Where(track => track.name == trackName).FirstOrDefault();
@@ -93,15 +95,15 @@ public class RadioManager : MonoBehaviour
     public void UnlockTrack(string trackName)
     {
         Track track = GetTrack(trackName);
-        track.isUnlocked = !track.isUnlocked;
+        track.isUnlocked = true;
     }
 
-    public void EnableTrack()
+    public void ToggleEnableTrack()
     {
         viewedTrack.isEnabled = !viewedTrack.isEnabled;
     }
 
-    public void LoopTrack()
+    public void ToggleLoopTrack()
     {
         viewedTrack.source.loop = !viewedTrack.source.loop;
     }
@@ -113,7 +115,7 @@ public class RadioManager : MonoBehaviour
             isPaused = true;
             viewedTrack.source.Pause();
         }
-        else if (IsTrackEqual() && IsSongPaused())
+        else if (IsViewedTrackPaused())
         {
             isPaused = false;
             StartTrackCoroutine(true);
@@ -126,11 +128,17 @@ public class RadioManager : MonoBehaviour
             OnChangePlayedTrackValue?.Invoke(playedTrack);
             StartTrackCoroutine(false);
         }
-
+        
+        //observer pattern maybe ??!?!👉👈🥺
         if (UI_RadioItem.Instance != null)
         {
             UI_RadioItem.Instance.PlayButtonChange();
         }
+    }
+
+    private bool IsViewedTrackPaused()
+    {
+        return IsTrackEqual() && IsSongPaused();
     }
 
     public void StartTrackCoroutine(bool wasPaused)
@@ -142,11 +150,9 @@ public class RadioManager : MonoBehaviour
         }
         else
         {
-            currentPlayedTime = 0;
-            OnChangeCurrentPlayedTimeValue?.Invoke(currentPlayedTime);
             playedTrack.source.Play();
         }
-        timeUntilNextSong = TimeUntilNextSong(currentPlayedTime, playedTrack.source.clip.length);
+        timeUntilNextSong = TimeUntilNextSong();
         StartCoroutine(timeUntilNextSong);
     }
 
@@ -201,28 +207,12 @@ public class RadioManager : MonoBehaviour
 
     private List<Track> ReturnAllAvailableTracksToPlay()
     {
-        List<Track> enabledTracks = new List<Track>();
-        foreach (Track track in tracks)
-        {
-            if (track.isEnabled && track.isUnlocked)
-            {
-                enabledTracks.Add(track);
-            }
-        }
-        return enabledTracks;
+        return tracks.Where(track => track.isEnabled && track.isUnlocked).ToList();
     }
 
     private List<Track> ReturnAllAvailableTracksToView()
     {
-        List<Track> unlockedTracks = new List<Track>();
-        foreach (Track track in tracks)
-        {
-            if (track.isUnlocked)
-            {
-                unlockedTracks.Add(track);
-            }
-        }
-        return unlockedTracks;
+        return tracks.Where(track => track.isUnlocked).ToList();
     }
 
     public void ViewNextTrack()
@@ -252,18 +242,26 @@ public class RadioManager : MonoBehaviour
         return playedTrack.source.time > 0;
     }
 
-    private IEnumerator TimeUntilNextSong(float currentTime, float maxTime)
+    private IEnumerator TimeUntilNextSong()
     {
+        float currentTime = playedTrack.source.time;
+        float maxTime = playedTrack.source.clip.length;
         float newMaxTime = currentTime > 0 ? maxTime - currentTime : maxTime;
-        while (!isPaused && currentPlayedTime <= newMaxTime)
+        
+        while (!isPaused && playedTrack.source.time <= newMaxTime)
         {
-            currentPlayedTime++;
-            OnChangeCurrentPlayedTimeValue?.Invoke(currentPlayedTime);
+            
+            OnChangeCurrentPlayedTimeValue?.Invoke(playedTrack.source.time);
             if (isPaused)
             {
                 StopCoroutine(timeUntilNextSong);
             }
             yield return new WaitForSeconds(1f);
+        }
+        
+        if (isPaused)
+        {
+            StopCoroutine(timeUntilNextSong);
         }
 
         if (!isPaused) PlayNextSong();
@@ -278,7 +276,7 @@ public class RadioManager : MonoBehaviour
             return;
         }
         playedTrack.source.Stop();
-        Track track = NextPossibleTrack(1);
+        NextPossibleTrack(1);
         OnChangePlayedTrackValue?.Invoke(playedTrack);
         StartTrackCoroutine(false);
     }
