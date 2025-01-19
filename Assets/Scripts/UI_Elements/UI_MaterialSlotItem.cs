@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 //TODO: refactor as soon as theme has been set
 public enum MaterialType
@@ -20,6 +21,7 @@ public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
     [SerializeField] private UI_CreatureSprite creatureSprite;
     [SerializeField] private Image miningAnimObject;
     [SerializeField] private MaterialType selectedMaterial;
+    [SerializeField] private TextMeshProUGUI yieldText;
 
     public void Awake()
     {
@@ -44,7 +46,6 @@ public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
                 SoundManager.Instance.PlaySFX("Error");
                 return;
             }
-            Debug.Log("AMINA");
             SetNewCreature(uiCreatureButton.Creature);
             SoundManager.Instance.PlaySFX("Click");
         }
