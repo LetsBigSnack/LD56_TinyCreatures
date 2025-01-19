@@ -228,7 +228,7 @@ public class SaveLoadManager : MonoBehaviour
         saveState.achievement = AchievementManager.Instance.AchievementJson;
         
         //SaveTrack
-        //UpdateTracks --> handel new songs
+        saveState.savedTracks = RadioManager.Instance.GetStateTracks(isdefault:false);
         
         JsonSerializerSettings settings = new JsonSerializerSettings
         {
@@ -364,6 +364,13 @@ public class SaveLoadManager : MonoBehaviour
         AchievementManager.Instance.AchievementJson = loadedSaveState.achievement;
         AchievementManager.Instance.SubscribeAll();
         
+        
+        //Radio Manager
+        RadioManager.Instance.UpdateSavedTracks(loadedSaveState.savedTracks);
+        //test if fr CBR
+        RadioManager.Instance.SavedTracks = loadedSaveState.savedTracks;
+        RadioManager.Instance.UpdateTracks();
+        
         Debug.Log("Game loaded successfully from slot " + _saveIndex);
     }
 
@@ -426,6 +433,8 @@ public class SaveLoadManager : MonoBehaviour
 
     public void SelectSlot(int slotNumber)
     {
+
+        int tempSlotNumber = _saveIndex;
         
         if (!SaveStateExists(slotNumber))
         {
@@ -471,7 +480,11 @@ public class SaveLoadManager : MonoBehaviour
         _saveIndex = slotNumber;
         UI_SaveLoadManager.Instance.SetSelectedSlot(slotNumber);
         LoadGame();
-        
+
+        if (_saveIndex != tempSlotNumber)
+        {
+            RadioManager.Instance.SetupInitialState();
+        }
     }
 
     public bool SaveStateExists(int slotNumber)

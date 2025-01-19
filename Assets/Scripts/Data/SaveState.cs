@@ -28,6 +28,9 @@ namespace Data
         public string gameVersion;
         public DateTime lastUpdate;
         
+        //Radio
+        public List<TrackState> savedTracks;
+        
         // Tutorial and Achievements sections
         public TutorialData tutorialData;
         
@@ -84,6 +87,7 @@ namespace Data
             boughtSlots = new BigDecimal(0, 0);
             soledCreatures = new List<Creature>();
             inventorySpace = 8;
+            savedTracks = RadioManager.Instance.GetStateTracks();
             material_1 = 0;
             material_2 = 0;
             material_3 = 0;

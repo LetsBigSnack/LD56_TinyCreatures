@@ -39,8 +39,6 @@ public class UI_RadioItem : MonoBehaviour
             RadioManager.Instance.OnChangeViewedTrackValue += ViewedTrackChanged;
             RadioManager.Instance.OnChangeCurrentPlayedTimeValue += ViewedTrackTimeChanged;
         }
-
-        RadioManager.Instance.SetupInitialState();
     }
 
     private void OnDisable()
