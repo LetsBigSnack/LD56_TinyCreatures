@@ -16,6 +16,7 @@ namespace Data
     public class AchievementJSON
     {
         //Representation
+       //needs to start with 1 
         public int id;
         public string name;
         public string description;
@@ -26,6 +27,8 @@ namespace Data
         //Logic
         public bool unlocked;
         public List<AchievementRequirement> requirements;
-        public int nextAchievement;
+        //if no value is asigned then 0 is default
+        public int nextAchievement;  
+        public int previousAchievement;
     }
 }

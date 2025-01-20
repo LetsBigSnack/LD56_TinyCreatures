@@ -140,7 +140,13 @@ namespace Manager
                     //TODO:think of better solution!
                     UI_AchievementManager.Instance.SortAchievements();
                 }
-                UI_ToastManager.Instance.CreateToast(achievement);
+                UI_ToastManager.Instance.CreateToast(achievement:achievement);
+                UI_ToastManager.Instance.CreateToast("Hello", "This is the first achievement!");
+                UI_ToastManager.Instance.CreateToast("I got stacked :(", "guess its fine haha");
+                UI_ToastManager.Instance.CreateToast(achievement:achievement);
+                UI_ToastManager.Instance.CreateToast("Will it work...","notification goes brrrr");
+                UI_ToastManager.Instance.CreateToast("Honestly cooked","WOW SUCH IMPLEMENTATION!");
+                UI_ToastManager.Instance.CreateToast(achievement:achievement);
             }
         }
 

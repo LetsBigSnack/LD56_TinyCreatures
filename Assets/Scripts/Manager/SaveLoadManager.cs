@@ -209,6 +209,11 @@ public class SaveLoadManager : MonoBehaviour
         saveState.material_3 = InventoryManager.Instance.MaterialC;
         saveState.material_4 = InventoryManager.Instance.MaterialD;
 
+        saveState.materialA = MaterialManager.Instance.MaterialStatsA;
+        saveState.materialB = MaterialManager.Instance.MaterialStatsB;
+        saveState.materialC = MaterialManager.Instance.MaterialStatsC;
+        saveState.materialD = MaterialManager.Instance.MaterialStatsD;
+
         saveState.selectedCreatureBattle = InventoryManager.Instance.SelectedCreatureForBattle;
         saveState.selectedCreaturePodOne = BreedingManager.Instance.CreaturePod1;
         saveState.selectedCreaturePodTwo = BreedingManager.Instance.CreaturePod2;
@@ -221,7 +226,10 @@ public class SaveLoadManager : MonoBehaviour
         saveState.selectedCreatureMaterial_4 = InventoryManager.Instance.SelectedCreatureForMaterial_4;
 
         saveState.achievement = AchievementManager.Instance.AchievementJson;
-
+        
+        //SaveTrack
+        saveState.savedTracks = RadioManager.Instance.GetStateTracks(isdefault:false);
+        
         JsonSerializerSettings settings = new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
@@ -328,6 +336,11 @@ public class SaveLoadManager : MonoBehaviour
         InventoryManager.Instance.MaterialC = loadedSaveState.material_3;
         InventoryManager.Instance.MaterialD = loadedSaveState.material_4;
 
+        MaterialManager.Instance.MaterialStatsA = loadedSaveState.materialA;
+        MaterialManager.Instance.MaterialStatsB = loadedSaveState.materialB;
+        MaterialManager.Instance.MaterialStatsC = loadedSaveState.materialC;
+        MaterialManager.Instance.MaterialStatsD = loadedSaveState.materialD;
+
         InventoryManager.Instance.SelectedCreatureForBattle = loadedSaveState.selectedCreatureBattle;
         BreedingManager.Instance.CreaturePod1 = loadedSaveState.selectedCreaturePodOne;
         BreedingManager.Instance.CreaturePod2 = loadedSaveState.selectedCreaturePodTwo;
@@ -350,6 +363,13 @@ public class SaveLoadManager : MonoBehaviour
         AchievementManager.Instance.UnsubscribeAll();
         AchievementManager.Instance.AchievementJson = loadedSaveState.achievement;
         AchievementManager.Instance.SubscribeAll();
+        
+        
+        //Radio Manager
+        RadioManager.Instance.UpdateSavedTracks(loadedSaveState.savedTracks);
+        //test if fr CBR
+        RadioManager.Instance.SavedTracks = loadedSaveState.savedTracks;
+        RadioManager.Instance.UpdateTracks();
         
         Debug.Log("Game loaded successfully from slot " + _saveIndex);
     }
@@ -413,6 +433,8 @@ public class SaveLoadManager : MonoBehaviour
 
     public void SelectSlot(int slotNumber)
     {
+
+        int tempSlotNumber = _saveIndex;
         
         if (!SaveStateExists(slotNumber))
         {
@@ -458,7 +480,11 @@ public class SaveLoadManager : MonoBehaviour
         _saveIndex = slotNumber;
         UI_SaveLoadManager.Instance.SetSelectedSlot(slotNumber);
         LoadGame();
-        
+
+        if (_saveIndex != tempSlotNumber)
+        {
+            RadioManager.Instance.SetupInitialState();
+        }
     }
 
     public bool SaveStateExists(int slotNumber)

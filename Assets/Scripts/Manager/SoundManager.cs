@@ -8,11 +8,9 @@ using UnityEngine.UI;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
-    public Sound[] musicSounds, sfxSounds;
-    public AudioSource[] musicSource;
-    public AudioSource sfxSource;
 
-    public float customLoopTime = 5f;
+    public Sound[] sfxSounds;
+    public AudioSource sfxSource;
 
     [SerializeField]
     private AudioMixer myMixer;
@@ -20,9 +18,6 @@ public class SoundManager : MonoBehaviour
     private Slider musicSlider;
     [SerializeField]
     private Slider sfxSlider;
-
-    [SerializeField]
-    private bool muffledMusic = false;
 
     private void Awake()
     {
@@ -38,8 +33,6 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        PlayBackgroundMusic();
-
         if (PlayerPrefs.HasKey("music") && PlayerPrefs.HasKey("sfx"))
         {
             SetVolumesFromPrefs();
@@ -48,8 +41,7 @@ public class SoundManager : MonoBehaviour
         {
             SetMusicVolume();
             SetSfxVolume();
-        }
-        
+        }  
     }
 
     private void SetVolumesFromPrefs()
@@ -61,28 +53,6 @@ public class SoundManager : MonoBehaviour
         myMixer.SetFloat("music", Mathf.Log10(musicVolume) * 20);
         myMixer.SetFloat("sfx", Mathf.Log10(sfxVolume) * 20);
 
-    }
-
-    public void PlayBackgroundMusic()
-    {
-        for (int i = 0; i < musicSource.Length; i++)
-        {
-            musicSource[i].clip = musicSounds[i].clip;
-            musicSource[i].Play();
-            if(i != 1) {
-                StartCoroutine(HandleCustomLoop(musicSource[i], customLoopTime));
-            }
-        }
-    }
-
-    private IEnumerator HandleCustomLoop(AudioSource source, float loopTime)
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(source.clip.length);
-            yield return new WaitForSeconds(loopTime);
-            source.Play();
-        }
     }
 
     public void PlaySFX(string name)
@@ -125,22 +95,4 @@ public class SoundManager : MonoBehaviour
             PlayerPrefs.SetFloat("sfx", volume);
         }
     }
-
-    public void changeBackground()
-    {
-        if (muffledMusic)
-        {
-            myMixer.SetFloat("lowpass", 5000f);
-            myMixer.SetFloat("distortion", 0.25f);
-        }
-        if (!muffledMusic)
-        {
-            myMixer.SetFloat("lowpass", 700f);
-            myMixer.SetFloat("distortion", 0f);
-        }
-
-        muffledMusic = !muffledMusic;
-    }
-
-
 }

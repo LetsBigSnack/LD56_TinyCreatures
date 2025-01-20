@@ -28,6 +28,9 @@ namespace Data
         public string gameVersion;
         public DateTime lastUpdate;
         
+        //Radio
+        public List<TrackState> savedTracks;
+        
         // Tutorial and Achievements sections
         public TutorialData tutorialData;
         
@@ -50,6 +53,12 @@ namespace Data
         public BigDecimal material_2;
         public BigDecimal material_3;
         public BigDecimal material_4;
+
+        //Material
+        public MaterialStats materialA;
+        public MaterialStats materialB;
+        public MaterialStats materialC;
+        public MaterialStats materialD;
 
         // Creatures
         public List<Creature> inventory;
@@ -78,11 +87,16 @@ namespace Data
             boughtSlots = new BigDecimal(0, 0);
             soledCreatures = new List<Creature>();
             inventorySpace = 8;
+            savedTracks = RadioManager.Instance.GetStateTracks();
             material_1 = 0;
             material_2 = 0;
             material_3 = 0;
             material_4 = 0;
             tutorialData = new TutorialData();
+            materialA = new MaterialStats(60, 0, 0);
+            materialB = new MaterialStats(60, 0, 0);
+            materialC = new MaterialStats(60, 0, 0);
+            materialD = new MaterialStats(60, 0, 0);
 #if UNITY_EDITOR
             tutorialData.BattleDone = true;
             tutorialData.ConfigDone = true;

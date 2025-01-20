@@ -37,6 +37,8 @@ public class UI_Save_Slot : MonoBehaviour
     
     public void OnSelectSlot()
     {
+        SaveLoadManager.Instance.SaveGame();
+        
         bool notCreated = !SaveLoadManager.Instance.SaveStateExists(slotNumber);
         if (notCreated)
         {
