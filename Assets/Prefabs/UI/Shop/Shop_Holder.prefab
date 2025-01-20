@@ -3626,7 +3626,7 @@ GameObject:
   - component: {fileID: 5894109960779191970}
   - component: {fileID: 1394171526052346329}
   - component: {fileID: 8575749765489366653}
-  - component: {fileID: 7862188511494350848}
+  - component: {fileID: 7343168683464313169}
   m_Layer: 5
   m_Name: Shop_Container_Scrollable
   m_TagString: Untagged
@@ -3694,7 +3694,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7862188511494350848
+--- !u!114 &7343168683464313169
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3703,24 +3703,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 7445405082907858959}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 0ecb29acc94473b4dbc3fa821bf2c6d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 3725797358498769206}
   m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
-  m_Elasticity: 0.135
+  m_Elasticity: 0.1
   m_Inertia: 1
-  m_DecelerationRate: 1
-  m_ScrollSensitivity: 0.01
+  m_DecelerationRate: 0.135
+  m_ScrollSensitivity: 5
   m_Viewport: {fileID: 7867186959326342742}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
-  m_HorizontalScrollbarVisibility: 2
-  m_VerticalScrollbarVisibility: 2
-  m_HorizontalScrollbarSpacing: -3
-  m_VerticalScrollbarSpacing: -3
+  m_HorizontalScrollbarVisibility: 0
+  m_VerticalScrollbarVisibility: 0
+  m_HorizontalScrollbarSpacing: 0
+  m_VerticalScrollbarSpacing: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4026,7 +4026,7 @@ GameObject:
   - component: {fileID: 1732526649258687778}
   - component: {fileID: 8155202023346183857}
   - component: {fileID: 8650455041352051209}
-  - component: {fileID: 3763342361362104016}
+  - component: {fileID: 7671779110739370879}
   m_Layer: 5
   m_Name: Sold_Container_Scrollable
   m_TagString: Untagged
@@ -4094,7 +4094,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3763342361362104016
+--- !u!114 &7671779110739370879
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4103,24 +4103,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 8285750586097968376}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 0ecb29acc94473b4dbc3fa821bf2c6d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 2937574160650878548}
   m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
-  m_Elasticity: 0.135
+  m_Elasticity: 0.1
   m_Inertia: 1
-  m_DecelerationRate: 1
-  m_ScrollSensitivity: 0.01
+  m_DecelerationRate: 0.135
+  m_ScrollSensitivity: 5
   m_Viewport: {fileID: 2976085318250236499}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
-  m_HorizontalScrollbarVisibility: 2
-  m_VerticalScrollbarVisibility: 2
-  m_HorizontalScrollbarSpacing: -3
-  m_VerticalScrollbarSpacing: -3
+  m_HorizontalScrollbarVisibility: 0
+  m_VerticalScrollbarVisibility: 0
+  m_HorizontalScrollbarSpacing: 0
+  m_VerticalScrollbarSpacing: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
