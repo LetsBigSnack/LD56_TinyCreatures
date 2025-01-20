@@ -343,9 +343,9 @@ public class RadioManager : MonoBehaviour
         float maxTime = playedTrack.source.clip.length;
         float newMaxTime = currentTime > 0 ? maxTime - currentTime : maxTime;
         
-        while (!isPaused && playedTrack.source.time <= newMaxTime)
+        while (!isPaused && currentTime <= newMaxTime)
         {
-            
+            currentTime++;
             OnChangeCurrentPlayedTimeValue?.Invoke(playedTrack.source.time);
             if (isPaused)
             {
