@@ -13,6 +13,7 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragH
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Transform parentAfterDrag;
     [SerializeField] private bool isDragable = true;
+    private List<ToggleState> dragableStates = new List<ToggleState> { ToggleState.Battle, ToggleState.Materials };
 
     private SoundManager soundManager;
         
@@ -101,7 +102,7 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragH
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (UI_ToggleManager.Instance.CurrentState == ToggleState.Materials && isDragable)
+            if (dragableStates.Contains(UI_ToggleManager.Instance.CurrentState) && isDragable)
             {
                 rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
                 canvasGroup.alpha = 0.6f;

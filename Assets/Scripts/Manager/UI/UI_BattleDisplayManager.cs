@@ -46,13 +46,8 @@ public class UI_BattleDisplayManager : MonoBehaviour
         Creature battleCreature = InventoryManager.Instance.SelectedCreatureForBattle;
         Creature enemyCreature = BattleManager.Instance.EnemyCreature;
 
-        if (battleCreature == null)
+        if (battleCreature != null)
         {
-            playerObject.SetActive(false);
-        }
-        else
-        {
-            playerObject.SetActive(true);
             BigDecimal healthPercentage = battleCreature.CurrentHealth.Round(3) / battleCreature.MaxHealth.Round(3);
             playerHealthBar.maxValue = 1;
             playerHealthBar.value = (float)healthPercentage;
