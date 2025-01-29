@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Data;
 
-public class UI_RadioItem : MonoBehaviour
+public class UI_RadioItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public static UI_RadioItem Instance { get; private set; }
 
@@ -16,6 +17,12 @@ public class UI_RadioItem : MonoBehaviour
     [SerializeField] private Sprite playSprite;
     [SerializeField] private Sprite pauseSprite;
     [SerializeField] private Image playBtnSprite;
+
+    [SerializeField] private RectTransform titleBarRectTransform;
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private CanvasGroup canvasGroup;
+
+    private bool isDragging = false;
 
     private string currentTrackMaxTime;
 
@@ -28,6 +35,9 @@ public class UI_RadioItem : MonoBehaviour
         else
         {
             Instance = this;
+
+            canvas = GetComponentInParent<Canvas>();
+            canvasGroup = GetComponent<CanvasGroup>();
         }
     }
 
@@ -83,5 +93,46 @@ public class UI_RadioItem : MonoBehaviour
         int minutes = timeInSecondsInt / 60;
         int seconds = timeInSecondsInt % 60;
         return minutes.ToString("D2") + ":" + seconds.ToString("D2");
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (RectTransformUtility.RectangleContainsScreenPoint(titleBarRectTransform, eventData.position, eventData.pressEventCamera))
+        {
+            isDragging = true;
+            canvasGroup.blocksRaycasts = false;
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (isDragging)
+        {
+            (transform as RectTransform).anchoredPosition += eventData.delta / canvas.scaleFactor;
+
+            ClampToScreen();
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (isDragging)
+        {
+            isDragging = false;
+            canvasGroup.blocksRaycasts = true;
+        }
+    }
+
+    private void ClampToScreen()
+    {
+        Vector2 canvasSize = canvas.GetComponent<RectTransform>().sizeDelta;
+
+        Vector2 radioToolSize = (transform as RectTransform).sizeDelta;
+
+        Vector2 clampedPosition = (transform as RectTransform).anchoredPosition;
+        clampedPosition.x = Mathf.Clamp(clampedPosition.x, -canvasSize.x / 2 + radioToolSize.x / 2, canvasSize.x / 2 - radioToolSize.x / 2);
+        clampedPosition.y = Mathf.Clamp(clampedPosition.y, -canvasSize.y / 2 + radioToolSize.y / 2, canvasSize.y / 2 - radioToolSize.y / 2);
+
+        (transform as RectTransform).anchoredPosition = clampedPosition;
     }
 }
