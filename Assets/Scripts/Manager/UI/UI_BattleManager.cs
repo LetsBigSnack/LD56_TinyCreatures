@@ -60,7 +60,7 @@ public class UI_BattleManager : MonoBehaviour
         toggleButton.SetToggleState(BattleManager.Instance.AutoBattle);
         BattleManager.OnCreatureHealthChanged += UpdateHealthSlider;
         BattleManager.OnCreatureShieldChanged += UpdateShieldSlider;
-        //BattleManager.OnCreatureTimeChanged += UpdateTimeSlider;
+        BattleManager.OnCreatureTimeChanged += UpdateTimeSlider;
         BattleManager.OnEnemyHealthChanged += UpdateEnemyHealthSlider;
         BattleManager.OnEnemyTimeChanged += UpdateEnemyTimeSlider;
     }
@@ -69,13 +69,14 @@ public class UI_BattleManager : MonoBehaviour
     {
         BattleManager.OnCreatureHealthChanged -= UpdateHealthSlider;
         BattleManager.OnCreatureShieldChanged -= UpdateShieldSlider;
-        //BattleManager.OnCreatureTimeChanged -= UpdateTimeSlider;
+        BattleManager.OnCreatureTimeChanged -= UpdateTimeSlider;
         BattleManager.OnEnemyHealthChanged -= UpdateEnemyHealthSlider;
         BattleManager.OnEnemyTimeChanged -= UpdateEnemyTimeSlider;
     }
 
     private void UpdateHealthSlider(float amount, CreatureBattleSlot type)
     {
+        Debug.Log("Health: " + amount + ", slot:" + type);
         switch (type)
         {
             case CreatureBattleSlot.Attack:
@@ -93,6 +94,7 @@ public class UI_BattleManager : MonoBehaviour
 
     private void UpdateShieldSlider(float amount, CreatureBattleSlot type)
     {
+        Debug.Log("Shield: " + amount + ", slot:" + type);
         switch (type)
         {
             case CreatureBattleSlot.Attack:
@@ -110,6 +112,7 @@ public class UI_BattleManager : MonoBehaviour
 
     private void UpdateTimeSlider(float amount, CreatureBattleSlot type)
     {
+        Debug.Log("Time: " + amount + ", slot:" + type);
         switch (type)
         {
             case CreatureBattleSlot.Attack:
