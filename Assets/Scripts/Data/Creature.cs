@@ -91,7 +91,8 @@ public class Creature
     public void ReceiveShield(BigDecimal shield)
     {
         _currentShield += shield;
-        _currentShield = BigDecimal.Min(_currentHealth, _maxHealth);
+        Debug.Log("Creature:" + _creatureName + ", Shield:" + _currentShield);
+        _currentShield = BigDecimal.Min(_currentShield, _maxHealth);
         
     }
     

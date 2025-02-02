@@ -141,11 +141,12 @@ namespace Data
         //TODO: fix for different numbers of exponents like 1.000 / 1 --> fucks us rn
         public BigDecimal Divide(BigDecimal other)
         {
+            
             if (other.mantissa == 0)
             {
                 throw new DivideByZeroException("Cannot divide by zero.");
             }
-
+            
             BigInteger newMantissa = mantissa * BigInteger.Pow(10, (int)(-other.exponent));
             BigInteger resultMantissa = newMantissa / other.mantissa;
 

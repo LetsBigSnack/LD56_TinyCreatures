@@ -94,7 +94,7 @@ public class UI_BattleManager : MonoBehaviour
 
     private void UpdateShieldSlider(float amount, CreatureBattleSlot type)
     {
-        Debug.Log("Shield: " + amount + ", slot:" + type);
+        //Debug.Log("Shield: " + amount + ", slot:" + type);
         switch (type)
         {
             case CreatureBattleSlot.Attack:
@@ -112,7 +112,7 @@ public class UI_BattleManager : MonoBehaviour
 
     private void UpdateTimeSlider(float amount, CreatureBattleSlot type)
     {
-        Debug.Log("Time: " + amount + ", slot:" + type);
+        //Debug.Log("Time: " + amount + ", slot:" + type);
         switch (type)
         {
             case CreatureBattleSlot.Attack:
@@ -129,6 +129,7 @@ public class UI_BattleManager : MonoBehaviour
 
     private void UpdateEnemyHealthSlider(float amount)
     {
+        Debug.Log("Enemy Health" + amount);
         enemyHealthSlider.value = amount;
     }
 

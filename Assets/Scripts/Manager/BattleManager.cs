@@ -262,6 +262,12 @@ public class BattleManager : MonoBehaviour
     
     private void StopBattleCoroutines()
     {
+        if (_enemyAttack != null)
+        {
+            Debug.LogError("Enemy Stopped");
+            StopCoroutine(_enemyAttack); 
+        }
+        
         foreach (KeyValuePair<CreatureBattleSlot, Coroutine> entry in _creatureBattleCoroutines)
         {
             CreatureBattleSlot slot = entry.Key;
@@ -306,7 +312,7 @@ public class BattleManager : MonoBehaviour
                         creature.ReceiveHeal(healValue);
                         CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
                         
-                        BigDecimal percentageH = creature.CurrentHealth / creature.MaxHealth;
+                        BigDecimal percentageH = creature.CurrentHealth.Round(3) / creature.MaxHealth.Round(3);
                         percentageH = BigDecimal.Min(1, percentageH);
                         percentageH = percentageH.Round(3);
                         
@@ -322,7 +328,7 @@ public class BattleManager : MonoBehaviour
                     creature.ReceiveHeal(healValue);
                     CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
                     
-                    BigDecimal percentageH = creature.CurrentHealth / creature.MaxHealth;
+                    BigDecimal percentageH = creature.CurrentHealth.Round(3) / creature.MaxHealth.Round(3);
                     percentageH = BigDecimal.Min(1, percentageH);
                     percentageH = percentageH.Round(3);
                         
@@ -395,7 +401,7 @@ public class BattleManager : MonoBehaviour
                         creature.ReceiveShield(shieldValue);
                         CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
                         
-                        BigDecimal percentageS = creature.CurrentHealth / creature.MaxHealth;
+                        BigDecimal percentageS = creature.CurrentShield.Round(3) / creature.MaxHealth.Round(3);
                         percentageS = BigDecimal.Min(1, percentageS);
                         percentageS = percentageS.Round(3);
                         
@@ -410,7 +416,7 @@ public class BattleManager : MonoBehaviour
                     creature.ReceiveShield(shieldValue);
                     CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
                     
-                    BigDecimal percentageS = creature.CurrentHealth / creature.MaxHealth;
+                    BigDecimal percentageS = creature.CurrentShield.Round(3) / creature.MaxHealth.Round(3);
                     percentageS = BigDecimal.Min(1, percentageS);
                     percentageS = percentageS.Round(3);
                         
@@ -493,11 +499,11 @@ public class BattleManager : MonoBehaviour
                         creature.TakeDamage(attackDamage);
                         CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
                         
-                        BigDecimal percentageS = creature.CurrentShield / creature.MaxHealth;
+                        BigDecimal percentageS = creature.CurrentShield.Round(3) / creature.MaxHealth.Round(3);
                         percentageS = BigDecimal.Min(1, percentageS);
                         percentageS = percentageS.Round(3);
                         
-                        BigDecimal percentageH = creature.CurrentHealth / creature.MaxHealth;
+                        BigDecimal percentageH = creature.CurrentHealth.Round(3) / creature.MaxHealth.Round(3);
                         percentageH = BigDecimal.Min(1, percentageH);
                         percentageH = percentageH.Round(3);
                         
@@ -511,11 +517,11 @@ public class BattleManager : MonoBehaviour
                     Creature creature = GetRandomCreature();
                     creature.TakeDamage(attackDamage);
                     CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
-                    BigDecimal percentageS = creature.CurrentShield / creature.MaxHealth;
+                    BigDecimal percentageS = creature.CurrentShield.Round(3) / creature.MaxHealth.Round(3);
                     percentageS = BigDecimal.Min(1, percentageS);
                     percentageS = percentageS.Round(3);
                         
-                    BigDecimal percentageH = creature.CurrentHealth / creature.MaxHealth;
+                    BigDecimal percentageH = creature.CurrentHealth.Round(3) / creature.MaxHealth.Round(3);
                     percentageH = BigDecimal.Min(1, percentageH);
                     percentageH = percentageH.Round(3);
                         
@@ -570,7 +576,7 @@ public class BattleManager : MonoBehaviour
                     Debug.LogWarning("Normal Attack");
                 }
                 
-                BigDecimal percentageH = enemyCreature.CurrentHealth / enemyCreature.MaxHealth;
+                BigDecimal percentageH = enemyCreature.CurrentHealth.Round(3) / enemyCreature.MaxHealth.Round(3);
                 percentageH = BigDecimal.Min(1, percentageH);
                 percentageH = percentageH.Round(3);
                 
@@ -677,12 +683,6 @@ public class BattleManager : MonoBehaviour
                     //POPUP
                 
                     StopBattleCoroutines();
-                
-                    if (_enemyAttack != null)
-                    {
-                        Debug.LogError("Enemy Stopped");
-                        StopCoroutine(_enemyAttack); 
-                    }
                     return;
                 }
             }
