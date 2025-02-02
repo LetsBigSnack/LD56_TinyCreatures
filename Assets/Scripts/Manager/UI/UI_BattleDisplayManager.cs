@@ -51,18 +51,7 @@ public class UI_BattleDisplayManager : MonoBehaviour
     // Start is called before the first frame update
     private void FixedUpdate()
     {
-        
-        //TODO:rework
-        Creature battleCreature = InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack];
         Creature enemyCreature = BattleManager.Instance.EnemyCreature;
-
-        if (battleCreature != null)
-        {
-            BigDecimal healthPercentage = battleCreature.CurrentHealth.Round(3) / battleCreature.MaxHealth.Round(3);
-            playerHealthBar.maxValue = 1;
-            playerHealthBar.value = (float)healthPercentage;
-            playerPL.text = battleCreature.CreatureStats.PowerLevel.ToNumberSuffix(false);
-        }
 
         if (enemyCreature == null)
         {
@@ -76,8 +65,6 @@ public class UI_BattleDisplayManager : MonoBehaviour
             enemyHealthBar.value = (float)healthPercentage;
             enemyPL.text = enemyCreature.CreatureStats.PowerLevel.ToNumberSuffix(false);
         }
-        
-        battleCreatureSprite.SetupRepresentation(battleCreature);
         enemyCreatureSprite.SetupRepresentation(enemyCreature);
     }
     

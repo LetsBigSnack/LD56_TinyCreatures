@@ -64,18 +64,6 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragH
 
         }
 
-        if (UI_ToggleManager.Instance.CurrentState == ToggleState.Battle)
-        {
-            if (UI_BattleManager.Instance.SetInspector(creature))
-            {
-                soundManager.PlaySFX("Click");
-            }
-            else
-            {
-                soundManager.PlaySFX("Error");
-            }
-        }
-
         if(UI_ToggleManager.Instance.CurrentState == ToggleState.ReConfigure)
         {
             if (eventData.button == PointerEventData.InputButton.Left)

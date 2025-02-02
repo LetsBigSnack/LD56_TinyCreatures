@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 [Serializable]
 public enum CreatureBattleSlot
@@ -19,6 +20,14 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
     [SerializeField] private UI_CreatureSprite creatureSprite;
     [SerializeField] private CreatureBattleSlot creatureBattleSlot;
 
+    [SerializeField] private Slider healthSlider;
+    [SerializeField] private Slider timeSlider;
+    [SerializeField] private Slider shieldSlider;
+
+    public Creature CurrentCreature
+    {
+        get { return currentCreature; }
+    }
 
     public void Start()
     {
@@ -28,12 +37,33 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
         }
     }
 
+    public void UpdateHealthSlider(float amount)
+    {
+        healthSlider.value = amount;
+    }
+
+    public void UpdateTimeSlider(float amount)
+    {
+        timeSlider.value = amount;
+    }
+
+    public void UpdateShieldSlider(float amount)
+    {
+        shieldSlider.value = amount;
+    }
+
+    public void RetreatCreature()
+    {
+        BattleManager.Instance.RetreatCreature(creatureBattleSlot);
+        currentCreature = null;
+        ResetCreatureRepresentation();
+    }
 
     public void OnDrop(PointerEventData eventData)
     {
         if (BattleManager.Instance.IsBattleRunning)
         {
-            //TODO: PopUp cant add while Battle is ongoing or something like that
+            UI_ToastManager.Instance.CreateToast("Battle Ongoing!", "Can't add a creature during battle!");
             SoundManager.Instance.PlaySFX("Error");
             return;
         }
@@ -51,22 +81,28 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
         }
         UI_InventoryManager.Instance.RefreshInventory();
     }
-    public void SetNewCreature(Creature creature)
+
+    public void OnHover()
     {
-        //only accept when battle is not running
-        if (BattleManager.Instance.IsBattleRunning)
+        if(currentCreature == null)
         {
-            SoundManager.Instance.PlaySFX("Error");
             return;
         }
-        
+        UI_BattleManager.Instance.OnHoverBattleCreature(creatureBattleSlot);
+    }
+
+    public void OffHover()
+    {
+        UI_BattleManager.Instance.OffHoverBattleCreature();
+    }
+
+    public void SetNewCreature(Creature creature)
+    {        
         if (currentCreature != null)
         {
             Withdraw(true);
         }
-        
-        
-        
+
         InventoryManager.Instance.SelectCreatureForBattle(creature, creatureBattleSlot);
         SetCreatureRepresentation(creature);
     }
@@ -85,16 +121,16 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
             }
             return;
         }
-
+        UI_ToastManager.Instance.CreateToast("No Creature!", "There's no creature in this slot!");
         SoundManager.Instance.PlaySFX("Error");
     }
 
-    private void ResetCreatureRepresentation()
+    public void ResetCreatureRepresentation()
     {
         creatureSprite.Reset();
     }
 
-    private void SetCreatureRepresentation(Creature creature)
+    public void SetCreatureRepresentation(Creature creature)
     {
         creatureButton.Creature = creature;
         creatureSprite.SetupRepresentation(creature);
