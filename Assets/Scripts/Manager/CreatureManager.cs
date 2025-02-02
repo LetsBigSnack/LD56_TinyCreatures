@@ -99,11 +99,32 @@ public class CreatureManager : MonoBehaviour
         float totalDefenseModifier = bodyParts.Select(c => c.Value).Sum(t => t.defenseModifier);
 
         
-        BigDecimal randomSpeed = BigDecimal.Random(-definedStatRange * (1 - totalSpeedModifier), definedStatRange * (1 + totalSpeedModifier)) + definedStatMin / new BigDecimal(2000,-3);
-        BigDecimal randomAttack = BigDecimal.Random(-definedStatRange * (1 - totalAttackModifier), definedStatRange * (1 + totalAttackModifier)) + definedStatMin / new BigDecimal(2000,-3);
-        BigDecimal randomDefense = BigDecimal.Random(-definedStatRange * (1 - totalDefenseModifier), definedStatRange * (1 + totalDefenseModifier)) + definedStatMin / new BigDecimal(2000,-3);
-        BigDecimal randomDexterity = BigDecimal.Random(-definedStatRange * (1 - totalDexterityModifier), definedStatRange * (1 + totalDexterityModifier)) + definedStatMin / new BigDecimal(2000,-3);
-
+        BigDecimal randomSpeed = (BigDecimal.Random(-definedStatRange * (1 - totalSpeedModifier), definedStatRange * (1 + totalSpeedModifier)) + definedStatMin) / new BigDecimal(2000,-3);
+        BigDecimal randomAttack = (BigDecimal.Random(-definedStatRange * (1 - totalAttackModifier), definedStatRange * (1 + totalAttackModifier)) + definedStatMin) / new BigDecimal(2000,-3);
+        BigDecimal randomDefense = (BigDecimal.Random(-definedStatRange * (1 - totalDefenseModifier), definedStatRange * (1 + totalDefenseModifier)) + definedStatMin) / new BigDecimal(2000,-3);
+        BigDecimal randomDexterity = (BigDecimal.Random(-definedStatRange * (1 - totalDexterityModifier), definedStatRange * (1 + totalDexterityModifier)) + definedStatMin) / new BigDecimal(2000,-3);
+    
+        
+        Debug.Log("StatMin" + definedStatMin / new BigDecimal(2000,-3));
+        
+        Debug.Log("Total Speed modifier: " + totalSpeedModifier);
+        Debug.Log("Lower Bound " + (-definedStatRange * (1 - totalSpeedModifier)));
+        Debug.Log("Upper Bound " + (definedStatRange * (1 + totalSpeedModifier)));
+        
+        
+        
+        Debug.Log("Total Attack modifier: " + totalAttackModifier);
+        Debug.Log("Lower Bound " + (-definedStatRange * (1 - totalAttackModifier)));
+        Debug.Log("Upper Bound " + (definedStatRange * (1 + totalAttackModifier)));
+        
+        Debug.Log("Total Defense modifier: " + totalDefenseModifier);
+        Debug.Log("Lower Bound " + (-definedStatRange * (1 - totalDefenseModifier)));
+        Debug.Log("Upper Bound " + (definedStatRange * (1 + totalDefenseModifier)));
+        
+        Debug.Log("Total Dexterity modifier: " + totalDexterityModifier);
+        Debug.Log("Lower Bound " + (-definedStatRange * (1 - totalDexterityModifier)));
+        Debug.Log("Upper Bound " + (definedStatRange * (1 + totalDexterityModifier)));
+        
         
         CreatureStats creatureStats = new CreatureStats(randomSpeed, randomAttack, randomDefense, randomDexterity);
         return creatureStats;
@@ -111,11 +132,17 @@ public class CreatureManager : MonoBehaviour
 
     public Creature CreateAdjustedCreature(BigDecimal definedStatRange, BigDecimal definedStatMin)
     {
+        definedStatRange = definedStatRange.Round(3);
         RefreshUnlockedParts();
         CreatureRepresentation creatureRepresentation = GetRandomCreatureRepresentation();
         
         float totalHealthModifier = creatureRepresentation.BodyParts.Select(c => c.Value).Sum(t => t.healthModifier);
-        BigDecimal randomHealth = ((BigDecimal.Random(-definedStatRange * (1 - totalHealthModifier), definedStatRange * (1 + totalHealthModifier)) + definedStatMin + definedStatMin) * 1.2f);
+        Debug.Log("Total Health modifier" + totalHealthModifier);
+        Debug.Log("Lower Bound " + (-definedStatRange * (1 - totalHealthModifier)));
+        Debug.Log("Upper Bound " + (definedStatRange * (1 + totalHealthModifier)));
+        
+        BigDecimal randomHealth = ((BigDecimal.Random(
+            -definedStatRange * (1 - totalHealthModifier), definedStatRange * (1 + totalHealthModifier)) + definedStatMin + definedStatMin) * 1.2f);
 
         CreatureStats creatureStats = CreateCreatureStats(definedStatRange, definedStatMin,creatureRepresentation.BodyParts);
         
