@@ -146,6 +146,13 @@ public class BattleManager : MonoBehaviour
 
     public void WinBattle()
     {
+        
+        if (_enemyAttack != null)
+        {
+            Debug.LogError("Stopping Enemy Attack");
+            StopCoroutine(_enemyAttack); 
+        }
+        
         StoreManager.Instance.EarnMoney(enemyCreature.CreatureStats.PowerLevel * 5);
         enemyCreature = null;
         playerWins++;
@@ -367,12 +374,7 @@ public class BattleManager : MonoBehaviour
                 StopBattleCoroutines();
                 WinBattle();
                 
-                if (_enemyAttack != null)
-                {
-                    StopCoroutine(_enemyAttack); 
-                }
-                
-                yield break;
+                yield break; //Stopped
             }
             
             
@@ -388,12 +390,15 @@ public class BattleManager : MonoBehaviour
         attackInterval = BigDecimal.Max(3, attackInterval);
         BigDecimal attackDamage = enemyCreature.CreatureStats.Attack.Round(3);
         
-        Debug.LogWarning("Enemy Attack Cycle");
-        
+        Debug.LogError("Enemy Attack Cycle");
+        Debug.LogError("Before While"+ (isBattleRunning && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] != null && enemyCreature != null && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack].CurrentHealth > 0 && enemyCreature.CurrentHealth > 0));
         while (isBattleRunning && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] != null && enemyCreature != null && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack].CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
         {
-            Debug.LogWarning("Attack " + attackInterval);
+            Debug.LogError(isBattleRunning && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] != null && enemyCreature != null && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack].CurrentHealth > 0 && enemyCreature.CurrentHealth > 0);
+            Debug.LogError("Start Attack " + attackInterval);
+            Debug.LogError((float)attackInterval);
             yield return new WaitForSeconds((float)attackInterval);
+            Debug.LogError("End Attack " + attackInterval);
             
             BigDecimal critchance = CalculateCritChance(enemyCreature.CreatureStats.Dexterity);
             
@@ -408,13 +413,13 @@ public class BattleManager : MonoBehaviour
                 {
                     creature.TakeDamage(attackDamage);
                 }
-                Debug.LogWarning("Enemy: Attacking all");
+                Debug.LogError("Enemy: Attacking all");
             }
             else
             { 
                 Creature creature = GetRandomCreature();
                 creature.TakeDamage(attackDamage);
-                Debug.LogWarning("Enemy: Attacking "+ creature.CreatureName);
+                Debug.LogError("Enemy: Attacking "+ creature.CreatureName);
             }
 
             if (UI_BattleDisplayManager.Instance != null)
@@ -549,6 +554,7 @@ public class BattleManager : MonoBehaviour
                 
                     if (_enemyAttack != null)
                     {
+                        Debug.LogError("Enemy Stopped");
                         StopCoroutine(_enemyAttack); 
                     }
                     return;
@@ -599,5 +605,29 @@ public class BattleManager : MonoBehaviour
                                        (averageDexterity * dexterityWeight);
         
         return averagePowerLevel.Round(0);
+    }
+
+    public void RetreatCreature(CreatureBattleSlot creatureBattleSlot)
+    {
+        if (!isBattleRunning && InventoryManager.Instance.CreatureBattleSlots[creatureBattleSlot] != null)
+        {
+            InventoryManager.Instance.RetreatFormBattle(InventoryManager.Instance.CreatureBattleSlots[creatureBattleSlot], creatureBattleSlot);
+        }
+    }
+
+    public void RetreatAll()
+    {
+        StopBattle();
+        
+        foreach (KeyValuePair<CreatureBattleSlot, Creature> entry in InventoryManager.Instance.CreatureBattleSlots)
+        {
+            CreatureBattleSlot slot = entry.Key;
+            Creature creature = entry.Value;
+
+            if (creature != null)
+            {
+                InventoryManager.Instance.RetreatFormBattle(creature, slot);
+            }
+        }
     }
 }
