@@ -55,6 +55,12 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
 
     public void RetreatCreature()
     {
+        if (BattleManager.Instance.IsBattleRunning)
+        {
+            UI_ToastManager.Instance.CreateToast("Battle Ongoing!", "Can't remove a creature during battle!");
+            SoundManager.Instance.PlaySFX("Error");
+            return;
+        }
         BattleManager.Instance.RetreatCreature(creatureBattleSlot);
         currentCreature = null;
         ResetCreatureRepresentation();
