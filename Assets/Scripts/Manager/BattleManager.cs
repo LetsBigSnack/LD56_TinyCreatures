@@ -10,6 +10,16 @@ public class BattleManager : MonoBehaviour
 {
     public static Action<BigDecimal> OnCreatureWinsChanged;
     public static Action<BigDecimal> OnPlayerWinsChanged;
+    
+    public static Action<BigDecimal, CreatureBattleSlot> OnCreatureHealthChanged;
+    public static Action<BigDecimal, CreatureBattleSlot> OnCreatureShieldChanged;
+    public static Action<BigDecimal> OnEnemyHealthChanged;
+
+    public static Action<float> OnAttackTimeChanged;
+    public static Action<float> OnHealTimeChanged;
+    public static Action<float> OnDefendTimeChanged;
+    public static Action<float> OnEnemyTimeChanged;
+    
     public static BattleManager Instance { get; private set; }
 
     [Header("Battle Parameters")] 
@@ -32,7 +42,7 @@ public class BattleManager : MonoBehaviour
     
     [Range(0, 4.0f)] [SerializeField] private float enemyScale = 4;
     
-    [Header("Battle Information")] 
+    [Header("Battle Information")]
     private BigDecimal playerWins = 0;
     [SerializeField] private float factorMult = 1.5f;
     private bool autoBattle;
@@ -118,6 +128,7 @@ public class BattleManager : MonoBehaviour
         {
             enemyCreature.CurrentHealth = enemyCreature.MaxHealth;
         }
+        OnEnemyHealthChanged?.Invoke(enemyCreature.CurrentHealth);
 
         _battleCoroutine = StartCoroutine(BattleCoroutine());
         return true;
@@ -134,12 +145,16 @@ public class BattleManager : MonoBehaviour
     {
         foreach(KeyValuePair<CreatureBattleSlot, Creature> entry in creatureBattleSlot)
         {
+            CreatureBattleSlot slot = entry.Key;
             Creature creature = entry.Value;
             
             if (creature != null)
             {
                 creature.CurrentHealth = creature.MaxHealth;
                 creature.CurrentShield = 0;
+                
+                OnCreatureHealthChanged?.Invoke(creature.CurrentHealth, slot);
+                OnCreatureShieldChanged?.Invoke(creature.CurrentShield, slot);
             }
         }
     }
@@ -255,38 +270,56 @@ public class BattleManager : MonoBehaviour
     
     private IEnumerator CreatureHealCycle(Creature healer)
     {
-        BigDecimal defendInterval = (speedFactor.Round(3) / healer.CreatureStats.Speed.Round(3)) * tickSpeedFactorHeal;
+        BigDecimal healInterval = (speedFactor.Round(3) / healer.CreatureStats.Speed.Round(3)) * tickSpeedFactorHeal;
         BigDecimal healValue = healer.MaxHealth * multFactorHeal;
-        
+        BigDecimal elapsedTime = 0f;
+        OnHealTimeChanged?.Invoke(0);
         while (isBattleRunning && healer != null && enemyCreature != null && healer.CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
         {
-            yield return new WaitForSeconds((float)defendInterval);
             
-            BigDecimal critChance = CalculateCritChance(healer.CreatureStats.Dexterity);
-            
-            bool isCriticalHit = UnityEngine.Random.value < critChance; // Random.value gives a value between 0 and 1
-            BigDecimal attack = 0;
-            
-            if (isCriticalHit)
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime >= healInterval)
             {
-                List<Creature> creatures = GetCreatures();
-                foreach (Creature creature in creatures)
+                BigDecimal critChance = CalculateCritChance(healer.CreatureStats.Dexterity);
+            
+                bool isCriticalHit = UnityEngine.Random.value < critChance; // Random.value gives a value between 0 and 1
+                BigDecimal attack = 0;
+            
+                if (isCriticalHit)
                 {
-                    creature.ReceiveHeal(healValue);
+                    List<Creature> creatures = GetCreatures();
+                    foreach (Creature creature in creatures)
+                    {
+                        creature.ReceiveHeal(healValue);
+                        CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
+                        OnCreatureHealthChanged?.Invoke(creature.CurrentHealth, slot);
+                    
+                    }
+                    Debug.LogWarning("Healing creatures");
                 }
-                Debug.LogWarning("Healing creatures");
-            }
-            else
-            { 
-                Creature creature = GetRandomCreature();
-                Debug.LogWarning("Healing "+ creature.CreatureName);
-                creature.ReceiveHeal(healValue);
-            }
+                else
+                { 
+                    Creature creature = GetRandomCreature();
+                    Debug.LogWarning("Healing "+ creature.CreatureName);
+                    creature.ReceiveHeal(healValue);
+                    CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
+                    OnCreatureHealthChanged?.Invoke(creature.CurrentHealth, slot);
+                
+                }
 
-            if (UI_BattleDisplayManager.Instance != null)
-            {
-                //TODO: create Heal PopUp
+                if (UI_BattleDisplayManager.Instance != null)
+                {
+                    //TODO: create Heal PopUp
+                }
+                
+                elapsedTime = 0f;
             }
+            
+            BigDecimal percentage = elapsedTime / healInterval;
+            percentage = BigDecimal.Min(1, percentage);
+            percentage = percentage.Round(3);
+            OnHealTimeChanged?.Invoke((float)percentage);
+            yield return null;
         }
     }
 
@@ -318,37 +351,51 @@ public class BattleManager : MonoBehaviour
     {
         BigDecimal defendInterval = (speedFactor.Round(3) / defender.CreatureStats.Speed.Round(3)) * tickSpeedFactorDefense;
         BigDecimal shieldValue = defender.CreatureStats.Defense.Round(3) * multFactorDefense;
+        BigDecimal elapsedTime = 0f;
+        OnDefendTimeChanged?.Invoke(0);
         
         while (isBattleRunning && defender != null && enemyCreature != null && defender.CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
         {
-            yield return new WaitForSeconds((float)defendInterval);
-            
-            BigDecimal critChance = CalculateCritChance(defender.CreatureStats.Dexterity);
-            
-            bool isCriticalHit = UnityEngine.Random.value < critChance; // Random.value gives a value between 0 and 1
-            BigDecimal attack = 0;
-            
-            if (isCriticalHit)
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime >= defendInterval)
             {
-                List<Creature> creatures = GetCreatures();
-                foreach (Creature creature in creatures)
+                BigDecimal critChance = CalculateCritChance(defender.CreatureStats.Dexterity);
+            
+                bool isCriticalHit = UnityEngine.Random.value < critChance; // Random.value gives a value between 0 and 1
+                BigDecimal attack = 0;
+            
+                if (isCriticalHit)
                 {
-                    creature.ReceiveShield(shieldValue);
-                }
-                Debug.LogWarning("Defending all");
-            }
-            else
-            { 
-                Creature creature = GetRandomCreature();
-                creature.ReceiveShield(shieldValue);
-                Debug.LogWarning("Defending " + creature.CreatureName);
-            }
+                    List<Creature> creatures = GetCreatures();
+                    foreach (Creature creature in creatures)
+                    {
+                        creature.ReceiveShield(shieldValue);
+                        CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
+                        OnCreatureShieldChanged?.Invoke(creature.CurrentShield, slot);
 
-            if (UI_BattleDisplayManager.Instance != null)
-            {
-                //TODO: create Shield PopUp
+                    }
+                    Debug.LogWarning("Defending all");
+                }
+                else
+                { 
+                    Creature creature = GetRandomCreature();
+                    creature.ReceiveShield(shieldValue);
+                    CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
+                    OnCreatureShieldChanged?.Invoke(creature.CurrentShield, slot);
+                    Debug.LogWarning("Defending " + creature.CreatureName);
+                }
+
+                if (UI_BattleDisplayManager.Instance != null)
+                {
+                    //TODO: create Shield PopUp
+                }
+                elapsedTime = 0f;
             }
-            
+            BigDecimal percentage = elapsedTime / defendInterval;
+            percentage = BigDecimal.Min(1, percentage);
+            percentage = percentage.Round(3);
+            OnDefendTimeChanged?.Invoke((float)percentage);
+            yield return null;
         }
     }
 
@@ -387,45 +434,54 @@ public class BattleManager : MonoBehaviour
     private IEnumerator EnemyAttackCycle(Creature enemy)
     {
         BigDecimal attackInterval = speedFactor.Round(3) / enemyCreature.CreatureStats.Speed.Round(3);
-        attackInterval = BigDecimal.Max(3, attackInterval);
+        //doesnt reliably work
+        //attackInterval = BigDecimal.Max(3, attackInterval);
         BigDecimal attackDamage = enemyCreature.CreatureStats.Attack.Round(3);
+        BigDecimal elapsedTime = 0f;
+        OnEnemyTimeChanged?.Invoke(0);
         
-        Debug.LogError("Enemy Attack Cycle");
-        Debug.LogError("Before While"+ (isBattleRunning && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] != null && enemyCreature != null && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack].CurrentHealth > 0 && enemyCreature.CurrentHealth > 0));
-        while (isBattleRunning && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] != null && enemyCreature != null && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack].CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
+         while (isBattleRunning && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] != null && enemyCreature != null && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack].CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
         {
-            Debug.LogError(isBattleRunning && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] != null && enemyCreature != null && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack].CurrentHealth > 0 && enemyCreature.CurrentHealth > 0);
-            Debug.LogError("Start Attack " + attackInterval);
-            Debug.LogError((float)attackInterval);
-            yield return new WaitForSeconds((float)attackInterval);
-            Debug.LogError("End Attack " + attackInterval);
-            
-            BigDecimal critchance = CalculateCritChance(enemyCreature.CreatureStats.Dexterity);
-            
-            bool isCriticalHit = UnityEngine.Random.value < critchance; // Random.value gives a value between 0 and 1
-            
-            BigDecimal attack = 0;
-            
-            if (isCriticalHit)
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime >= attackInterval)
             {
-                List<Creature> creatures = GetCreatures();
-                foreach (Creature creature in creatures)
+                BigDecimal critchance = CalculateCritChance(enemyCreature.CreatureStats.Dexterity);
+            
+                bool isCriticalHit = UnityEngine.Random.value < critchance; // Random.value gives a value between 0 and 1
+            
+                BigDecimal attack = 0;
+            
+                if (isCriticalHit)
                 {
-                    creature.TakeDamage(attackDamage);
+                    List<Creature> creatures = GetCreatures();
+                    foreach (Creature creature in creatures)
+                    {
+                        creature.TakeDamage(attackDamage);
+                        CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
+                        OnCreatureHealthChanged?.Invoke(creature.CurrentShield, slot);
+                    }
+                    Debug.LogError("Enemy: Attacking all");
                 }
-                Debug.LogError("Enemy: Attacking all");
-            }
-            else
-            { 
-                Creature creature = GetRandomCreature();
-                creature.TakeDamage(attackDamage);
-                Debug.LogError("Enemy: Attacking "+ creature.CreatureName);
-            }
+                else
+                { 
+                    Creature creature = GetRandomCreature();
+                    creature.TakeDamage(attackDamage);
+                    CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
+                    OnCreatureHealthChanged?.Invoke(creature.CurrentShield, slot);
+                    Debug.LogError("Enemy: Attacking "+ creature.CreatureName);
+                }
 
-            if (UI_BattleDisplayManager.Instance != null)
-            {
-                //UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToNumberSuffix(false),isCriticalHit, enemyCreature);
+                if (UI_BattleDisplayManager.Instance != null)
+                {
+                    //UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToNumberSuffix(false),isCriticalHit, enemyCreature);
+                }
+                elapsedTime = 0f;
             }
+            BigDecimal percentage = elapsedTime / attackInterval;
+            percentage = BigDecimal.Min(1, percentage);
+            percentage = percentage.Round(3);
+            OnEnemyTimeChanged?.Invoke((float)percentage);
+            yield return null;
         }
     }
 
@@ -434,34 +490,47 @@ public class BattleManager : MonoBehaviour
     {
         BigDecimal attackInterval = speedFactor.Round(3) / attacker.CreatureStats.Speed.Round(3);
         BigDecimal attackDamage = attacker.CreatureStats.Attack.Round(3);
+        BigDecimal elapsedTime = 0f;
+        OnAttackTimeChanged?.Invoke(0);
         
         while (isBattleRunning && attacker != null && enemyCreature != null && attacker.CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
         {
-            yield return new WaitForSeconds((float)attackInterval);
-            
-            BigDecimal critchance = CalculateCritChance(attacker.CreatureStats.Dexterity);
-            
-            bool isCriticalHit = UnityEngine.Random.value < critchance; // Random.value gives a value between 0 and 1
-            
-            BigDecimal attack = 0;
-            
-            if (isCriticalHit)
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime >= attackInterval)
             {
-                attackDamage *= 2.0f;
-                attack = enemyCreature.TakeDamage(attackDamage);
-                Debug.LogWarning("Crit Attack");
-            }
-            else
-            { 
-                attack = enemyCreature.TakeDamage(attackDamage);
-                Debug.LogWarning("Normal Attack");
-            }
+                
+                BigDecimal critchance = CalculateCritChance(attacker.CreatureStats.Dexterity);
+            
+                bool isCriticalHit = UnityEngine.Random.value < critchance; // Random.value gives a value between 0 and 1
+            
+                BigDecimal attack = 0;
+            
+                if (isCriticalHit)
+                {
+                    attackDamage *= 2.0f;
+                    attack = enemyCreature.TakeDamage(attackDamage);
+                    Debug.LogWarning("Crit Attack");
+                }
+                else
+                { 
+                    attack = enemyCreature.TakeDamage(attackDamage);
+                    Debug.LogWarning("Normal Attack");
+                }
+            
+                OnEnemyHealthChanged?.Invoke(enemyCreature.CurrentHealth);
 
-            if (UI_BattleDisplayManager.Instance != null)
-            {
-                UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToNumberSuffix(false),isCriticalHit, attacker);
+                if (UI_BattleDisplayManager.Instance != null)
+                {
+                    UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToNumberSuffix(false),isCriticalHit, attacker);
+                }
+                
+                elapsedTime = 0f;
             }
-    
+            BigDecimal percentage = elapsedTime / attackInterval;
+            percentage = BigDecimal.Min(1, percentage);
+            percentage = percentage.Round(3);
+            OnAttackTimeChanged?.Invoke((float)percentage);
+            yield return null;
         }
     }
 
