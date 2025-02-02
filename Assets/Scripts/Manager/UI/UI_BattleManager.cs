@@ -161,6 +161,11 @@ public class UI_BattleManager : MonoBehaviour
     public void RetreatAllCreatures()
     {
         BattleManager.Instance.RetreatAll();
+        
+        ReturnBattleSlotItem(CreatureBattleSlot.Attack).CurrentCreature = null;
+        ReturnBattleSlotItem(CreatureBattleSlot.Defense).CurrentCreature = null;
+        ReturnBattleSlotItem(CreatureBattleSlot.Heal).CurrentCreature = null;
+        
         CheckAllSlotsRepresentation();
     }
 

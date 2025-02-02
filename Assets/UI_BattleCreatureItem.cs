@@ -27,6 +27,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
     public Creature CurrentCreature
     {
         get { return currentCreature; }
+        set { currentCreature = value; }
     }
 
     public void Start()
