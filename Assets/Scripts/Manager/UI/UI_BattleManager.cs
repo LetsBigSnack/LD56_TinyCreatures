@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+using Data;
 
 public class UI_BattleManager : MonoBehaviour
 {
@@ -15,6 +17,22 @@ public class UI_BattleManager : MonoBehaviour
     [SerializeField] private UICreatureButton activeBattleCreature;
     [SerializeField] private GameObject nextBattleButton;
     [SerializeField] private UI_ToggleButton toggleButton;
+
+    [SerializeField] private Slider attackHealthSlider;
+    [SerializeField] private Slider attackTimeSlider;
+    [SerializeField] private Slider attackShieldSlider;
+
+    [SerializeField] private Slider healHealthSlider;
+    [SerializeField] private Slider healTimeSlider;
+    [SerializeField] private Slider healShieldSlider;
+
+    [SerializeField] private Slider defenseHealthSlider;
+    [SerializeField] private Slider defenseTimeSlider;
+    [SerializeField] private Slider defenseShieldSlider;
+
+    [SerializeField] private Slider enemyHealthSlider;
+    [SerializeField] private Slider enemyTimeSlider;
+
 
     private SoundManager soundManager;
 
@@ -34,8 +52,88 @@ public class UI_BattleManager : MonoBehaviour
             SetNextBattleButtonActive(false);
         }
     }
-    
-    
+
+    private void OnEnable()
+    {
+        Refresh();
+        BattleManager.Instance.SetNextBattleButton();
+        toggleButton.SetToggleState(BattleManager.Instance.AutoBattle);
+        BattleManager.OnCreatureHealthChanged += UpdateHealthSlider;
+        BattleManager.OnCreatureShieldChanged += UpdateShieldSlider;
+        //BattleManager.OnCreatureTimeChanged += UpdateTimeSlider;
+        BattleManager.OnEnemyHealthChanged += UpdateEnemyHealthSlider;
+        BattleManager.OnEnemyTimeChanged += UpdateEnemyTimeSlider;
+    }
+
+    private void OnDisable()
+    {
+        BattleManager.OnCreatureHealthChanged -= UpdateHealthSlider;
+        BattleManager.OnCreatureShieldChanged -= UpdateShieldSlider;
+        //BattleManager.OnCreatureTimeChanged -= UpdateTimeSlider;
+        BattleManager.OnEnemyHealthChanged -= UpdateEnemyHealthSlider;
+        BattleManager.OnEnemyTimeChanged -= UpdateEnemyTimeSlider;
+    }
+
+    private void UpdateHealthSlider(float amount, CreatureBattleSlot type)
+    {
+        switch (type)
+        {
+            case CreatureBattleSlot.Attack:
+                attackHealthSlider.value = amount;
+                break;
+            case CreatureBattleSlot.Heal:
+                healHealthSlider.value = amount;
+                break;
+            case CreatureBattleSlot.Defense:
+                defenseHealthSlider.value = amount;
+                break;
+        }
+    }
+
+
+    private void UpdateShieldSlider(float amount, CreatureBattleSlot type)
+    {
+        switch (type)
+        {
+            case CreatureBattleSlot.Attack:
+                attackShieldSlider.value = amount;
+                break;
+            case CreatureBattleSlot.Heal:
+                healShieldSlider.value = amount;
+                break;
+            case CreatureBattleSlot.Defense:
+                defenseShieldSlider.value = amount;
+                break;
+        }
+    }
+
+
+    private void UpdateTimeSlider(float amount, CreatureBattleSlot type)
+    {
+        switch (type)
+        {
+            case CreatureBattleSlot.Attack:
+                attackTimeSlider.value = amount;
+                break;
+            case CreatureBattleSlot.Heal:
+                healTimeSlider.value = amount;
+                break;
+            case CreatureBattleSlot.Defense:
+                defenseTimeSlider.value = amount;
+                break;
+        }
+    }
+
+    private void UpdateEnemyHealthSlider(float amount)
+    {
+        enemyHealthSlider.value = amount;
+    }
+
+    private void UpdateEnemyTimeSlider(float amount)
+    {
+        enemyTimeSlider.value = amount;
+    }
+
     public bool SetInspector(Creature creature)
     {
   
@@ -82,13 +180,7 @@ public class UI_BattleManager : MonoBehaviour
         UI_InventoryManager.Instance.RefreshInventory();
     }
 
-    private void OnEnable()
-    {
-        Refresh();
-        BattleManager.Instance.SetNextBattleButton();
-        toggleButton.SetToggleState(BattleManager.Instance.AutoBattle);
-    }
-
+   
     public void SetBattleCreature()
     {
         BattleManager.Instance.ResumeBattle();

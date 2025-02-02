@@ -37,6 +37,16 @@ public class UI_BattleDisplayManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        
+    }
+
 
     // Start is called before the first frame update
     private void FixedUpdate()
@@ -107,4 +117,6 @@ public class UI_BattleDisplayManager : MonoBehaviour
         Destroy(attackEntry, 1);
         return;
     }
+
+    public void 
 }
