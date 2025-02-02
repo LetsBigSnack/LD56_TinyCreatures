@@ -117,6 +117,4 @@ public class UI_BattleDisplayManager : MonoBehaviour
         Destroy(attackEntry, 1);
         return;
     }
-
-    public void 
 }

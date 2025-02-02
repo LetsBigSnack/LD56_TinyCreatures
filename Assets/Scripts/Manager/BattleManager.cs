@@ -11,9 +11,9 @@ public class BattleManager : MonoBehaviour
     public static Action<BigDecimal> OnCreatureWinsChanged;
     public static Action<BigDecimal> OnPlayerWinsChanged;
     
-    public static Action<BigDecimal, CreatureBattleSlot> OnCreatureHealthChanged;
-    public static Action<BigDecimal, CreatureBattleSlot> OnCreatureShieldChanged;
-    public static Action<BigDecimal> OnEnemyHealthChanged;
+    public static Action<float, CreatureBattleSlot> OnCreatureHealthChanged;
+    public static Action<float, CreatureBattleSlot> OnCreatureShieldChanged;
+    public static Action<float> OnEnemyHealthChanged;
 
     public static Action<float> OnAttackTimeChanged;
     public static Action<float> OnHealTimeChanged;
