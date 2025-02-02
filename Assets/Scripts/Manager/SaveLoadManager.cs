@@ -106,16 +106,19 @@ public class SaveLoadManager : MonoBehaviour
         tempSaveStates.Add(_saveSlot1);
         tempSaveStates.Add(_saveSlot2);
         tempSaveStates.Add(_saveSlot3);
-        tempSaveStates = tempSaveStates
+        
+        
+        
+        List<SaveState> nullCheck = tempSaveStates
             .Where(element => element != null)
             .ToList();
 
-        if (tempSaveStates.Count <= 0)
+        if (nullCheck.Count <= 0)
         {
             return;
         }
         
-        SaveState indexElement = tempSaveStates.OrderByDescending(c => c.lastUpdate).First();
+        SaveState indexElement = nullCheck.OrderByDescending(c => c.lastUpdate).First();
         
         _saveIndex = tempSaveStates.IndexOf(indexElement);
 
