@@ -13,11 +13,9 @@ public class BattleManager : MonoBehaviour
     
     public static Action<float, CreatureBattleSlot> OnCreatureHealthChanged;
     public static Action<float, CreatureBattleSlot> OnCreatureShieldChanged;
+    public static Action<float, CreatureBattleSlot> OnCreatureTimeChanged;
+    
     public static Action<float> OnEnemyHealthChanged;
-
-    public static Action<float> OnAttackTimeChanged;
-    public static Action<float> OnHealTimeChanged;
-    public static Action<float> OnDefendTimeChanged;
     public static Action<float> OnEnemyTimeChanged;
     
     public static BattleManager Instance { get; private set; }
@@ -128,7 +126,12 @@ public class BattleManager : MonoBehaviour
         {
             enemyCreature.CurrentHealth = enemyCreature.MaxHealth;
         }
-        OnEnemyHealthChanged?.Invoke(enemyCreature.CurrentHealth);
+        
+        BigDecimal percentage = enemyCreature.CurrentHealth / enemyCreature.MaxHealth;
+        percentage = BigDecimal.Min(1, percentage);
+        percentage = percentage.Round(3);
+        
+        OnEnemyHealthChanged?.Invoke((float)percentage);
 
         _battleCoroutine = StartCoroutine(BattleCoroutine());
         return true;
@@ -153,8 +156,18 @@ public class BattleManager : MonoBehaviour
                 creature.CurrentHealth = creature.MaxHealth;
                 creature.CurrentShield = 0;
                 
-                OnCreatureHealthChanged?.Invoke(creature.CurrentHealth, slot);
-                OnCreatureShieldChanged?.Invoke(creature.CurrentShield, slot);
+                
+                BigDecimal percentageH = creature.CurrentHealth / creature.MaxHealth;
+                percentageH = BigDecimal.Min(1, percentageH);
+                percentageH = percentageH.Round(3);
+                
+                BigDecimal percentageS = creature.CurrentShield / creature.MaxHealth;
+                percentageS = BigDecimal.Min(1, percentageS);
+                percentageS = percentageS.Round(3);
+                
+                
+                OnCreatureHealthChanged?.Invoke((float) percentageH, slot);
+                OnCreatureShieldChanged?.Invoke((float) percentageS, slot);
             }
         }
     }
@@ -273,7 +286,7 @@ public class BattleManager : MonoBehaviour
         BigDecimal healInterval = (speedFactor.Round(3) / healer.CreatureStats.Speed.Round(3)) * tickSpeedFactorHeal;
         BigDecimal healValue = healer.MaxHealth * multFactorHeal;
         BigDecimal elapsedTime = 0f;
-        OnHealTimeChanged?.Invoke(0);
+        OnCreatureTimeChanged?.Invoke(0f, CreatureBattleSlot.Heal);
         while (isBattleRunning && healer != null && enemyCreature != null && healer.CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
         {
             
@@ -292,7 +305,12 @@ public class BattleManager : MonoBehaviour
                     {
                         creature.ReceiveHeal(healValue);
                         CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
-                        OnCreatureHealthChanged?.Invoke(creature.CurrentHealth, slot);
+                        
+                        BigDecimal percentageH = creature.CurrentHealth / creature.MaxHealth;
+                        percentageH = BigDecimal.Min(1, percentageH);
+                        percentageH = percentageH.Round(3);
+                        
+                        OnCreatureHealthChanged?.Invoke((float)percentageH, slot);
                     
                     }
                     Debug.LogWarning("Healing creatures");
@@ -303,7 +321,12 @@ public class BattleManager : MonoBehaviour
                     Debug.LogWarning("Healing "+ creature.CreatureName);
                     creature.ReceiveHeal(healValue);
                     CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
-                    OnCreatureHealthChanged?.Invoke(creature.CurrentHealth, slot);
+                    
+                    BigDecimal percentageH = creature.CurrentHealth / creature.MaxHealth;
+                    percentageH = BigDecimal.Min(1, percentageH);
+                    percentageH = percentageH.Round(3);
+                        
+                    OnCreatureHealthChanged?.Invoke((float)percentageH, slot);
                 
                 }
 
@@ -318,7 +341,7 @@ public class BattleManager : MonoBehaviour
             BigDecimal percentage = elapsedTime / healInterval;
             percentage = BigDecimal.Min(1, percentage);
             percentage = percentage.Round(3);
-            OnHealTimeChanged?.Invoke((float)percentage);
+            OnCreatureTimeChanged?.Invoke((float)percentage, CreatureBattleSlot.Heal);
             yield return null;
         }
     }
@@ -352,7 +375,7 @@ public class BattleManager : MonoBehaviour
         BigDecimal defendInterval = (speedFactor.Round(3) / defender.CreatureStats.Speed.Round(3)) * tickSpeedFactorDefense;
         BigDecimal shieldValue = defender.CreatureStats.Defense.Round(3) * multFactorDefense;
         BigDecimal elapsedTime = 0f;
-        OnDefendTimeChanged?.Invoke(0);
+        OnCreatureTimeChanged?.Invoke(0f, CreatureBattleSlot.Defense);
         
         while (isBattleRunning && defender != null && enemyCreature != null && defender.CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
         {
@@ -371,7 +394,12 @@ public class BattleManager : MonoBehaviour
                     {
                         creature.ReceiveShield(shieldValue);
                         CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
-                        OnCreatureShieldChanged?.Invoke(creature.CurrentShield, slot);
+                        
+                        BigDecimal percentageS = creature.CurrentHealth / creature.MaxHealth;
+                        percentageS = BigDecimal.Min(1, percentageS);
+                        percentageS = percentageS.Round(3);
+                        
+                        OnCreatureShieldChanged?.Invoke((float)percentageS, slot);
 
                     }
                     Debug.LogWarning("Defending all");
@@ -381,7 +409,13 @@ public class BattleManager : MonoBehaviour
                     Creature creature = GetRandomCreature();
                     creature.ReceiveShield(shieldValue);
                     CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
-                    OnCreatureShieldChanged?.Invoke(creature.CurrentShield, slot);
+                    
+                    BigDecimal percentageS = creature.CurrentHealth / creature.MaxHealth;
+                    percentageS = BigDecimal.Min(1, percentageS);
+                    percentageS = percentageS.Round(3);
+                        
+                    OnCreatureShieldChanged?.Invoke((float)percentageS, slot);
+
                     Debug.LogWarning("Defending " + creature.CreatureName);
                 }
 
@@ -394,7 +428,7 @@ public class BattleManager : MonoBehaviour
             BigDecimal percentage = elapsedTime / defendInterval;
             percentage = BigDecimal.Min(1, percentage);
             percentage = percentage.Round(3);
-            OnDefendTimeChanged?.Invoke((float)percentage);
+            OnCreatureTimeChanged?.Invoke((float)percentage, CreatureBattleSlot.Defense);
             yield return null;
         }
     }
@@ -458,7 +492,17 @@ public class BattleManager : MonoBehaviour
                     {
                         creature.TakeDamage(attackDamage);
                         CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
-                        OnCreatureHealthChanged?.Invoke(creature.CurrentShield, slot);
+                        
+                        BigDecimal percentageS = creature.CurrentShield / creature.MaxHealth;
+                        percentageS = BigDecimal.Min(1, percentageS);
+                        percentageS = percentageS.Round(3);
+                        
+                        BigDecimal percentageH = creature.CurrentHealth / creature.MaxHealth;
+                        percentageH = BigDecimal.Min(1, percentageH);
+                        percentageH = percentageH.Round(3);
+                        
+                        OnCreatureShieldChanged?.Invoke((float)percentageS, slot);
+                        OnCreatureHealthChanged?.Invoke((float)percentageH, slot);
                     }
                     Debug.LogError("Enemy: Attacking all");
                 }
@@ -467,7 +511,16 @@ public class BattleManager : MonoBehaviour
                     Creature creature = GetRandomCreature();
                     creature.TakeDamage(attackDamage);
                     CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
-                    OnCreatureHealthChanged?.Invoke(creature.CurrentShield, slot);
+                    BigDecimal percentageS = creature.CurrentShield / creature.MaxHealth;
+                    percentageS = BigDecimal.Min(1, percentageS);
+                    percentageS = percentageS.Round(3);
+                        
+                    BigDecimal percentageH = creature.CurrentHealth / creature.MaxHealth;
+                    percentageH = BigDecimal.Min(1, percentageH);
+                    percentageH = percentageH.Round(3);
+                        
+                    OnCreatureShieldChanged?.Invoke((float)percentageS, slot);
+                    OnCreatureHealthChanged?.Invoke((float)percentageH, slot);
                     Debug.LogError("Enemy: Attacking "+ creature.CreatureName);
                 }
 
@@ -491,7 +544,7 @@ public class BattleManager : MonoBehaviour
         BigDecimal attackInterval = speedFactor.Round(3) / attacker.CreatureStats.Speed.Round(3);
         BigDecimal attackDamage = attacker.CreatureStats.Attack.Round(3);
         BigDecimal elapsedTime = 0f;
-        OnAttackTimeChanged?.Invoke(0);
+        OnCreatureTimeChanged?.Invoke(0f, CreatureBattleSlot.Attack);
         
         while (isBattleRunning && attacker != null && enemyCreature != null && attacker.CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
         {
@@ -516,8 +569,12 @@ public class BattleManager : MonoBehaviour
                     attack = enemyCreature.TakeDamage(attackDamage);
                     Debug.LogWarning("Normal Attack");
                 }
-            
-                OnEnemyHealthChanged?.Invoke(enemyCreature.CurrentHealth);
+                
+                BigDecimal percentageH = enemyCreature.CurrentHealth / enemyCreature.MaxHealth;
+                percentageH = BigDecimal.Min(1, percentageH);
+                percentageH = percentageH.Round(3);
+                
+                OnEnemyHealthChanged?.Invoke((float)percentageH);
 
                 if (UI_BattleDisplayManager.Instance != null)
                 {
@@ -529,7 +586,7 @@ public class BattleManager : MonoBehaviour
             BigDecimal percentage = elapsedTime / attackInterval;
             percentage = BigDecimal.Min(1, percentage);
             percentage = percentage.Round(3);
-            OnAttackTimeChanged?.Invoke((float)percentage);
+            OnCreatureTimeChanged?.Invoke((float)percentage, CreatureBattleSlot.Attack);
             yield return null;
         }
     }
