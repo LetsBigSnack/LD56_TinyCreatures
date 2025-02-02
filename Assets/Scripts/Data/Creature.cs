@@ -14,6 +14,7 @@ public class Creature
 
     private BigDecimal _creatureGeneration;
     private BigDecimal _currentHealth;
+    private BigDecimal _currentShield;
     private BigDecimal _maxHealth;
     private BigDecimal _creatureWins;
     private CreatureStats _creatureStats;
@@ -36,6 +37,13 @@ public class Creature
     {
         get => _currentHealth;
         set => _currentHealth = value;
+    }
+    
+    [JsonIgnore]
+    public BigDecimal CurrentShield
+    {
+        get => _currentShield;
+        set => _currentShield = value;
     }
 
     public BigDecimal MaxHealth
@@ -77,17 +85,39 @@ public class Creature
         _creatureStats = creatureStats;
         _representation = representation;
         _creatureWins = 0;
+        _currentShield = 0;
     }
     
+    public void ReceiveShield(BigDecimal shield)
+    {
+        _currentShield += shield;
+        _currentShield = BigDecimal.Min(_currentHealth, _maxHealth);
+        
+    }
+    
+    public void ReceiveHeal(BigDecimal heal)
+    {
+        _currentHealth += heal;
+        _currentHealth = BigDecimal.Min(_currentHealth, _maxHealth);
+    }
     
     public BigDecimal TakeDamage(BigDecimal damage)
     {
         BigDecimal finalDamage = damage * (1 - (_creatureStats.Defense / (_creatureStats.Defense  + 200)));
         finalDamage = BigDecimal.Max(1, finalDamage);
         finalDamage = finalDamage.Round(0);
-        _currentHealth = _currentHealth - finalDamage;
-        _currentHealth = BigDecimal.Max(0, _currentHealth);
 
+        if (_currentShield > 0)
+        {
+            _currentShield -= finalDamage;
+            _currentShield = BigDecimal.Min(0, _currentShield);
+        }
+        else
+        {
+            _currentHealth = _currentHealth - finalDamage;
+            _currentHealth = BigDecimal.Max(0, _currentHealth);
+        }
+        
         return finalDamage;
     }
     

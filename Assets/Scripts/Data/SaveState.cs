@@ -62,7 +62,7 @@ namespace Data
 
         // Creatures
         public List<Creature> inventory;
-        public Creature selectedCreatureBattle;
+        public Dictionary<CreatureBattleSlot, Creature> creatureBattleSlots;
         public Creature selectedCreaturePodOne;
         public Creature selectedCreaturePodTwo;
         public Creature breedingCreatureResult;
@@ -88,6 +88,10 @@ namespace Data
             soledCreatures = new List<Creature>();
             inventorySpace = 8;
             savedTracks = RadioManager.Instance.GetStateTracks();
+            creatureBattleSlots = new Dictionary<CreatureBattleSlot, Creature>();
+            creatureBattleSlots[CreatureBattleSlot.Attack] = null;
+            creatureBattleSlots[CreatureBattleSlot.Defense] = null;
+            creatureBattleSlots[CreatureBattleSlot.Heal] = null;
             material_1 = 0;
             material_2 = 0;
             material_3 = 0;

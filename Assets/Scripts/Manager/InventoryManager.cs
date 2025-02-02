@@ -24,7 +24,9 @@ public class InventoryManager : MonoBehaviour
     public static event Action<BigDecimal> OnChangesMaterialC;
     public static event Action<BigDecimal> OnChangesMaterialD;
 
-    private Creature selectedCreatureForBattle;
+    //private Creature selectedCreatureForBattle;
+    private Dictionary<CreatureBattleSlot, Creature> creatureBattleSlots;
+    
     private Creature creatureInspectorLeft;
     private Creature creatureInspectorRight;
     private Creature selectedCreatureForReConfigure;
@@ -34,9 +36,18 @@ public class InventoryManager : MonoBehaviour
     private Creature selectedCreatureForMaterial_3;
     private Creature selectedCreatureForMaterial_4;
 
-    public Creature SelectedCreatureForBattle 
-    { get => selectedCreatureForBattle; set => selectedCreatureForBattle = value; }
-    
+    //public Creature SelectedCreatureForBattle { get => selectedCreatureForBattle; set => selectedCreatureForBattle = value; }
+    public  Dictionary<CreatureBattleSlot, Creature> CreatureBattleSlots
+    {
+        get => creatureBattleSlots;
+        set
+        {
+            Debug.Log("Changing creature battle slots");
+            creatureBattleSlots = value;
+        }
+    }
+
+
     public Creature CreatureInspectorLeft 
     { get => creatureInspectorLeft; set => creatureInspectorLeft = value; }
 
@@ -84,7 +95,15 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Awake called. Setting Instance and initializing creatureBattleSlots.");
             Instance = this;
+            creatureBattleSlots = new Dictionary<CreatureBattleSlot, Creature>
+            {
+                { CreatureBattleSlot.Attack, new Creature(1,1,null,null) },
+                { CreatureBattleSlot.Defense, null },
+                { CreatureBattleSlot.Heal, null }
+            };
+            Debug.Log("CreatureBattleSlots initialized: " + (creatureBattleSlots != null));
         }
     }
 
@@ -313,39 +332,41 @@ public class InventoryManager : MonoBehaviour
         }
     }
     
-    public void ChoiceCreatureForBattle(Creature creatureToChose)
+    //previously ChoiceCreatureForBattle
+    public void SelectCreatureForBattle(Creature creature, CreatureBattleSlot battleSlot)
     {
-        if (creatureToChose != null && inventoryCreatures.Contains(creatureToChose))
+        if (creature != null && inventoryCreatures.Contains(creature))
         {
-            RemoveCreatureFormBattle();
-            selectedCreatureForBattle = creatureToChose;
-            RemoveCreature(creatureToChose);
-            BattleManager.Instance.NextBattle();
-        }
-    }
-    
-    public void RetreatFormBattle(Creature creatureToChose)
-    {
-        if (creatureToChose != null && selectedCreatureForBattle == creatureToChose)
-        {
-            RemoveCreatureFormBattle();
-            if (UI_BattleManager.Instance != null) {
-                UI_BattleManager.Instance.SetNextBattleButtonActive(false);
+            
+            if (creature == creatureInspectorLeft)
+            {
+                creatureInspectorLeft = null;
             }
+            
+            if (creature == creatureInspectorRight)
+            {
+                creatureInspectorRight = null;
+            }
+            
+            UI_CompareManager.Instance?.SetInspector();
+            
+            creatureBattleSlots[battleSlot] = creature;
+            
+            RemoveCreature(creature);
+            
         }
     }
     
-    private void RemoveCreatureFormBattle()
+    public void RetreatFormBattle(Creature creature, CreatureBattleSlot battleSlot)
     {
-        if (selectedCreatureForBattle != null)
+        if (creature != null && creatureBattleSlots[battleSlot] == creature)
         {
-            BattleManager.Instance.StopBattle();
-            AddCreature(selectedCreatureForBattle);
-            selectedCreatureForBattle = null;
+            Debug.Log("Retreating battle slot");
+            creatureBattleSlots[battleSlot] = null;
+            AddCreature(creature);
         }
     }
-
-
+    
     public void SelectCreatureLeft(Creature creatureToSelect)
     {
         if (creatureToSelect == creatureInspectorRight)

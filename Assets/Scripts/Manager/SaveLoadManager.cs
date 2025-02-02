@@ -214,7 +214,7 @@ public class SaveLoadManager : MonoBehaviour
         saveState.materialC = MaterialManager.Instance.MaterialStatsC;
         saveState.materialD = MaterialManager.Instance.MaterialStatsD;
 
-        saveState.selectedCreatureBattle = InventoryManager.Instance.SelectedCreatureForBattle;
+        saveState.creatureBattleSlots = InventoryManager.Instance.CreatureBattleSlots;
         saveState.selectedCreaturePodOne = BreedingManager.Instance.CreaturePod1;
         saveState.selectedCreaturePodTwo = BreedingManager.Instance.CreaturePod2;
         saveState.breedingCreatureResult = BreedingManager.Instance.Result;
@@ -341,7 +341,7 @@ public class SaveLoadManager : MonoBehaviour
         MaterialManager.Instance.MaterialStatsC = loadedSaveState.materialC;
         MaterialManager.Instance.MaterialStatsD = loadedSaveState.materialD;
 
-        InventoryManager.Instance.SelectedCreatureForBattle = loadedSaveState.selectedCreatureBattle;
+        InventoryManager.Instance.CreatureBattleSlots = loadedSaveState.creatureBattleSlots;
         BreedingManager.Instance.CreaturePod1 = loadedSaveState.selectedCreaturePodOne;
         BreedingManager.Instance.CreaturePod2 = loadedSaveState.selectedCreaturePodTwo;
         BreedingManager.Instance.Result = loadedSaveState.breedingCreatureResult;

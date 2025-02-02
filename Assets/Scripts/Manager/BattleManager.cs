@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Data;
 using Helper.Util;
 using UnityEngine;
@@ -21,21 +23,31 @@ public class BattleManager : MonoBehaviour
     public BigDecimal StatRange{get{return statRange;}}
     public BigDecimal StatMin{get{return statMin;}}
 
+    [Range(0, 3.0f)] [SerializeField] private float tickSpeedFactorHeal = 1;
+    [Range(0, 2.0f)] [SerializeField] private float multFactorHeal = 1;
+    
+    [Range(0, 3.0f)] [SerializeField] private float tickSpeedFactorDefense = 1;
+    [Range(0, 2.0f)] [SerializeField] private float multFactorDefense = 1;
+
+    
+    [Range(0, 4.0f)] [SerializeField] private float enemyScale = 4;
+    
     [Header("Battle Information")] 
-    [SerializeField] private bool battleRunning = true;
-    [SerializeField] private bool hasBattleStarted = false;
     private BigDecimal playerWins = 0;
     [SerializeField] private float factorMult = 1.5f;
     private bool autoBattle;
     
-    public bool HasBattleStarted
-    {
-        get => hasBattleStarted;
-        set => hasBattleStarted = value;
-    }
+    [SerializeField] private bool isBattleRunning;
 
+
+    private Dictionary<CreatureBattleSlot, Coroutine> _creatureBattleCoroutines =
+    new Dictionary<CreatureBattleSlot, Coroutine>()
+    {
+        { CreatureBattleSlot.Attack , null},
+        { CreatureBattleSlot.Defense , null},
+        { CreatureBattleSlot.Heal , null},
+    };
     private Coroutine _enemyAttack;
-    private Coroutine _playerAttack;
     private Coroutine _battleCoroutine;
     
     public BigDecimal PlayerWins
@@ -48,13 +60,14 @@ public class BattleManager : MonoBehaviour
     
     public bool AutoBattle { get => autoBattle; set => autoBattle = value;  }
     
+    public bool IsBattleRunning { get => isBattleRunning; set => isBattleRunning = value;  }
+
+    
     public Creature EnemyCreature
     {
         get => enemyCreature;
         set => enemyCreature = value;
     }
-
-    public bool BattleRunning { get => battleRunning; set => battleRunning = value; }
     
     private void Awake()
     {
@@ -68,38 +81,37 @@ public class BattleManager : MonoBehaviour
             autoBattle = true;
         }
     }
-
-    private void Update()
+    
+    
+    
+    //Observer-Pattern
+    
+    private bool StartBattle()
     {
-        if (!battleRunning || GameManager.Instance.CurrentState != State.Game)
-        {
-            return;
-        }
-        if (InventoryManager.Instance.SelectedCreatureForBattle != null && !hasBattleStarted)
-        {
-            if(autoBattle) 
-            {
-                StartBattle();
-            }
-        }
-    }
+        Dictionary<CreatureBattleSlot, Creature> creatureBattleSlot = InventoryManager.Instance.CreatureBattleSlots;
+        
 
-    private void StartBattle()
-    {
-        Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
+        if (creatureBattleSlot[CreatureBattleSlot.Attack] == null)
+        {
+            return false;
+        }
+        
         if (UI_BattleManager.Instance != null && UI_InventoryHoverManager.Instance != null)
         {
             UI_InventoryHoverManager.Instance.ChangeBattleText("BATTLE ONGOING!");
-            UI_BattleManager.Instance.SetNextBattleButtonActive(false);
+            //UI_BattleManager.Instance.SetNextBattleButtonActive(false);
         }
-        hasBattleStarted = true;
-        playerCreature.CurrentHealth = playerCreature.MaxHealth;
+        
+        isBattleRunning = true;
+
+        ResetCreatures(creatureBattleSlot);
 
         if (enemyCreature == null)
         {
+            //TODO: adjust creature growth
             enemyCreature = CreatureManager.Instance.
                 CreateAdjustedCreature(statRange + (playerWins * winFactor), 
-                                        statMin + (playerWins * winFactor * 2));
+                                        (statMin + (playerWins * winFactor))* enemyScale);
             enemyCreature.CreatureName = "Enemy";
         }
         else
@@ -108,21 +120,43 @@ public class BattleManager : MonoBehaviour
         }
 
         _battleCoroutine = StartCoroutine(BattleCoroutine());
+        return true;
+    }
+    
+    /// <summary>
+    /// This Function resets all currently selected Creatures for Battle
+    /// Following Values are going to be reset:
+    /// - CurrentHealth --> going to be set to MaxHealth
+    /// - CurrentShield --> going to be set to 0
+    /// </summary>
+    /// <param name="creatureBattleSlot">This is the Dictionary object which is passed from the InventoryManager which stores all selected Creatures for battle</param>
+    private void ResetCreatures(Dictionary<CreatureBattleSlot, Creature> creatureBattleSlot)
+    {
+        foreach(KeyValuePair<CreatureBattleSlot, Creature> entry in creatureBattleSlot)
+        {
+            Creature creature = entry.Value;
+            
+            if (creature != null)
+            {
+                creature.CurrentHealth = creature.MaxHealth;
+                creature.CurrentShield = 0;
+            }
+        }
     }
 
     public void WinBattle()
     {
-
-        Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
         StoreManager.Instance.EarnMoney(enemyCreature.CreatureStats.PowerLevel * 5);
         enemyCreature = null;
         playerWins++;
-        hasBattleStarted = false;
 
-        InventoryManager.Instance.SelectedCreatureForBattle.CreatureWins++;
-
-        // Trigger to notify listeners in UI about the win count change
-        OnCreatureWinsChanged?.Invoke(playerCreature.CreatureWins);
+        AddCreatureWins();
+        
+        // Trigger to notify listeners in UI about the win count change - 
+        //TODO: rework and enable again
+        // OnCreatureWinsChanged?.Invoke(playerCreature.CreatureWins);
+        
+        //Achievements
         OnPlayerWinsChanged?.Invoke(playerWins);
         
         if (playerWins == StoreManager.Instance.WinThreshold)
@@ -135,107 +169,306 @@ public class BattleManager : MonoBehaviour
             StopCoroutine(_battleCoroutine);
         }
 
-        if(!autoBattle && UI_BattleManager.Instance != null && UI_InventoryHoverManager.Instance != null)
+        if (autoBattle)
         {
-            UI_InventoryHoverManager.Instance.ChangeBattleText("READY TO BATTLE");
-            UI_BattleManager.Instance.SetNextBattleButtonActive(true);
+            NextBattle();
+        }
+        else
+        {
+            if(!autoBattle && UI_BattleManager.Instance != null && UI_InventoryHoverManager.Instance != null)
+            {
+                UI_InventoryHoverManager.Instance.ChangeBattleText("READY TO BATTLE");
+                UI_BattleManager.Instance.SetNextBattleButtonActive(true);
+            }
         }
     }
 
-    private IEnumerator BattleCoroutine()
+    private void AddCreatureWins()
     {
-        Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
+        Dictionary<CreatureBattleSlot, Creature> creatureBattleSlot = InventoryManager.Instance.CreatureBattleSlots;
 
-        yield return new WaitForSeconds(1);
-
-        // Start both creatures attacking concurrently without waiting for either to finish
-        _playerAttack = StartCoroutine(CreatureAttackCycle(playerCreature, enemyCreature));
-        _enemyAttack = StartCoroutine(CreatureAttackCycle(enemyCreature, playerCreature));
-
-        // Keep checking the health status of both creatures in a loop
-        while (battleRunning && playerCreature != null && enemyCreature != null)
+        foreach(KeyValuePair<CreatureBattleSlot, Creature> entry in creatureBattleSlot)
         {
-            // If either creature has 0 health, stop the battle
-            if (enemyCreature.CurrentHealth <= 0)
-            {
-                WinBattle();
-                if (_playerAttack != null)
-                {
-                    StopCoroutine(_playerAttack);
-                }
-                if (_enemyAttack != null)
-                {
-                    StopCoroutine(_enemyAttack); 
-                }
-                yield break;
-            }
-
-            if (playerCreature.CurrentHealth <= 0)
-            {
-                hasBattleStarted = false;
-                battleRunning = false;
-                
-                InventoryManager.Instance.SelectedCreatureForBattle = null;
-                UI_BattleManager.Instance.SelectedCreature = null;
-                UI_BattleManager.Instance.Refresh();
-                UI_InventoryHoverManager.Instance.BattleText.text = playerCreature.CreatureName + " died!";
-                if (_playerAttack != null)
-                {
-                    StopCoroutine(_playerAttack);
-                }
-                if (_enemyAttack != null)
-                {
-                    StopCoroutine(_enemyAttack); 
-                }
-                yield break;
-            }
-
-            // Check health frequently but don't block execution (yield for a short time to prevent freezing)
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-
-    // A coroutine for each creature to handle its attack cycle independently
-    private IEnumerator CreatureAttackCycle(Creature attacker, Creature defender)
-    {
-        while (battleRunning && attacker != null && defender != null && attacker.CurrentHealth > 0 && defender.CurrentHealth > 0)
-        {
-            BigDecimal attackInterval = speedFactor.Round(3) / attacker.CreatureStats.Speed.Round(3);
-            BigDecimal attackDamage = attacker.CreatureStats.Attack.Round(3);
-            BigDecimal critchance = attacker.CreatureStats.Dexterity.Round(3) / new BigDecimal(100000,-3);
-            // Calculate critical hit chance based on dexterity using a logistic function
-
-            critchance = CalculateCritChance(attacker.CreatureStats.Dexterity);
+            Creature creature = entry.Value;
             
-            bool isCriticalHit = UnityEngine.Random.value < critchance; // Random.value gives a value between 0 and 1
+            if (creature != null)
+            {
+                creature.CreatureWins++;
+            }
+        }
+    }
+
+    private void StartBattleCoroutines()
+    {
+        Dictionary<CreatureBattleSlot, Creature> creatureBattleSlot = InventoryManager.Instance.CreatureBattleSlots;
+
+        foreach(KeyValuePair<CreatureBattleSlot, Creature> entry in creatureBattleSlot)
+        {
+            CreatureBattleSlot slot = entry.Key;
+            Creature creature = entry.Value;
+            
+            if (creature != null)
+            {
+                switch (slot)
+                {
+                    case CreatureBattleSlot.Attack:
+                        _creatureBattleCoroutines[CreatureBattleSlot.Attack] = StartCoroutine(CreatureAttackCycle(creature));
+                        break;
+                    case CreatureBattleSlot.Defense:
+                        _creatureBattleCoroutines[CreatureBattleSlot.Defense] = StartCoroutine(CreatureDefenseCycle(creature));
+                        break;
+                    case CreatureBattleSlot.Heal:
+                        _creatureBattleCoroutines[CreatureBattleSlot.Heal] = StartCoroutine(CreatureHealCycle(creature));
+                        break;
+                }
+            }
+        }
+    }
+    
+    private void StopBattleCoroutines()
+    {
+        foreach (KeyValuePair<CreatureBattleSlot, Coroutine> entry in _creatureBattleCoroutines)
+        {
+            CreatureBattleSlot slot = entry.Key;
+            Coroutine coroutine = entry.Value;
+
+            if (coroutine != null)
+            {
+                Debug.Log("Coroutine for Slot "+slot+ " stopped");
+                StopCoroutine(coroutine);
+            }
+        }
+        //Dont want to .Remove() want to still have the Enum
+        //Need to do that outside of the foreach otherwise changing while iteration
+        _creatureBattleCoroutines[CreatureBattleSlot.Attack] = null;
+        _creatureBattleCoroutines[CreatureBattleSlot.Defense] = null;
+        _creatureBattleCoroutines[CreatureBattleSlot.Heal] = null;
+    }
+
+    
+    private IEnumerator CreatureHealCycle(Creature healer)
+    {
+        BigDecimal defendInterval = (speedFactor.Round(3) / healer.CreatureStats.Speed.Round(3)) * tickSpeedFactorHeal;
+        BigDecimal healValue = healer.MaxHealth * multFactorHeal;
+        
+        while (isBattleRunning && healer != null && enemyCreature != null && healer.CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
+        {
+            yield return new WaitForSeconds((float)defendInterval);
+            
+            BigDecimal critChance = CalculateCritChance(healer.CreatureStats.Dexterity);
+            
+            bool isCriticalHit = UnityEngine.Random.value < critChance; // Random.value gives a value between 0 and 1
             BigDecimal attack = 0;
             
             if (isCriticalHit)
             {
-                attackDamage *= 1.2f;
-                attack = defender.TakeDamage(attackDamage);
+                List<Creature> creatures = GetCreatures();
+                foreach (Creature creature in creatures)
+                {
+                    creature.ReceiveHeal(healValue);
+                }
+                Debug.LogWarning("Healing creatures");
             }
             else
             { 
-                attack = defender.TakeDamage(attackDamage);
+                Creature creature = GetRandomCreature();
+                Debug.LogWarning("Healing "+ creature.CreatureName);
+                creature.ReceiveHeal(healValue);
+            }
+
+            if (UI_BattleDisplayManager.Instance != null)
+            {
+                //TODO: create Heal PopUp
+            }
+        }
+    }
+
+    private List<Creature> GetCreatures()
+    {
+        List<Creature> creatures = new List<Creature>();
+
+        foreach (KeyValuePair<CreatureBattleSlot, Creature> entry in InventoryManager.Instance.CreatureBattleSlots)
+        {
+            CreatureBattleSlot slot = entry.Key;
+            Creature creature = entry.Value;
+
+            if (creature != null)
+            {
+                creatures.Add(creature);
+            }
+        }
+        return creatures;
+    }
+
+    private Creature GetRandomCreature()
+    {
+        List<Creature> creatures = GetCreatures();
+        
+        return creatures[UnityEngine.Random.Range(0, creatures.Count)];
+    }
+
+    private IEnumerator CreatureDefenseCycle(Creature defender)
+    {
+        BigDecimal defendInterval = (speedFactor.Round(3) / defender.CreatureStats.Speed.Round(3)) * tickSpeedFactorDefense;
+        BigDecimal shieldValue = defender.CreatureStats.Defense.Round(3) * multFactorDefense;
+        
+        while (isBattleRunning && defender != null && enemyCreature != null && defender.CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
+        {
+            yield return new WaitForSeconds((float)defendInterval);
+            
+            BigDecimal critChance = CalculateCritChance(defender.CreatureStats.Dexterity);
+            
+            bool isCriticalHit = UnityEngine.Random.value < critChance; // Random.value gives a value between 0 and 1
+            BigDecimal attack = 0;
+            
+            if (isCriticalHit)
+            {
+                List<Creature> creatures = GetCreatures();
+                foreach (Creature creature in creatures)
+                {
+                    creature.ReceiveShield(shieldValue);
+                }
+                Debug.LogWarning("Defending all");
+            }
+            else
+            { 
+                Creature creature = GetRandomCreature();
+                creature.ReceiveShield(shieldValue);
+                Debug.LogWarning("Defending " + creature.CreatureName);
+            }
+
+            if (UI_BattleDisplayManager.Instance != null)
+            {
+                //TODO: create Shield PopUp
             }
             
-            UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToNumberSuffix(false),isCriticalHit, attacker);
+        }
+    }
 
-            // Wait for the attack interval based on the attacker's speed before attacking again
+    private void RemoveCreature(Creature creature)
+    {
+        
+    }
+    
+    private IEnumerator BattleCoroutine()
+    {
+
+        Dictionary<CreatureBattleSlot, Creature> creatureBattleSlot = InventoryManager.Instance.CreatureBattleSlots;
+
+        StartBattleCoroutines();
+        _enemyAttack = StartCoroutine(EnemyAttackCycle(enemyCreature));
+
+        // Keep checking the health status of both creatures in a loop
+        while (isBattleRunning && creatureBattleSlot[CreatureBattleSlot.Attack] != null && enemyCreature != null)
+        {
+            // If either creature has 0 health, stop the battle
+            if (enemyCreature.CurrentHealth <= 0)
+            {
+                StopBattleCoroutines();
+                WinBattle();
+                
+                if (_enemyAttack != null)
+                {
+                    StopCoroutine(_enemyAttack); 
+                }
+                
+                yield break;
+            }
+            
+            
+            CheckCreatureStatus();
+            
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    private IEnumerator EnemyAttackCycle(Creature enemy)
+    {
+        BigDecimal attackInterval = speedFactor.Round(3) / enemyCreature.CreatureStats.Speed.Round(3);
+        attackInterval = BigDecimal.Max(3, attackInterval);
+        BigDecimal attackDamage = enemyCreature.CreatureStats.Attack.Round(3);
+        
+        Debug.LogWarning("Enemy Attack Cycle");
+        
+        while (isBattleRunning && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] != null && enemyCreature != null && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack].CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
+        {
+            Debug.LogWarning("Attack " + attackInterval);
             yield return new WaitForSeconds((float)attackInterval);
+            
+            BigDecimal critchance = CalculateCritChance(enemyCreature.CreatureStats.Dexterity);
+            
+            bool isCriticalHit = UnityEngine.Random.value < critchance; // Random.value gives a value between 0 and 1
+            
+            BigDecimal attack = 0;
+            
+            if (isCriticalHit)
+            {
+                List<Creature> creatures = GetCreatures();
+                foreach (Creature creature in creatures)
+                {
+                    creature.TakeDamage(attackDamage);
+                }
+                Debug.LogWarning("Enemy: Attacking all");
+            }
+            else
+            { 
+                Creature creature = GetRandomCreature();
+                creature.TakeDamage(attackDamage);
+                Debug.LogWarning("Enemy: Attacking "+ creature.CreatureName);
+            }
+
+            if (UI_BattleDisplayManager.Instance != null)
+            {
+                //UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToNumberSuffix(false),isCriticalHit, enemyCreature);
+            }
+        }
+    }
+
+    // A coroutine for each creature to handle its attack cycle independently
+    private IEnumerator CreatureAttackCycle(Creature attacker)
+    {
+        BigDecimal attackInterval = speedFactor.Round(3) / attacker.CreatureStats.Speed.Round(3);
+        BigDecimal attackDamage = attacker.CreatureStats.Attack.Round(3);
+        
+        while (isBattleRunning && attacker != null && enemyCreature != null && attacker.CurrentHealth > 0 && enemyCreature.CurrentHealth > 0)
+        {
+            yield return new WaitForSeconds((float)attackInterval);
+            
+            BigDecimal critchance = CalculateCritChance(attacker.CreatureStats.Dexterity);
+            
+            bool isCriticalHit = UnityEngine.Random.value < critchance; // Random.value gives a value between 0 and 1
+            
+            BigDecimal attack = 0;
+            
+            if (isCriticalHit)
+            {
+                attackDamage *= 2.0f;
+                attack = enemyCreature.TakeDamage(attackDamage);
+                Debug.LogWarning("Crit Attack");
+            }
+            else
+            { 
+                attack = enemyCreature.TakeDamage(attackDamage);
+                Debug.LogWarning("Normal Attack");
+            }
+
+            if (UI_BattleDisplayManager.Instance != null)
+            {
+                UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToNumberSuffix(false),isCriticalHit, attacker);
+            }
+    
         }
     }
 
     private BigDecimal CalculateCritChance(BigDecimal x)
     {
-        BigDecimal k = 0.100f;
-        BigDecimal p = 0.100f;
+        BigDecimal k = 0.1f;
+        BigDecimal p = 0.04f;
         BigDecimal inside = (1.000 + k * x);
         BigDecimal insidePower = inside.Power(p);
         BigDecimal minusPart = (new BigDecimal(1000,-3) / insidePower);
-        
-        BigDecimal critChance = (1.000 - minusPart);
+        BigDecimal limiter = 0.75f;
+        BigDecimal critChance = (1.000 - minusPart) * limiter;
 
         return critChance;
     }
@@ -243,8 +476,8 @@ public class BattleManager : MonoBehaviour
 
     public void StopBattle()
     {
-        battleRunning = false;
-        hasBattleStarted = false;
+        isBattleRunning = false;
+        
         if (UI_BattleManager.Instance != null)
         {
             UI_InventoryHoverManager.Instance.BattleText.text = "NO DATA FOUND!";
@@ -254,16 +487,16 @@ public class BattleManager : MonoBehaviour
 
     public void StopAllRoutines()
     {
-        if(_playerAttack == null || _enemyAttack == null || _battleCoroutine == null)
+        StopBattleCoroutines();
+        if(_enemyAttack == null || _battleCoroutine == null)
             return;
-        StopCoroutine(_playerAttack);
         StopCoroutine(_enemyAttack);
         StopCoroutine(_battleCoroutine);
     }
     
     public void ResumeBattle()
     {
-        battleRunning = true;
+        isBattleRunning = true;
     }
 
     public void SwitchAutoBattle()
@@ -273,8 +506,7 @@ public class BattleManager : MonoBehaviour
 
     public bool NextBattle()
     {
-        Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
-        if (playerCreature == null || hasBattleStarted)
+        if (InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] == null || _creatureBattleCoroutines[CreatureBattleSlot.Attack] != null)
         {
             return false;
         }
@@ -284,10 +516,51 @@ public class BattleManager : MonoBehaviour
         return true;
     }
 
+    private void CheckCreatureStatus()
+    {
+        Dictionary<CreatureBattleSlot, Creature> creatureBattleSlots = InventoryManager.Instance.CreatureBattleSlots
+            .ToDictionary(
+                entry => entry.Key,
+                entry => (Creature)entry.Value
+            );
+        
+        foreach (KeyValuePair<CreatureBattleSlot, Creature> entry in creatureBattleSlots)
+        {
+            CreatureBattleSlot slot = entry.Key;
+            Creature creature = entry.Value;
+            
+            if (creature != null && creature.CurrentHealth <= 0)
+            {
+                StopCoroutine(_creatureBattleCoroutines[slot]);
+                InventoryManager.Instance.CreatureBattleSlots[slot] = null;
+                
+                if (slot == CreatureBattleSlot.Attack)
+                {
+                    isBattleRunning = false;
+                
+                    
+                    UI_BattleManager.Instance.SelectedCreature = null;
+                    UI_BattleManager.Instance.Refresh();
+                
+                    UI_InventoryHoverManager.Instance.BattleText.text = "Defeated!";
+                    //POPUP
+                
+                    StopBattleCoroutines();
+                
+                    if (_enemyAttack != null)
+                    {
+                        StopCoroutine(_enemyAttack); 
+                    }
+                    return;
+                }
+            }
+        }
+    }
+
     public bool SetNextBattleButton()
     {
-        Creature playerCreature = InventoryManager.Instance.SelectedCreatureForBattle;
-        if(playerCreature == null || enemyCreature != null)
+        var test = InventoryManager.Instance.CreatureBattleSlots;
+        if(InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] == null  || enemyCreature != null)
         {
             return false;
         }

@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[Serializable]
 public enum CreatureBattleSlot
 {
     Attack,
@@ -17,8 +19,25 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
     [SerializeField] private UI_CreatureSprite creatureSprite;
     [SerializeField] private CreatureBattleSlot creatureBattleSlot;
 
+
+    public void Start()
+    {
+        if (InventoryManager.Instance.CreatureBattleSlots[creatureBattleSlot] != null)
+        {
+            SetCreatureRepresentation(InventoryManager.Instance.CreatureBattleSlots[creatureBattleSlot]);
+        }
+    }
+
+
     public void OnDrop(PointerEventData eventData)
     {
+        if (BattleManager.Instance.IsBattleRunning)
+        {
+            //TODO: PopUp cant add while Battle is ongoing or something like that
+            SoundManager.Instance.PlaySFX("Error");
+            return;
+        }
+        
         if (eventData.pointerDrag != null)
         {
             UICreatureButton uiCreatureButton = eventData.pointerDrag.GetComponent<UICreatureButton>();
@@ -30,14 +49,25 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
             SetNewCreature(uiCreatureButton.Creature);
             SoundManager.Instance.PlaySFX("Click");
         }
+        UI_InventoryManager.Instance.RefreshInventory();
     }
     public void SetNewCreature(Creature creature)
     {
+        //only accept when battle is not running
+        if (BattleManager.Instance.IsBattleRunning)
+        {
+            SoundManager.Instance.PlaySFX("Error");
+            return;
+        }
+        
         if (currentCreature != null)
         {
             Withdraw(true);
         }
-        //InventoryManager.Instance.AddCreatureToMaterialSlot(creature, selectedMaterial);
+        
+        
+        
+        InventoryManager.Instance.SelectCreatureForBattle(creature, creatureBattleSlot);
         SetCreatureRepresentation(creature);
     }
 
@@ -45,6 +75,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
     {
         if (currentCreature != null)
         {
+            InventoryManager.Instance.RetreatFormBattle(currentCreature, creatureBattleSlot);
             ResetCreatureRepresentation();
             creatureButton.Creature = null;
             currentCreature = null;

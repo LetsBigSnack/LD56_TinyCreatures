@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
             case "DekisScene":
                 _currentState = State.Game;
                 MaterialManager.Instance.StartAllMaterialCoroutines();
+                //TODO: rework 
                 if (!BattleManager.Instance.SetNextBattleButton())
                 {
                     BattleManager.Instance.NextBattle();
@@ -48,8 +49,7 @@ public class GameManager : MonoBehaviour
             default:
                 _currentState = State.MainMenu;
                 BattleManager.Instance.StopBattle();
-                BattleManager.Instance.BattleRunning = true;
-                BattleManager.Instance.HasBattleStarted = false;
+                BattleManager.Instance.IsBattleRunning = false;
                 MaterialManager.Instance.StopAllMaterialCoroutines();
                 break;
         }

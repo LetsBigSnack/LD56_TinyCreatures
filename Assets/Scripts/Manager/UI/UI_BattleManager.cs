@@ -39,8 +39,8 @@ public class UI_BattleManager : MonoBehaviour
     public bool SetInspector(Creature creature)
     {
   
-        
-        if (creature != null && InventoryManager.Instance.SelectedCreatureForBattle == null)
+        //TODO:rework
+        if (creature != null && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] == null)
         {
             battleCreatureDetails.Reset();
             battleCreatureSprite.Reset();
@@ -48,7 +48,7 @@ public class UI_BattleManager : MonoBehaviour
             
             battleCreatureSprite.SetupRepresentation(creature);
             battleCreatureDetails.SetupRepresentation(creature);
-            activeBattleCreatureButton.SetupRepresentation(InventoryManager.Instance.SelectedCreatureForBattle);
+            activeBattleCreatureButton.SetupRepresentation(InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack]);
             _selectedCreature = creature;
             return true;
         }
@@ -68,14 +68,14 @@ public class UI_BattleManager : MonoBehaviour
         {
             battleCreatureSprite.SetupRepresentation(_selectedCreature);
             battleCreatureDetails.SetupRepresentation(_selectedCreature);
-            activeBattleCreatureButton.SetupRepresentation(InventoryManager.Instance.SelectedCreatureForBattle);
+            activeBattleCreatureButton.SetupRepresentation(InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack]);
         }
 
-        if (InventoryManager.Instance.SelectedCreatureForBattle != null)
+        if (InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] != null)
         {
-            battleCreatureSprite.SetupRepresentation(InventoryManager.Instance.SelectedCreatureForBattle);
-            battleCreatureDetails.SetupRepresentation(InventoryManager.Instance.SelectedCreatureForBattle);
-            activeBattleCreatureButton.SetupRepresentation(InventoryManager.Instance.SelectedCreatureForBattle);
+            battleCreatureSprite.SetupRepresentation(InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack]);
+            battleCreatureDetails.SetupRepresentation(InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack]);
+            activeBattleCreatureButton.SetupRepresentation(InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack]);
         }
         
         
@@ -93,9 +93,11 @@ public class UI_BattleManager : MonoBehaviour
     {
         BattleManager.Instance.ResumeBattle();
         
-        if (_selectedCreature != null && InventoryManager.Instance.SelectedCreatureForBattle == null)
+        if (_selectedCreature != null && InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] == null)
         {
-            InventoryManager.Instance.ChoiceCreatureForBattle(_selectedCreature);
+            
+            InventoryManager.Instance.SelectCreatureForBattle(_selectedCreature, CreatureBattleSlot.Attack);
+            //InventoryManager.Instance.ChoiceCreatureForBattle(_selectedCreature);
 
             if (_selectedCreature == InventoryManager.Instance.CreatureInspectorLeft)
             {
@@ -126,14 +128,15 @@ public class UI_BattleManager : MonoBehaviour
         if (_selectedCreature != null)
         {
             BattleManager.Instance.StopBattle();
-            InventoryManager.Instance.RetreatFormBattle(_selectedCreature);
+            //TODO:rework
+            InventoryManager.Instance.RetreatFormBattle(_selectedCreature, CreatureBattleSlot.Attack);
             activeBattleCreature.Creature = null;
             _selectedCreature = null;
             soundManager.PlaySFX("Click");
-        }else if (InventoryManager.Instance.SelectedCreatureForBattle != null)
+        }else if (InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] != null)
         {
             BattleManager.Instance.StopBattle();
-            InventoryManager.Instance.RetreatFormBattle(InventoryManager.Instance.SelectedCreatureForBattle);
+            InventoryManager.Instance.RetreatFormBattle(InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack], CreatureBattleSlot.Attack);
             activeBattleCreature.Creature = null;
             _selectedCreature = null;
             soundManager.PlaySFX("Click");
@@ -169,5 +172,11 @@ public class UI_BattleManager : MonoBehaviour
     {
         nextBattleButton.SetActive(isActive);
     }
+
+    public void StartBattle()
+    {
+        BattleManager.Instance.NextBattle();
+    }
+    
     
 }

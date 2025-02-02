@@ -42,8 +42,8 @@ public class UI_BattleDisplayManager : MonoBehaviour
     private void FixedUpdate()
     {
         
-        
-        Creature battleCreature = InventoryManager.Instance.SelectedCreatureForBattle;
+        //TODO:rework
+        Creature battleCreature = InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack];
         Creature enemyCreature = BattleManager.Instance.EnemyCreature;
 
         if (battleCreature != null)

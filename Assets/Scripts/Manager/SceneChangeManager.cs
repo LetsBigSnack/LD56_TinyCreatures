@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -37,9 +38,7 @@ public class SceneChangeManager : MonoBehaviour
 
         if (Application.CanStreamedLevelBeLoaded(sceneName))
         {
-            Debug.Log("Loading scene: " + sceneName);
-            SceneManager.LoadScene(sceneName);
-            GameManager.Instance.ChangeState(sceneName);
+            StartCoroutine(LoadLevel(sceneName));
             isSceneChanging = false;
         }
         else
@@ -59,4 +58,15 @@ public class SceneChangeManager : MonoBehaviour
     {
         isSceneChanging = false;
     }
+    
+    private static IEnumerator LoadLevel (string sceneName){
+        Debug.Log("Loading scene: " + sceneName);
+        var asyncLoadLevel = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+        while (!asyncLoadLevel.isDone){
+            yield return null;
+        }
+        Debug.Log("Finished loading scene: " + sceneName);
+        GameManager.Instance.ChangeState(sceneName);
+    }
+    
 }
