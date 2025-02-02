@@ -745,7 +745,13 @@ public class BattleManager : MonoBehaviour
     {
         StopBattle();
         
-        foreach (KeyValuePair<CreatureBattleSlot, Creature> entry in InventoryManager.Instance.CreatureBattleSlots)
+        Dictionary<CreatureBattleSlot, Creature> creatureBattleSlots = InventoryManager.Instance.CreatureBattleSlots
+            .ToDictionary(
+                entry => entry.Key,
+                entry => (Creature)entry.Value
+            );
+        
+        foreach (KeyValuePair<CreatureBattleSlot, Creature> entry in creatureBattleSlots)
         {
             CreatureBattleSlot slot = entry.Key;
             Creature creature = entry.Value;
