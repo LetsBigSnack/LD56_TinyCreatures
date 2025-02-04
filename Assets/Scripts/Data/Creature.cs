@@ -111,7 +111,8 @@ public class Creature
         if (_currentShield > 0)
         {
             _currentShield -= finalDamage;
-            _currentShield = BigDecimal.Min(0, _currentShield);
+            
+            _currentShield = BigDecimal.Max(0, _currentShield);
         }
         else
         {

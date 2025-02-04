@@ -524,7 +524,11 @@ public class BattleManager : MonoBehaviour
                     BigDecimal percentageH = creature.CurrentHealth.Round(3) / creature.MaxHealth.Round(3);
                     percentageH = BigDecimal.Min(1, percentageH);
                     percentageH = percentageH.Round(3);
-                        
+                    
+                    
+                    Debug.LogWarning(percentageS.ToString());
+                    Debug.LogWarning(percentageH.ToString());
+                    
                     OnCreatureShieldChanged?.Invoke((float)percentageS, slot);
                     OnCreatureHealthChanged?.Invoke((float)percentageH, slot);
                     Debug.LogError("Enemy: Attacking "+ creature.CreatureName);

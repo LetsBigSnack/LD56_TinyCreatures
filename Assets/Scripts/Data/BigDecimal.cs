@@ -367,7 +367,16 @@ namespace Data
                 string integerPart = valueStr.Substring(0, decimalIndex);
                 string fractionalPart = valueStr.Substring(decimalIndex + 1);
 
-                mantissa = BigInteger.Parse(integerPart + fractionalPart);
+                try
+                {
+                    mantissa = BigInteger.Parse(integerPart + fractionalPart);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Error Parsing:" + integerPart + ":" + fractionalPart);
+                    throw;
+                }
+                
                 exponent = -fractionalPart.Length;
             }
 

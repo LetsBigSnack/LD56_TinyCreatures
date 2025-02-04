@@ -105,25 +105,6 @@ public class CreatureManager : MonoBehaviour
         BigDecimal randomDexterity = (BigDecimal.Random(-definedStatRange * (1 - totalDexterityModifier), definedStatRange * (1 + totalDexterityModifier)) + definedStatMin) / new BigDecimal(2000,-3);
     
         
-        Debug.Log("StatMin" + definedStatMin / new BigDecimal(2000,-3));
-        
-        Debug.Log("Total Speed modifier: " + totalSpeedModifier);
-        Debug.Log("Lower Bound " + (-definedStatRange * (1 - totalSpeedModifier)));
-        Debug.Log("Upper Bound " + (definedStatRange * (1 + totalSpeedModifier)));
-        
-        
-        
-        Debug.Log("Total Attack modifier: " + totalAttackModifier);
-        Debug.Log("Lower Bound " + (-definedStatRange * (1 - totalAttackModifier)));
-        Debug.Log("Upper Bound " + (definedStatRange * (1 + totalAttackModifier)));
-        
-        Debug.Log("Total Defense modifier: " + totalDefenseModifier);
-        Debug.Log("Lower Bound " + (-definedStatRange * (1 - totalDefenseModifier)));
-        Debug.Log("Upper Bound " + (definedStatRange * (1 + totalDefenseModifier)));
-        
-        Debug.Log("Total Dexterity modifier: " + totalDexterityModifier);
-        Debug.Log("Lower Bound " + (-definedStatRange * (1 - totalDexterityModifier)));
-        Debug.Log("Upper Bound " + (definedStatRange * (1 + totalDexterityModifier)));
         
         
         CreatureStats creatureStats = new CreatureStats(randomSpeed, randomAttack, randomDefense, randomDexterity);
@@ -137,9 +118,6 @@ public class CreatureManager : MonoBehaviour
         CreatureRepresentation creatureRepresentation = GetRandomCreatureRepresentation();
         
         float totalHealthModifier = creatureRepresentation.BodyParts.Select(c => c.Value).Sum(t => t.healthModifier);
-        Debug.Log("Total Health modifier" + totalHealthModifier);
-        Debug.Log("Lower Bound " + (-definedStatRange * (1 - totalHealthModifier)));
-        Debug.Log("Upper Bound " + (definedStatRange * (1 + totalHealthModifier)));
         
         BigDecimal randomHealth = ((BigDecimal.Random(
             -definedStatRange * (1 - totalHealthModifier), definedStatRange * (1 + totalHealthModifier)) + definedStatMin + definedStatMin) * 1.2f);
