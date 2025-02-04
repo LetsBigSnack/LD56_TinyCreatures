@@ -203,6 +203,8 @@ public class BattleManager : MonoBehaviour
             StopCoroutine(_battleCoroutine);
         }
 
+        isBattleRunning = false;
+
         if (autoBattle)
         {
             NextBattle();
