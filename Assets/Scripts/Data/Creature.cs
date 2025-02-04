@@ -110,9 +110,17 @@ public class Creature
 
         if (_currentShield > 0)
         {
+            BigDecimal remaningDamage = finalDamage - _currentShield;
+            
             _currentShield -= finalDamage;
             
             _currentShield = BigDecimal.Max(0, _currentShield);
+
+            if (remaningDamage > 0)
+            {
+                _currentHealth = _currentHealth - remaningDamage;
+                _currentHealth = BigDecimal.Max(0, _currentHealth);
+            }
         }
         else
         {
