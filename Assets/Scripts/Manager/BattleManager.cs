@@ -487,10 +487,12 @@ public class BattleManager : MonoBehaviour
             
                 if (isCriticalHit)
                 {
+                    BigDecimal three = 3.0f;
+                    BigDecimal critDamage = attackDamage / three.Round(3);
                     List<Creature> creatures = GetCreatures();
                     foreach (Creature creature in creatures)
                     {
-                        creature.TakeDamage(attackDamage);
+                        creature.TakeDamage(critDamage);
                         CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
                         
                         BigDecimal percentageS = creature.CurrentShield.Round(3) / creature.MaxHealth.Round(3);
