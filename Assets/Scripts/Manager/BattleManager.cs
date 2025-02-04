@@ -177,7 +177,6 @@ public class BattleManager : MonoBehaviour
         
         if (_enemyAttack != null)
         {
-            Debug.LogError("Stopping Enemy Attack");
             StopCoroutine(_enemyAttack); 
         }
         
@@ -264,7 +263,6 @@ public class BattleManager : MonoBehaviour
     {
         if (_enemyAttack != null)
         {
-            Debug.LogError("Enemy Stopped");
             StopCoroutine(_enemyAttack); 
         }
         
@@ -319,12 +317,10 @@ public class BattleManager : MonoBehaviour
                         OnCreatureHealthChanged?.Invoke((float)percentageH, slot);
                     
                     }
-                    Debug.LogWarning("Healing creatures");
                 }
                 else
                 { 
                     Creature creature = GetRandomCreature();
-                    Debug.LogWarning("Healing "+ creature.CreatureName);
                     creature.ReceiveHeal(healValue);
                     CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
                     
@@ -408,7 +404,6 @@ public class BattleManager : MonoBehaviour
                         OnCreatureShieldChanged?.Invoke((float)percentageS, slot);
 
                     }
-                    Debug.LogWarning("Defending all");
                 }
                 else
                 { 
@@ -421,8 +416,7 @@ public class BattleManager : MonoBehaviour
                     percentageS = percentageS.Round(3);
                         
                     OnCreatureShieldChanged?.Invoke((float)percentageS, slot);
-
-                    Debug.LogWarning("Defending " + creature.CreatureName);
+                    
                 }
 
                 if (UI_BattleDisplayManager.Instance != null)
@@ -510,7 +504,6 @@ public class BattleManager : MonoBehaviour
                         OnCreatureShieldChanged?.Invoke((float)percentageS, slot);
                         OnCreatureHealthChanged?.Invoke((float)percentageH, slot);
                     }
-                    Debug.LogError("Enemy: Attacking all");
                 }
                 else
                 { 
@@ -526,12 +519,8 @@ public class BattleManager : MonoBehaviour
                     percentageH = percentageH.Round(3);
                     
                     
-                    Debug.LogWarning(percentageS.ToString());
-                    Debug.LogWarning(percentageH.ToString());
-                    
                     OnCreatureShieldChanged?.Invoke((float)percentageS, slot);
                     OnCreatureHealthChanged?.Invoke((float)percentageH, slot);
-                    Debug.LogError("Enemy: Attacking "+ creature.CreatureName);
                 }
 
                 if (UI_BattleDisplayManager.Instance != null)
@@ -572,12 +561,10 @@ public class BattleManager : MonoBehaviour
                 {
                     attackDamage *= 2.0f;
                     attack = enemyCreature.TakeDamage(attackDamage);
-                    Debug.LogWarning("Crit Attack");
                 }
                 else
                 { 
                     attack = enemyCreature.TakeDamage(attackDamage);
-                    Debug.LogWarning("Normal Attack");
                 }
                 
                 BigDecimal percentageH = enemyCreature.CurrentHealth.Round(3) / enemyCreature.MaxHealth.Round(3);
