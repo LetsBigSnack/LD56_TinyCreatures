@@ -2,30 +2,68 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using TMPro;
+using Data;
+using UnityEngine.UI;
+
+public enum BodyPartToggleTypes
+{
+    TopHead,
+    Head,
+    Body,
+    Arms,
+    Legs,
+    Back,
+    Tail
+}
 
 public class UI_CreatureReconfigureManager : MonoBehaviour
 {
     public static UI_CreatureReconfigureManager Instance;
+
+    [SerializeField] private BodyPartToggleTypes currentToggle;
+
+    [SerializeField] private BodyPart lastSelectedBodyPart;
     
     [SerializeField] private UI_CreatureSprite creaturePreviewSprite;
+    [SerializeField] private Image bodyPartPreviewImage;
 
-    [SerializeField] private int headIndex = 0;
-    [SerializeField] private int bodyIndex = 0;
-    [SerializeField] private int armIndex = 0;
-    [SerializeField] private int legIndex = 0;
-    
-    [SerializeField] private UI_CreatureReconfigurItem headItem;
-    [SerializeField] private UI_CreatureReconfigurItem bodyItem;
-    [SerializeField] private UI_CreatureReconfigurItem armsItem;
-    [SerializeField] private UI_CreatureReconfigurItem legsItem;
+    [SerializeField] private BodyPart curTopHead;
+    [SerializeField] private BodyPart curHead;
+    [SerializeField] private BodyPart curBody;
+    [SerializeField] private BodyPart curArms;
+    [SerializeField] private BodyPart curLegs;
+    [SerializeField] private BodyPart curTail;
+    [SerializeField] private BodyPart curBack;
 
-    private SoundManager soundManager;
-    
-    //TODO: REWRITE WHOLE CODE!
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI bodyPartTypeText;
+
+    [SerializeField] private TextMeshProUGUI bodypartAtkValueText;
+    [SerializeField] private TextMeshProUGUI bodypartDefValueText;
+    [SerializeField] private TextMeshProUGUI bodypartHpValueText;
+    [SerializeField] private TextMeshProUGUI bodypartCrtValueText;
+    [SerializeField] private TextMeshProUGUI bodypartSpdValueText;
+
+    [SerializeField] private TextMeshProUGUI previewAtkValueText;
+    [SerializeField] private TextMeshProUGUI previewDefValueText;
+    [SerializeField] private TextMeshProUGUI previewHpValueText;
+    [SerializeField] private TextMeshProUGUI previewCrtValueText;
+    [SerializeField] private TextMeshProUGUI previewSpdValueText;
+
+    [SerializeField] private List<UI_CreaturePart_Item> topHeadButtons;
+    [SerializeField] private List<UI_CreaturePart_Item> headButtons;
+    [SerializeField] private List<UI_CreaturePart_Item> bodyButtons;
+    [SerializeField] private List<UI_CreaturePart_Item> armsButtons;
+    [SerializeField] private List<UI_CreaturePart_Item> legsButtons;
+    [SerializeField] private List<UI_CreaturePart_Item> backButtons;
+    [SerializeField] private List<UI_CreaturePart_Item> tailButtons;
+
+    private CreatureRepresentation originalRepresentation;
+    private CreatureRepresentation currentRepresentation;
 
     private void Awake()
     {
-        soundManager = FindObjectOfType<SoundManager>();
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -39,193 +77,117 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
     private void OnEnable()
     {
         ReconfigureManager.Instance.ClearEntries();
-        ReconfigureManager.Instance.CreateEntries();
-        SetImages();
-        
+        ReconfigureManager.Instance.CreateEntries(); 
     }
 
-    private void OnDisable()
+    private void ToggleBodyParts(BodyPartToggleTypes toggleTypes)
     {
-        //ResetCreaturePicked();
-    }
-
-    private void SetImages()
-    {
-        
-        if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
+        switch (toggleTypes)
         {
-            var currentCreature = InventoryManager.Instance.SelectedCreatureForReConfigure.Representation;
-            
-            creaturePreviewSprite.CreatureHead.color = currentCreature.HeadColor;
-            creaturePreviewSprite.CreatureBody.color = currentCreature.BodyColor;
-            creaturePreviewSprite.CreatureArms.color = currentCreature.ArmsColor;
-            creaturePreviewSprite.CreatureLegs.color = currentCreature.LegsColor;
-            
-            creaturePreviewSprite.CreatureHead.sprite =
-                SetItemSprite(headItem, ReconfigureManager.Instance.Heads, headIndex);
-            creaturePreviewSprite.CreatureBody.sprite =
-                SetItemSprite(bodyItem, ReconfigureManager.Instance.Bodies, bodyIndex);
-            creaturePreviewSprite.CreatureArms.sprite =
-                SetItemSprite(armsItem, ReconfigureManager.Instance.Arms, armIndex);
-            creaturePreviewSprite.CreatureLegs.sprite =
-                SetItemSprite(legsItem, ReconfigureManager.Instance.Legs, legIndex);
-            return;
-        }
-        creaturePreviewSprite.CreatureHead.color = Color.clear;
-        creaturePreviewSprite.CreatureBody.color = Color.clear;
-        creaturePreviewSprite.CreatureArms.color = Color.clear;
-        creaturePreviewSprite.CreatureLegs.color = Color.clear;
-    }
-
-    public void CreaturePicked(Creature creature)
-    {
-        headIndex = ReconfigureManager.Instance.ReturnIndex(BodyPartType.Head);
-        bodyIndex = ReconfigureManager.Instance.ReturnIndex(BodyPartType.Body);
-        armIndex = ReconfigureManager.Instance.ReturnIndex(BodyPartType.Arms);
-        legIndex = ReconfigureManager.Instance.ReturnIndex(BodyPartType.Legs);
-
-        headItem.CurrentPart.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Head);
-        bodyItem.CurrentPart.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Body);
-        armsItem.CurrentPart.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Arms);
-        legsItem.CurrentPart.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Legs);
-
-        creaturePreviewSprite.CreatureHead.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Head);
-        creaturePreviewSprite.CreatureBody.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Body);
-        creaturePreviewSprite.CreatureArms.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Arms);
-        creaturePreviewSprite.CreatureLegs.sprite = ReconfigureManager.Instance.ReturnSelectedRepresentation(BodyPartType.Legs);
-            
-        creaturePreviewSprite.CreatureHead.color = creature.Representation.HeadColor;
-        creaturePreviewSprite.CreatureBody.color = creature.Representation.BodyColor;
-        creaturePreviewSprite.CreatureArms.color = creature.Representation.ArmsColor;
-        creaturePreviewSprite.CreatureLegs.color = creature.Representation.LegsColor;
-    }
-
-    private void ResetCreaturePicked()
-    {
-        headIndex = 0;
-        bodyIndex = 0;
-        armIndex = 0;
-        legIndex = 0;
-
-        creaturePreviewSprite.CreatureHead.sprite = SetItemSprite(headItem, ReconfigureManager.Instance.Heads, headIndex);
-        creaturePreviewSprite.CreatureBody.sprite = SetItemSprite(bodyItem, ReconfigureManager.Instance.Bodies, bodyIndex);
-        creaturePreviewSprite.CreatureArms.sprite = SetItemSprite(armsItem, ReconfigureManager.Instance.Arms, armIndex);
-        creaturePreviewSprite.CreatureLegs.sprite = SetItemSprite(legsItem, ReconfigureManager.Instance.Legs, legIndex);
-
-        ReconfigureManager.Instance.RemoveFromReconfigure();
-        UI_InventoryManager.Instance.RefreshInventory();
-        
-        SetImages();
-    }
-
-    public void NextEntry(string part)
-    {
-        switch (part)
-        {
-            case "head":
-                headIndex = OutOfBoundPrevention(ReconfigureManager.Instance.Heads, headIndex, 1);
-                creaturePreviewSprite.CreatureHead.sprite = SetItemSprite(headItem, ReconfigureManager.Instance.Heads, headIndex);
-                ReconfigureManager.Instance.SetCurrentParts(BodyPartType.Head, headIndex);
+            case BodyPartToggleTypes.TopHead:
+                //display only topHeads in scrollview
                 break;
-
-            case "body":
-                bodyIndex = OutOfBoundPrevention(ReconfigureManager.Instance.Bodies, bodyIndex, 1);
-                creaturePreviewSprite.CreatureBody.sprite = SetItemSprite(bodyItem, ReconfigureManager.Instance.Bodies, bodyIndex);
-                ReconfigureManager.Instance.SetCurrentParts(BodyPartType.Body, bodyIndex);
+            case BodyPartToggleTypes.Head:
+                //display only Heads in scrollview
                 break;
-
-            case "arms":
-                armIndex = OutOfBoundPrevention(ReconfigureManager.Instance.Arms, armIndex, 1);
-                creaturePreviewSprite.CreatureArms.sprite = SetItemSprite(armsItem, ReconfigureManager.Instance.Arms, armIndex);
-                ReconfigureManager.Instance.SetCurrentParts(BodyPartType.Arms, armIndex);
+            case BodyPartToggleTypes.Body:
+                //display only body in scrollview
                 break;
-
-            case "legs":
-                legIndex = OutOfBoundPrevention(ReconfigureManager.Instance.Legs, legIndex, 1);
-                creaturePreviewSprite.CreatureLegs.sprite = SetItemSprite(legsItem, ReconfigureManager.Instance.Legs, legIndex);
-                ReconfigureManager.Instance.SetCurrentParts(BodyPartType.Legs, legIndex);
+            case BodyPartToggleTypes.Arms:
+                //display only arms in scrollview
+                break;
+            case BodyPartToggleTypes.Legs:
+                //display only legs in scrollview
+                break;
+            case BodyPartToggleTypes.Back:
+                //display only back in scrollview
+                break;
+            case BodyPartToggleTypes.Tail:
+                //display only tails in scrollview
                 break;
         }
-
-        soundManager.PlaySFX("Click");
+        currentToggle = toggleTypes;
     }
 
-    public void PreviousEntry(string part)
+    private void PickPart(BodyPart bodyPart, BodyPartType bodyPartType)
     {
-        switch (part)
+        switch (bodyPartType)
         {
-            case "head":
-                headIndex = OutOfBoundPrevention(ReconfigureManager.Instance.Heads, headIndex, -1);
-                creaturePreviewSprite.CreatureHead.sprite = SetItemSprite(headItem, ReconfigureManager.Instance.Heads, headIndex);
-                ReconfigureManager.Instance.SetCurrentParts(BodyPartType.Head, headIndex);
+            case BodyPartType.Head:
                 break;
 
-            case "body":
-                bodyIndex = OutOfBoundPrevention(ReconfigureManager.Instance.Bodies, bodyIndex, -1);
-                creaturePreviewSprite.CreatureBody.sprite = SetItemSprite(bodyItem, ReconfigureManager.Instance.Bodies, bodyIndex);
-                ReconfigureManager.Instance.SetCurrentParts(BodyPartType.Body, bodyIndex);
+            case BodyPartType.Body:
                 break;
 
-            case "arms":
-                armIndex = OutOfBoundPrevention(ReconfigureManager.Instance.Arms, armIndex, -1);
-                creaturePreviewSprite.CreatureArms.sprite = SetItemSprite(armsItem, ReconfigureManager.Instance.Arms, armIndex);
-                ReconfigureManager.Instance.SetCurrentParts(BodyPartType.Arms, armIndex);
+            case BodyPartType.Arms:
                 break;
 
-            case "legs":
-                legIndex = OutOfBoundPrevention(ReconfigureManager.Instance.Legs, legIndex, -1);
-                creaturePreviewSprite.CreatureLegs.sprite = SetItemSprite(legsItem, ReconfigureManager.Instance.Legs, legIndex);
-                ReconfigureManager.Instance.SetCurrentParts(BodyPartType.Legs, legIndex);
+            case BodyPartType.Legs:
                 break;
-        }
-        soundManager.PlaySFX("Click");
-    }
-
-    private Sprite SetItemSprite(UI_CreatureReconfigurItem item, List<BodyPartEntry> parts, int currentIndex)
-    {
-        item.NameText.text = parts[currentIndex].bodyPart.name;
-        return item.CurrentPart.sprite = parts[currentIndex].bodyPart.bodyPartSprite;
-    }
-
-    private int OutOfBoundPrevention(List<BodyPartEntry> parts, int currentIndex, int value)
-    {
-        if (currentIndex + value > parts.Count()-1)
-        {
-            return 0;
-        }
-        else if (currentIndex + value < 0)
-        {
-            return parts.Count()-1;
-        }
-        else
-        {
-           return  currentIndex + value;
         }
     }
 
+    private void SetCreatureHead()
+    {
+        //changes the head sprite of the preview
+    }
+
+    private void SetCreatureBody()
+    {
+        //changes the body sprite of the preview
+    }
+
+    private void SetCreatureArms()
+    {
+        //Changes the arms sprite of the preview
+    }
+
+    private void SetCreatureLegs()
+    {
+        //Changes the leg sprite of the preview
+    }
+
+    private void SetBodyPartStatPreview()
+    {
+        //displays all stats available in the bodypart
+    }
+
+    private void SetCreatureStatPreview()
+    {
+        //displays all accumulated stats for the current creature 
+    }
+
+    private void SetNameAndTypeText()
+    {
+        //sets the text name
+        //sets the bodyPartType
+    }
     public void BuyCreature()
     {
         if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
         {
             ReconfigureManager.Instance.ReconfigureSelectedCreature();
-            ResetCreaturePicked();
             UI_InventoryManager.Instance.RefreshInventory();
-            soundManager.PlaySFX("Transaction");
+            SoundManager.Instance.PlaySFX("Transaction");
             return;
         }
-        soundManager.PlaySFX("Error");
+        SoundManager.Instance.PlaySFX("Error");
+    }
+
+    public void ResetConfiguration()
+    {
+        //reset the configuration to be the original creature;
     }
 
     public void CancleReconfiguration()
     {
         if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
         {
-            ResetCreaturePicked();
             ReconfigureManager.Instance.RemoveFromReconfigure();
             UI_InventoryManager.Instance.RefreshInventory();
-            soundManager.PlaySFX("Transaction");
+            SoundManager.Instance.PlaySFX("Transaction");
             return;
         }
-        soundManager.PlaySFX("Error");
+        SoundManager.Instance.PlaySFX("Error");
     }
 }

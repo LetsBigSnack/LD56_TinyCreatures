@@ -145,8 +145,6 @@ public class ReconfigureManager : MonoBehaviour
         currentBody = creature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Body).FirstOrDefault().Value;
         currentArms = creature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Arms).FirstOrDefault().Value;
         currentLegs = creature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Legs).FirstOrDefault().Value;
-
-        UI_CreatureReconfigureManager.Instance.CreaturePicked(creature);
     }
 
     public Sprite ReturnSelectedRepresentation(BodyPartType partType)
