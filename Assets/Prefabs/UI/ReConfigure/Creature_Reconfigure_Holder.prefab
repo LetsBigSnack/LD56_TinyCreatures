@@ -529,6 +529,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a389b2796c6c02a469ff443aa53bd7d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyPart: {fileID: 0}
+  bodyPartType: 0
+  bodyPartImage: {fileID: 0}
 --- !u!1 &333459480763875418
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,6 +544,7 @@ GameObject:
   - component: {fileID: 5000253239146551090}
   - component: {fileID: 5455295797314923665}
   - component: {fileID: 2999177890541850720}
+  - component: {fileID: 2153461532345410624}
   m_Layer: 5
   m_Name: Btn_Head_Top
   m_TagString: Untagged
@@ -650,6 +654,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2153461532345410624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333459480763875418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d226adc2f74413341b9c3e903d4c5741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleType: 0
 --- !u!1 &517824771040393476
 GameObject:
   m_ObjectHideFlags: 0
@@ -3007,15 +3024,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea4be5981f27644d97270fda0948be0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentToggle: 0
+  lastSelectedBodyPart: {fileID: 0}
   creaturePreviewSprite: {fileID: 5160843894176904176}
-  headIndex: 0
-  bodyIndex: 0
-  armIndex: 0
-  legIndex: 0
-  headItem: {fileID: 2098451359789925338}
-  bodyItem: {fileID: 1141331406500466766}
-  armsItem: {fileID: 1261893538020668800}
-  legsItem: {fileID: 1687823628307849062}
+  bodyPartPreviewImage: {fileID: 0}
+  curTopHead: {fileID: 0}
+  curHead: {fileID: 0}
+  curBody: {fileID: 0}
+  curArms: {fileID: 0}
+  curLegs: {fileID: 0}
+  curTail: {fileID: 0}
+  curBack: {fileID: 0}
+  nameText: {fileID: 0}
+  bodyPartTypeText: {fileID: 0}
+  bodypartAtkValueText: {fileID: 0}
+  bodypartDefValueText: {fileID: 0}
+  bodypartHpValueText: {fileID: 0}
+  bodypartCrtValueText: {fileID: 0}
+  bodypartSpdValueText: {fileID: 0}
+  previewAtkValueText: {fileID: 0}
+  previewDefValueText: {fileID: 0}
+  previewHpValueText: {fileID: 0}
+  previewCrtValueText: {fileID: 0}
+  previewSpdValueText: {fileID: 0}
+  topHeadButtons: []
+  headButtons: []
+  bodyButtons: []
+  armsButtons: []
+  legsButtons: []
+  backButtons: []
+  tailButtons: []
 --- !u!1 &1777599020707594326
 GameObject:
   m_ObjectHideFlags: 0
