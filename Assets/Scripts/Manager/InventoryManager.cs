@@ -357,14 +357,17 @@ public class InventoryManager : MonoBehaviour
         }
     }
     
-    public void RetreatFormBattle(Creature creature, CreatureBattleSlot battleSlot)
+    public bool RetreatFormBattle(Creature creature, CreatureBattleSlot battleSlot)
     {
-        if (creature != null && creatureBattleSlots[battleSlot] == creature)
+        if (creature == null || creatureBattleSlots[battleSlot] != creature || !HasSpace())
         {
-            Debug.Log("Retreating battle slot");
-            creatureBattleSlots[battleSlot] = null;
-            AddCreature(creature);
+            return false;
         }
+        
+        Debug.Log("Retreating battle slot");
+        creatureBattleSlots[battleSlot] = null;
+        AddCreature(creature);
+        return true;
     }
     
     public void SelectCreatureLeft(Creature creatureToSelect)
@@ -390,9 +393,9 @@ public class InventoryManager : MonoBehaviour
         inventorySpace++;
     }
 
-    public bool HasSpace()
+    public bool HasSpace(int amount = 1)
     {
-        if(inventoryCreatures.Count < inventorySpace)
+        if(inventoryCreatures.Count + amount <= inventorySpace)
         {
             return true;
         }
@@ -400,6 +403,5 @@ public class InventoryManager : MonoBehaviour
         {
             return false;
         }
-        //throw new System.NotImplementedException();
     }
 }

@@ -728,12 +728,15 @@ public class BattleManager : MonoBehaviour
         return averagePowerLevel.Round(0);
     }
 
-    public void RetreatCreature(CreatureBattleSlot creatureBattleSlot)
+    public bool RetreatCreature(CreatureBattleSlot creatureBattleSlot)
     {
-        if (!isBattleRunning && InventoryManager.Instance.CreatureBattleSlots[creatureBattleSlot] != null)
+        
+        if (isBattleRunning || InventoryManager.Instance.CreatureBattleSlots[creatureBattleSlot] == null)
         {
-            InventoryManager.Instance.RetreatFormBattle(InventoryManager.Instance.CreatureBattleSlots[creatureBattleSlot], creatureBattleSlot);
+            return false;
         }
+        
+        return InventoryManager.Instance.RetreatFormBattle(InventoryManager.Instance.CreatureBattleSlots[creatureBattleSlot], creatureBattleSlot);
     }
 
     public void RetreatAll()

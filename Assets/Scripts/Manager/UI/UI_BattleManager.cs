@@ -90,6 +90,7 @@ public class UI_BattleManager : MonoBehaviour
         if (battleCreature.CurrentCreature == null || battleCreature.CurrentCreature?.CurrentHealth <= 0)
         {
             battleCreature.ResetCreatureRepresentation();
+            battleCreature.RetreatButton.interactable = false;
             return;
         }
         battleCreature.SetCreatureRepresentation(battleCreature.CurrentCreature);
@@ -160,13 +161,23 @@ public class UI_BattleManager : MonoBehaviour
     
     public void RetreatAllCreatures()
     {
-        BattleManager.Instance.RetreatAll();
+
+        if (InventoryManager.Instance.HasSpace(3))
+        {
+            SoundManager.Instance.PlaySFX("Click");
+            BattleManager.Instance.RetreatAll();
         
-        ReturnBattleSlotItem(CreatureBattleSlot.Attack).CurrentCreature = null;
-        ReturnBattleSlotItem(CreatureBattleSlot.Defense).CurrentCreature = null;
-        ReturnBattleSlotItem(CreatureBattleSlot.Heal).CurrentCreature = null;
+            ReturnBattleSlotItem(CreatureBattleSlot.Attack).CurrentCreature = null;
+            ReturnBattleSlotItem(CreatureBattleSlot.Defense).CurrentCreature = null;
+            ReturnBattleSlotItem(CreatureBattleSlot.Heal).CurrentCreature = null;
         
-        CheckAllSlotsRepresentation();
+            CheckAllSlotsRepresentation();
+            
+        }
+        else
+        {
+            SoundManager.Instance.PlaySFX("Error");
+        }
     }
 
     public void SwitchAutoBattle()

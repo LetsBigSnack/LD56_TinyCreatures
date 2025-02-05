@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -24,6 +25,14 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
     [SerializeField] private Slider timeSlider;
     [SerializeField] private Slider shieldSlider;
 
+    [SerializeField] private Button retreatButton;
+
+    public Button RetreatButton
+    {
+        get { return retreatButton; }
+        set { retreatButton = value; }
+    }
+    
     public Creature CurrentCreature
     {
         get { return currentCreature; }
@@ -36,6 +45,11 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
         {
             SetCreatureRepresentation(InventoryManager.Instance.CreatureBattleSlots[creatureBattleSlot]);
         }
+        else
+        {
+            retreatButton.interactable = false;
+        }
+        
     }
 
     public void UpdateHealthSlider(float amount)
@@ -61,9 +75,19 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
             SoundManager.Instance.PlaySFX("Error");
             return;
         }
-        BattleManager.Instance.RetreatCreature(creatureBattleSlot);
-        currentCreature = null;
-        ResetCreatureRepresentation();
+
+        if (BattleManager.Instance.RetreatCreature(creatureBattleSlot))
+        {
+            currentCreature = null;
+            ResetCreatureRepresentation();
+            SoundManager.Instance.PlaySFX("Click");
+            retreatButton.interactable = false;
+        }
+        else
+        {
+            UI_ToastManager.Instance.CreateToast("Can't remove creature", "There is no space in the inventory.");
+            SoundManager.Instance.PlaySFX("Error");
+        }
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -113,7 +137,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
         InventoryManager.Instance.SelectCreatureForBattle(creature, creatureBattleSlot);
         SetCreatureRepresentation(creature);
     }
-
+    
     public void Withdraw(bool isExchanged = false)
     {
         if (currentCreature != null)
@@ -139,6 +163,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
 
     public void SetCreatureRepresentation(Creature creature)
     {
+        retreatButton.interactable = true;
         creatureButton.Creature = creature;
         creatureSprite.SetupRepresentation(creature);
         currentCreature = creature;
