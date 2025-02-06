@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using Data;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public enum BodyPartToggleTypes
 {
@@ -17,9 +18,15 @@ public enum BodyPartToggleTypes
     Tail
 }
 
-public class UI_CreatureReconfigureManager : MonoBehaviour
+public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 {
     public static UI_CreatureReconfigureManager Instance;
+
+
+    private Creature currentCreature;
+    private CreatureRepresentation currentRepresentation;
+
+    [SerializeField] private UICreatureButton creatureButton;
 
     [SerializeField] private BodyPartToggleTypes currentToggle;
 
@@ -27,6 +34,8 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
     
     [SerializeField] private UI_CreatureSprite creaturePreviewSprite;
     [SerializeField] private Image bodyPartPreviewImage;
+    [SerializeField] private Sprite bodyPartPreviewBaseImage;
+    [SerializeField] private TextMeshProUGUI noDataText;
 
     [SerializeField] private BodyPart curTopHead;
     [SerializeField] private BodyPart curHead;
@@ -59,9 +68,6 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
     [SerializeField] private List<UI_CreaturePart_Item> backButtons;
     [SerializeField] private List<UI_CreaturePart_Item> tailButtons;
 
-    private CreatureRepresentation originalRepresentation;
-    private CreatureRepresentation currentRepresentation;
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -80,7 +86,47 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
         ReconfigureManager.Instance.CreateEntries(); 
     }
 
-    private void ToggleBodyParts(BodyPartToggleTypes toggleTypes)
+    public void OnDrop(PointerEventData eventData)
+    {
+        if (eventData.pointerDrag != null)
+        {
+            UICreatureButton uiCreatureButton = eventData.pointerDrag.GetComponent<UICreatureButton>();
+            if (uiCreatureButton == null || !uiCreatureButton.IsDragable || uiCreatureButton.Creature == null)
+            {
+                SoundManager.Instance.PlaySFX("Error");
+                return;
+            }
+            SetNewCreature(uiCreatureButton.Creature);
+            SoundManager.Instance.PlaySFX("Click");
+        }
+    }
+
+    private void SetNewCreature(Creature creature)
+    {
+        if (currentCreature != null)
+        {
+            Withdraw(true);
+        }
+        InventoryManager.Instance.AddToReconfigure(creature);
+    }
+
+    public void Withdraw(bool isExchanged = false)
+    {
+        if (currentCreature != null)
+        {
+            creatureButton.Creature = null;
+            currentCreature = null;
+            if (!isExchanged)
+            {
+                SoundManager.Instance.PlaySFX("Click");
+            }
+            return;
+        }
+
+        SoundManager.Instance.PlaySFX("Error");
+    }
+
+    public void ToggleBodyParts(BodyPartToggleTypes toggleTypes)
     {
         switch (toggleTypes)
         {
@@ -109,64 +155,122 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
         currentToggle = toggleTypes;
     }
 
-    private void PickPart(BodyPart bodyPart, BodyPartType bodyPartType)
+    public void PickPart(BodyPart bodyPart, BodyPartType bodyPartType)
     {
         switch (bodyPartType)
         {
             case BodyPartType.Head:
+                currentRepresentation.HeadBodyPart = bodyPart;
                 break;
 
             case BodyPartType.Body:
+                currentRepresentation.BodyBodyPart = bodyPart;
                 break;
 
             case BodyPartType.Arms:
+                currentRepresentation.ArmsBodyPart = bodyPart;
                 break;
 
             case BodyPartType.Legs:
+                currentRepresentation.LegsBodyPart = bodyPart;
+                break;
+
+            case BodyPartType.TopHead:
+                currentRepresentation.TopHeadBodyPart = bodyPart;
+                break;
+
+            case BodyPartType.Back:
+                currentRepresentation.BackBodyPart = bodyPart;
+                break;
+
+            case BodyPartType.Tail:
+                currentRepresentation.TailBodyPart = bodyPart;
                 break;
         }
+        UpdateCreaturePreview();
+        UpdateCreatureStatPreview();
     }
 
-    private void SetCreatureHead()
+    private void UpdateCreaturePreview()
     {
-        //changes the head sprite of the preview
+        Creature newCreature = new Creature(
+            currentCreature.CreatureGeneration, 
+            currentCreature.MaxHealth, 
+            currentCreature.CreatureStats, 
+            currentRepresentation);
+
+        creaturePreviewSprite.SetupRepresentation(newCreature);
     }
 
-    private void SetCreatureBody()
+    public void UpdateBodyPartStatPreview(Sprite sprite, BodyPartType type)
     {
-        //changes the body sprite of the preview
+        noDataText.text = "";
+        bodyPartPreviewImage.sprite = sprite;
+        nameText.text = lastSelectedBodyPart.bodyPartName;
+        bodyPartTypeText.text = type.ToString();
+        bodypartAtkValueText.text = ConcatinateValueText(lastSelectedBodyPart.attackModifier);
+        bodypartDefValueText.text = ConcatinateValueText(lastSelectedBodyPart.defenseModifier);
+        bodypartHpValueText.text = ConcatinateValueText(lastSelectedBodyPart.healthModifier);
+        bodypartCrtValueText.text = ConcatinateValueText(lastSelectedBodyPart.dexterityModifier);
+        bodypartSpdValueText.text = ConcatinateValueText(lastSelectedBodyPart.speedModifier);
     }
 
-    private void SetCreatureArms()
+    private string ConcatinateValueText(float value)
     {
-        //Changes the arms sprite of the preview
+        return "[" + value + "]";
     }
 
-    private void SetCreatureLegs()
+    public void ResetBodyPartStatPreview()
     {
-        //Changes the leg sprite of the preview
+        noDataText.text = "Hover over a bodypart for a preview.";
+        bodyPartPreviewImage.sprite = bodyPartPreviewBaseImage;
+        nameText.text = "No Data";
+        bodyPartTypeText.text = "No Data";
+        bodypartAtkValueText.text = ConcatinateValueText(0);
+        bodypartDefValueText.text = ConcatinateValueText(0);
+        bodypartHpValueText.text = ConcatinateValueText(0);
+        bodypartCrtValueText.text = ConcatinateValueText(0);
+        bodypartSpdValueText.text = ConcatinateValueText(0);
     }
 
-    private void SetBodyPartStatPreview()
+    private void UpdateCreatureStatPreview()
     {
-        //displays all stats available in the bodypart
+        float atkValue = 0;
+        float defValue = 0;
+        float hpValue = 0;
+        float spdValue = 0;
+        float crtValue = 0;
+
+        foreach(BodyPart bodyPart in currentRepresentation.BodyParts.Values)
+        {
+            atkValue = atkValue + bodyPart.attackModifier;
+            defValue = defValue + bodyPart.defenseModifier;
+            hpValue = hpValue + bodyPart.healthModifier;
+            spdValue = spdValue + bodyPart.speedModifier;
+            crtValue = crtValue + bodyPart.dexterityModifier;
+        }
+
+        previewAtkValueText.text = ConcatinateValueText(atkValue);
+        previewDefValueText.text = ConcatinateValueText(defValue);
+        previewHpValueText.text = ConcatinateValueText(hpValue);
+        previewCrtValueText.text = ConcatinateValueText(crtValue);
+        previewSpdValueText.text = ConcatinateValueText(spdValue);
     }
 
-    private void SetCreatureStatPreview()
+    private void ResetCreatureStatPreview()
     {
-        //displays all accumulated stats for the current creature 
+        previewAtkValueText.text = ConcatinateValueText(0);
+        previewDefValueText.text = ConcatinateValueText(0);
+        previewHpValueText.text = ConcatinateValueText(0);
+        previewCrtValueText.text = ConcatinateValueText(0);
+        previewSpdValueText.text = ConcatinateValueText(0);
     }
 
-    private void SetNameAndTypeText()
-    {
-        //sets the text name
-        //sets the bodyPartType
-    }
     public void BuyCreature()
     {
         if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
         {
-            ReconfigureManager.Instance.ReconfigureSelectedCreature();
+            ReconfigureManager.Instance.ReconfigureSelectedCreature(currentRepresentation);
             UI_InventoryManager.Instance.RefreshInventory();
             SoundManager.Instance.PlaySFX("Transaction");
             return;
@@ -176,7 +280,10 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
 
     public void ResetConfiguration()
     {
-        //reset the configuration to be the original creature;
+        if(currentCreature != null)
+        {
+            currentRepresentation = currentCreature.Representation;
+        }
     }
 
     public void CancleReconfiguration()
@@ -190,4 +297,5 @@ public class UI_CreatureReconfigureManager : MonoBehaviour
         }
         SoundManager.Instance.PlaySFX("Error");
     }
+
 }

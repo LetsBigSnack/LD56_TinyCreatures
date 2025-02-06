@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Data;
 
 public class ReconfigureManager : MonoBehaviour
 {
@@ -77,17 +78,9 @@ public class ReconfigureManager : MonoBehaviour
         return true;
     }
 
-    public bool ReconfigureSelectedCreature()
+    public bool ReconfigureSelectedCreature(CreatureRepresentation representation)
     {
-
-        if(currentHead != null) selectedCreature.Representation.BodyParts[BodyPartType.Head] = currentHead;
-
-        if(currentBody != null) selectedCreature.Representation.BodyParts[BodyPartType.Body] = currentBody;
-
-        if(currentArms != null) selectedCreature.Representation.BodyParts[BodyPartType.Arms] = currentArms;
-
-        if(currentLegs != null) selectedCreature.Representation.BodyParts[BodyPartType.Legs] = currentLegs;
-
+        selectedCreature.Representation = representation;
         InventoryManager.Instance.RemoveFromReconfigure(selectedCreature);
         selectedCreature = null;
         return true;

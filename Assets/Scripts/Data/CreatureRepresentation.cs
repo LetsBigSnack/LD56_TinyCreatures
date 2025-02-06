@@ -16,11 +16,14 @@ namespace Data
             get => _bodyParts;
             set => _bodyParts = value;
         }
-        
+
+        private Color _topHeadColor;
         private Color _headColor;
         private Color _bodyColor;
         private Color _legsColor;
         private Color _armsColor;
+        private Color _backColor;
+        private Color _tailColor;
         
         [JsonIgnore]
         public Sprite HeadSprite
@@ -47,6 +50,69 @@ namespace Data
         {
             get => _bodyParts.ContainsKey(BodyPartType.Arms) ? _bodyParts[BodyPartType.Arms].bodyPartSprite : null;
 
+        }
+
+        [JsonIgnore]
+        public Sprite TopHeadSprite
+        {
+            get => _bodyParts.ContainsKey(BodyPartType.TopHead) ? _bodyParts[BodyPartType.TopHead].bodyPartSprite : null;
+
+        }
+
+        [JsonIgnore]
+        public Sprite BackSprite
+        {
+            get => _bodyParts.ContainsKey(BodyPartType.Back) ? _bodyParts[BodyPartType.Back].bodyPartSprite : null;
+
+        }
+
+        [JsonIgnore]
+        public Sprite TailSprite
+        {
+            get => _bodyParts.ContainsKey(BodyPartType.Tail) ? _bodyParts[BodyPartType.Tail].bodyPartSprite : null;
+
+        }
+
+        [JsonIgnore]
+        public BodyPart HeadBodyPart
+        {
+            set => _bodyParts[BodyPartType.Head] = value;
+        }
+
+        [JsonIgnore]
+        public BodyPart TopHeadBodyPart
+        {
+            set => _bodyParts[BodyPartType.TopHead] = value;
+        }
+
+        [JsonIgnore]
+        public BodyPart BodyBodyPart
+        {
+            set => _bodyParts[BodyPartType.Body] = value;
+        }
+
+        [JsonIgnore]
+        public BodyPart ArmsBodyPart
+        {
+            set => _bodyParts[BodyPartType.Arms] = value;
+        }
+
+        [JsonIgnore]
+        public BodyPart LegsBodyPart
+        {
+            set => _bodyParts[BodyPartType.Legs] = value;
+        }
+
+        [JsonIgnore]
+        public BodyPart TailBodyPart
+        {
+            set => _bodyParts[BodyPartType.Tail] = value;
+        }
+
+        [JsonIgnore]
+        public BodyPart BackBodyPart
+        {
+            set => _bodyParts[BodyPartType.Back] = value;
         }
 
         [JsonConverter(typeof(ColorHandler))]
@@ -77,7 +143,28 @@ namespace Data
             set => _armsColor = value;
         }
 
-        public CreatureRepresentation(Dictionary<BodyPartType, BodyPart> bodyParts, Color headColor, Color bodyColor, Color legsColor, Color armsColor)
+        [JsonConverter(typeof(ColorHandler))]
+        public Color TopHeadColor
+        {
+            get => _topHeadColor;
+            set => _topHeadColor = value;
+        }
+
+        [JsonConverter(typeof(ColorHandler))]
+        public Color BackColor
+        {
+            get => _backColor;
+            set => _backColor = value;
+        }
+
+        [JsonConverter(typeof(ColorHandler))]
+        public Color tailColor
+        {
+            get => _tailColor;
+            set => _tailColor = value;
+        }
+
+        public CreatureRepresentation(Dictionary<BodyPartType, BodyPart> bodyParts, Color headColor, Color bodyColor, Color legsColor, Color armsColor, Color topHeadColor, Color backColor, Color tailColor)
         {
             _bodyParts = bodyParts;
             
@@ -85,6 +172,9 @@ namespace Data
             _bodyColor = bodyColor;
             _legsColor = legsColor; 
             _armsColor = armsColor;
+            _backColor = backColor;
+            _tailColor = tailColor;
+            _topHeadColor = topHeadColor;
         }
         
     }

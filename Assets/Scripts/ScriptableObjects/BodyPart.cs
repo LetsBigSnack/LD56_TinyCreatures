@@ -7,7 +7,10 @@ public enum BodyPartType
     Head,
     Body,
     Arms,
-    Legs
+    Legs,
+    TopHead,
+    Back,
+    Tail
 }
 
 

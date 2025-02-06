@@ -8,6 +8,6 @@ public class UI_CreaturePartToggle_Button : MonoBehaviour
 
     public void ToggleAction()
     {
-        //UI_CreatureReconfigureManager.Instance.ToggleBodyParts();
+        UI_CreatureReconfigureManager.Instance.ToggleBodyParts(toggleType);
     }
 }

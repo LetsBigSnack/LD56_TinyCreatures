@@ -16,7 +16,17 @@ public class UI_CreaturePart_Item : MonoBehaviour
 
     public void OnClick()
     {
-        //UI_CreatureReconfigureManager.Instance.PickPart(bodyPart, bodyPartType);
+        UI_CreatureReconfigureManager.Instance.PickPart(bodyPart, bodyPartType);
+    }
+
+    public void OnHover()
+    {
+        UI_CreatureReconfigureManager.Instance.SetBodyPartStatPreview(bodyPart.bodyPartSprite, bodyPartType);
+    }
+
+    public void OffHover()
+    {
+        UI_CreatureReconfigureManager.Instance.ResetBodyPartStatPreview();
     }
 }
 
