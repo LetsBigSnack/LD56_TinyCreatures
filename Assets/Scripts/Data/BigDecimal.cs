@@ -141,11 +141,12 @@ namespace Data
         //TODO: fix for different numbers of exponents like 1.000 / 1 --> fucks us rn
         public BigDecimal Divide(BigDecimal other)
         {
+            
             if (other.mantissa == 0)
             {
                 throw new DivideByZeroException("Cannot divide by zero.");
             }
-
+            
             BigInteger newMantissa = mantissa * BigInteger.Pow(10, (int)(-other.exponent));
             BigInteger resultMantissa = newMantissa / other.mantissa;
 
@@ -350,14 +351,28 @@ namespace Data
             bool isNegative = value < 0;
             value = Math.Abs(value);
 
+            // Convert to string in a culture-invariant way
             string valueStr = value.ToString("R", System.Globalization.CultureInfo.InvariantCulture);
-            int decimalIndex = valueStr.IndexOf('.');
 
+            // Look for scientific notation
+            int ePos = valueStr.IndexOfAny(new char[] { 'E', 'e' });
+            int exponentOffset = 0;
+            if (ePos >= 0)
+            {
+                // Parse the exponent part
+                exponentOffset = int.Parse(valueStr.Substring(ePos + 1), System.Globalization.CultureInfo.InvariantCulture);
+                // Remove the "E±xx" so 'valueStr' is just "integer.fraction"
+                valueStr = valueStr.Substring(0, ePos);
+            }
+
+            // Now handle any decimal point
+            int decimalIndex = valueStr.IndexOf('.');
             BigInteger mantissa;
             BigInteger exponent;
 
             if (decimalIndex == -1)
             {
+                // No decimal point
                 mantissa = BigInteger.Parse(valueStr);
                 exponent = 0;
             }
@@ -365,14 +380,23 @@ namespace Data
             {
                 string integerPart = valueStr.Substring(0, decimalIndex);
                 string fractionalPart = valueStr.Substring(decimalIndex + 1);
+                if (string.IsNullOrEmpty(integerPart)) integerPart = "0"; // e.g. ".123"
 
+                // Parse concatenated digits into the mantissa
                 mantissa = BigInteger.Parse(integerPart + fractionalPart);
+                // Exponent is negative the number of fractional digits
                 exponent = -fractionalPart.Length;
             }
 
-            if (isNegative) mantissa = -mantissa;
+            // Adjust exponent by the scientific “E±xx” part
+            exponent += exponentOffset;
 
-            return new BigDecimal(mantissa, exponent);
+            // Reapply sign
+            if (isNegative)
+                mantissa = -mantissa;
+
+            // Return a normalized BigDecimal
+            return new BigDecimal(mantissa, exponent).Normalize();
         }
 
         #endregion
