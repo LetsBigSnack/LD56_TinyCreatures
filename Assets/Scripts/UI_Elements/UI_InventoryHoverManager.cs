@@ -63,7 +63,7 @@ public class UI_InventoryHoverManager : MonoBehaviour
     public void ResetDetails()
     {
         detailsWindow.SetActive(false);
-        if (InventoryManager.Instance.SelectedCreatureForBattle != null)
+        if (BattleManager.Instance.IsBattleRunning)
         {
             ChangeBattleText("BATTLE ONGOING!");
         } 

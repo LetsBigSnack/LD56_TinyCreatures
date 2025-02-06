@@ -1,8 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
+[Serializable]
 public enum CreatureBattleSlot
 {
     Attack,
@@ -17,8 +21,84 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
     [SerializeField] private UI_CreatureSprite creatureSprite;
     [SerializeField] private CreatureBattleSlot creatureBattleSlot;
 
+    [SerializeField] private Slider healthSlider;
+    [SerializeField] private Slider timeSlider;
+    [SerializeField] private Slider shieldSlider;
+
+    [SerializeField] private Button retreatButton;
+
+    public Button RetreatButton
+    {
+        get { return retreatButton; }
+        set { retreatButton = value; }
+    }
+    
+    public Creature CurrentCreature
+    {
+        get { return currentCreature; }
+        set { currentCreature = value; }
+    }
+
+    public void Start()
+    {
+        if (InventoryManager.Instance.CreatureBattleSlots[creatureBattleSlot] != null)
+        {
+            SetCreatureRepresentation(InventoryManager.Instance.CreatureBattleSlots[creatureBattleSlot]);
+        }
+        else
+        {
+            retreatButton.interactable = false;
+        }
+        
+    }
+
+    public void UpdateHealthSlider(float amount)
+    {
+        healthSlider.value = amount;
+    }
+
+    public void UpdateTimeSlider(float amount)
+    {
+        timeSlider.value = amount;
+    }
+
+    public void UpdateShieldSlider(float amount)
+    {
+        shieldSlider.value = amount;
+    }
+
+    public void RetreatCreature()
+    {
+        if (BattleManager.Instance.IsBattleRunning)
+        {
+            UI_ToastManager.Instance.CreateToast("Battle Ongoing!", "Can't remove a creature during battle!");
+            SoundManager.Instance.PlaySFX("Error");
+            return;
+        }
+
+        if (BattleManager.Instance.RetreatCreature(creatureBattleSlot))
+        {
+            currentCreature = null;
+            ResetCreatureRepresentation();
+            SoundManager.Instance.PlaySFX("Click");
+            retreatButton.interactable = false;
+        }
+        else
+        {
+            UI_ToastManager.Instance.CreateToast("Can't remove creature", "There is no space in the inventory.");
+            SoundManager.Instance.PlaySFX("Error");
+        }
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
+        if (BattleManager.Instance.IsBattleRunning)
+        {
+            UI_ToastManager.Instance.CreateToast("Battle Ongoing!", "Can't add a creature during battle!");
+            SoundManager.Instance.PlaySFX("Error");
+            return;
+        }
+        
         if (eventData.pointerDrag != null)
         {
             UICreatureButton uiCreatureButton = eventData.pointerDrag.GetComponent<UICreatureButton>();
@@ -30,21 +110,39 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
             SetNewCreature(uiCreatureButton.Creature);
             SoundManager.Instance.PlaySFX("Click");
         }
+        UI_InventoryManager.Instance.RefreshInventory();
     }
-    public void SetNewCreature(Creature creature)
+
+    public void OnHover()
     {
+        if(currentCreature == null)
+        {
+            return;
+        }
+        UI_BattleManager.Instance.OnHoverBattleCreature(creatureBattleSlot);
+    }
+
+    public void OffHover()
+    {
+        UI_BattleManager.Instance.OffHoverBattleCreature();
+    }
+
+    public void SetNewCreature(Creature creature)
+    {        
         if (currentCreature != null)
         {
             Withdraw(true);
         }
-        //InventoryManager.Instance.AddCreatureToMaterialSlot(creature, selectedMaterial);
+
+        InventoryManager.Instance.SelectCreatureForBattle(creature, creatureBattleSlot);
         SetCreatureRepresentation(creature);
     }
-
+    
     public void Withdraw(bool isExchanged = false)
     {
         if (currentCreature != null)
         {
+            InventoryManager.Instance.RetreatFormBattle(currentCreature, creatureBattleSlot);
             ResetCreatureRepresentation();
             creatureButton.Creature = null;
             currentCreature = null;
@@ -54,17 +152,18 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
             }
             return;
         }
-
+        UI_ToastManager.Instance.CreateToast("No Creature!", "There's no creature in this slot!");
         SoundManager.Instance.PlaySFX("Error");
     }
 
-    private void ResetCreatureRepresentation()
+    public void ResetCreatureRepresentation()
     {
         creatureSprite.Reset();
     }
 
-    private void SetCreatureRepresentation(Creature creature)
+    public void SetCreatureRepresentation(Creature creature)
     {
+        retreatButton.interactable = true;
         creatureButton.Creature = creature;
         creatureSprite.SetupRepresentation(creature);
         currentCreature = creature;

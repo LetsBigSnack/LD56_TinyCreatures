@@ -118,16 +118,8 @@ public class StoreManager : MonoBehaviour
         
     }
 
-    public bool SellOwnedCreature(Creature creature)
+    public void SellOwnedCreature(Creature creature)
     {
-        
-        Creature test = InventoryManager.Instance.SelectedCreatureForBattle;
-
-        if (test == creature)
-        {
-            InventoryManager.Instance.SelectedCreatureForBattle = null;
-            UI_BattleManager.Instance.Refresh();
-        }
         
         EarnMoney(creature.CreatureStats.PowerLevel);
         
@@ -138,8 +130,7 @@ public class StoreManager : MonoBehaviour
             soledCreatures.Remove(soldCrt);
         }
         
-        soledCreatures.Add(creature);   
-        return true;
+        soledCreatures.Add(creature);
     }
     
     public bool RefuseCreature(Creature creature)
