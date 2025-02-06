@@ -25,7 +25,10 @@ public class CreatureManager : MonoBehaviour
     private List<BodyPart> _unlockedBodies = new List<BodyPart>();
     private List<BodyPart> _unlockedArms = new List<BodyPart>();
     private List<BodyPart> _unlockedLegs = new List<BodyPart>();
-    
+    private List<BodyPart> _unlockedTopHeads = new List<BodyPart>();
+    private List<BodyPart> _unlockedTails = new List<BodyPart>();
+    private List<BodyPart> _unlockedBacks = new List<BodyPart>();
+
     public List<BodyPartSet> BodyPartSets
     {
         get => bodyPartSets.ToList();
@@ -70,21 +73,30 @@ public class CreatureManager : MonoBehaviour
         Color bodyColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
         Color armsColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
         Color legsColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
+        Color topHeadColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
+        Color backColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
+        Color tailColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
 
-        
+
         BodyPart randomHead = _unlockedHeads[UnityEngine.Random.Range(0, _unlockedHeads.Count)];
         BodyPart randomBody = _unlockedBodies[UnityEngine.Random.Range(0, _unlockedBodies.Count)];
         BodyPart randomArms = _unlockedArms[UnityEngine.Random.Range(0, _unlockedArms.Count)];
         BodyPart randomLegs = _unlockedLegs[UnityEngine.Random.Range(0, _unlockedLegs.Count)];
-        
+        BodyPart randomTopHead = _unlockedTopHeads[UnityEngine.Random.Range(0, _unlockedTopHeads.Count)];
+        BodyPart randomBack = _unlockedBacks[UnityEngine.Random.Range(0, _unlockedBacks.Count)];
+        BodyPart randomTail = _unlockedTails[UnityEngine.Random.Range(0, _unlockedTails.Count)];
+
         Dictionary<BodyPartType, BodyPart> bodyParts = new Dictionary<BodyPartType, BodyPart>();
         bodyParts.Add(BodyPartType.Head, randomHead);
         bodyParts.Add(BodyPartType.Body, randomBody);
         bodyParts.Add(BodyPartType.Arms, randomArms);
         bodyParts.Add(BodyPartType.Legs, randomLegs);
-        
-        
-        CreatureRepresentation creatureRepresentation = new CreatureRepresentation(bodyParts, headColor, bodyColor, legsColor, armsColor);
+        bodyParts.Add(BodyPartType.TopHead, randomTopHead);
+        bodyParts.Add(BodyPartType.Back, randomBack);
+        bodyParts.Add(BodyPartType.Tail, randomTail);
+
+
+        CreatureRepresentation creatureRepresentation = new CreatureRepresentation(bodyParts, headColor, bodyColor, legsColor, armsColor, topHeadColor, backColor, tailColor);
 
         return creatureRepresentation;
     }

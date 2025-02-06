@@ -28,9 +28,12 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
     [SerializeField] private UICreatureButton creatureButton;
 
-    [SerializeField] private BodyPartToggleTypes currentToggle;
+    [SerializeField] private BodyPartToggleTypes currentToggle = BodyPartToggleTypes.TopHead;
 
     [SerializeField] private BodyPart lastSelectedBodyPart;
+
+    [SerializeField] private GameObject uiBodyPartItemPrefab;
+    [SerializeField] private Transform scrollViewContent;
     
     [SerializeField] private UI_CreatureSprite creaturePreviewSprite;
     [SerializeField] private Image bodyPartPreviewImage;

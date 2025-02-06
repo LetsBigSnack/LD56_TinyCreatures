@@ -21,7 +21,7 @@ public class UI_CreaturePart_Item : MonoBehaviour
 
     public void OnHover()
     {
-        UI_CreatureReconfigureManager.Instance.SetBodyPartStatPreview(bodyPart.bodyPartSprite, bodyPartType);
+        UI_CreatureReconfigureManager.Instance.UpdateBodyPartStatPreview(bodyPart.bodyPartSprite, bodyPartType);
     }
 
     public void OffHover()

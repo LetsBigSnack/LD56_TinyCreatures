@@ -145,24 +145,30 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     Color newBodyColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor() : colorPod[Random.Range(0, colorPod.Count)];
     Color newArmsColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor()  : colorPod[Random.Range(0, colorPod.Count)];
     Color newLegsColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor()  : colorPod[Random.Range(0, colorPod.Count)];
-    
-    
-    
-    
+    Color newTopHeadColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor() : colorPod[Random.Range(0, colorPod.Count)];
+    Color newBackColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor() : colorPod[Random.Range(0, colorPod.Count)];
+    Color newTailColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor() : colorPod[Random.Range(0, colorPod.Count)];
+
     // Randomly assign sprites from the parents or use random body parts based on the randomChance
     BodyPart newHeadSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart(BodyPartType.Head) : (Random.value > 0.5f ? parent1.Representation.BodyParts[BodyPartType.Head] : parent2.Representation.BodyParts[BodyPartType.Head]);
     BodyPart newBodySprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart(BodyPartType.Body) : (Random.value > 0.5f ? parent1.Representation.BodyParts[BodyPartType.Body] : parent2.Representation.BodyParts[BodyPartType.Body]);
     BodyPart newLegsSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart(BodyPartType.Legs) : (Random.value > 0.5f ? parent1.Representation.BodyParts[BodyPartType.Legs]: parent2.Representation.BodyParts[BodyPartType.Legs]);
     BodyPart newArmsSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart(BodyPartType.Arms) : (Random.value > 0.5f ? parent1.Representation.BodyParts[BodyPartType.Arms]: parent2.Representation.BodyParts[BodyPartType.Arms]);
-    
+    BodyPart newTopHeadSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart(BodyPartType.TopHead) : (Random.value > 0.5f ? parent1.Representation.BodyParts[BodyPartType.TopHead] : parent2.Representation.BodyParts[BodyPartType.TopHead]);
+    BodyPart newBackSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart(BodyPartType.Back) : (Random.value > 0.5f ? parent1.Representation.BodyParts[BodyPartType.Back] : parent2.Representation.BodyParts[BodyPartType.Back]);
+    BodyPart newTailSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart(BodyPartType.Tail) : (Random.value > 0.5f ? parent1.Representation.BodyParts[BodyPartType.Tail] : parent2.Representation.BodyParts[BodyPartType.Tail]);
+
     Dictionary<BodyPartType, BodyPart> bodyParts = new Dictionary<BodyPartType, BodyPart>();
     bodyParts.Add(BodyPartType.Head, newHeadSprite);
     bodyParts.Add(BodyPartType.Body, newBodySprite);
     bodyParts.Add(BodyPartType.Legs, newLegsSprite);
     bodyParts.Add(BodyPartType.Arms, newArmsSprite);
-    
-    
-    CreatureRepresentation creatureRepresentation = new CreatureRepresentation(bodyParts, newHeadColor, newBodyColor, newLegsColor, newArmsColor);
+    bodyParts.Add(BodyPartType.TopHead, newTopHeadSprite);
+    bodyParts.Add(BodyPartType.Back, newBackSprite);
+    bodyParts.Add(BodyPartType.Tail, newTailSprite);
+
+
+    CreatureRepresentation creatureRepresentation = new CreatureRepresentation(bodyParts, newHeadColor, newBodyColor, newLegsColor, newArmsColor, newTopHeadColor, newBackColor, newTailColor);
     BigDecimal lastGeneration = BigDecimal.Max(parent1.CreatureGeneration, parent2.CreatureGeneration) + 1;
     BigDecimal totalWins = parent1.CreatureWins + parent2.CreatureWins;
     
