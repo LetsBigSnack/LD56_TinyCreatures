@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Data;
+using UnityEngine.SceneManagement;
 
 public class UI_RadioItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
@@ -21,6 +22,8 @@ public class UI_RadioItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     [SerializeField] private RectTransform titleBarRectTransform;
     [SerializeField] private Canvas canvas;
     [SerializeField] private CanvasGroup canvasGroup;
+
+    [SerializeField] private string sceneWhereVisible;
 
     private bool isDragging = false;
 
@@ -51,11 +54,38 @@ public class UI_RadioItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         }
     }
 
+    private void OnEnable()
+    {
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
     private void OnDisable()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
         RadioManager.Instance.OnChangePlayedTrackValue -= PlayedTrackChanged;
         RadioManager.Instance.OnChangeViewedTrackValue -= ViewedTrackChanged;
         RadioManager.Instance.OnChangeCurrentPlayedTimeValue -= ViewedTrackTimeChanged;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == sceneWhereVisible)
+        {
+            canvasGroup.alpha = 1;
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true; 
+        }
+        else
+        {
+            canvasGroup.alpha = 0;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+        }
     }
 
     private void ViewedTrackChanged(Track viewedTrack)

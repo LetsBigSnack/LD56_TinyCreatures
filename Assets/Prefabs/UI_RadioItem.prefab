@@ -1094,6 +1094,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8284921678227839409}
   - component: {fileID: 1574966698836421385}
+  - component: {fileID: 8706824561615992859}
   m_Layer: 5
   m_Name: UI_RadioItem
   m_TagString: Untagged
@@ -1142,7 +1143,19 @@ MonoBehaviour:
   playBtnSprite: {fileID: 7871882706776400271}
   titleBarRectTransform: {fileID: 1557531751416426251}
   canvas: {fileID: 0}
-  canvasGroup: {fileID: 0}
+  canvasGroup: {fileID: 8706824561615992859}
+--- !u!225 &8706824561615992859
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3831090853455873971}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4065306188201103401
 GameObject:
   m_ObjectHideFlags: 0
@@ -3913,7 +3926,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3827460202156462248
 RectTransform:
   m_ObjectHideFlags: 0
