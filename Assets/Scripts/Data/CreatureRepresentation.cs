@@ -17,13 +17,8 @@ namespace Data
             set => _bodyParts = value;
         }
 
-        private Color _topHeadColor;
-        private Color _headColor;
-        private Color _bodyColor;
-        private Color _legsColor;
-        private Color _armsColor;
-        private Color _backColor;
-        private Color _tailColor;
+        private Color32[] _baseColor;
+        private Color32[] _addOnColor;
         
         [JsonIgnore]
         public Sprite HeadSprite
@@ -116,65 +111,24 @@ namespace Data
         }
 
         [JsonConverter(typeof(ColorHandler))]
-        public Color HeadColor
+        public Color32[] BaseColor
         {
-            get => _headColor;
-            set => _headColor = value;
+            get => _baseColor;
+            set => _baseColor = value;
         }
 
         [JsonConverter(typeof(ColorHandler))]
-        public Color BodyColor
+        public Color32[] AddOnColor
         {
-            get => _bodyColor;
-            set => _bodyColor = value;
+            get => _addOnColor;
+            set => _addOnColor = value;
         }
 
-        [JsonConverter(typeof(ColorHandler))]
-        public Color LegsColor
-        {
-            get => _legsColor;
-            set => _legsColor = value;
-        }
-        
-        [JsonConverter(typeof(ColorHandler))]
-        public Color ArmsColor
-        {
-            get => _armsColor;
-            set => _armsColor = value;
-        }
-
-        [JsonConverter(typeof(ColorHandler))]
-        public Color TopHeadColor
-        {
-            get => _topHeadColor;
-            set => _topHeadColor = value;
-        }
-
-        [JsonConverter(typeof(ColorHandler))]
-        public Color BackColor
-        {
-            get => _backColor;
-            set => _backColor = value;
-        }
-
-        [JsonConverter(typeof(ColorHandler))]
-        public Color tailColor
-        {
-            get => _tailColor;
-            set => _tailColor = value;
-        }
-
-        public CreatureRepresentation(Dictionary<BodyPartType, BodyPart> bodyParts, Color headColor, Color bodyColor, Color legsColor, Color armsColor, Color topHeadColor, Color backColor, Color tailColor)
+        public CreatureRepresentation(Dictionary<BodyPartType, BodyPart> bodyParts, Color32[] baseColor, Color32[] addOnColor)
         {
             _bodyParts = bodyParts;
-            
-            _headColor = headColor;
-            _bodyColor = bodyColor;
-            _legsColor = legsColor; 
-            _armsColor = armsColor;
-            _backColor = backColor;
-            _tailColor = tailColor;
-            _topHeadColor = topHeadColor;
+            _baseColor = baseColor;
+            _addOnColor = addOnColor;
         }
         
     }

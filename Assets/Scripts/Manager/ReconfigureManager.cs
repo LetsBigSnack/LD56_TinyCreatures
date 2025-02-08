@@ -16,40 +16,17 @@ public class ReconfigureManager : MonoBehaviour
     [SerializeField] private List<BodyPartEntry> bodies;
     [SerializeField] private List<BodyPartEntry> arms;
     [SerializeField] private List<BodyPartEntry> legs;
-
-    [SerializeField] private BodyPart currentHead = null;
-    [SerializeField] private BodyPart currentBody = null;
-    [SerializeField] private BodyPart currentArms = null;
-    [SerializeField] private BodyPart currentLegs = null;
+    [SerializeField] private List<BodyPartEntry> topHeads;
+    [SerializeField] private List<BodyPartEntry> tails;
+    [SerializeField] private List<BodyPartEntry> backs;
 
     public List<BodyPartEntry> Heads { get => heads; }
     public List<BodyPartEntry> Bodies { get => bodies; }
     public List<BodyPartEntry> Arms { get => arms; }
     public List<BodyPartEntry> Legs { get => legs; }
-    
-    public BodyPart CurrentHead
-    {
-        get => currentHead;
-        set => currentHead = value;
-    }
-
-    public BodyPart CurrentBody
-    {
-        get => currentBody;
-        set => currentBody = value;
-    }
-
-    public BodyPart CurrentArms
-    {
-        get => currentArms;
-        set => currentArms = value;
-    }
-
-    public BodyPart CurrentLegs
-    {
-        get => currentLegs;
-        set => currentLegs = value;
-    }
+    public List<BodyPartEntry> TopHeads { get => topHeads; }
+    public List<BodyPartEntry> Backs { get => backs; }
+    public List<BodyPartEntry> Tails { get => tails; }
 
     private void Awake()
     {
@@ -74,7 +51,6 @@ public class ReconfigureManager : MonoBehaviour
     public bool AddToReconfigure(Creature creature)
     {
         selectedCreature = creature;
-        CreaturePicked(creature);
         return true;
     }
 
@@ -103,25 +79,9 @@ public class ReconfigureManager : MonoBehaviour
         bodies = bodyParts.SelectMany(bodyPartSet => bodyPartSet.bodyPartEntries).Where(bodyPart => bodyPart.bodyPartType == BodyPartType.Body && bodyPart.bodyPart.collected).ToList();
         arms = bodyParts.SelectMany(bodyPartSet => bodyPartSet.bodyPartEntries).Where(bodyPart => bodyPart.bodyPartType == BodyPartType.Arms && bodyPart.bodyPart.collected).ToList();
         legs = bodyParts.SelectMany(bodyPartSet => bodyPartSet.bodyPartEntries).Where(bodyPart => bodyPart.bodyPartType == BodyPartType.Legs && bodyPart.bodyPart.collected).ToList();
-    }
-
-    public void SetCurrentParts(BodyPartType partType, int index)
-    {
-        switch (partType)
-        {
-            case BodyPartType.Head:
-                currentHead = heads[index].bodyPart;
-                break;
-            case BodyPartType.Body:
-                currentBody = bodies[index].bodyPart;
-                break;
-            case BodyPartType.Arms:
-                currentArms = arms[index].bodyPart;
-                break;
-            case BodyPartType.Legs:
-                currentLegs = legs[index].bodyPart;
-                break;
-        }
+        topHeads = bodyParts.SelectMany(bodyPartSet => bodyPartSet.bodyPartEntries).Where(bodyPart => bodyPart.bodyPartType == BodyPartType.TopHead && bodyPart.bodyPart.collected).ToList();
+        backs = bodyParts.SelectMany(bodyPartSet => bodyPartSet.bodyPartEntries).Where(bodyPart => bodyPart.bodyPartType == BodyPartType.Back && bodyPart.bodyPart.collected).ToList();
+        tails = bodyParts.SelectMany(bodyPartSet => bodyPartSet.bodyPartEntries).Where(bodyPart => bodyPart.bodyPartType == BodyPartType.Tail && bodyPart.bodyPart.collected).ToList();
     }
 
     public void ClearEntries()
@@ -130,61 +90,8 @@ public class ReconfigureManager : MonoBehaviour
         bodies.Clear();
         arms.Clear();
         legs.Clear();
-    }
-
-    public void CreaturePicked(Creature creature)
-    {
-        currentHead = creature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Head).FirstOrDefault().Value;
-        currentBody = creature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Body).FirstOrDefault().Value;
-        currentArms = creature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Arms).FirstOrDefault().Value;
-        currentLegs = creature.Representation.BodyParts.Where(bodyPart => bodyPart.Key == BodyPartType.Legs).FirstOrDefault().Value;
-    }
-
-    public Sprite ReturnSelectedRepresentation(BodyPartType partType)
-    {
-        Sprite spriteToReturn;
-        switch (partType)
-        {
-            case BodyPartType.Head:
-                spriteToReturn = selectedCreature.Representation.HeadSprite;
-                break;
-            case BodyPartType.Body:
-                spriteToReturn = selectedCreature.Representation.BodySprite;
-                break;
-            case BodyPartType.Arms:
-                spriteToReturn = selectedCreature.Representation.ArmsSprite;
-                break;
-            case BodyPartType.Legs:
-                spriteToReturn = selectedCreature.Representation.LegsSprite;
-                break;
-            default:
-                spriteToReturn = null;
-                break;
-        }
-        return spriteToReturn;
-    }
-
-    public int ReturnIndex(BodyPartType partType)
-    {
-        int indexToReturn;
-        switch (partType)
-        {
-            case BodyPartType.Head:
-                indexToReturn = heads.FindIndex(head => head.bodyPart.Equals(currentHead));
-                break;
-            case BodyPartType.Body:
-                indexToReturn = bodies.FindIndex(head => head.bodyPart.Equals(currentBody));
-                break;
-            case BodyPartType.Arms:
-                indexToReturn = arms.FindIndex(head => head.bodyPart.Equals(currentArms));
-                break;
-            case BodyPartType.Legs:
-                indexToReturn = legs.FindIndex(head => head.bodyPart.Equals(currentLegs));
-                break;
-            default:
-                indexToReturn = 0;
-                break;
-        }
-        return indexToReturn;
+        topHeads.Clear();
+        backs.Clear();
+        tails.Clear();
     }
 }

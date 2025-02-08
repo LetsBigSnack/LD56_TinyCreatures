@@ -15,7 +15,6 @@ public class CreatureManager : MonoBehaviour
     
     [SerializeField] private BodyPartSet[] bodyPartSets;
 
-    [SerializeField] private Color[] creatureColors;
     
     [Header("Stat Settings")]
     private BigDecimal statRange = 3.5f;
@@ -44,11 +43,21 @@ public class CreatureManager : MonoBehaviour
         }
         else
         {
-            
             Instance = this;
         }
     }
-    
+
+
+    public int GetRandomNumber(List<Sprite> spriteList)
+    {
+        return UnityEngine.Random.Range(0, spriteList.Count);
+    }
+
+    public int AdditionalFeature()
+    {
+        return UnityEngine.Random.Range(0, 2);
+    }
+
     //TODO: clean up variable names
     public Creature CreateBasicCreature()
     {
@@ -69,15 +78,6 @@ public class CreatureManager : MonoBehaviour
 
     private CreatureRepresentation GetRandomCreatureRepresentation()
     {
-        Color headColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
-        Color bodyColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
-        Color armsColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
-        Color legsColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
-        Color topHeadColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
-        Color backColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
-        Color tailColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
-
-
         BodyPart randomHead = _unlockedHeads[UnityEngine.Random.Range(0, _unlockedHeads.Count)];
         BodyPart randomBody = _unlockedBodies[UnityEngine.Random.Range(0, _unlockedBodies.Count)];
         BodyPart randomArms = _unlockedArms[UnityEngine.Random.Range(0, _unlockedArms.Count)];
@@ -95,10 +95,12 @@ public class CreatureManager : MonoBehaviour
         bodyParts.Add(BodyPartType.Back, randomBack);
         bodyParts.Add(BodyPartType.Tail, randomTail);
 
+        Color32[] randomBaseColor = ColorManager.Instance.GetRandomBaseColorArray();
+        Color32[] randomAddOnColor = ColorManager.Instance.GetRandomAddOnColorArray();
 
-        CreatureRepresentation creatureRepresentation = new CreatureRepresentation(bodyParts, headColor, bodyColor, legsColor, armsColor, topHeadColor, backColor, tailColor);
+        Dictionary<BodyPartType, BodyPart> repaintedParts = ColorManager.Instance.CreateNewCreatureColorSprites(bodyParts, randomBaseColor, randomAddOnColor);
 
-        return creatureRepresentation;
+        return new CreatureRepresentation(repaintedParts, randomBaseColor, randomAddOnColor);
     }
 
     public CreatureStats CreateCreatureStats(BigDecimal definedStatRange, BigDecimal definedStatMin,
@@ -158,7 +160,16 @@ public class CreatureManager : MonoBehaviour
                 
             case BodyPartType.Arms:
                 return _unlockedArms[UnityEngine.Random.Range(0, _unlockedArms.Count)];
-                
+
+            case BodyPartType.TopHead:
+                return _unlockedTopHeads[UnityEngine.Random.Range(0, _unlockedTopHeads.Count)];
+
+            case BodyPartType.Back:
+                return _unlockedBacks[UnityEngine.Random.Range(0, _unlockedBacks.Count)];
+
+            case BodyPartType.Tail:
+                return _unlockedTails[UnityEngine.Random.Range(0, _unlockedTails.Count)];
+
         }
 
         return null;
@@ -194,12 +205,27 @@ public class CreatureManager : MonoBehaviour
             .Where(entry => entry.bodyPartType == BodyPartType.Legs)
             .Select(partEntry => partEntry.bodyPart)
             .ToList();
-    }
-    
-    public Color GetRandomColor()
-    {
-        Color headColor = creatureColors[UnityEngine.Random.Range(0, creatureColors.Length)];
-        return headColor;
+
+        _unlockedTopHeads = bodyPartSets
+            .Where(set => set.unlocked)
+            .SelectMany(set => set.bodyPartEntries)
+            .Where(entry => entry.bodyPartType == BodyPartType.TopHead)
+            .Select(partEntry => partEntry.bodyPart)
+            .ToList();
+
+        _unlockedBacks = bodyPartSets
+            .Where(set => set.unlocked)
+            .SelectMany(set => set.bodyPartEntries)
+            .Where(entry => entry.bodyPartType == BodyPartType.Back)
+            .Select(partEntry => partEntry.bodyPart)
+            .ToList();
+
+        _unlockedTails = bodyPartSets
+            .Where(set => set.unlocked)
+            .SelectMany(set => set.bodyPartEntries)
+            .Where(entry => entry.bodyPartType == BodyPartType.Tail)
+            .Select(partEntry => partEntry.bodyPart)
+            .ToList();
     }
 
     public void CheckCollectedParts(Creature newCreature)

@@ -46,8 +46,6 @@ public class InventoryManager : MonoBehaviour
             creatureBattleSlots = value;
         }
     }
-
-
     public Creature CreatureInspectorLeft 
     { get => creatureInspectorLeft; set => creatureInspectorLeft = value; }
 

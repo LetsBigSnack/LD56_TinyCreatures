@@ -14,14 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyPartEntries:
   - bodyPartType: 0
-    bodyPart: {fileID: 11400000, guid: d6f20d4aadb40c5f9a9fae12261b7441, type: 2}
+    bodyPart: {fileID: 11400000, guid: d4c774e252d93734b9f406db1d25276b, type: 2}
   - bodyPartType: 1
-    bodyPart: {fileID: 11400000, guid: 1a0da3112545a833ca07fd44c1248f9b, type: 2}
+    bodyPart: {fileID: 11400000, guid: 4a07fb791fd827b44b9413116cdd0adf, type: 2}
   - bodyPartType: 2
-    bodyPart: {fileID: 11400000, guid: 0022800213fa48ee0bd192fd3a96f0ed, type: 2}
+    bodyPart: {fileID: 11400000, guid: b336c543d446c194e8cb387a6fdcc831, type: 2}
   - bodyPartType: 3
-    bodyPart: {fileID: 11400000, guid: a5b1966e7198cca03b2e71964bcc3c24, type: 2}
-  unlocked: 0
-  unlockedByDefault: 0
+    bodyPart: {fileID: 11400000, guid: 1bc9c39d905b2764db05b35b7b70daf4, type: 2}
+  - bodyPartType: 4
+    bodyPart: {fileID: 11400000, guid: b18a432d0b2565947b740c1454eb9802, type: 2}
+  - bodyPartType: 5
+    bodyPart: {fileID: 11400000, guid: 5b8b20d41d9e7b54fbdcf44fd3be2eca, type: 2}
+  - bodyPartType: 6
+    bodyPart: {fileID: 11400000, guid: fa855f75a6eaea6438d1c6c1ab330fca, type: 2}
+  unlocked: 1
+  unlockedByDefault: 1
   setName: Type 8
   setText: Unlocked after reseting 5 times!

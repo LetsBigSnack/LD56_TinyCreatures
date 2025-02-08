@@ -127,27 +127,17 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     
 
     // Create a "color pod" from all body parts of both parents
-    List<Color> colorPod = new List<Color>
+    List<Color32[]> colorPod = new List<Color32[]>
     {
-        parent1.Representation.HeadColor,
-        parent1.Representation.BodyColor,
-        parent1.Representation.LegsColor,
-        parent1.Representation.ArmsColor,
-        parent2.Representation.HeadColor,
-        parent2.Representation.BodyColor,
-        parent2.Representation.LegsColor,
-        parent2.Representation.ArmsColor,
-
+        parent1.Representation.BaseColor,
+        parent1.Representation.AddOnColor,
+        parent2.Representation.BaseColor,
+        parent2.Representation.AddOnColor,
     };
 
     // Randomly assign colors from the pod to the new creature's body parts
-    Color newHeadColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor() : colorPod[Random.Range(0, colorPod.Count)];
-    Color newBodyColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor() : colorPod[Random.Range(0, colorPod.Count)];
-    Color newArmsColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor()  : colorPod[Random.Range(0, colorPod.Count)];
-    Color newLegsColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor()  : colorPod[Random.Range(0, colorPod.Count)];
-    Color newTopHeadColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor() : colorPod[Random.Range(0, colorPod.Count)];
-    Color newBackColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor() : colorPod[Random.Range(0, colorPod.Count)];
-    Color newTailColor = Random.value < randomChance ? CreatureManager.Instance.GetRandomColor() : colorPod[Random.Range(0, colorPod.Count)];
+    Color32[] newBaseColor = Random.value < randomChance ? ColorManager.Instance.GetRandomBaseColorArray() : colorPod[Random.Range(0, colorPod.Count)];
+    Color32[] newAddOnColor = Random.value < randomChance ? ColorManager.Instance.GetRandomAddOnColorArray() : colorPod[Random.Range(0, colorPod.Count)];
 
     // Randomly assign sprites from the parents or use random body parts based on the randomChance
     BodyPart newHeadSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart(BodyPartType.Head) : (Random.value > 0.5f ? parent1.Representation.BodyParts[BodyPartType.Head] : parent2.Representation.BodyParts[BodyPartType.Head]);
@@ -167,8 +157,9 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     bodyParts.Add(BodyPartType.Back, newBackSprite);
     bodyParts.Add(BodyPartType.Tail, newTailSprite);
 
+    Dictionary<BodyPartType, BodyPart> repaintedParts = ColorManager.Instance.CreateNewCreatureColorSprites(bodyParts, newBaseColor, newAddOnColor);
 
-    CreatureRepresentation creatureRepresentation = new CreatureRepresentation(bodyParts, newHeadColor, newBodyColor, newLegsColor, newArmsColor, newTopHeadColor, newBackColor, newTailColor);
+    CreatureRepresentation creatureRepresentation = new CreatureRepresentation(bodyParts, newBaseColor, newAddOnColor);
     BigDecimal lastGeneration = BigDecimal.Max(parent1.CreatureGeneration, parent2.CreatureGeneration) + 1;
     BigDecimal totalWins = parent1.CreatureWins + parent2.CreatureWins;
     

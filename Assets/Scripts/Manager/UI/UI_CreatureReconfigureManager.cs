@@ -18,19 +18,23 @@ public enum BodyPartToggleTypes
     Tail
 }
 
+public class CreatureButtonAttributes
+{
+    public BodyPart bodyPart;
+    public BodyPartType bodyPartType;
+    public Sprite bodyPartSprite;
+}
+
 public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 {
     public static UI_CreatureReconfigureManager Instance;
 
-
     private Creature currentCreature;
-    private CreatureRepresentation currentRepresentation;
+    private Creature reconfigCreature;
 
     [SerializeField] private UICreatureButton creatureButton;
 
-    [SerializeField] private BodyPartToggleTypes currentToggle = BodyPartToggleTypes.TopHead;
-
-    [SerializeField] private BodyPart lastSelectedBodyPart;
+    [SerializeField] private BodyPartToggleTypes currentToggle;
 
     [SerializeField] private GameObject uiBodyPartItemPrefab;
     [SerializeField] private Transform scrollViewContent;
@@ -39,14 +43,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
     [SerializeField] private Image bodyPartPreviewImage;
     [SerializeField] private Sprite bodyPartPreviewBaseImage;
     [SerializeField] private TextMeshProUGUI noDataText;
-
-    [SerializeField] private BodyPart curTopHead;
-    [SerializeField] private BodyPart curHead;
-    [SerializeField] private BodyPart curBody;
-    [SerializeField] private BodyPart curArms;
-    [SerializeField] private BodyPart curLegs;
-    [SerializeField] private BodyPart curTail;
-    [SerializeField] private BodyPart curBack;
+    [SerializeField] private TextMeshProUGUI noCreatureInConfigureText;
 
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI bodyPartTypeText;
@@ -63,13 +60,21 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
     [SerializeField] private TextMeshProUGUI previewCrtValueText;
     [SerializeField] private TextMeshProUGUI previewSpdValueText;
 
-    [SerializeField] private List<UI_CreaturePart_Item> topHeadButtons;
-    [SerializeField] private List<UI_CreaturePart_Item> headButtons;
-    [SerializeField] private List<UI_CreaturePart_Item> bodyButtons;
-    [SerializeField] private List<UI_CreaturePart_Item> armsButtons;
-    [SerializeField] private List<UI_CreaturePart_Item> legsButtons;
-    [SerializeField] private List<UI_CreaturePart_Item> backButtons;
-    [SerializeField] private List<UI_CreaturePart_Item> tailButtons;
+    [SerializeField] private List<CreatureButtonAttributes> topHeadButtons = new List<CreatureButtonAttributes>();
+    [SerializeField] private List<CreatureButtonAttributes> headButtons = new List<CreatureButtonAttributes>();
+    [SerializeField] private List<CreatureButtonAttributes> bodyButtons = new List<CreatureButtonAttributes>();
+    [SerializeField] private List<CreatureButtonAttributes> armsButtons = new List<CreatureButtonAttributes>();
+    [SerializeField] private List<CreatureButtonAttributes> legsButtons = new List<CreatureButtonAttributes>();
+    [SerializeField] private List<CreatureButtonAttributes> backButtons = new List<CreatureButtonAttributes>();
+    [SerializeField] private List<CreatureButtonAttributes> tailButtons = new List<CreatureButtonAttributes>();
+
+    [SerializeField] private List<GameObject> currentlyDisplayedButtons;
+
+    public BodyPartToggleTypes CurrentToggle
+    {
+        get => currentToggle;
+        set => currentToggle = value;
+    }
 
     private void Awake()
     {
@@ -85,8 +90,91 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
     private void OnEnable()
     {
+        InitialSetup();
+    }
+
+    private void InitialSetup()
+    {
         ReconfigureManager.Instance.ClearEntries();
-        ReconfigureManager.Instance.CreateEntries(); 
+        ReconfigureManager.Instance.CreateEntries();
+        currentCreature = InventoryManager.Instance.SelectedCreatureForReConfigure;
+        reconfigCreature = SetReconfigureCreature(InventoryManager.Instance.SelectedCreatureForReConfigure);
+        ResetBodyPartStatPreview();
+        ResetCreatureStatPreview();
+        UpdateCreaturePreview(true);
+        UpdateAllButtonLists();
+        CreateButtons(topHeadButtons);
+        currentToggle = BodyPartToggleTypes.TopHead;
+    }
+
+    private void RefreshAfterDrop()
+    {
+        ResetBodyPartStatPreview();
+        ResetCreatureStatPreview();
+        UpdateCreaturePreview(true);
+        UpdateAllButtonLists();
+        CreateButtons(topHeadButtons);
+        currentToggle = BodyPartToggleTypes.TopHead;
+    }
+
+    private Creature SetReconfigureCreature(Creature creature)
+    {
+        if(creature == null)
+        {
+            return null;
+        }
+
+        return new Creature(creature.CreatureGeneration, creature.MaxHealth, creature.CreatureStats, creature.Representation);
+    }
+
+    private void UpdateButtonList(List<BodyPartEntry> bodyPartEntryList, List<CreatureButtonAttributes> creatureButtonList)
+    {
+        foreach (BodyPartEntry bodyPart in bodyPartEntryList)
+        {
+            if (creatureButtonList != null && !creatureButtonList.Exists(c => c.bodyPart == bodyPart.bodyPart) && !creatureButtonList.Exists(c => c.bodyPart.bodyPartName == bodyPart.bodyPart.bodyPartName))
+            {
+                CreatureButtonAttributes newButton = new CreatureButtonAttributes();
+                newButton.bodyPart = bodyPart.bodyPart;
+                newButton.bodyPartType = bodyPart.bodyPartType;
+                newButton.bodyPartSprite = bodyPart.bodyPart.bodyPartSprite;
+                creatureButtonList.Add(newButton);
+            }
+        }
+    }
+
+    private void UpdateAllButtonLists()
+    {
+        var rfm = ReconfigureManager.Instance;
+        UpdateButtonList(rfm.TopHeads, topHeadButtons);
+        UpdateButtonList(rfm.Heads, headButtons);
+        UpdateButtonList(rfm.Bodies, bodyButtons);
+        UpdateButtonList(rfm.Arms, armsButtons);
+        UpdateButtonList(rfm.Legs, legsButtons);
+        UpdateButtonList(rfm.Backs, backButtons);
+        UpdateButtonList(rfm.Tails, tailButtons);
+    }
+
+    private void CreateButtons(List<CreatureButtonAttributes> buttonList)
+    {
+        foreach(CreatureButtonAttributes creaturePartItem in buttonList)
+        {
+            GameObject newButton = Instantiate(uiBodyPartItemPrefab, scrollViewContent, false);
+            newButton.transform.SetParent(scrollViewContent);
+            UI_CreaturePart_Item newButtonComponent = newButton.GetComponent<UI_CreaturePart_Item>();
+            newButtonComponent.BodyPart = creaturePartItem.bodyPart;
+            newButtonComponent.BodyPartType = creaturePartItem.bodyPartType;
+            newButtonComponent.BodyPartImage.sprite = ColorManager.Instance.RepaintSprite(creaturePartItem.bodyPartSprite, currentCreature.Representation.BaseColor, currentCreature.Representation.AddOnColor);
+            currentlyDisplayedButtons.Add(newButton);
+        }
+    }
+
+    private void ClearCurrentlyDisplayedButtonList()
+    {
+        foreach(GameObject button in currentlyDisplayedButtons)
+        {
+            Destroy(button);
+        }
+        currentlyDisplayedButtons.Clear();
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -111,14 +199,17 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
             Withdraw(true);
         }
         InventoryManager.Instance.AddToReconfigure(creature);
+        currentCreature = creature;
+        reconfigCreature = SetReconfigureCreature(creature);
+        reconfigCreature.Representation = creature.Representation;
+        RefreshAfterDrop();
     }
 
     public void Withdraw(bool isExchanged = false)
     {
         if (currentCreature != null)
         {
-            creatureButton.Creature = null;
-            currentCreature = null;
+            CancleReconfiguration();
             if (!isExchanged)
             {
                 SoundManager.Instance.PlaySFX("Click");
@@ -131,91 +222,121 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
     public void ToggleBodyParts(BodyPartToggleTypes toggleTypes)
     {
+        if(currentToggle == toggleTypes)
+        {
+            return;
+        }
+
+        ClearCurrentlyDisplayedButtonList();
+
         switch (toggleTypes)
         {
             case BodyPartToggleTypes.TopHead:
-                //display only topHeads in scrollview
+                CreateButtons(topHeadButtons);
                 break;
             case BodyPartToggleTypes.Head:
-                //display only Heads in scrollview
+                CreateButtons(headButtons);
                 break;
             case BodyPartToggleTypes.Body:
-                //display only body in scrollview
+                CreateButtons(bodyButtons);
                 break;
             case BodyPartToggleTypes.Arms:
-                //display only arms in scrollview
+                CreateButtons(armsButtons);
                 break;
             case BodyPartToggleTypes.Legs:
-                //display only legs in scrollview
+                CreateButtons(legsButtons);
                 break;
             case BodyPartToggleTypes.Back:
-                //display only back in scrollview
+                CreateButtons(backButtons);
                 break;
             case BodyPartToggleTypes.Tail:
-                //display only tails in scrollview
+                CreateButtons(tailButtons);
                 break;
         }
         currentToggle = toggleTypes;
+        UI_InventoryManager.Instance.RefreshInventory();
     }
 
     public void PickPart(BodyPart bodyPart, BodyPartType bodyPartType)
     {
+        if(currentCreature == null)
+        {
+            UI_ToastManager.Instance.CreateToast("Reconfigure Empty!", "Please drag a creature of your choice into the reconfigure to start!");
+            SoundManager.Instance.PlaySFX("Error");
+            return;
+        }
+
         switch (bodyPartType)
         {
             case BodyPartType.Head:
-                currentRepresentation.HeadBodyPart = bodyPart;
+                reconfigCreature.Representation.HeadBodyPart = bodyPart;
                 break;
 
             case BodyPartType.Body:
-                currentRepresentation.BodyBodyPart = bodyPart;
+                reconfigCreature.Representation.BodyBodyPart = bodyPart;
                 break;
 
             case BodyPartType.Arms:
-                currentRepresentation.ArmsBodyPart = bodyPart;
+                reconfigCreature.Representation.ArmsBodyPart = bodyPart;
                 break;
 
             case BodyPartType.Legs:
-                currentRepresentation.LegsBodyPart = bodyPart;
+                reconfigCreature.Representation.LegsBodyPart = bodyPart;
                 break;
 
             case BodyPartType.TopHead:
-                currentRepresentation.TopHeadBodyPart = bodyPart;
+                reconfigCreature.Representation.TopHeadBodyPart = bodyPart;
                 break;
 
             case BodyPartType.Back:
-                currentRepresentation.BackBodyPart = bodyPart;
+                reconfigCreature.Representation.BackBodyPart = bodyPart;
                 break;
 
             case BodyPartType.Tail:
-                currentRepresentation.TailBodyPart = bodyPart;
+                reconfigCreature.Representation.TailBodyPart = bodyPart;
                 break;
         }
-        UpdateCreaturePreview();
+
+        UpdateCreaturePreview(true);
         UpdateCreatureStatPreview();
     }
 
-    private void UpdateCreaturePreview()
+    private void UpdateCreaturePreview(bool initialSetup = false)
     {
+        if(currentCreature == null)
+        {
+            ResetCreatureStatPreview();
+            creaturePreviewSprite.Reset();
+            return;
+        }
+
+        noCreatureInConfigureText.text = "";
         Creature newCreature = new Creature(
-            currentCreature.CreatureGeneration, 
-            currentCreature.MaxHealth, 
-            currentCreature.CreatureStats, 
-            currentRepresentation);
+            currentCreature.CreatureGeneration,
+            currentCreature.MaxHealth,
+            currentCreature.CreatureStats,
+            reconfigCreature.Representation);
+
+        if (initialSetup)
+        {
+            creaturePreviewSprite.SetupInitialRepresentation(newCreature);
+            return;
+        }
 
         creaturePreviewSprite.SetupRepresentation(newCreature);
     }
 
-    public void UpdateBodyPartStatPreview(Sprite sprite, BodyPartType type)
+    public void UpdateBodyPartStatPreview(Sprite sprite, BodyPartType type, BodyPart bodyPart)
     {
         noDataText.text = "";
         bodyPartPreviewImage.sprite = sprite;
-        nameText.text = lastSelectedBodyPart.bodyPartName;
+        nameText.text = bodyPart.bodyPartName;
         bodyPartTypeText.text = type.ToString();
-        bodypartAtkValueText.text = ConcatinateValueText(lastSelectedBodyPart.attackModifier);
-        bodypartDefValueText.text = ConcatinateValueText(lastSelectedBodyPart.defenseModifier);
-        bodypartHpValueText.text = ConcatinateValueText(lastSelectedBodyPart.healthModifier);
-        bodypartCrtValueText.text = ConcatinateValueText(lastSelectedBodyPart.dexterityModifier);
-        bodypartSpdValueText.text = ConcatinateValueText(lastSelectedBodyPart.speedModifier);
+        bodypartAtkValueText.text = ConcatinateValueText(bodyPart.attackModifier);
+        bodypartDefValueText.text = ConcatinateValueText(bodyPart.defenseModifier);
+        bodypartHpValueText.text = ConcatinateValueText(bodyPart.healthModifier);
+        bodypartCrtValueText.text = ConcatinateValueText(bodyPart.dexterityModifier);
+        bodypartSpdValueText.text = ConcatinateValueText(bodyPart.speedModifier);
     }
 
     private string ConcatinateValueText(float value)
@@ -244,7 +365,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
         float spdValue = 0;
         float crtValue = 0;
 
-        foreach(BodyPart bodyPart in currentRepresentation.BodyParts.Values)
+        foreach(BodyPart bodyPart in reconfigCreature.Representation.BodyParts.Values)
         {
             atkValue = atkValue + bodyPart.attackModifier;
             defValue = defValue + bodyPart.defenseModifier;
@@ -262,6 +383,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
     private void ResetCreatureStatPreview()
     {
+        noCreatureInConfigureText.text = "Drag a creature here to start!";
         previewAtkValueText.text = ConcatinateValueText(0);
         previewDefValueText.text = ConcatinateValueText(0);
         previewHpValueText.text = ConcatinateValueText(0);
@@ -273,7 +395,11 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
     {
         if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
         {
-            ReconfigureManager.Instance.ReconfigureSelectedCreature(currentRepresentation);
+            ReconfigureManager.Instance.ReconfigureSelectedCreature(reconfigCreature.Representation);
+            currentCreature = null;
+            reconfigCreature = null;
+            UpdateCreaturePreview();
+            UpdateCreatureStatPreview();
             UI_InventoryManager.Instance.RefreshInventory();
             SoundManager.Instance.PlaySFX("Transaction");
             return;
@@ -285,7 +411,9 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
     {
         if(currentCreature != null)
         {
-            currentRepresentation = currentCreature.Representation;
+            reconfigCreature.Representation = currentCreature.Representation;
+            UpdateCreaturePreview();
+            UpdateCreatureStatPreview();
         }
     }
 
@@ -294,6 +422,11 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
         if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
         {
             ReconfigureManager.Instance.RemoveFromReconfigure();
+            creatureButton.Creature = null;
+            currentCreature = null;
+            reconfigCreature = null;
+            UpdateCreaturePreview();
+            ResetCreatureStatPreview();
             UI_InventoryManager.Instance.RefreshInventory();
             SoundManager.Instance.PlaySFX("Transaction");
             return;

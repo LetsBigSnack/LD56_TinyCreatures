@@ -9,7 +9,25 @@ public class UI_CreaturePart_Item : MonoBehaviour
     [SerializeField] private BodyPartType bodyPartType;
     [SerializeField] private Image bodyPartImage;
 
-    private void OnEnable()
+    public BodyPart BodyPart
+    {
+        get { return bodyPart; }
+        set { bodyPart = value; }
+    }
+
+    public BodyPartType BodyPartType
+    {
+        get { return bodyPartType; }
+        set { bodyPartType = value; }
+    }
+
+    public Image BodyPartImage
+    {
+        get { return bodyPartImage; }
+        set { bodyPartImage = value; }
+    }
+
+    private void Start()
     {
         bodyPartImage.sprite = bodyPart.bodyPartSprite;
     }
@@ -21,7 +39,7 @@ public class UI_CreaturePart_Item : MonoBehaviour
 
     public void OnHover()
     {
-        UI_CreatureReconfigureManager.Instance.UpdateBodyPartStatPreview(bodyPart.bodyPartSprite, bodyPartType);
+        UI_CreatureReconfigureManager.Instance.UpdateBodyPartStatPreview(bodyPart.bodyPartSprite, bodyPartType, bodyPart);
     }
 
     public void OffHover()

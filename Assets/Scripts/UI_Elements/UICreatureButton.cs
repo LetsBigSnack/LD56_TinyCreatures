@@ -13,7 +13,7 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragH
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Transform parentAfterDrag;
     [SerializeField] private bool isDragable = true;
-    private List<ToggleState> dragableStates = new List<ToggleState> { ToggleState.Battle, ToggleState.Materials };
+    private List<ToggleState> dragableStates = new List<ToggleState> { ToggleState.Battle, ToggleState.Materials, ToggleState.ReConfigure };
 
     private SoundManager soundManager;
         
@@ -62,16 +62,6 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragH
             UI_InventoryManager.Instance.RefreshInventory();
             soundManager.PlaySFX("Click");
 
-        }
-
-        if(UI_ToggleManager.Instance.CurrentState == ToggleState.ReConfigure)
-        {
-            if (eventData.button == PointerEventData.InputButton.Left)
-            {
-                InventoryManager.Instance.AddToReconfigure(creature);
-            }
-            UI_InventoryManager.Instance.RefreshInventory();
-            soundManager.PlaySFX("Click");
         }
     }
 
