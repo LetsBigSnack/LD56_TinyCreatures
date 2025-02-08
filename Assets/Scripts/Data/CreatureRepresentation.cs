@@ -8,17 +8,15 @@ namespace Data
     [Serializable]
     public class CreatureRepresentation
     {
-
         private Dictionary<BodyPartType, BodyPart> _bodyParts;
+        private BaseColor _baseColor;
+        private AddOnColor _addOnColor;
 
         public Dictionary<BodyPartType, BodyPart> BodyParts
         {
             get => _bodyParts;
             set => _bodyParts = value;
         }
-
-        private Color32[] _baseColor;
-        private Color32[] _addOnColor;
         
         [JsonIgnore]
         public Sprite HeadSprite
@@ -110,21 +108,20 @@ namespace Data
             set => _bodyParts[BodyPartType.Back] = value;
         }
 
-        [JsonConverter(typeof(ColorHandler))]
-        public Color32[] BaseColor
+        [JsonIgnore]
+        public BaseColor BaseColor
         {
-            get => _baseColor;
-            set => _baseColor = value;
+            get { return _baseColor; }
+            set { _baseColor = value; }
         }
 
-        [JsonConverter(typeof(ColorHandler))]
-        public Color32[] AddOnColor
+        [JsonIgnore]
+        public AddOnColor AddOnColor
         {
-            get => _addOnColor;
-            set => _addOnColor = value;
+            get { return _addOnColor; }
+            set { _addOnColor = value; }
         }
-
-        public CreatureRepresentation(Dictionary<BodyPartType, BodyPart> bodyParts, Color32[] baseColor, Color32[] addOnColor)
+        public CreatureRepresentation(Dictionary<BodyPartType, BodyPart> bodyParts, BaseColor baseColor, AddOnColor addOnColor)
         {
             _bodyParts = bodyParts;
             _baseColor = baseColor;

@@ -95,12 +95,7 @@ public class CreatureManager : MonoBehaviour
         bodyParts.Add(BodyPartType.Back, randomBack);
         bodyParts.Add(BodyPartType.Tail, randomTail);
 
-        Color32[] randomBaseColor = ColorManager.Instance.GetRandomBaseColorArray();
-        Color32[] randomAddOnColor = ColorManager.Instance.GetRandomAddOnColorArray();
-
-        Dictionary<BodyPartType, BodyPart> repaintedParts = ColorManager.Instance.CreateNewCreatureColorSprites(bodyParts, randomBaseColor, randomAddOnColor);
-
-        return new CreatureRepresentation(repaintedParts, randomBaseColor, randomAddOnColor);
+        return new CreatureRepresentation(bodyParts, ColorManager.Instance.RandomBaseColor(), ColorManager.Instance.RandomAddOnColor());
     }
 
     public CreatureStats CreateCreatureStats(BigDecimal definedStatRange, BigDecimal definedStatMin,

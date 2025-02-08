@@ -16,6 +16,7 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragH
     private List<ToggleState> dragableStates = new List<ToggleState> { ToggleState.Battle, ToggleState.Materials, ToggleState.ReConfigure };
 
     private SoundManager soundManager;
+    private PalletSwap palletSwap;
         
     public Creature Creature
     {
@@ -41,6 +42,19 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragH
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         canvas = FindObjectOfType<UI_MainCanvasManager>().GetComponent<Canvas>();
+        palletSwap = GetComponent<PalletSwap>();
+        if(palletSwap != null)
+        {
+            SetupPalletSwap();
+        }
+    }
+
+    private void SetupPalletSwap()
+    {
+        palletSwap.BaseColor = creature.Representation.BaseColor;
+        palletSwap.AddOnColor = creature.Representation.AddOnColor;
+        palletSwap.GetAllImageComponentsInChildren();
+        palletSwap.ApplyNewMaterial();
     }
 
     public void OnPointerClick(PointerEventData eventData)

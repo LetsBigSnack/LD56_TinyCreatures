@@ -20,7 +20,7 @@ public class UI_CreatureSprite : MonoBehaviour
         if (gameObject.GetComponent<UICreatureButton>() != null && gameObject.GetComponent<UICreatureButton>().Creature != null)
         {
             currCreature = gameObject.GetComponent<UICreatureButton>().Creature;
-            SetupInitialRepresentation(currCreature);
+            SetupRepresentation(currCreature);
         }
     }
 
@@ -76,35 +76,6 @@ public class UI_CreatureSprite : MonoBehaviour
         creatureBack.color = new Color(0f, 0f, 0f, 0f);
         creatureTail.sprite = null;
         creatureTail.color = new Color(0f, 0f, 0f, 0f);
-    }
-    
-    public void SetupInitialRepresentation(Creature creature)
-    {
-        if (creature == null)
-        {
-            return;
-        }
-        
-        creatureHead.sprite = ColorManager.Instance.RepaintSprite(creature.Representation.HeadSprite, creature.Representation.BaseColor, creature.Representation.AddOnColor);
-        creatureHead.color = new Color(255f, 255f, 255f, 255f);
-
-        creatureBody.sprite = ColorManager.Instance.RepaintSprite(creature.Representation.BodySprite, creature.Representation.BaseColor, creature.Representation.AddOnColor);
-        creatureBody.color = new Color(255f, 255f, 255f, 255f);
-
-        creatureLegs.sprite = ColorManager.Instance.RepaintSprite(creature.Representation.LegsSprite, creature.Representation.BaseColor, creature.Representation.AddOnColor);
-        creatureLegs.color = new Color(255f, 255f, 255f, 255f);
-
-        creatureArms.sprite = ColorManager.Instance.RepaintSprite(creature.Representation.ArmsSprite, creature.Representation.BaseColor, creature.Representation.AddOnColor);
-        creatureArms.color = new Color(255f, 255f, 255f, 255f);
-
-        creatureTopHead.sprite = ColorManager.Instance.RepaintSprite(creature.Representation.TopHeadSprite, creature.Representation.BaseColor, creature.Representation.AddOnColor);
-        creatureTopHead.color = new Color(255f, 255f, 255f, 255f);
-
-        creatureBack.sprite = ColorManager.Instance.RepaintSprite(creature.Representation.BackSprite, creature.Representation.BaseColor, creature.Representation.AddOnColor);
-        creatureBack.color = new Color(255f, 255f, 255f, 255f);
-
-        creatureTail.sprite = ColorManager.Instance.RepaintSprite(creature.Representation.TailSprite, creature.Representation.BaseColor, creature.Representation.AddOnColor);
-        creatureTail.color = new Color(255f, 255f, 255f, 255f);
     }
 
     public void SetupRepresentation(Creature creature)

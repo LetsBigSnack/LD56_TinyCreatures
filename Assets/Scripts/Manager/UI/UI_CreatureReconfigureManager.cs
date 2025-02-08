@@ -163,7 +163,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
             UI_CreaturePart_Item newButtonComponent = newButton.GetComponent<UI_CreaturePart_Item>();
             newButtonComponent.BodyPart = creaturePartItem.bodyPart;
             newButtonComponent.BodyPartType = creaturePartItem.bodyPartType;
-            newButtonComponent.BodyPartImage.sprite = ColorManager.Instance.RepaintSprite(creaturePartItem.bodyPartSprite, currentCreature.Representation.BaseColor, currentCreature.Representation.AddOnColor);
+            newButtonComponent.BodyPartImage.sprite = creaturePartItem.bodyPartSprite;
             currentlyDisplayedButtons.Add(newButton);
         }
     }
@@ -319,7 +319,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
         if (initialSetup)
         {
-            creaturePreviewSprite.SetupInitialRepresentation(newCreature);
+            creaturePreviewSprite.SetupRepresentation(newCreature);
             return;
         }
 

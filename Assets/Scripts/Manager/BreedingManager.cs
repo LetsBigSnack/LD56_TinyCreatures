@@ -127,17 +127,22 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     
 
     // Create a "color pod" from all body parts of both parents
-    List<Color32[]> colorPod = new List<Color32[]>
+    List<BaseColor> colorPodBase = new List<BaseColor>
     {
         parent1.Representation.BaseColor,
-        parent1.Representation.AddOnColor,
         parent2.Representation.BaseColor,
+
+    };
+
+        List<AddOnColor> colorPodAddOn = new List<AddOnColor>
+    {
+        parent1.Representation.AddOnColor,
         parent2.Representation.AddOnColor,
     };
 
     // Randomly assign colors from the pod to the new creature's body parts
-    Color32[] newBaseColor = Random.value < randomChance ? ColorManager.Instance.GetRandomBaseColorArray() : colorPod[Random.Range(0, colorPod.Count)];
-    Color32[] newAddOnColor = Random.value < randomChance ? ColorManager.Instance.GetRandomAddOnColorArray() : colorPod[Random.Range(0, colorPod.Count)];
+    BaseColor newBaseColor = Random.value < randomChance ? ColorManager.Instance.RandomBaseColor() : colorPodBase[Random.Range(0, colorPodBase.Count)];
+    AddOnColor newAddOnColor = Random.value < randomChance ? ColorManager.Instance.RandomAddOnColor() : colorPodAddOn[Random.Range(0, colorPodAddOn.Count)];
 
     // Randomly assign sprites from the parents or use random body parts based on the randomChance
     BodyPart newHeadSprite = Random.value < randomChance ? CreatureManager.Instance.GetRandomBodyPart(BodyPartType.Head) : (Random.value > 0.5f ? parent1.Representation.BodyParts[BodyPartType.Head] : parent2.Representation.BodyParts[BodyPartType.Head]);
@@ -157,8 +162,6 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     bodyParts.Add(BodyPartType.Back, newBackSprite);
     bodyParts.Add(BodyPartType.Tail, newTailSprite);
 
-    Dictionary<BodyPartType, BodyPart> repaintedParts = ColorManager.Instance.CreateNewCreatureColorSprites(bodyParts, newBaseColor, newAddOnColor);
-
     CreatureRepresentation creatureRepresentation = new CreatureRepresentation(bodyParts, newBaseColor, newAddOnColor);
     BigDecimal lastGeneration = BigDecimal.Max(parent1.CreatureGeneration, parent2.CreatureGeneration) + 1;
     BigDecimal totalWins = parent1.CreatureWins + parent2.CreatureWins;
@@ -168,7 +171,6 @@ public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance p
     float totalAttackModifier = bodyParts.Select(c => c.Value).Sum(t => t.attackModifier);
     float totalDexterityModifier = bodyParts.Select(c => c.Value).Sum(t => t.dexterityModifier);
     float totalDefenseModifier = bodyParts.Select(c => c.Value).Sum(t => t.defenseModifier);
-
     
     // Combine stats from both parents and apply mutation
     BigDecimal newHealth = (parent1.MaxHealth + parent2.MaxHealth) / 2f * MutationFactor(totalHealthModifier);

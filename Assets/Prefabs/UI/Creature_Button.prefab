@@ -314,6 +314,7 @@ GameObject:
   - component: {fileID: 3837123755546262781}
   - component: {fileID: 4740814729668810428}
   - component: {fileID: 8792882132501065738}
+  - component: {fileID: 3444847526976019851}
   - component: {fileID: 8565825482338371458}
   - component: {fileID: 9159522543882503881}
   - component: {fileID: 6393426832433838422}
@@ -537,6 +538,29 @@ MonoBehaviour:
   canvasGroup: {fileID: 0}
   parentAfterDrag: {fileID: 0}
   isDragable: 1
+--- !u!114 &3444847526976019851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2499411820491973088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 239326965550047439f0fc4db9587d82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseColor:
+    BaseColor1: {r: 0, g: 0, b: 0, a: 0}
+    BaseColor2: {r: 0, g: 0, b: 0, a: 0}
+    BaseColor3: {r: 0, g: 0, b: 0, a: 0}
+    BaseColor4: {r: 0, g: 0, b: 0, a: 0}
+  addOnColor:
+    addOnColor1: {r: 0, g: 0, b: 0, a: 0}
+    addOnColor2: {r: 0, g: 0, b: 0, a: 0}
+    addOnColor3: {r: 0, g: 0, b: 0, a: 0}
+  creatureRenderer: []
+  mat: {fileID: 0}
 --- !u!114 &8565825482338371458
 MonoBehaviour:
   m_ObjectHideFlags: 0

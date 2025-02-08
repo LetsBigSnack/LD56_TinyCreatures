@@ -8,7 +8,6 @@ using Random = UnityEngine.Random;
 [Serializable]
 public class Creature
 {
-    
     [Header("Stats")]
     private string _creatureName;
 
