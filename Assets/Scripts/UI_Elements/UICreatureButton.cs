@@ -42,14 +42,14 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragH
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         canvas = FindObjectOfType<UI_MainCanvasManager>().GetComponent<Canvas>();
-        palletSwap = GetComponent<PalletSwap>();
-        if(palletSwap != null)
-        {
-            SetupPalletSwap();
-        }
     }
 
-    private void SetupPalletSwap()
+    private void OnEnable()
+    {
+        palletSwap = GetComponent<PalletSwap>();
+    }
+
+    public void SetupPalletSwap()
     {
         palletSwap.BaseColor = creature.Representation.BaseColor;
         palletSwap.AddOnColor = creature.Representation.AddOnColor;

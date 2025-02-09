@@ -7,8 +7,6 @@ using System;
 
 public class PalletSwap : MonoBehaviour
 {
-    private UICreatureButton uiCreatureButton;
-
     [SerializeField] private BaseColor baseColor;
     [SerializeField] private AddOnColor addOnColor;
 

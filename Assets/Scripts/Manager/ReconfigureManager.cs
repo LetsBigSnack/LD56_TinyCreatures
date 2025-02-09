@@ -42,7 +42,7 @@ public class ReconfigureManager : MonoBehaviour
 
     private void Start()
     {
-        if(InventoryManager.Instance.SelectedCreatureForReConfigure != null)
+        if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
         {
             selectedCreature = InventoryManager.Instance.SelectedCreatureForReConfigure;
         }
@@ -71,10 +71,12 @@ public class ReconfigureManager : MonoBehaviour
             return true;
         }
         return false;
-    }  
+    }
 
     public void CreateEntries()
     {
+        bodyParts = CreatureManager.Instance.BodyPartSets;
+
         heads = bodyParts.SelectMany(bodyPartSet => bodyPartSet.bodyPartEntries).Where(bodyPart => bodyPart.bodyPartType == BodyPartType.Head && bodyPart.bodyPart.collected).ToList();
         bodies = bodyParts.SelectMany(bodyPartSet => bodyPartSet.bodyPartEntries).Where(bodyPart => bodyPart.bodyPartType == BodyPartType.Body && bodyPart.bodyPart.collected).ToList();
         arms = bodyParts.SelectMany(bodyPartSet => bodyPartSet.bodyPartEntries).Where(bodyPart => bodyPart.bodyPartType == BodyPartType.Arms && bodyPart.bodyPart.collected).ToList();

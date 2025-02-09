@@ -399,7 +399,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
             currentCreature = null;
             reconfigCreature = null;
             UpdateCreaturePreview();
-            UpdateCreatureStatPreview();
+            ResetBodyPartStatPreview();
             UI_InventoryManager.Instance.RefreshInventory();
             SoundManager.Instance.PlaySFX("Transaction");
             return;

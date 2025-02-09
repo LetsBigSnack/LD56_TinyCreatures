@@ -34,6 +34,36 @@ public class CreatureManager : MonoBehaviour
         set => bodyPartSets = value.ToArray();
     }
 
+    public List<BodyPart> UnlockedHeads
+    {
+        get { return _unlockedHeads; }
+    }
+
+    public List<BodyPart> UnlockedArms
+    {
+        get { return _unlockedArms; }
+    }
+    public List<BodyPart> UnlockedBodies
+    {
+        get { return _unlockedBodies; }
+    }
+    public List<BodyPart> UnlockedLegs
+    {
+        get { return _unlockedLegs; }
+    }
+    public List<BodyPart> UnlockedTopHead
+    {
+        get { return _unlockedTopHeads; }
+    }
+    public List<BodyPart> UnlockedBacks
+    {
+        get { return _unlockedBacks; }
+    }
+    public List<BodyPart> UnlockedTails
+    {
+        get { return _unlockedTails; }
+    }
+
     private void Awake()
     {
         
