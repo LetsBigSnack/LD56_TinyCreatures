@@ -1,36 +1,56 @@
 Shader "Custom/UI/PaletteSwap" {
     Properties{
         _MainTex("Sprite Texture", 2D) = "white" {}
-        _Grey1("Color of Grey1", Color) = (1,0,0,1)
-        _Grey2("Color of Grey2", Color) = (1,0,0,1)
-        _Grey3("Color of Grey3", Color) = (1,0,0,1)
-        _Grey4("Color of Grey4", Color) = (1,0,0,1)
+        _Grey1("Color of Grey1", Color) = (1, 0, 0, 1)
+        _Grey2("Color of Grey2", Color) = (1, 0, 0, 1)
+        _Grey3("Color of Grey3", Color) = (1, 0, 0, 1)
+        _Grey4("Color of Grey4", Color) = (1, 0, 0, 1)
 
-        _Accent1("Color of Accent1", Color) = (1,0,0,1)
-        _Accent2("Color of Accent2", Color) = (1,0,0,1)
-        _Accent3("Color of Accent3", Color) = (1,0,0,1)
+        _Accent1("Color of Accent1", Color) = (1, 0, 0, 1)
+        _Accent2("Color of Accent2", Color) = (1, 0, 0, 1)
+        _Accent3("Color of Accent3", Color) = (1, 0, 0, 1)
+        _Accent4("Color of Accent4", Color) = (1, 0, 0, 1)
 
-        _Color1("Color for Grey1", Color) = (1,0,0,1)
-        _Color2("Color for Grey2", Color) = (1,0,0,1)
-        _Color3("Color for Grey3", Color) = (1,0,0,1)
-        _Color4("Color for Grey4", Color) = (1,0,0,1)
-        _Color5("Color for Grey5", Color) = (1,0,0,1)
-        _Color6("Color for Grey6", Color) = (1,0,0,1)
-        _Color7("Color for Grey7", Color) = (1,0,0,1)
+        _Color1("Color for Grey1", Color) = (1, 0, 0, 1)
+        _Color2("Color for Grey2", Color) = (1, 0, 0, 1)
+        _Color3("Color for Grey3", Color) = (1, 0, 0, 1)
+        _Color4("Color for Grey4", Color) = (1, 0, 0, 1)
+        _Color5("Color for Grey5", Color) = (1, 0, 0, 1)
+        _Color6("Color for Grey6", Color) = (1, 0, 0, 1)
+        _Color7("Color for Grey7", Color) = (1, 0, 0, 1)
+        _Color8("Color for Grey8", Color) = (1, 0, 0, 1)
 
-        _Tolerance("Color Tolerance", Range(0,0.1)) = 0.01
+        _Tolerance("Color Tolerance", Range(0, 0.1)) = 0.01
+
+            // Stencil and color mask properties
+            _Stencil("Stencil Reference", Int) = 0
+            _StencilComp("Stencil Comparison", Int) = 8
+            _StencilOp("Stencil Operation", Int) = 0
+            _StencilWriteMask("Write Mask", Int) = 255
+            _StencilReadMask("Read Mask", Int) = 255
+            _ColorMask("Color Mask", Int) = 15  // RGBA (default)
     }
 
         SubShader{
             Tags { "Queue" = "Overlay" "RenderType" = "Transparent" "IgnoreProjector" = "True" "Canvas" = "UI" }
             LOD 100
 
-            // Handles alpha blending properly for UI.
             Blend SrcAlpha OneMinusSrcAlpha
             Cull Off
             ZWrite Off
+            ZTest Always
 
             Pass {
+                Stencil {
+                    Ref[_Stencil]
+                    Comp[_StencilComp]
+                    Pass[_StencilOp]
+                    ReadMask[_StencilReadMask]
+                    WriteMask[_StencilWriteMask]
+                }
+
+                ColorMask[_ColorMask]  // Use the color mask property
+
                 CGPROGRAM
                 #pragma vertex vert
                 #pragma fragment frag
@@ -48,9 +68,9 @@ Shader "Custom/UI/PaletteSwap" {
 
                 sampler2D _MainTex;
                 float4 _Grey1, _Grey2, _Grey3, _Grey4;
-                float4 _Accent1, _Accent2, _Accent3;
+                float4 _Accent1, _Accent2, _Accent3, _Accent4;
                 float4 _Color1, _Color2, _Color3, _Color4;
-                float4 _Color5, _Color6, _Color7;
+                float4 _Color5, _Color6, _Color7, _Color8;
                 float _Tolerance;
 
                 v2f vert(appdata v) {
@@ -61,33 +81,38 @@ Shader "Custom/UI/PaletteSwap" {
                 }
 
                 fixed4 frag(v2f i) : SV_Target {
+                    // Sample the original texture color
                     fixed4 col = tex2D(_MainTex, i.uv);
 
-                    if (distance(col.rgb, _Grey1.rgb) < _Tolerance) {
-                        col.rgb = _Color1.rgb;
-                    }
-                    if (distance(col.rgb, _Grey2.rgb) < _Tolerance) {
-                        col.rgb = _Color2.rgb;
-                    }
-                    if (distance(col.rgb, _Grey3.rgb) < _Tolerance) {
-                        col.rgb = _Color3.rgb;
-                    }
-                    if (distance(col.rgb, _Grey4.rgb) < _Tolerance) {
-                        col.rgb = _Color4.rgb;
-                    }
-                    if (distance(col.rgb, _Accent1.rgb) < _Tolerance) {
-                        col.rgb = _Color5.rgb;
-                    }
-                    if (distance(col.rgb, _Accent2.rgb) < _Tolerance) {
-                        col.rgb = _Color6.rgb;
-                    }
-                    if (distance(col.rgb, _Accent3.rgb) < _Tolerance) {
-                        col.rgb = _Color7.rgb;
-                    }
-
-                    return col;
+                // Color replacement logic (no gamma correction here)
+                if (distance(col.rgb, _Grey1.rgb) < _Tolerance) {
+                    col.rgb = _Color1.rgb;
                 }
-                ENDCG
+                if (distance(col.rgb, _Grey2.rgb) < _Tolerance) {
+                    col.rgb = _Color2.rgb;
+                }
+                if (distance(col.rgb, _Grey3.rgb) < _Tolerance) {
+                    col.rgb = _Color3.rgb;
+                }
+                if (distance(col.rgb, _Grey4.rgb) < _Tolerance) {
+                    col.rgb = _Color4.rgb;
+                }
+                if (distance(col.rgb, _Accent1.rgb) < _Tolerance) {
+                    col.rgb = _Color5.rgb;
+                }
+                if (distance(col.rgb, _Accent2.rgb) < _Tolerance) {
+                    col.rgb = _Color6.rgb;
+                }
+                if (distance(col.rgb, _Accent3.rgb) < _Tolerance) {
+                    col.rgb = _Color7.rgb;
+                }
+                if (distance(col.rgb, _Accent4.rgb) < _Tolerance) {
+                    col.rgb = _Color8.rgb;
+                }
+
+                return col;
             }
+            ENDCG
+        }
         }
 }

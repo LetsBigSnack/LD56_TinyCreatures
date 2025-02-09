@@ -18,13 +18,6 @@ public enum BodyPartToggleTypes
     Tail
 }
 
-public class CreatureButtonAttributes
-{
-    public BodyPart bodyPart;
-    public BodyPartType bodyPartType;
-    public Sprite bodyPartSprite;
-}
-
 public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 {
     public static UI_CreatureReconfigureManager Instance;
@@ -60,13 +53,13 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
     [SerializeField] private TextMeshProUGUI previewCrtValueText;
     [SerializeField] private TextMeshProUGUI previewSpdValueText;
 
-    [SerializeField] private List<CreatureButtonAttributes> topHeadButtons = new List<CreatureButtonAttributes>();
-    [SerializeField] private List<CreatureButtonAttributes> headButtons = new List<CreatureButtonAttributes>();
-    [SerializeField] private List<CreatureButtonAttributes> bodyButtons = new List<CreatureButtonAttributes>();
-    [SerializeField] private List<CreatureButtonAttributes> armsButtons = new List<CreatureButtonAttributes>();
-    [SerializeField] private List<CreatureButtonAttributes> legsButtons = new List<CreatureButtonAttributes>();
-    [SerializeField] private List<CreatureButtonAttributes> backButtons = new List<CreatureButtonAttributes>();
-    [SerializeField] private List<CreatureButtonAttributes> tailButtons = new List<CreatureButtonAttributes>();
+    [SerializeField] private List<BodyPartButtonAttributes> topHeadButtons = new List<BodyPartButtonAttributes>();
+    [SerializeField] private List<BodyPartButtonAttributes> headButtons = new List<BodyPartButtonAttributes>();
+    [SerializeField] private List<BodyPartButtonAttributes> bodyButtons = new List<BodyPartButtonAttributes>();
+    [SerializeField] private List<BodyPartButtonAttributes> armsButtons = new List<BodyPartButtonAttributes>();
+    [SerializeField] private List<BodyPartButtonAttributes> legsButtons = new List<BodyPartButtonAttributes>();
+    [SerializeField] private List<BodyPartButtonAttributes> backButtons = new List<BodyPartButtonAttributes>();
+    [SerializeField] private List<BodyPartButtonAttributes> tailButtons = new List<BodyPartButtonAttributes>();
 
     [SerializeField] private List<GameObject> currentlyDisplayedButtons;
 
@@ -88,9 +81,15 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
         }
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         InitialSetup();
+    }
+
+    public void Start()
+    {
+        if (currentCreature == null) return;
+        ApplyColorsToCreatureButton();
     }
 
     private void InitialSetup()
@@ -101,20 +100,28 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
         reconfigCreature = SetReconfigureCreature(InventoryManager.Instance.SelectedCreatureForReConfigure);
         ResetBodyPartStatPreview();
         ResetCreatureStatPreview();
-        UpdateCreaturePreview(true);
         UpdateAllButtonLists();
-        CreateButtons(topHeadButtons);
-        currentToggle = BodyPartToggleTypes.TopHead;
+        ClearCurrentlyDisplayedButtonList();
+        UpdateCreaturePreview();
+        ToggleBodyParts(BodyPartToggleTypes.Head);
     }
 
     private void RefreshAfterDrop()
     {
         ResetBodyPartStatPreview();
         ResetCreatureStatPreview();
-        UpdateCreaturePreview(true);
         UpdateAllButtonLists();
-        CreateButtons(topHeadButtons);
-        currentToggle = BodyPartToggleTypes.TopHead;
+        UpdateCreaturePreview();
+        ApplyColorsToCreatureButton();
+        ToggleBodyParts(BodyPartToggleTypes.Head); 
+    }
+
+    private void ApplyColorsToCreatureButton()
+    {
+        creatureButton.gameObject.GetComponent<PalletSwap>().BaseColor = currentCreature.Representation.BaseColor;
+        creatureButton.gameObject.GetComponent<PalletSwap>().AddOnColor = currentCreature.Representation.AddOnColor;
+        creatureButton.gameObject.GetComponent<PalletSwap>().GetAllImageComponentsInChildren();
+        creatureButton.gameObject.GetComponent<PalletSwap>().ApplyNewMaterial();
     }
 
     private Creature SetReconfigureCreature(Creature creature)
@@ -127,13 +134,13 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
         return new Creature(creature.CreatureGeneration, creature.MaxHealth, creature.CreatureStats, creature.Representation);
     }
 
-    private void UpdateButtonList(List<BodyPartEntry> bodyPartEntryList, List<CreatureButtonAttributes> creatureButtonList)
+    private void UpdateButtonList(List<BodyPartEntry> bodyPartEntryList, List<BodyPartButtonAttributes> creatureButtonList)
     {
         foreach (BodyPartEntry bodyPart in bodyPartEntryList)
         {
             if (creatureButtonList != null && !creatureButtonList.Exists(c => c.bodyPart == bodyPart.bodyPart) && !creatureButtonList.Exists(c => c.bodyPart.bodyPartName == bodyPart.bodyPart.bodyPartName))
             {
-                CreatureButtonAttributes newButton = new CreatureButtonAttributes();
+                BodyPartButtonAttributes newButton = new BodyPartButtonAttributes();
                 newButton.bodyPart = bodyPart.bodyPart;
                 newButton.bodyPartType = bodyPart.bodyPartType;
                 newButton.bodyPartSprite = bodyPart.bodyPart.bodyPartSprite;
@@ -154,9 +161,9 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
         UpdateButtonList(rfm.Tails, tailButtons);
     }
 
-    private void CreateButtons(List<CreatureButtonAttributes> buttonList)
+    private void CreateNonExistendButtons(List<BodyPartButtonAttributes> buttonList)
     {
-        foreach(CreatureButtonAttributes creaturePartItem in buttonList)
+        foreach(BodyPartButtonAttributes creaturePartItem in buttonList)
         {
             GameObject newButton = Instantiate(uiBodyPartItemPrefab, scrollViewContent, false);
             newButton.transform.SetParent(scrollViewContent);
@@ -222,35 +229,30 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
     public void ToggleBodyParts(BodyPartToggleTypes toggleTypes)
     {
-        if(currentToggle == toggleTypes)
-        {
-            return;
-        }
-
         ClearCurrentlyDisplayedButtonList();
 
         switch (toggleTypes)
         {
             case BodyPartToggleTypes.TopHead:
-                CreateButtons(topHeadButtons);
+                CreateNonExistendButtons(topHeadButtons);
                 break;
             case BodyPartToggleTypes.Head:
-                CreateButtons(headButtons);
+                CreateNonExistendButtons(headButtons);
                 break;
             case BodyPartToggleTypes.Body:
-                CreateButtons(bodyButtons);
+                CreateNonExistendButtons(bodyButtons);
                 break;
             case BodyPartToggleTypes.Arms:
-                CreateButtons(armsButtons);
+                CreateNonExistendButtons(armsButtons);
                 break;
             case BodyPartToggleTypes.Legs:
-                CreateButtons(legsButtons);
+                CreateNonExistendButtons(legsButtons);
                 break;
             case BodyPartToggleTypes.Back:
-                CreateButtons(backButtons);
+                CreateNonExistendButtons(backButtons);
                 break;
             case BodyPartToggleTypes.Tail:
-                CreateButtons(tailButtons);
+                CreateNonExistendButtons(tailButtons);
                 break;
         }
         currentToggle = toggleTypes;
@@ -297,11 +299,11 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
                 break;
         }
 
-        UpdateCreaturePreview(true);
+        UpdateCreaturePreview();
         UpdateCreatureStatPreview();
     }
 
-    private void UpdateCreaturePreview(bool initialSetup = false)
+    private void UpdateCreaturePreview()
     {
         if(currentCreature == null)
         {
@@ -316,13 +318,6 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
             currentCreature.MaxHealth,
             currentCreature.CreatureStats,
             reconfigCreature.Representation);
-
-        if (initialSetup)
-        {
-            creaturePreviewSprite.SetupRepresentation(newCreature);
-            return;
-        }
-
         creaturePreviewSprite.SetupRepresentation(newCreature);
     }
 
@@ -393,6 +388,13 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
     public void BuyCreature()
     {
+        if (currentCreature == null)
+        {
+            UI_ToastManager.Instance.CreateToast("Reconfigure Empty!", "Please drag a creature of your choice into the reconfigure to start!");
+            SoundManager.Instance.PlaySFX("Error");
+            return;
+        }
+
         if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
         {
             ReconfigureManager.Instance.ReconfigureSelectedCreature(reconfigCreature.Representation);
@@ -419,6 +421,13 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
     public void CancleReconfiguration()
     {
+        if (currentCreature == null)
+        {
+            UI_ToastManager.Instance.CreateToast("Reconfigure Empty!", "Please drag a creature of your choice into the reconfigure to start!");
+            SoundManager.Instance.PlaySFX("Error");
+            return;
+        }
+
         if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
         {
             ReconfigureManager.Instance.RemoveFromReconfigure();

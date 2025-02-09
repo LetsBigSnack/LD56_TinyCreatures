@@ -108,14 +108,14 @@ namespace Data
             set => _bodyParts[BodyPartType.Back] = value;
         }
 
-        [JsonIgnore]
+        [JsonConverter(typeof(ColorHandler))]
         public BaseColor BaseColor
         {
             get { return _baseColor; }
             set { _baseColor = value; }
         }
 
-        [JsonIgnore]
+        [JsonConverter(typeof(ColorHandler))]
         public AddOnColor AddOnColor
         {
             get { return _addOnColor; }

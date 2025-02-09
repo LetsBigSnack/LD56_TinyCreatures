@@ -3,24 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Newtonsoft.Json;
-
-
-[Serializable]
-public class BaseColor
-{
-    public Color BaseColor1;
-    public Color BaseColor2;
-    public Color BaseColor3;
-    public Color BaseColor4;
-}
-[Serializable]
-public class AddOnColor
-{
-    public Color addOnColor1;
-    public Color addOnColor2;
-    public Color addOnColor3;
-}
-
+using Data;
 
 public class ColorManager : MonoBehaviour
 {
@@ -48,11 +31,13 @@ public class ColorManager : MonoBehaviour
 
     public BaseColor RandomBaseColor()
     {
-        return baseColors[UnityEngine.Random.Range(0, baseColors.Length)];
+        BaseColor newBaseColor = new BaseColor();
+        return newBaseColor = baseColors[UnityEngine.Random.Range(0, baseColors.Length)];
     }
 
     public AddOnColor RandomAddOnColor()
     {
-        return addOnColors[UnityEngine.Random.Range(0, addOnColors.Length)];
+        AddOnColor newAddOnColor = new AddOnColor();
+        return newAddOnColor = addOnColors[UnityEngine.Random.Range(0, addOnColors.Length)];
     }
 }

@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;  // Import for UI components
+using UnityEngine.UI;
 using Newtonsoft.Json;
 using System;
+using Data;
 
 public class PalletSwap : MonoBehaviour
 {
@@ -27,15 +28,18 @@ public class PalletSwap : MonoBehaviour
         set { addOnColor = value; }
     }
 
-    public PalletSwap(BaseColor baseColor, AddOnColor addOnColor)
-    {
-        this.baseColor = baseColor;
-        this.addOnColor = addOnColor;
-    }
-
-    void OnEnable()
+    public void Awake()
     {
         mat = ColorManager.Instance.BaseMaterial;
+    }
+
+    public void Start()
+    {
+        if (gameObject.GetComponent<UICreatureButton>() == null || gameObject.GetComponent<UICreatureButton>().Creature == null) return;
+        baseColor = gameObject.GetComponent<UICreatureButton>().Creature.Representation.BaseColor;
+        addOnColor = gameObject.GetComponent<UICreatureButton>().Creature.Representation.AddOnColor;
+        GetAllImageComponentsInChildren();
+        ApplyNewMaterial();
     }
 
     public void GetAllImageComponentsInChildren()
@@ -59,9 +63,10 @@ public class PalletSwap : MonoBehaviour
         newMat.SetColor("_Color3", baseColor.BaseColor3);
         newMat.SetColor("_Color4", baseColor.BaseColor4);
 
-        newMat.SetColor("_Accent1", addOnColor.addOnColor1);
-        newMat.SetColor("_Accent2", addOnColor.addOnColor2);
-        newMat.SetColor("_Accent3", addOnColor.addOnColor3);
+        newMat.SetColor("_Color5", addOnColor.addOnColor1);
+        newMat.SetColor("_Color6", addOnColor.addOnColor2);
+        newMat.SetColor("_Color7", addOnColor.addOnColor3);
+        newMat.SetColor("_Color8", addOnColor.addOnColor4);
 
         return newMat;
     }

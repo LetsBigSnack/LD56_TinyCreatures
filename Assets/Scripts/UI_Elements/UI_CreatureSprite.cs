@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class UI_CreatureSprite : MonoBehaviour
 {
     private Creature currCreature;
-
     [SerializeField] private Image creatureHead;
     [SerializeField] private Image creatureBody;
     [SerializeField] private Image creatureArms;
@@ -14,16 +13,6 @@ public class UI_CreatureSprite : MonoBehaviour
     [SerializeField] private Image creatureTopHead;
     [SerializeField] private Image creatureBack;
     [SerializeField] private Image creatureTail;
-
-    private void Start()
-    {
-        if (gameObject.GetComponent<UICreatureButton>() != null && gameObject.GetComponent<UICreatureButton>().Creature != null)
-        {
-            currCreature = gameObject.GetComponent<UICreatureButton>().Creature;
-            SetupRepresentation(currCreature);
-        }
-    }
-
     public Image CreatureHead
     {
         get => creatureHead;

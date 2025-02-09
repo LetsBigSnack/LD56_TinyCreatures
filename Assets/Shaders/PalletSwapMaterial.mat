@@ -41,22 +41,30 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _ColorMask: 15
     - _EnableExternalAlpha: 0
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     - _Tolerance: 0.01
     m_Colors:
-    - _Accent1: {r: 0, g: 0, b: 0, a: 0}
-    - _Accent2: {r: 0, g: 0, b: 0, a: 0}
-    - _Accent3: {r: 0, g: 0, b: 0, a: 0}
+    - _Accent1: {r: 0.69803923, g: 0.3215686, b: 0.4, a: 1}
+    - _Accent2: {r: 0.8862746, g: 0.44705886, b: 0.5215686, a: 1}
+    - _Accent3: {r: 0.9647059, g: 0.63529414, b: 0.65882355, a: 1}
+    - _Accent4: {r: 0.3921569, g: 0.21176472, b: 0.29411766, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1: {r: 0, g: 0, b: 0, a: 0}
-    - _Color2: {r: 0, g: 0, b: 0, a: 0}
-    - _Color3: {r: 0, g: 0, b: 0, a: 0}
-    - _Color4: {r: 0, g: 0, b: 0, a: 0}
+    - _Color1: {r: 0, g: 0, b: 0, a: 1}
+    - _Color2: {r: 0, g: 0, b: 0, a: 1}
+    - _Color3: {r: 0, g: 0, b: 0, a: 1}
+    - _Color4: {r: 0, g: 0, b: 0, a: 1}
     - _Color5: {r: 0, g: 0, b: 0, a: 1}
     - _Color6: {r: 0, g: 0, b: 0, a: 1}
     - _Color7: {r: 0, g: 0, b: 0, a: 1}
+    - _Color8: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _Grey1: {r: 0.15294118, g: 0.16862746, b: 0.23137257, a: 1}
+    - _Grey1: {r: 0.27450982, g: 0.2784314, b: 0.38431376, a: 1}
     - _Grey2: {r: 0.41176474, g: 0.40000004, b: 0.50980395, a: 1}
     - _Grey3: {r: 0.6039216, g: 0.5921569, b: 0.7254902, a: 1}
     - _Grey4: {r: 0.7725491, g: 0.7803922, b: 0.86666673, a: 1}
