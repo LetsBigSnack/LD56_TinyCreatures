@@ -10,7 +10,6 @@ public class UI_BattleManager : MonoBehaviour
 {
     public static UI_BattleManager Instance;
     
-    [SerializeField] private UI_CreatureSprite battleCreatureSpriteDetails;
     [SerializeField] private UI_CreatureDetailsText battleCreatureDetails;
 
     [SerializeField] private GameObject nextBattleButton;
@@ -23,6 +22,17 @@ public class UI_BattleManager : MonoBehaviour
 
     [SerializeField] private Slider enemyHealthSlider;
     [SerializeField] private Slider enemyTimeSlider;
+
+    [SerializeField] private UI_CreatureSprite attackSprite;
+    [SerializeField] private UI_CreatureSprite healSprite;
+    [SerializeField] private UI_CreatureSprite defenseSprite;
+
+    [SerializeField] private UI_BattleSlotHelper attackSlot;
+    [SerializeField] private UI_BattleSlotHelper healSlot;
+    [SerializeField] private UI_BattleSlotHelper defenseSlot;
+
+    [SerializeField] private GameObject onHoverObj;
+    [SerializeField] private GameObject offHoverObj;
 
     private SoundManager soundManager;
 
@@ -82,7 +92,9 @@ public class UI_BattleManager : MonoBehaviour
     {
         UI_BattleCreatureItem battleCreature = ReturnBattleSlotItem(type) ?? null;
 
-        if(battleCreature == null)
+        SetBattleCreatureRepresentation(type, InventoryManager.Instance.CreatureBattleSlots[type]);
+
+        if (battleCreature == null)
         {
             return;
         }
@@ -142,19 +154,21 @@ public class UI_BattleManager : MonoBehaviour
         {
             return;
         }
-        battleCreatureSpriteDetails.SetupRepresentation(battleCreature?.CurrentCreature);
+        offHoverObj.SetActive(false);
+        onHoverObj.SetActive(true);
         battleCreatureDetails.SetupRepresentation(battleCreature?.CurrentCreature);
     }
 
     public void OffHoverBattleCreature()
     {
+        onHoverObj.SetActive(false);
+        offHoverObj.SetActive(true);
         Refresh();
     }
 
     public void Refresh()
     {
         battleCreatureDetails?.Reset();
-        battleCreatureSpriteDetails?.Reset();
         
         UI_InventoryManager.Instance.RefreshInventory();
     }
@@ -172,12 +186,35 @@ public class UI_BattleManager : MonoBehaviour
             ReturnBattleSlotItem(CreatureBattleSlot.Heal).CurrentCreature = null;
         
             CheckAllSlotsRepresentation();
-            
+            SetAllBattleSlotEmpty();
         }
         else
         {
             SoundManager.Instance.PlaySFX("Error");
         }
+    }
+
+    public void SetAllBattleSlotEmpty()
+    {
+        attackSlot.SetEmpty();
+        healSlot.SetEmpty();
+        defenseSlot.SetEmpty();
+    }
+
+    public void SetBattleSlotEmpty(CreatureBattleSlot slot)
+    {
+        switch(slot)
+        {
+            case CreatureBattleSlot.Attack:
+                attackSlot.SetEmpty();
+                break;
+            case CreatureBattleSlot.Defense:
+                defenseSlot.SetEmpty(); 
+                break;
+            case CreatureBattleSlot.Heal:
+                healSlot.SetEmpty(); 
+                break;
+        } 
     }
 
     public void SwitchAutoBattle()
@@ -208,6 +245,36 @@ public class UI_BattleManager : MonoBehaviour
     {
         BattleManager.Instance.NextBattle();
     }
-    
+
+    public void SetBattleCreatureRepresentation(CreatureBattleSlot battleSlot, Creature creature)
+    {
+        if(creature == null)
+        {
+            ReturnSpriteSlot(battleSlot).Reset();
+            return;
+        }
+
+        ReturnSpriteSlot(battleSlot).SetupRepresentation(creature);
+    }
+
+    public UI_CreatureSprite ReturnSpriteSlot(CreatureBattleSlot battleSlot)
+    {
+        UI_CreatureSprite returnSprite = new UI_CreatureSprite();
+
+        switch (battleSlot)
+        {
+            case CreatureBattleSlot.Attack:
+                 returnSprite = attackSprite;
+                break;
+            case CreatureBattleSlot.Defense:
+                 returnSprite = defenseSprite;
+                break;
+            case CreatureBattleSlot.Heal:
+                 returnSprite = healSprite;
+                break;
+        }
+
+        return returnSprite;
+    }
     
 }

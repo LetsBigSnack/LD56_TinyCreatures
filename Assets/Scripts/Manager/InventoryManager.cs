@@ -352,6 +352,8 @@ public class InventoryManager : MonoBehaviour
             
             creatureBattleSlots[battleSlot] = creature;
             
+            UI_BattleManager.Instance.SetBattleCreatureRepresentation(battleSlot, creature);
+
             RemoveCreature(creature);
             
         }

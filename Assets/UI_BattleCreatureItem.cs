@@ -80,6 +80,8 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
         {
             currentCreature = null;
             ResetCreatureRepresentation();
+            UI_BattleManager.Instance.SetBattleSlotEmpty(creatureBattleSlot);
+            UI_BattleManager.Instance.SetBattleCreatureRepresentation(creatureBattleSlot, currentCreature);
             SoundManager.Instance.PlaySFX("Click");
             retreatButton.interactable = false;
         }

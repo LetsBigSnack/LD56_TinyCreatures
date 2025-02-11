@@ -13,8 +13,6 @@ public class UI_BattleDisplayManager : MonoBehaviour
  
     public static UI_BattleDisplayManager Instance;
     
-    
-    [SerializeField] private UI_CreatureSprite battleCreatureSprite;
     [SerializeField] private UI_CreatureSprite enemyCreatureSprite;
     [SerializeField] private GameObject attackPrefab;
     [SerializeField] private GameObject critPrefab;
@@ -24,7 +22,9 @@ public class UI_BattleDisplayManager : MonoBehaviour
     [SerializeField] private Slider enemyHealthBar;
     [SerializeField] private TextMeshProUGUI playerPL;
     [SerializeField] private TextMeshProUGUI enemyPL;
-    
+
+    [SerializeField] private UI_CreatureSprite enemySprite;
+
     private void Awake()
     {
         if (Instance != null)
@@ -39,7 +39,7 @@ public class UI_BattleDisplayManager : MonoBehaviour
 
     private void OnEnable()
     {
-        
+
     }
 
     private void OnDisable()
@@ -65,7 +65,7 @@ public class UI_BattleDisplayManager : MonoBehaviour
             enemyHealthBar.value = (float)healthPercentage;
             enemyPL.text = enemyCreature.CreatureStats.PowerLevel.ToNumberSuffix(false);
         }
-        enemyCreatureSprite.SetupRepresentation(enemyCreature);
+        SetEnemyCreatureRepresentation(enemyCreature);
     }
     
     public void CreateDamagePopUp(string text, bool isCrit, Creature creature)
@@ -104,4 +104,17 @@ public class UI_BattleDisplayManager : MonoBehaviour
         Destroy(attackEntry, 1);
         return;
     }
+
+    public void SetEnemyCreatureRepresentation(Creature creature)
+    {
+        if (creature == null)
+        {
+            enemySprite.Reset();
+            enemyCreatureSprite.Reset();
+            return;
+        }
+        enemyCreatureSprite.SetupRepresentation(creature);
+        enemySprite.SetupRepresentation(creature);
+    }
+
 }
