@@ -14,8 +14,6 @@ public class UICreatureButton : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     [SerializeField] private Transform parentAfterDrag;
     [SerializeField] private bool isDragable = true;
     private List<ToggleState> dragableStates = new List<ToggleState> { ToggleState.Battle, ToggleState.Materials, ToggleState.ReConfigure, ToggleState.Inspector };
-
-    private SoundManager soundManager;
         
     public Creature Creature
     {
@@ -37,7 +35,6 @@ public class UICreatureButton : MonoBehaviour, IBeginDragHandler, IEndDragHandle
 
     private void Awake()
     {
-        soundManager = FindObjectOfType<SoundManager>();
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         canvas = FindObjectOfType<UI_MainCanvasManager>().GetComponent<Canvas>();

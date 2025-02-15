@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class UI_FuseManager : MonoBehaviour
 {
+   [SerializeField] private UICreatureButton creatureButton;
    [SerializeField] private UI_CreatureSprite fuseSprite;
    [SerializeField] private UI_CreatureDetailsText fuseDetailsText;
    
@@ -24,10 +25,19 @@ public class UI_FuseManager : MonoBehaviour
       {
          fuseSprite.SetupRepresentation(creature);
          fuseDetailsText.SetupRepresentation(creature);
+         ApplyColorsToCreatureButton(creature);
       }
    }
 
-   public void CollectCreature()
+    private void ApplyColorsToCreatureButton(Creature creature)
+    {
+        creatureButton.gameObject.GetComponent<PalletSwap>().BaseColor = creature.Representation.BaseColor;
+        creatureButton.gameObject.GetComponent<PalletSwap>().AddOnColor = creature.Representation.AddOnColor;
+        creatureButton.gameObject.GetComponent<PalletSwap>().GetAllImageComponentsInChildren();
+        creatureButton.gameObject.GetComponent<PalletSwap>().ApplyNewMaterial();
+    }
+
+    public void CollectCreature()
    {
       if (BreedingManager.Instance.Collect())
       {

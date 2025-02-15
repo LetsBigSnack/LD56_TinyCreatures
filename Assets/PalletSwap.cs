@@ -28,11 +28,6 @@ public class PalletSwap : MonoBehaviour
         set { addOnColor = value; }
     }
 
-    public void Awake()
-    {
-        mat = ColorManager.Instance.BaseMaterial;
-    }
-
     public void Start()
     {
         if (gameObject.GetComponent<UICreatureButton>() == null || gameObject.GetComponent<UICreatureButton>().Creature == null) return;
@@ -51,12 +46,13 @@ public class PalletSwap : MonoBehaviour
     {
         foreach (Image img in creatureImages)
         {
-            img.material = SwapPallet(mat);
+            img.material = SwapPallet();
         }
     }
 
-    public Material SwapPallet(Material mat)
+    public Material SwapPallet()
     {
+        mat = ColorManager.Instance.BaseMaterial;
         Material newMat = Instantiate(mat);
         newMat.SetColor("_Color1", baseColor.BaseColor1);
         newMat.SetColor("_Color2", baseColor.BaseColor2);
