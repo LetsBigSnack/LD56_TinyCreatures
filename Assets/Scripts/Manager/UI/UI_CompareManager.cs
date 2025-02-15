@@ -5,14 +5,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+
 public class UI_CompareManager : MonoBehaviour
 {
     public static UI_CompareManager Instance;
     
     [SerializeField] private UI_CreatureSprite leftCreatureSprite;
+    [SerializeField] private UICreatureButton leftCreatureButton;
     [SerializeField] private UI_CreatureSprite rightCreatureSprite;
+    [SerializeField] private UICreatureButton rightCreatureButton;
     [SerializeField] private UI_CreatureDetailsText leftCreatureDetails;
     [SerializeField] private UI_CreatureDetailsText rightCreatureDetails;
+
 
     private SoundManager soundManager;
 
@@ -36,6 +40,8 @@ public class UI_CompareManager : MonoBehaviour
 
     public void SetInspector()
     {
+        leftCreatureButton.Creature = null;
+        rightCreatureButton.Creature = null;
         leftCreatureSprite.Reset();
         rightCreatureSprite.Reset();
         leftCreatureDetails.Reset();
@@ -46,6 +52,7 @@ public class UI_CompareManager : MonoBehaviour
         
         if (left != null)
         {
+            leftCreatureButton.Creature = left;
             leftCreatureSprite.SetupRepresentation(left);
             leftCreatureDetails.SetupRepresentation(left);
             leftCreatureDetails.CompareColor(left, right);
@@ -53,23 +60,13 @@ public class UI_CompareManager : MonoBehaviour
         }
         if (right != null)
         {
+            leftCreatureButton.Creature = right;
             rightCreatureSprite.SetupRepresentation(right);
             rightCreatureDetails.SetupRepresentation(right);
             rightCreatureDetails.CompareColor(right, left);
         }
-        //Left / Button handle 
     }
 
-    public void SetToBreedPod()
-    {
-        //add creature to the breedPod
-    }
-
-    public void SetAsActiveFightingCreature() {
-        //add creature to the current fight
-    }
-    
-    
     //TODO: check if all the logic is needed
     public void SellCreatureToShop(bool isLeft)
     {
@@ -184,5 +181,4 @@ public class UI_CompareManager : MonoBehaviour
     }
 
 
-    
 }

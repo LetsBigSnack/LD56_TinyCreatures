@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class UICreatureButton : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     [SerializeField] private Canvas canvas;
     private Creature creature;
@@ -13,7 +13,7 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragH
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Transform parentAfterDrag;
     [SerializeField] private bool isDragable = true;
-    private List<ToggleState> dragableStates = new List<ToggleState> { ToggleState.Battle, ToggleState.Materials, ToggleState.ReConfigure };
+    private List<ToggleState> dragableStates = new List<ToggleState> { ToggleState.Battle, ToggleState.Materials, ToggleState.ReConfigure, ToggleState.Inspector };
 
     private SoundManager soundManager;
         
@@ -41,28 +41,6 @@ public class UICreatureButton : MonoBehaviour, IPointerClickHandler, IBeginDragH
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         canvas = FindObjectOfType<UI_MainCanvasManager>().GetComponent<Canvas>();
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-
-        if (UI_ToggleManager.Instance.CurrentState == ToggleState.Inspector)
-        {
-            // Detect left click
-            if (eventData.button == PointerEventData.InputButton.Left)
-            {
-                InventoryManager.Instance.SelectCreatureLeft(creature);
-            }
-            // Detect right click
-            else if (eventData.button == PointerEventData.InputButton.Right)
-            {
-                InventoryManager.Instance.SelectCreatureRight(creature);
-            }
-            UI_CompareManager.Instance.SetInspector();
-            UI_InventoryManager.Instance.RefreshInventory();
-            soundManager.PlaySFX("Click");
-
-        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
