@@ -107,6 +107,11 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public Creature IsCreatureSlotEmpty(CreatureBattleSlot type)
+    {
+        return creatureBattleSlots[type];
+    }
+
     public bool AddCreature(Creature newCreature)
     {
         if (newCreature != null && !inventoryCreatures.Contains(newCreature))

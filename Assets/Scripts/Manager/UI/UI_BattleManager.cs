@@ -103,6 +103,7 @@ public class UI_BattleManager : MonoBehaviour
         {
             battleCreature.ResetCreatureRepresentation();
             battleCreature.RetreatButton.interactable = false;
+            ReturnBattleSlotHelper(type).SetEmpty();
             return;
         }
         battleCreature.SetCreatureRepresentation(battleCreature.CurrentCreature);
@@ -136,9 +137,31 @@ public class UI_BattleManager : MonoBehaviour
         return uiBattleCreatureItem;
     }
 
+    private UI_BattleSlotHelper ReturnBattleSlotHelper(CreatureBattleSlot type)
+    {
+        UI_BattleSlotHelper uiBattleCreatureItem = null;
+        switch (type)
+        {
+            case CreatureBattleSlot.Attack:
+                uiBattleCreatureItem = attackSlot;
+                break;
+            case CreatureBattleSlot.Heal:
+                uiBattleCreatureItem = healSlot;
+                break;
+            case CreatureBattleSlot.Defense:
+                uiBattleCreatureItem = defenseSlot;
+                break;
+        }
+        return uiBattleCreatureItem;
+    }
+
     private void UpdateEnemyHealthSlider(float amount)
     {
         enemyHealthSlider.value = amount;
+        if(amount <= 0)
+        {
+            UI_BattleInventoryManager.Instance.Enemy.ToggleActiveState();
+        }
     }
 
     private void UpdateEnemyTimeSlider(float amount)
@@ -255,6 +278,7 @@ public class UI_BattleManager : MonoBehaviour
         }
 
         ReturnSpriteSlot(battleSlot).SetupRepresentation(creature);
+        UI_BattleInventoryManager.Instance.ReturnedBattleInventoryItem(battleSlot).ToggleActiveState();
     }
 
     public UI_CreatureSprite ReturnSpriteSlot(CreatureBattleSlot battleSlot)

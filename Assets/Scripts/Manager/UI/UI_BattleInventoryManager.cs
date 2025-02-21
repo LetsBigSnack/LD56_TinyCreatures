@@ -7,17 +7,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class UI_BattleInventoryManager : MonoBehaviour
 {
     public static UI_BattleInventoryManager Instance;
-    [SerializeField] private UI_CreatureSprite battleCreatureSprite;
-    [SerializeField] private UI_CreatureSprite enemyCreatureSprite;
-    [SerializeField] private GameObject playerObject;
-    [SerializeField] private GameObject enemyObject;
-    [SerializeField] private Slider playerHealthBar;
-    [SerializeField] private Slider enemyHealthBar;
-    [SerializeField] private TextMeshProUGUI playerPL;
-    [SerializeField] private TextMeshProUGUI enemyPL;
+    [SerializeField] private List<UI_BattleInventoryItem> uiCreatureItem;
+    [SerializeField] private UI_BattleInventoryItem enemyItem;
+
+    public UI_BattleInventoryItem Enemy
+    {
+        get { return enemyItem; }
+    }
 
     private void Awake()
     {
@@ -31,39 +31,65 @@ public class UI_BattleInventoryManager : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void OnEnable()
     {
-        //TODO:rework
-        Creature battleCreature = InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack];
-        Creature enemyCreature = BattleManager.Instance.EnemyCreature;
-
-        if (battleCreature == null)
-        {
-            playerObject.SetActive(false);
-        }
-        else
-        {
-            playerObject.SetActive(true);
-            BigDecimal healthPercentage = battleCreature.CurrentHealth.Round(3) / battleCreature.MaxHealth.Round(3);
-            playerHealthBar.maxValue = 1;
-            playerHealthBar.value = (float)healthPercentage;
-            playerPL.text = battleCreature.CreatureStats.PowerLevel.ToNumberSuffix(false);
-        }
-
-        if (enemyCreature == null)
-        {
-            enemyObject.SetActive(false);
-        }
-        else
-        {
-            enemyObject.SetActive(true);
-            BigDecimal healthPercentage = enemyCreature.CurrentHealth.Round(3) / enemyCreature.MaxHealth.Round(3);
-            enemyHealthBar.maxValue = 1;
-            enemyHealthBar.value = (float)healthPercentage;
-            enemyPL.text = enemyCreature.CreatureStats.PowerLevel.ToNumberSuffix(false);
-        }
-
-        battleCreatureSprite.SetupRepresentation(battleCreature);
-        enemyCreatureSprite.SetupRepresentation(enemyCreature);
+        BattleManager.OnCreatureHealthChanged += UpdateHealthSlider;
+        BattleManager.OnCreatureShieldChanged += UpdateShieldSlider;
+        BattleManager.OnCreatureTimeChanged += UpdateTimeSlider;
+        BattleManager.OnEnemyHealthChanged += UpdateEnemyHealthSlider;
+        BattleManager.OnEnemyTimeChanged += UpdateEnemyTimeSlider;
     }
+
+    private void OnDisable()
+    {
+        BattleManager.OnCreatureHealthChanged -= UpdateHealthSlider;
+        BattleManager.OnCreatureShieldChanged -= UpdateShieldSlider;
+        BattleManager.OnCreatureTimeChanged -= UpdateTimeSlider;
+        BattleManager.OnEnemyHealthChanged -= UpdateEnemyHealthSlider;
+        BattleManager.OnEnemyTimeChanged -= UpdateEnemyTimeSlider;
+    }
+
+    private void UpdateEnemyHealthSlider(float amount)
+    {
+        enemyItem.UpdateHealthSlider(amount);
+    }
+
+    private void UpdateEnemyTimeSlider(float amount)
+    {
+        enemyItem.UpdateTimeSlider(amount);
+    }
+
+    private void UpdateHealthSlider(float amount, CreatureBattleSlot type)
+    {
+        ReturnedBattleInventoryItem(type).UpdateHealthSlider(amount);
+    }
+
+    private void UpdateShieldSlider(float amount, CreatureBattleSlot type)
+    {
+        ReturnedBattleInventoryItem(type).UpdateShieldSlider(amount);
+    }
+    private void UpdateTimeSlider(float amount, CreatureBattleSlot type)
+    {
+        ReturnedBattleInventoryItem(type).UpdateTimeSlider(amount);
+    }
+
+    public UI_BattleInventoryItem ReturnedBattleInventoryItem(CreatureBattleSlot type)
+    {
+        UI_BattleInventoryItem currentItem = null;
+        switch (type)
+        {
+            case CreatureBattleSlot.Attack:
+                currentItem = uiCreatureItem.Find(c => c.Type == CreatureBattleSlot.Attack);
+                break;
+            case CreatureBattleSlot.Defense:
+                currentItem = uiCreatureItem.Find(c => c.Type == CreatureBattleSlot.Defense);
+                break;
+            case CreatureBattleSlot.Heal:
+                currentItem = uiCreatureItem.Find(c => c.Type == CreatureBattleSlot.Heal);
+                break;
+        }
+
+        return currentItem;
+    }
+
 }
