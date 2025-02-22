@@ -28,10 +28,11 @@ public class UI_BattleSlotHelper : MonoBehaviour, IDropHandler
         {
             SetFull();
             activeSlot.GetComponentInChildren<UI_BattleCreatureItem>().OnDrop(eventData);
+            UI_BattleManager.Instance.ResetSlider(slotType);
             return;
         }
-
         activeSlot.GetComponentInChildren<UI_BattleCreatureItem>().OnDrop(eventData);
+        UI_BattleManager.Instance.ResetSlider(slotType);
     }
 
     public void InitialSetup()

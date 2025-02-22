@@ -16,12 +16,10 @@ public class UI_BattleDisplayManager : MonoBehaviour
     [SerializeField] private UI_CreatureSprite enemyCreatureSprite;
     [SerializeField] private GameObject attackPrefab;
     [SerializeField] private GameObject critPrefab;
-    [SerializeField] private GameObject playerObject;
     [SerializeField] private GameObject enemyObject;
-    [SerializeField] private Slider playerHealthBar;
     [SerializeField] private Slider enemyHealthBar;
-    [SerializeField] private TextMeshProUGUI playerPL;
     [SerializeField] private TextMeshProUGUI enemyPL;
+    [SerializeField] private TextMeshProUGUI enemyName;
 
     [SerializeField] private UI_CreatureSprite enemySprite;
 
@@ -36,18 +34,6 @@ public class UI_BattleDisplayManager : MonoBehaviour
             Instance = this;
         }
     }
-
-    private void OnEnable()
-    {
-
-    }
-
-    private void OnDisable()
-    {
-        
-    }
-
-
     // Start is called before the first frame update
     private void FixedUpdate()
     {
@@ -56,6 +42,7 @@ public class UI_BattleDisplayManager : MonoBehaviour
         if (enemyCreature == null)
         {
             enemyObject.SetActive(false);
+            enemyName.text = "";
         }
         else
         {
@@ -64,6 +51,10 @@ public class UI_BattleDisplayManager : MonoBehaviour
             enemyHealthBar.maxValue = 1;
             enemyHealthBar.value = (float)healthPercentage;
             enemyPL.text = enemyCreature.CreatureStats.PowerLevel.ToNumberSuffix(false);
+            if(enemyName.text == "")
+            {
+                enemyName.text = enemyCreature.GenerateRandomName();
+            }  
         }
         SetEnemyCreatureRepresentation(enemyCreature);
     }
@@ -80,8 +71,8 @@ public class UI_BattleDisplayManager : MonoBehaviour
         } 
         else
         {
-            spawnPosition = playerObject.transform;
-            chooseAttackPrefab(text, isCrit, spawnPosition);
+            //spawnPosition = playerObject.transform;
+            //chooseAttackPrefab(text, isCrit, spawnPosition);
         }
     }
 

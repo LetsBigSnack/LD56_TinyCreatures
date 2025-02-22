@@ -55,7 +55,7 @@ public class UI_BattleManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Refresh();
+        RefreshCreatureDetails();
         CheckAllSlotsRepresentation();
         BattleManager.Instance.SetNextBattleButton();
         toggleButton.SetToggleState(BattleManager.Instance.AutoBattle);
@@ -75,38 +75,13 @@ public class UI_BattleManager : MonoBehaviour
         BattleManager.OnEnemyTimeChanged -= UpdateEnemyTimeSlider;
     }
 
-    private void CheckAllSlotsRepresentation()
-    {
-        CheckCreatureRepresentation(CreatureBattleSlot.Attack);
-        CheckCreatureRepresentation(CreatureBattleSlot.Heal);
-        CheckCreatureRepresentation(CreatureBattleSlot.Defense);
-    }
-
     private void UpdateHealthSlider(float amount, CreatureBattleSlot type)
     {
         ReturnBattleSlotItem(type)?.UpdateHealthSlider(amount);
-        CheckCreatureRepresentation(type);
-    }
-
-    private void CheckCreatureRepresentation(CreatureBattleSlot type)
-    {
-        UI_BattleCreatureItem battleCreature = ReturnBattleSlotItem(type) ?? null;
-
-        SetBattleCreatureRepresentation(type, InventoryManager.Instance.CreatureBattleSlots[type]);
-
-        if (battleCreature == null)
+        if(amount <= 0)
         {
-            return;
+            OnCreatureRemoved(type);
         }
-
-        if (battleCreature.CurrentCreature == null || battleCreature.CurrentCreature?.CurrentHealth <= 0)
-        {
-            battleCreature.ResetCreatureRepresentation();
-            battleCreature.RetreatButton.interactable = false;
-            ReturnBattleSlotHelper(type).SetEmpty();
-            return;
-        }
-        battleCreature.SetCreatureRepresentation(battleCreature.CurrentCreature);
     }
 
     private void UpdateShieldSlider(float amount, CreatureBattleSlot type)
@@ -117,6 +92,155 @@ public class UI_BattleManager : MonoBehaviour
     private void UpdateTimeSlider(float amount, CreatureBattleSlot type)
     {
         ReturnBattleSlotItem(type)?.UpdateTimeSlider(amount);
+    }
+
+    private void UpdateEnemyHealthSlider(float amount)
+    {
+        enemyHealthSlider.value = amount;
+        if (amount <= 0)
+        {
+            UI_BattleInventoryManager.Instance.Enemy.ToggleActiveState();
+        }
+    }
+
+    private void UpdateEnemyTimeSlider(float amount)
+    {
+        enemyTimeSlider.value = amount;
+    }
+
+    public void OnHoverBattleCreature(CreatureBattleSlot type)
+    {
+        UI_BattleCreatureItem battleCreature = ReturnBattleSlotItem(type) ?? null;
+
+        if(battleCreature == null || battleCreature.CurrentCreature == null)
+        {
+            return;
+        }
+        offHoverObj.SetActive(false);
+        onHoverObj.SetActive(true);
+        battleCreatureDetails.SetupRepresentation(battleCreature?.CurrentCreature);
+    }
+
+    public void OffHoverBattleCreature()
+    {
+        onHoverObj.SetActive(false);
+        offHoverObj.SetActive(true);
+        RefreshCreatureDetails();
+    }
+
+    private void CheckAllSlotsRepresentation()
+    {
+        CheckCreatureRepresentation(CreatureBattleSlot.Attack);
+        CheckCreatureRepresentation(CreatureBattleSlot.Heal);
+        CheckCreatureRepresentation(CreatureBattleSlot.Defense);
+    }
+
+    private void CheckCreatureRepresentation(CreatureBattleSlot type)
+    {
+        UI_BattleCreatureItem battleCreature = ReturnBattleSlotItem(type) ?? null;
+
+        if (battleCreature == null)
+        {
+            return;
+        }
+
+        UpdateBattleCreatureRepresentation(type, InventoryManager.Instance.CreatureBattleSlots[type]);
+    }
+
+    public void ResetSlider(CreatureBattleSlot type)
+    {
+        UpdateHealthSlider(1, type);
+        UpdateTimeSlider(0, type);
+        UpdateShieldSlider(0, type);
+    }
+
+    public void RefreshCreatureDetails()
+    {
+        battleCreatureDetails?.Reset();   
+        UI_InventoryManager.Instance.RefreshInventory();
+    }
+    
+    public void RetreatAllCreatures()
+    {
+
+        if (InventoryManager.Instance.HasSpace(3))
+        {
+            SoundManager.Instance.PlaySFX("Click");
+            BattleManager.Instance.RetreatAll();
+        
+            ReturnBattleSlotItem(CreatureBattleSlot.Attack).CurrentCreature = null;
+            ReturnBattleSlotItem(CreatureBattleSlot.Defense).CurrentCreature = null;
+            ReturnBattleSlotItem(CreatureBattleSlot.Heal).CurrentCreature = null;
+        
+            CheckAllSlotsRepresentation();
+            SetAllBattleSlotEmpty();
+        }
+        else
+        {
+            SoundManager.Instance.PlaySFX("Error");
+        }
+    }
+
+    private void SetAllBattleSlotEmpty()
+    {
+        attackSlot.SetEmpty();
+        healSlot.SetEmpty();
+        defenseSlot.SetEmpty();
+    }
+
+    public void OnCreatureRemoved(CreatureBattleSlot type)
+    {
+        ReturnBattleSlotItem(type).ResetCreatureRepresentation();
+        ReturnCreatureSprite(type).Reset();
+        ReturnBattleSlotHelper(type).SetEmpty();
+        UI_BattleInventoryManager.Instance.ReturnedBattleInventoryItem(type).ToggleActiveState();
+    }
+
+    public void SwitchAutoBattle()
+    {
+        BattleManager.Instance.SwitchAutoBattle();
+        toggleButton.SetToggleState(BattleManager.Instance.AutoBattle);
+        soundManager.PlaySFX("Click");
+    }
+
+    public void NextBattle()
+    {
+        if (BattleManager.Instance.NextBattle())
+        {
+            soundManager.PlaySFX("Click");
+        }
+        else 
+        { 
+            soundManager.PlaySFX("Error");
+        }
+    }
+
+    public void SetNextBattleButtonActive(bool isActive)
+    {
+        nextBattleButton.SetActive(isActive);
+    }
+
+    public void StartBattle()
+    {
+        BattleManager.Instance.NextBattle();
+    }
+
+    public void UpdateBattleCreatureRepresentation(CreatureBattleSlot battleSlot, Creature creature)
+    {
+
+        if (creature == null)
+        {
+            ReturnCreatureSprite(battleSlot).Reset();
+            ResetSlider(battleSlot);
+            ReturnBattleSlotHelper(battleSlot).SetEmpty();
+            ReturnBattleSlotItem(battleSlot).ResetCreatureRepresentation();
+            return;
+        }
+
+        ReturnCreatureSprite(battleSlot).SetupRepresentation(creature);
+        ReturnBattleSlotHelper(battleSlot).SetFull();
+        ReturnBattleSlotItem(battleSlot).SetCreatureRepresentation(creature);
+        UI_BattleInventoryManager.Instance.ReturnedBattleInventoryItem(battleSlot).ToggleActiveState();
     }
 
     private UI_BattleCreatureItem ReturnBattleSlotItem(CreatureBattleSlot type)
@@ -155,150 +279,21 @@ public class UI_BattleManager : MonoBehaviour
         return uiBattleCreatureItem;
     }
 
-    private void UpdateEnemyHealthSlider(float amount)
+    private UI_CreatureSprite ReturnCreatureSprite(CreatureBattleSlot type)
     {
-        enemyHealthSlider.value = amount;
-        if(amount <= 0)
-        {
-            UI_BattleInventoryManager.Instance.Enemy.ToggleActiveState();
-        }
-    }
-
-    private void UpdateEnemyTimeSlider(float amount)
-    {
-        enemyTimeSlider.value = amount;
-    }
-
-    public void OnHoverBattleCreature(CreatureBattleSlot type)
-    {
-        UI_BattleCreatureItem battleCreature = ReturnBattleSlotItem(type) ?? null;
-
-        if(battleCreature == null || battleCreature.CurrentCreature == null)
-        {
-            return;
-        }
-        offHoverObj.SetActive(false);
-        onHoverObj.SetActive(true);
-        battleCreatureDetails.SetupRepresentation(battleCreature?.CurrentCreature);
-    }
-
-    public void OffHoverBattleCreature()
-    {
-        onHoverObj.SetActive(false);
-        offHoverObj.SetActive(true);
-        Refresh();
-    }
-
-    public void Refresh()
-    {
-        battleCreatureDetails?.Reset();
-        
-        UI_InventoryManager.Instance.RefreshInventory();
-    }
-    
-    public void RetreatAllCreatures()
-    {
-
-        if (InventoryManager.Instance.HasSpace(3))
-        {
-            SoundManager.Instance.PlaySFX("Click");
-            BattleManager.Instance.RetreatAll();
-        
-            ReturnBattleSlotItem(CreatureBattleSlot.Attack).CurrentCreature = null;
-            ReturnBattleSlotItem(CreatureBattleSlot.Defense).CurrentCreature = null;
-            ReturnBattleSlotItem(CreatureBattleSlot.Heal).CurrentCreature = null;
-        
-            CheckAllSlotsRepresentation();
-            SetAllBattleSlotEmpty();
-        }
-        else
-        {
-            SoundManager.Instance.PlaySFX("Error");
-        }
-    }
-
-    public void SetAllBattleSlotEmpty()
-    {
-        attackSlot.SetEmpty();
-        healSlot.SetEmpty();
-        defenseSlot.SetEmpty();
-    }
-
-    public void SetBattleSlotEmpty(CreatureBattleSlot slot)
-    {
-        switch(slot)
+        UI_CreatureSprite uiCreatureSprite = null;
+        switch (type)
         {
             case CreatureBattleSlot.Attack:
-                attackSlot.SetEmpty();
-                break;
-            case CreatureBattleSlot.Defense:
-                defenseSlot.SetEmpty(); 
+                uiCreatureSprite = attackSprite;
                 break;
             case CreatureBattleSlot.Heal:
-                healSlot.SetEmpty(); 
-                break;
-        } 
-    }
-
-    public void SwitchAutoBattle()
-    {
-        BattleManager.Instance.SwitchAutoBattle();
-        toggleButton.SetToggleState(BattleManager.Instance.AutoBattle);
-        soundManager.PlaySFX("Click");
-    }
-
-    public void NextBatlle()
-    {
-        if (BattleManager.Instance.NextBattle())
-        {
-            soundManager.PlaySFX("Click");
-        }
-        else 
-        { 
-            soundManager.PlaySFX("Error");
-        }
-    }
-
-    public void SetNextBattleButtonActive(bool isActive)
-    {
-        nextBattleButton.SetActive(isActive);
-    }
-
-    public void StartBattle()
-    {
-        BattleManager.Instance.NextBattle();
-    }
-
-    public void SetBattleCreatureRepresentation(CreatureBattleSlot battleSlot, Creature creature)
-    {
-        if(creature == null)
-        {
-            ReturnSpriteSlot(battleSlot).Reset();
-            return;
-        }
-
-        ReturnSpriteSlot(battleSlot).SetupRepresentation(creature);
-        UI_BattleInventoryManager.Instance.ReturnedBattleInventoryItem(battleSlot).ToggleActiveState();
-    }
-
-    public UI_CreatureSprite ReturnSpriteSlot(CreatureBattleSlot battleSlot)
-    {
-        UI_CreatureSprite returnSprite = new UI_CreatureSprite();
-
-        switch (battleSlot)
-        {
-            case CreatureBattleSlot.Attack:
-                 returnSprite = attackSprite;
+                uiCreatureSprite = healSprite;
                 break;
             case CreatureBattleSlot.Defense:
-                 returnSprite = defenseSprite;
-                break;
-            case CreatureBattleSlot.Heal:
-                 returnSprite = healSprite;
+                uiCreatureSprite = defenseSprite;
                 break;
         }
-
-        return returnSprite;
+        return uiCreatureSprite;
     }
-    
 }

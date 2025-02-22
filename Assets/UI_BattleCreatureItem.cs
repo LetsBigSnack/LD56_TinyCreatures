@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 [Serializable]
 public enum CreatureBattleSlot
@@ -20,6 +21,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
     [SerializeField] private UICreatureButton creatureButton;
     [SerializeField] private UI_CreatureSprite creatureSprite;
     [SerializeField] private CreatureBattleSlot creatureBattleSlot;
+    [SerializeField] private TextMeshProUGUI nameText;
 
     [SerializeField] private Slider healthSlider;
     [SerializeField] private Slider timeSlider;
@@ -80,8 +82,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
         {
             currentCreature = null;
             ResetCreatureRepresentation();
-            UI_BattleManager.Instance.SetBattleSlotEmpty(creatureBattleSlot);
-            UI_BattleManager.Instance.SetBattleCreatureRepresentation(creatureBattleSlot, currentCreature);
+            UI_BattleManager.Instance.OnCreatureRemoved(creatureBattleSlot);
             SoundManager.Instance.PlaySFX("Click");
             retreatButton.interactable = false;
         }
@@ -109,7 +110,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
                 SoundManager.Instance.PlaySFX("Error");
                 return;
             }
-            SetNewCreature(uiCreatureButton.Creature);
+            OnCreatureAdded(uiCreatureButton.Creature);
             SoundManager.Instance.PlaySFX("Click");
         }
         UI_InventoryManager.Instance.RefreshInventory();
@@ -129,7 +130,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
         UI_BattleManager.Instance.OffHoverBattleCreature();
     }
 
-    public void SetNewCreature(Creature creature)
+    public void OnCreatureAdded(Creature creature)
     {        
         if (currentCreature != null)
         {
@@ -165,6 +166,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
 
     public void SetCreatureRepresentation(Creature creature)
     {
+        nameText.text = creature.CreatureName;
         retreatButton.interactable = true;
         creatureButton.Creature = creature;
         creatureSprite.SetupRepresentation(creature);

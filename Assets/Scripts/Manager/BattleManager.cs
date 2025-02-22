@@ -672,7 +672,7 @@ public class BattleManager : MonoBehaviour
                 
                     
                     UI_BattleManager.Instance.SelectedCreature = null;
-                    UI_BattleManager.Instance.Refresh();
+                    UI_BattleManager.Instance.RefreshCreatureDetails();
                 
                     UI_InventoryHoverManager.Instance.BattleText.text = "Defeated!";
                     //POPUP

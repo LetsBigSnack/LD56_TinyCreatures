@@ -26,9 +26,13 @@ public class UI_BattleInventoryItem : MonoBehaviour
 
     public void ToggleActiveState()
     {
-        if (InventoryManager.Instance.IsCreatureSlotEmpty(type) == null && !isEnemy || isEnemy && BattleManager.Instance.EnemyCreature == null)
+        if(sliderHolder == null || textHolder == null)
         {
+            return;
+        }
 
+        if ((InventoryManager.Instance.IsCreatureSlotEmpty(type) == null || InventoryManager.Instance.IsCreatureSlotEmpty(type).CurrentHealth <= 0) && !isEnemy || isEnemy && BattleManager.Instance.EnemyCreature == null)
+        {
             textHolder.SetActive(true);
             sliderHolder.SetActive(false);
             return;
