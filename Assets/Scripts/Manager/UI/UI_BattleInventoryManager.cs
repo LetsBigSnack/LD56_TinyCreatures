@@ -49,6 +49,34 @@ public class UI_BattleInventoryManager : MonoBehaviour
         BattleManager.OnEnemyTimeChanged -= UpdateEnemyTimeSlider;
     }
 
+    private void ResetSlider(CreatureBattleSlot type)
+    {
+        ReturnedBattleInventoryItem(type).UpdateHealthSlider(1);
+        ReturnedBattleInventoryItem(type).UpdateShieldSlider(0);
+        ReturnedBattleInventoryItem(type).UpdateTimeSlider(0);
+    }
+
+    public void ResetAllSliders()
+    {
+        foreach(UI_BattleInventoryItem item in uiCreatureItem)
+        {
+            ReturnedBattleInventoryItem(item.Type).UpdateHealthSlider(1);
+            ReturnedBattleInventoryItem(item.Type).UpdateShieldSlider(0);
+            ReturnedBattleInventoryItem(item.Type).UpdateTimeSlider(0);
+        }
+
+        if(BattleManager.Instance.EnemyCreature != null)
+        {
+            enemyItem.UpdateHealthSlider(1);
+            enemyItem.UpdateTimeSlider(0);
+        } 
+        else
+        {
+            enemyItem.UpdateHealthSlider(0);
+            enemyItem.UpdateTimeSlider(0);
+        }
+    }
+
     private void UpdateEnemyHealthSlider(float amount)
     {
         enemyItem.UpdateHealthSlider(amount);
@@ -62,6 +90,11 @@ public class UI_BattleInventoryManager : MonoBehaviour
     private void UpdateHealthSlider(float amount, CreatureBattleSlot type)
     {
         ReturnedBattleInventoryItem(type).UpdateHealthSlider(amount);
+        if(amount <= 0)
+        {
+            ResetSlider(type);
+            ReturnedBattleInventoryItem(type).ToggleActiveState();
+        }
     }
 
     private void UpdateShieldSlider(float amount, CreatureBattleSlot type)
@@ -87,8 +120,10 @@ public class UI_BattleInventoryManager : MonoBehaviour
             case CreatureBattleSlot.Heal:
                 currentItem = uiCreatureItem.Find(c => c.Type == CreatureBattleSlot.Heal);
                 break;
+            case CreatureBattleSlot.Enemy:
+                currentItem = enemyItem;
+                break;
         }
-
         return currentItem;
     }
 

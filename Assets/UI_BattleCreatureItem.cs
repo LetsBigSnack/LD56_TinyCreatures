@@ -12,7 +12,8 @@ public enum CreatureBattleSlot
 {
     Attack,
     Heal,
-    Defense
+    Defense,
+    Enemy
 }
 
 public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler

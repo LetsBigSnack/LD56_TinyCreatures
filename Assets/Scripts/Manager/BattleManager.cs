@@ -311,7 +311,7 @@ public class BattleManager : MonoBehaviour
                     {
                         creature.ReceiveHeal(healValue);
                         CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
-                        
+                        UI_BattleDisplayManager.Instance.SpawnEffect(EffectType.Heal, slot, healValue, true);
                         BigDecimal percentageH = creature.CurrentHealth.Round(3) / creature.MaxHealth.Round(3);
                         percentageH = BigDecimal.Min(1, percentageH);
                         percentageH = percentageH.Round(3);
@@ -325,18 +325,13 @@ public class BattleManager : MonoBehaviour
                     Creature creature = GetRandomCreature();
                     creature.ReceiveHeal(healValue);
                     CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
-                    
+                    UI_BattleDisplayManager.Instance.SpawnEffect(EffectType.Heal, slot, healValue, false);
                     BigDecimal percentageH = creature.CurrentHealth.Round(3) / creature.MaxHealth.Round(3);
                     percentageH = BigDecimal.Min(1, percentageH);
                     percentageH = percentageH.Round(3);
                         
                     OnCreatureHealthChanged?.Invoke((float)percentageH, slot);
                 
-                }
-
-                if (UI_BattleDisplayManager.Instance != null)
-                {
-                    //TODO: create Heal PopUp
                 }
                 
                 elapsedTime = 0f;
@@ -398,7 +393,7 @@ public class BattleManager : MonoBehaviour
                     {
                         creature.ReceiveShield(shieldValue);
                         CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
-                        
+                        UI_BattleDisplayManager.Instance.SpawnEffect(EffectType.Shield, slot, shieldValue, true);
                         BigDecimal percentageS = creature.CurrentShield.Round(3) / creature.MaxHealth.Round(3);
                         percentageS = BigDecimal.Min(1, percentageS);
                         percentageS = percentageS.Round(3);
@@ -412,18 +407,13 @@ public class BattleManager : MonoBehaviour
                     Creature creature = GetRandomCreature();
                     creature.ReceiveShield(shieldValue);
                     CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
-                    
+                    UI_BattleDisplayManager.Instance.SpawnEffect(EffectType.Shield, slot, shieldValue, false);
                     BigDecimal percentageS = creature.CurrentShield.Round(3) / creature.MaxHealth.Round(3);
                     percentageS = BigDecimal.Min(1, percentageS);
                     percentageS = percentageS.Round(3);
                         
                     OnCreatureShieldChanged?.Invoke((float)percentageS, slot);
                     
-                }
-
-                if (UI_BattleDisplayManager.Instance != null)
-                {
-                    //TODO: create Shield PopUp
                 }
                 elapsedTime = 0f;
             }
@@ -433,11 +423,6 @@ public class BattleManager : MonoBehaviour
             OnCreatureTimeChanged?.Invoke((float)percentage, CreatureBattleSlot.Defense);
             yield return null;
         }
-    }
-
-    private void RemoveCreature(Creature creature)
-    {
-        
     }
     
     private IEnumerator BattleCoroutine()
@@ -496,7 +481,9 @@ public class BattleManager : MonoBehaviour
                     {
                         creature.TakeDamage(critDamage);
                         CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
-                        
+
+                        UI_BattleDisplayManager.Instance.SpawnEffect(EffectType.Damage, slot, critDamage, true);
+
                         BigDecimal percentageS = creature.CurrentShield.Round(3) / creature.MaxHealth.Round(3);
                         percentageS = BigDecimal.Min(1, percentageS);
                         percentageS = percentageS.Round(3);
@@ -514,6 +501,9 @@ public class BattleManager : MonoBehaviour
                     Creature creature = GetRandomCreature();
                     creature.TakeDamage(attackDamage);
                     CreatureBattleSlot slot = InventoryManager.Instance.CreatureBattleSlots.FirstOrDefault(x => x.Value == creature).Key;
+
+                    UI_BattleDisplayManager.Instance.SpawnEffect(EffectType.Damage, slot, attackDamage, false);
+
                     BigDecimal percentageS = creature.CurrentShield.Round(3) / creature.MaxHealth.Round(3);
                     percentageS = BigDecimal.Min(1, percentageS);
                     percentageS = percentageS.Round(3);
@@ -565,10 +555,12 @@ public class BattleManager : MonoBehaviour
                 {
                     attackDamage *= 2.0f;
                     attack = enemyCreature.TakeDamage(attackDamage);
+                    UI_BattleDisplayManager.Instance.SpawnEffect(EffectType.Damage, CreatureBattleSlot.Enemy, attackDamage, true);
                 }
                 else
                 { 
                     attack = enemyCreature.TakeDamage(attackDamage);
+                    UI_BattleDisplayManager.Instance.SpawnEffect(EffectType.Damage, CreatureBattleSlot.Enemy, attackDamage, false);
                 }
                 
                 BigDecimal percentageH = enemyCreature.CurrentHealth.Round(3) / enemyCreature.MaxHealth.Round(3);
@@ -576,11 +568,6 @@ public class BattleManager : MonoBehaviour
                 percentageH = percentageH.Round(3);
                 
                 OnEnemyHealthChanged?.Invoke((float)percentageH);
-
-                if (UI_BattleDisplayManager.Instance != null)
-                {
-                    UI_BattleDisplayManager.Instance.CreateDamagePopUp(attack.ToNumberSuffix(false),isCriticalHit, attacker);
-                }
                 
                 elapsedTime = 0f;
             }

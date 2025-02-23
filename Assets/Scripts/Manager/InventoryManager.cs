@@ -109,6 +109,7 @@ public class InventoryManager : MonoBehaviour
 
     public Creature IsCreatureSlotEmpty(CreatureBattleSlot type)
     {
+        if (type == CreatureBattleSlot.Enemy) return null;
         return creatureBattleSlots[type];
     }
 

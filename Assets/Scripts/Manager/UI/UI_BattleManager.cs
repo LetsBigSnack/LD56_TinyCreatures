@@ -171,6 +171,8 @@ public class UI_BattleManager : MonoBehaviour
             ReturnBattleSlotItem(CreatureBattleSlot.Attack).CurrentCreature = null;
             ReturnBattleSlotItem(CreatureBattleSlot.Defense).CurrentCreature = null;
             ReturnBattleSlotItem(CreatureBattleSlot.Heal).CurrentCreature = null;
+
+            UI_BattleInventoryManager.Instance.ResetAllSliders();
         
             CheckAllSlotsRepresentation();
             SetAllBattleSlotEmpty();
@@ -227,7 +229,6 @@ public class UI_BattleManager : MonoBehaviour
 
     public void UpdateBattleCreatureRepresentation(CreatureBattleSlot battleSlot, Creature creature)
     {
-
         if (creature == null)
         {
             ReturnCreatureSprite(battleSlot).Reset();
