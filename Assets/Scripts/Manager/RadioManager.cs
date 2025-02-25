@@ -123,7 +123,7 @@ public class RadioManager : MonoBehaviour
     public void SetupInitialState()
     {
         
-        if (playedTrack != null && playedTrack.source.isPlaying)
+        if (playedTrack != null && playedTrack.source != null && playedTrack.source.isPlaying)
         { 
             Debug.LogWarning("Playing track is already played");
             //song played

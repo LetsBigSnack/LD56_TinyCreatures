@@ -106,16 +106,19 @@ public class SaveLoadManager : MonoBehaviour
         tempSaveStates.Add(_saveSlot1);
         tempSaveStates.Add(_saveSlot2);
         tempSaveStates.Add(_saveSlot3);
-        tempSaveStates = tempSaveStates
+        
+        
+        
+        List<SaveState> nullCheck = tempSaveStates
             .Where(element => element != null)
             .ToList();
 
-        if (tempSaveStates.Count <= 0)
+        if (nullCheck.Count <= 0)
         {
             return;
         }
         
-        SaveState indexElement = tempSaveStates.OrderByDescending(c => c.lastUpdate).First();
+        SaveState indexElement = nullCheck.OrderByDescending(c => c.lastUpdate).First();
         
         _saveIndex = tempSaveStates.IndexOf(indexElement);
 
@@ -214,7 +217,7 @@ public class SaveLoadManager : MonoBehaviour
         saveState.materialC = MaterialManager.Instance.MaterialStatsC;
         saveState.materialD = MaterialManager.Instance.MaterialStatsD;
 
-        saveState.selectedCreatureBattle = InventoryManager.Instance.SelectedCreatureForBattle;
+        saveState.creatureBattleSlots = InventoryManager.Instance.CreatureBattleSlots;
         saveState.selectedCreaturePodOne = BreedingManager.Instance.CreaturePod1;
         saveState.selectedCreaturePodTwo = BreedingManager.Instance.CreaturePod2;
         saveState.breedingCreatureResult = BreedingManager.Instance.Result;
@@ -341,7 +344,7 @@ public class SaveLoadManager : MonoBehaviour
         MaterialManager.Instance.MaterialStatsC = loadedSaveState.materialC;
         MaterialManager.Instance.MaterialStatsD = loadedSaveState.materialD;
 
-        InventoryManager.Instance.SelectedCreatureForBattle = loadedSaveState.selectedCreatureBattle;
+        InventoryManager.Instance.CreatureBattleSlots = loadedSaveState.creatureBattleSlots;
         BreedingManager.Instance.CreaturePod1 = loadedSaveState.selectedCreaturePodOne;
         BreedingManager.Instance.CreaturePod2 = loadedSaveState.selectedCreaturePodTwo;
         BreedingManager.Instance.Result = loadedSaveState.breedingCreatureResult;

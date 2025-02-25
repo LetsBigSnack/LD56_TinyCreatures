@@ -99,11 +99,13 @@ public class CreatureManager : MonoBehaviour
         float totalDefenseModifier = bodyParts.Select(c => c.Value).Sum(t => t.defenseModifier);
 
         
-        BigDecimal randomSpeed = BigDecimal.Random(-definedStatRange * (1 - totalSpeedModifier), definedStatRange * (1 + totalSpeedModifier)) + definedStatMin / new BigDecimal(2000,-3);
-        BigDecimal randomAttack = BigDecimal.Random(-definedStatRange * (1 - totalAttackModifier), definedStatRange * (1 + totalAttackModifier)) + definedStatMin / new BigDecimal(2000,-3);
-        BigDecimal randomDefense = BigDecimal.Random(-definedStatRange * (1 - totalDefenseModifier), definedStatRange * (1 + totalDefenseModifier)) + definedStatMin / new BigDecimal(2000,-3);
-        BigDecimal randomDexterity = BigDecimal.Random(-definedStatRange * (1 - totalDexterityModifier), definedStatRange * (1 + totalDexterityModifier)) + definedStatMin / new BigDecimal(2000,-3);
-
+        BigDecimal randomSpeed = (BigDecimal.Random(-definedStatRange * (1 - totalSpeedModifier), definedStatRange * (1 + totalSpeedModifier)) + definedStatMin) / new BigDecimal(2000,-3);
+        BigDecimal randomAttack = (BigDecimal.Random(-definedStatRange * (1 - totalAttackModifier), definedStatRange * (1 + totalAttackModifier)) + definedStatMin) / new BigDecimal(2000,-3);
+        BigDecimal randomDefense = (BigDecimal.Random(-definedStatRange * (1 - totalDefenseModifier), definedStatRange * (1 + totalDefenseModifier)) + definedStatMin) / new BigDecimal(2000,-3);
+        BigDecimal randomDexterity = (BigDecimal.Random(-definedStatRange * (1 - totalDexterityModifier), definedStatRange * (1 + totalDexterityModifier)) + definedStatMin) / new BigDecimal(2000,-3);
+    
+        
+        
         
         CreatureStats creatureStats = new CreatureStats(randomSpeed, randomAttack, randomDefense, randomDexterity);
         return creatureStats;
@@ -111,11 +113,14 @@ public class CreatureManager : MonoBehaviour
 
     public Creature CreateAdjustedCreature(BigDecimal definedStatRange, BigDecimal definedStatMin)
     {
+        definedStatRange = definedStatRange.Round(3);
         RefreshUnlockedParts();
         CreatureRepresentation creatureRepresentation = GetRandomCreatureRepresentation();
         
         float totalHealthModifier = creatureRepresentation.BodyParts.Select(c => c.Value).Sum(t => t.healthModifier);
-        BigDecimal randomHealth = ((BigDecimal.Random(-definedStatRange * (1 - totalHealthModifier), definedStatRange * (1 + totalHealthModifier)) + definedStatMin + definedStatMin) * 1.2f);
+        
+        BigDecimal randomHealth = ((BigDecimal.Random(
+            -definedStatRange * (1 - totalHealthModifier), definedStatRange * (1 + totalHealthModifier)) + definedStatMin + definedStatMin) * 1.2f);
 
         CreatureStats creatureStats = CreateCreatureStats(definedStatRange, definedStatMin,creatureRepresentation.BodyParts);
         
