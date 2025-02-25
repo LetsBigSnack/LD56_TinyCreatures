@@ -19,6 +19,14 @@ public class UI_RadioItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     [SerializeField] private Sprite pauseSprite;
     [SerializeField] private Image playBtnSprite;
 
+    [SerializeField] private Sprite toggleEnableSprite;
+    [SerializeField] private Sprite toggleDisableSprite;
+    [SerializeField] private Image toggleEnableBtnSprite;
+
+    [SerializeField] private Sprite toggleLoopSprite;
+    [SerializeField] private Sprite toggleLoopedSprite;
+    [SerializeField] private Image toggleLoopBtnSprite;
+
     [SerializeField] private RectTransform titleBarRectTransform;
     [SerializeField] private Canvas canvas;
     [SerializeField] private CanvasGroup canvasGroup;
@@ -115,6 +123,26 @@ public class UI_RadioItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
             return;
         }
         playBtnSprite.sprite = pauseSprite;
+    }
+    public void ToggleEnableButtonChange(bool isEnabled)
+    {
+
+        if (!isEnabled)
+        {
+            toggleEnableBtnSprite.sprite = toggleDisableSprite;
+            return;
+        }
+        toggleEnableBtnSprite.sprite = toggleEnableSprite;
+    }
+    public void ToggleLoopButtonChange(bool isLooped)
+    {
+
+        if (!isLooped)
+        {
+            toggleLoopBtnSprite.sprite = toggleLoopedSprite;
+            return;
+        }
+        toggleLoopBtnSprite.sprite = toggleLoopSprite;
     }
 
     public string TranslateToMinutes(float time)

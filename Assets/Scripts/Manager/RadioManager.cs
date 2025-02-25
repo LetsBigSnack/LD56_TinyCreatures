@@ -177,11 +177,13 @@ public class RadioManager : MonoBehaviour
     public void ToggleEnableTrack()
     {
         viewedTrack.isEnabled = !viewedTrack.isEnabled;
+        UI_RadioItem.Instance.ToggleEnableButtonChange(viewedTrack.isEnabled);
     }
 
     public void ToggleLoopTrack()
     {
         viewedTrack.source.loop = !viewedTrack.source.loop;
+        UI_RadioItem.Instance.ToggleLoopButtonChange(viewedTrack.source.loop);
     }
 
     public void PausePlayTrack()
@@ -313,10 +315,14 @@ public class RadioManager : MonoBehaviour
     public void ViewNextTrack()
     {
         viewedTrack = NextPossibleTrack(1, false);
+        UI_RadioItem.Instance.ToggleEnableButtonChange(viewedTrack.isEnabled);
+        UI_RadioItem.Instance.ToggleLoopButtonChange(viewedTrack.source.loop);
     }
     public void ViewPreviousTrack()
     {
         viewedTrack = NextPossibleTrack(-1, false);
+        UI_RadioItem.Instance.ToggleEnableButtonChange(viewedTrack.isEnabled);
+        UI_RadioItem.Instance.ToggleLoopButtonChange(viewedTrack.source.loop);
     }
 
     public bool IsTrackEqual()
