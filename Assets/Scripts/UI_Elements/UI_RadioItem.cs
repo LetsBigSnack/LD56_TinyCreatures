@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Data;
+using UnityEngine.SceneManagement;
 
-public class UI_RadioItem : MonoBehaviour
+public class UI_RadioItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public static UI_RadioItem Instance { get; private set; }
 
@@ -16,6 +18,22 @@ public class UI_RadioItem : MonoBehaviour
     [SerializeField] private Sprite playSprite;
     [SerializeField] private Sprite pauseSprite;
     [SerializeField] private Image playBtnSprite;
+
+    [SerializeField] private Sprite toggleEnableSprite;
+    [SerializeField] private Sprite toggleDisableSprite;
+    [SerializeField] private Image toggleEnableBtnSprite;
+
+    [SerializeField] private Sprite toggleLoopSprite;
+    [SerializeField] private Sprite toggleLoopedSprite;
+    [SerializeField] private Image toggleLoopBtnSprite;
+
+    [SerializeField] private RectTransform titleBarRectTransform;
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private CanvasGroup canvasGroup;
+
+    [SerializeField] private string sceneWhereVisible;
+
+    private bool isDragging = false;
 
     private string currentTrackMaxTime;
 
@@ -28,6 +46,9 @@ public class UI_RadioItem : MonoBehaviour
         else
         {
             Instance = this;
+
+            canvas = GetComponentInParent<Canvas>();
+            canvasGroup = GetComponent<CanvasGroup>();
         }
     }
 
@@ -41,11 +62,38 @@ public class UI_RadioItem : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
     private void OnDisable()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
         RadioManager.Instance.OnChangePlayedTrackValue -= PlayedTrackChanged;
         RadioManager.Instance.OnChangeViewedTrackValue -= ViewedTrackChanged;
         RadioManager.Instance.OnChangeCurrentPlayedTimeValue -= ViewedTrackTimeChanged;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == sceneWhereVisible)
+        {
+            canvasGroup.alpha = 1;
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true; 
+        }
+        else
+        {
+            canvasGroup.alpha = 0;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+        }
     }
 
     private void ViewedTrackChanged(Track viewedTrack)
@@ -76,6 +124,26 @@ public class UI_RadioItem : MonoBehaviour
         }
         playBtnSprite.sprite = pauseSprite;
     }
+    public void ToggleEnableButtonChange(bool isEnabled)
+    {
+
+        if (!isEnabled)
+        {
+            toggleEnableBtnSprite.sprite = toggleDisableSprite;
+            return;
+        }
+        toggleEnableBtnSprite.sprite = toggleEnableSprite;
+    }
+    public void ToggleLoopButtonChange(bool isLooped)
+    {
+
+        if (!isLooped)
+        {
+            toggleLoopBtnSprite.sprite = toggleLoopedSprite;
+            return;
+        }
+        toggleLoopBtnSprite.sprite = toggleLoopSprite;
+    }
 
     public string TranslateToMinutes(float time)
     {
@@ -83,5 +151,46 @@ public class UI_RadioItem : MonoBehaviour
         int minutes = timeInSecondsInt / 60;
         int seconds = timeInSecondsInt % 60;
         return minutes.ToString("D2") + ":" + seconds.ToString("D2");
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (RectTransformUtility.RectangleContainsScreenPoint(titleBarRectTransform, eventData.position, eventData.pressEventCamera))
+        {
+            isDragging = true;
+            canvasGroup.blocksRaycasts = false;
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (isDragging)
+        {
+            (transform as RectTransform).anchoredPosition += eventData.delta / canvas.scaleFactor;
+
+            ClampToScreen();
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (isDragging)
+        {
+            isDragging = false;
+            canvasGroup.blocksRaycasts = true;
+        }
+    }
+
+    private void ClampToScreen()
+    {
+        Vector2 canvasSize = canvas.GetComponent<RectTransform>().sizeDelta;
+
+        Vector2 radioToolSize = (transform as RectTransform).sizeDelta;
+
+        Vector2 clampedPosition = (transform as RectTransform).anchoredPosition;
+        clampedPosition.x = Mathf.Clamp(clampedPosition.x, -canvasSize.x / 2 + radioToolSize.x / 2, canvasSize.x / 2 - radioToolSize.x / 2);
+        clampedPosition.y = Mathf.Clamp(clampedPosition.y, -canvasSize.y / 2 + radioToolSize.y / 2, canvasSize.y / 2 - radioToolSize.y / 2);
+
+        (transform as RectTransform).anchoredPosition = clampedPosition;
     }
 }
