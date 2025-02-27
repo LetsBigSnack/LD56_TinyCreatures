@@ -83,7 +83,7 @@ public class UI_CompareManager : MonoBehaviour
                 {
                     UI_BattleManager.Instance.SelectedCreature = null;
                 }
-                UI_BattleManager.Instance.Refresh();
+                UI_BattleManager.Instance.RefreshCreatureDetails();
                 
                 InventoryManager.Instance.RemoveCreature(left);
                 InventoryManager.Instance.SelectCreatureLeft(null);
@@ -105,7 +105,7 @@ public class UI_CompareManager : MonoBehaviour
                 {
                     UI_BattleManager.Instance.SelectedCreature = null;
                 }
-                UI_BattleManager.Instance.Refresh();
+                UI_BattleManager.Instance.RefreshCreatureDetails();
                 
                 InventoryManager.Instance.RemoveCreature(right);
                 InventoryManager.Instance.SelectCreatureRight(null);
@@ -141,7 +141,7 @@ public class UI_CompareManager : MonoBehaviour
                     UI_BattleManager.Instance.SelectedCreature = null;
                 }
                 
-                UI_BattleManager.Instance.Refresh();
+                UI_BattleManager.Instance.RefreshCreatureDetails();
                 
                 left = null;
                 soundManager.PlaySFX("Click");
@@ -165,7 +165,7 @@ public class UI_CompareManager : MonoBehaviour
                     UI_BattleManager.Instance.SelectedCreature = null;
                 }
                 
-                UI_BattleManager.Instance.Refresh();
+                UI_BattleManager.Instance.RefreshCreatureDetails();
                 
                 right = null;
                 soundManager.PlaySFX("Click");

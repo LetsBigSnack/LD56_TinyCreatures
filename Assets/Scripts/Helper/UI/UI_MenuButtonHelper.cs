@@ -7,7 +7,7 @@ public class UI_MenuButtonHelper : MonoBehaviour
 {
     public void StartGame()
     {
-        SceneChangeManager.Instance.ChangeScene("DekisScene");
+        SceneChangeManager.Instance.ChangeScene("NewUISpritesScene");
     }
 
     public void QuitGame()

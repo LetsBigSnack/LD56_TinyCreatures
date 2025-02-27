@@ -3312,7 +3312,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479954985}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b48f65edabdc62058bada23cf9d57de, type: 3}
   m_Name: 
@@ -4435,6 +4435,14 @@ PrefabInstance:
     - target: {fileID: 6298739330990959353, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
       propertyPath: statRange.mantissaString
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6298739330990959353, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: bodyPartSets.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 08856df236e0b8a79a2409ea67836a79, type: 2}
+    - target: {fileID: 7315044951568535218, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: enemyScale
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8673851941812161955, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
       propertyPath: boughtSlots.exponentString

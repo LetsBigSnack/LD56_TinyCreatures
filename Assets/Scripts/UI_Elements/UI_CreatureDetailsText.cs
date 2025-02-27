@@ -8,44 +8,32 @@ using TMPro;
 
 public class UI_CreatureDetailsText : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI creatureNameText;
     [SerializeField] private TextMeshProUGUI powerLevelText;
     [SerializeField] private TextMeshProUGUI hpText;
     [SerializeField] private TextMeshProUGUI atkText;
     [SerializeField] private TextMeshProUGUI spdText;
     [SerializeField] private TextMeshProUGUI dexText;
     [SerializeField] private TextMeshProUGUI defText;
-    [SerializeField] private TextMeshProUGUI winsText;
     [SerializeField] private GameObject[] attributes;
     
     private void OnEnable()
     {
-        // Subscribe to the win battle event
-        BattleManager.OnCreatureWinsChanged += UpdateWinsText;
         Reset();
-    }
-    
-    private void OnDisable()
-    {
-        // Unsubscribe from the win battle
-        BattleManager.OnCreatureWinsChanged -= UpdateWinsText;
     }
       
     public void Reset()
     {
-        creatureNameText.text = "   ";
         powerLevelText.text = "       ";
-        winsText.text = "      ";
         hpText.text = "      ";
-        hpText.color = new Color(6/255f,40/255f,41/255f,255);
+        hpText.color = new Color(255f, 255f, 255f, 255);
         atkText.text = "      ";
-        atkText.color = new Color(6/255f,40/255f,41/255f,255);
+        atkText.color = new Color(255f, 255f, 255f, 255);
         spdText.text = "      ";
-        spdText.color = new Color(6/255f,40/255f,41/255f,255);
+        spdText.color = new Color(255f, 255f, 255f, 255);
         dexText.text = "      ";
-        dexText.color = new Color(6/255f,40/255f,41/255f,255);
+        dexText.color = new Color(255f, 255f, 255f, 255);
         defText.text = "      ";
-        defText.color = new Color(6/255f,40/255f,41/255f,255);
+        defText.color = new Color(255f, 255f, 255f, 255);
     }
 
     public void SetupRepresentation(Creature creature)
@@ -69,19 +57,17 @@ public class UI_CreatureDetailsText : MonoBehaviour
                 attributes[i].SetActive(true);
             }
         }
-        creatureNameText.text = creature.CreatureName;
         hpText.text = creature.MaxHealth.ToNumberSuffix(false);
-        hpText.color = new Color(6/255f,40/255f,41/255f,255);
+        hpText.color = new Color(255f,255f,255f,255);
         atkText.text = creature.CreatureStats.Attack.ToNumberSuffix();
-        atkText.color = new Color(6/255f,40/255f,41/255f,255);
+        atkText.color = new Color(255f, 255f, 255f, 255);
         spdText.text = creature.CreatureStats.Speed.ToNumberSuffix();
-        spdText.color = new Color(6/255f,40/255f,41/255f,255);
+        spdText.color = new Color(255f, 255f, 255f, 255);
         dexText.text = creature.CreatureStats.Dexterity.ToNumberSuffix();
-        dexText.color = new Color(6/255f,40/255f,41/255f,255);
+        dexText.color = new Color(255f, 255f, 255f, 255);
         defText.text = creature.CreatureStats.Defense.ToNumberSuffix();
-        defText.color = new Color(6/255f,40/255f,41/255f,255);
+        defText.color = new Color(255f, 255f, 255f, 255);
         powerLevelText.text = creature.CreatureStats.PowerLevel.ToNumberSuffix(false);
-        winsText.text = creature.CreatureWins.ToNumberSuffix(false);
     }
 
     public void CompareColor(Creature creature1, Creature creature2)
@@ -156,15 +142,6 @@ public class UI_CreatureDetailsText : MonoBehaviour
             }
         }
         
-    }
-    
-    private void UpdateWinsText(BigDecimal newWinCount)
-    {
-        // Update the wins text with the new win count
-        if (winsText != null)
-        {
-            winsText.text = newWinCount.ToNumberSuffix(false);
-        }
     }
 
 }

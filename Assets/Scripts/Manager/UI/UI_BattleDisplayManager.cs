@@ -13,18 +13,23 @@ public class UI_BattleDisplayManager : MonoBehaviour
  
     public static UI_BattleDisplayManager Instance;
     
-    
-    [SerializeField] private UI_CreatureSprite battleCreatureSprite;
     [SerializeField] private UI_CreatureSprite enemyCreatureSprite;
-    [SerializeField] private GameObject attackPrefab;
-    [SerializeField] private GameObject critPrefab;
-    [SerializeField] private GameObject playerObject;
     [SerializeField] private GameObject enemyObject;
-    [SerializeField] private Slider playerHealthBar;
     [SerializeField] private Slider enemyHealthBar;
-    [SerializeField] private TextMeshProUGUI playerPL;
     [SerializeField] private TextMeshProUGUI enemyPL;
-    
+    [SerializeField] private TextMeshProUGUI enemyName;
+
+    [SerializeField] private Transform enemyEffectBox;
+    [SerializeField] private Transform attackerEffectBox;
+    [SerializeField] private Transform defenderEffectBox;
+    [SerializeField] private Transform healerEffectBox;
+
+    [SerializeField] private GameObject effectPrefab;
+
+
+
+    [SerializeField] private UI_CreatureSprite enemySprite;
+
     private void Awake()
     {
         if (Instance != null)
@@ -37,25 +42,19 @@ public class UI_BattleDisplayManager : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
-        
+        UpdateEnemy();
     }
 
-    private void OnDisable()
-    {
-        
-    }
-
-
-    // Start is called before the first frame update
-    private void FixedUpdate()
+    public void UpdateEnemy()
     {
         Creature enemyCreature = BattleManager.Instance.EnemyCreature;
 
         if (enemyCreature == null)
         {
             enemyObject.SetActive(false);
+            enemyName.text = "";
         }
         else
         {
@@ -64,44 +63,64 @@ public class UI_BattleDisplayManager : MonoBehaviour
             enemyHealthBar.maxValue = 1;
             enemyHealthBar.value = (float)healthPercentage;
             enemyPL.text = enemyCreature.CreatureStats.PowerLevel.ToNumberSuffix(false);
+            enemyName.text = enemyCreature.GenerateRandomName();
         }
-        enemyCreatureSprite.SetupRepresentation(enemyCreature);
+        SetEnemyCreatureRepresentation(enemyCreature);
     }
-    
-    public void CreateDamagePopUp(string text, bool isCrit, Creature creature)
+
+    public void SpawnEffect(EffectType effectType, CreatureBattleSlot slotType, BigDecimal amount, bool isCritical)
     {
-        Transform spawnPosition;
-        
-        //TODO: magic constant
-        if(creature.CreatureName != "Enemy")
-        {
-            spawnPosition = enemyObject.transform;
-            chooseAttackPrefab(text, isCrit, spawnPosition);
-        } 
-        else
-        {
-            spawnPosition = playerObject.transform;
-            chooseAttackPrefab(text, isCrit, spawnPosition);
+        Transform effectBoxTransform = ReturnEffectBoxTransform(slotType);
+        GameObject damageEffect = Instantiate(effectPrefab, effectBoxTransform.position, Quaternion.identity);
+        damageEffect.transform.SetParent(effectBoxTransform, false);
+        damageEffect.transform.position = effectBoxTransform.position;
+
+        switch (effectType){
+            case EffectType.Damage:
+                damageEffect.GetComponent<UI_EffectItem>().SetEffect(amount, EffectType.Damage, isCritical);
+                break;
+            case EffectType.Shield:
+                damageEffect.GetComponent<UI_EffectItem>().SetEffect(amount, EffectType.Shield, isCritical);
+                break;
+            case EffectType.Heal:
+                damageEffect.GetComponent<UI_EffectItem>().SetEffect(amount, EffectType.Heal, isCritical);
+                break;
         }
     }
 
-    public void chooseAttackPrefab(string damage, bool isCrit, Transform creature)
+    public Transform ReturnEffectBoxTransform(CreatureBattleSlot type)
     {
-        if (isCrit)
+        Transform transform = null;
+
+        switch (type)
         {
-            GameObject critEntry = Instantiate(critPrefab, new Vector2(creature.position.x, creature.position.y) , Quaternion.identity);
-            critEntry.transform.SetParent(creature.transform, false);
-            critEntry.transform.position = new Vector2(creature.position.x, creature.position.y + 100);
-            critEntry.GetComponentInChildren<TextMeshProUGUI>().text = damage + "!!";
-            Destroy(critEntry, 1);
+            case CreatureBattleSlot.Attack:
+                transform = attackerEffectBox;
+                break;
+            case CreatureBattleSlot.Heal:
+                transform = healerEffectBox;
+                break;
+            case CreatureBattleSlot.Defense:
+                transform = defenderEffectBox;
+                break;
+            case CreatureBattleSlot.Enemy:
+                transform = enemyEffectBox;
+                break;
+        }
+
+        return transform;
+    }
+
+    public void SetEnemyCreatureRepresentation(Creature creature)
+    {
+        if (creature == null)
+        {
+            enemySprite.Reset();
+            enemyCreatureSprite.Reset();
             return;
         }
-
-        GameObject attackEntry = Instantiate(attackPrefab, new Vector2(creature.position.x, creature.position.y) , Quaternion.identity);
-        attackEntry.transform.SetParent(creature.transform, false);
-        attackEntry.transform.position = new Vector2(creature.position.x, creature.position.y + 100);
-        attackEntry.GetComponentInChildren<TextMeshProUGUI>().text = damage;
-        Destroy(attackEntry, 1);
-        return;
+        enemyCreatureSprite.SetupRepresentation(creature);
+        enemySprite.SetupRepresentation(creature);
     }
+
 }
