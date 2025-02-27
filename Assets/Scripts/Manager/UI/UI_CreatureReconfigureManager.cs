@@ -86,12 +86,6 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
         InitialSetup();
     }
 
-    public void Start()
-    {
-        if (currentCreature == null) return;
-        ApplyColorsToCreatureButton();
-    }
-
     private void InitialSetup()
     {
         ReconfigureManager.Instance.ClearEntries();
@@ -112,16 +106,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
         ResetCreatureStatPreview();
         UpdateAllButtonLists();
         UpdateCreaturePreview();
-        ApplyColorsToCreatureButton();
         ToggleBodyParts(BodyPartToggleTypes.Head); 
-    }
-
-    private void ApplyColorsToCreatureButton()
-    {
-        creatureButton.gameObject.GetComponent<PalletSwap>().BaseColor = currentCreature.Representation.BaseColor;
-        creatureButton.gameObject.GetComponent<PalletSwap>().AddOnColor = currentCreature.Representation.AddOnColor;
-        creatureButton.gameObject.GetComponent<PalletSwap>().GetAllImageComponentsInChildren();
-        creatureButton.gameObject.GetComponent<PalletSwap>().ApplyNewMaterial();
     }
 
     private Creature SetReconfigureCreature(Creature creature)

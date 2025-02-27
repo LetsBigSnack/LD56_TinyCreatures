@@ -25,17 +25,8 @@ public class UI_FuseManager : MonoBehaviour
       {
          fuseSprite.SetupRepresentation(creature);
          fuseDetailsText.SetupRepresentation(creature);
-         ApplyColorsToCreatureButton(creature);
       }
    }
-
-    private void ApplyColorsToCreatureButton(Creature creature)
-    {
-        creatureButton.gameObject.GetComponent<PalletSwap>().BaseColor = creature.Representation.BaseColor;
-        creatureButton.gameObject.GetComponent<PalletSwap>().AddOnColor = creature.Representation.AddOnColor;
-        creatureButton.gameObject.GetComponent<PalletSwap>().GetAllImageComponentsInChildren();
-        creatureButton.gameObject.GetComponent<PalletSwap>().ApplyNewMaterial();
-    }
 
     public void CollectCreature()
    {

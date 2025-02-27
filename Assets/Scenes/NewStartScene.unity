@@ -2943,6 +2943,86 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1189057729}
   m_CullTransparentMesh: 1
+--- !u!1 &1205405764
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1205405765}
+  - component: {fileID: 1205405766}
+  m_Layer: 0
+  m_Name: ColorManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1205405765
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205405764}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1627584156}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1205405766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205405764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b79bc6d7fc40a6845ab252f3a939661f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseColors:
+  - BaseColor1: {r: 0.4245283, g: 0.18222678, b: 0.18222678, a: 1}
+    BaseColor2: {r: 0.6415094, g: 0.28141683, b: 0.28141683, a: 1}
+    BaseColor3: {r: 0.754717, g: 0.33819866, b: 0.33819866, a: 1}
+    BaseColor4: {r: 0.9056604, g: 0.3972944, b: 0.3972944, a: 1}
+  - BaseColor1: {r: 0.18039215, g: 0.42352942, b: 0.38865352, a: 1}
+    BaseColor2: {r: 0.24417052, g: 0.5566038, b: 0.51125056, a: 1}
+    BaseColor3: {r: 0.33333334, g: 0.74509805, b: 0.68235296, a: 1}
+    BaseColor4: {r: 0.39101997, g: 0.9528302, b: 0.867221, a: 1}
+  - BaseColor1: {r: 0.18039215, g: 0.29317927, b: 0.42352942, a: 1}
+    BaseColor2: {r: 0.25490198, g: 0.41176474, b: 0.58431375, a: 1}
+    BaseColor3: {r: 0.31283376, g: 0.4963001, b: 0.6981132, a: 1}
+    BaseColor4: {r: 0.41852084, g: 0.66572237, b: 0.9339623, a: 1}
+  - BaseColor1: {r: 0, g: 0, b: 0, a: 0}
+    BaseColor2: {r: 0, g: 0, b: 0, a: 0}
+    BaseColor3: {r: 0, g: 0, b: 0, a: 0}
+    BaseColor4: {r: 0, g: 0, b: 0, a: 0}
+  addOnColors:
+  - addOnColor1: {r: 0.42352942, g: 0.18039215, b: 0.30790764, a: 1}
+    addOnColor2: {r: 0.5943396, g: 0.26633143, b: 0.44091642, a: 1}
+    addOnColor3: {r: 0.7735849, g: 0.3466536, b: 0.57028425, a: 1}
+    addOnColor4: {r: 0.9245283, g: 0.40557134, b: 0.67695254, a: 1}
+  - addOnColor1: {r: 0.26715514, g: 0.18039215, b: 0.42352942, a: 1}
+    addOnColor2: {r: 0.36356646, g: 0.24701852, b: 0.5754717, a: 1}
+    addOnColor3: {r: 0.49571854, g: 0.33610716, b: 0.7830189, a: 1}
+    addOnColor4: {r: 0.65400535, g: 0.4669811, b: 1, a: 1}
+  - addOnColor1: {r: 0.18039215, g: 0.42352942, b: 0.41170895, a: 1}
+    addOnColor2: {r: 0.29352084, g: 0.6415094, b: 0.6246713, a: 1}
+    addOnColor3: {r: 0.38416696, g: 0.8396226, b: 0.81403524, a: 1}
+    addOnColor4: {r: 0.514151, g: 1, b: 0.97486985, a: 1}
+  - addOnColor1: {r: 0, g: 0, b: 0, a: 0}
+    addOnColor2: {r: 0, g: 0, b: 0, a: 0}
+    addOnColor3: {r: 0, g: 0, b: 0, a: 0}
+    addOnColor4: {r: 0, g: 0, b: 0, a: 0}
+  baseMat: {fileID: 2100000, guid: 5e555824e72f50f45abc4122e87f81aa, type: 2}
+  creatureRepresentations: []
 --- !u!1 &1274110758
 GameObject:
   m_ObjectHideFlags: 0
@@ -4436,10 +4516,6 @@ PrefabInstance:
       propertyPath: statRange.mantissaString
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 6298739330990959353, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
-      propertyPath: bodyPartSets.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 08856df236e0b8a79a2409ea67836a79, type: 2}
     - target: {fileID: 7315044951568535218, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
       propertyPath: enemyScale
       value: 2
@@ -4518,6 +4594,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5230948555505397506, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4577451714583947860}
+    - targetCorrespondingSourceObject: {fileID: 5230948555505397506, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1205405765}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
 --- !u!1 &1691509169

@@ -142,9 +142,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   breedingPrefab: {fileID: 4812369771820379678, guid: 4afdb3ee534746c48848233b3796d7bf, type: 3}
-  breedingPrice:
-    mantissaString: 
-    exponentString: 
   winFactor: 0.5
   mutationFactor: 20
 --- !u!1 &2226953132547168912
@@ -191,30 +188,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 882cc6ce200e3c95b8c7babdfcfdf3c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSlotPrice:
-    mantissaString: 
-    exponentString: 
-  pricesPerSlot:
-    mantissaString: 10
-    exponentString: 0
-  boughtSlots:
-    mantissaString: 0
-    exponentString: 0
-  basicCreaturePrice:
-    mantissaString: 10
-    exponentString: 0
-  winThreshold:
-    mantissaString: 10
-    exponentString: 0
-  advancedCreaturePrice:
-    mantissaString: 10
-    exponentString: 0
-  pricePerPowerLevel:
-    mantissaString: 2
-    exponentString: 0
-  playerMoney:
-    mantissaString: 99999999999999999999
-    exponentString: 0
   soldLimit: 5
 --- !u!1 &3077916234389289979
 GameObject:
@@ -368,10 +341,9 @@ MonoBehaviour:
   bodies: []
   arms: []
   legs: []
-  currentHead: {fileID: 0}
-  currentBody: {fileID: 0}
-  currentArms: {fileID: 0}
-  currentLegs: {fileID: 0}
+  topHeads: []
+  tails: []
+  backs: []
 --- !u!1 &4914910128676351724
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,25 +388,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26334c87f17335ec3bb612fe522995fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statRange:
-    mantissaString: 
-    exponentString: 
-  statMin:
-    mantissaString: 
-    exponentString: 
-  speedFactor:
-    mantissaString: 
-    exponentString: 
-  winFactor:
-    mantissaString: 
-    exponentString: 
-  battleRunning: 1
-  hasBattleStarted: 0
-  playerWins:
-    mantissaString: 
-    exponentString: 
+  tickSpeedFactorHeal: 1
+  multFactorHeal: 1
+  tickSpeedFactorDefense: 1
+  multFactorDefense: 1
+  enemyScale: 4
   factorMult: 1.5
-  autoBattle: 1
+  isBattleRunning: 0
 --- !u!1 &5082132141410851938
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,7 +484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyPartSets:
-  - {fileID: 11400000, guid: 9cbf4bd9dc2b5a08f9ded98f0bc40391, type: 2}
+  - {fileID: 11400000, guid: 39e2b9707987ac043b024b300cc4e9eb, type: 2}
   - {fileID: 11400000, guid: 08856df236e0b8a79a2409ea67836a79, type: 2}
   - {fileID: 11400000, guid: 5998a683525d1426285b5dd31f245de0, type: 2}
   - {fileID: 11400000, guid: 45032c98da9368114b600685ae1a7103, type: 2}
@@ -535,19 +495,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5dd7235b34730122ba17e62ad2da6636, type: 2}
   - {fileID: 11400000, guid: 51a081211af61b82e8c12ad8e4d2c46b, type: 2}
   - {fileID: 11400000, guid: 03bf3366a5d00dfa4a203cbe0e6b5be3, type: 2}
-  - {fileID: 11400000, guid: 488fe12b6aefad26e8f68423288124d9, type: 2}
-  creatureColors:
-  - {r: 0.38431373, g: 0.44705883, b: 0.6431373, a: 1}
-  - {r: 0.54509807, g: 0.9137255, b: 0.99215686, a: 1}
-  - {r: 0.3137255, g: 0.98039216, b: 0.48235294, a: 1}
-  - {r: 1, g: 0.72156864, b: 0.42352942, a: 1}
-  - {r: 1, g: 0.4745098, b: 0.7764706, a: 1}
-  - {r: 0.7411765, g: 0.5764706, b: 0.9764706, a: 1}
-  - {r: 1, g: 0.33333334, b: 0.33333334, a: 1}
-  - {r: 0.94509804, g: 0.98039216, b: 0.54901963, a: 1}
-  statRange:
-    mantissaString: 
-    exponentString: 
-  statMin:
-    mantissaString: 
-    exponentString: 
+  - {fileID: 11400000, guid: ae2af5fbd5151ef41baa75957f009cfa, type: 2}

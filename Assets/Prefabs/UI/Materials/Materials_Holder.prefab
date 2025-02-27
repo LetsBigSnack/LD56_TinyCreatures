@@ -4955,7 +4955,6 @@ GameObject:
   - component: {fileID: 5692938066672302544}
   - component: {fileID: 4922966917401566463}
   - component: {fileID: 6085812922477905532}
-  - component: {fileID: 3386475835450114896}
   m_Layer: 5
   m_Name: Button (3)
   m_TagString: Untagged
@@ -5087,30 +5086,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3386475835450114896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3471278248277939688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 239326965550047439f0fc4db9587d82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseColor:
-    BaseColor1: {r: 0, g: 0, b: 0, a: 0}
-    BaseColor2: {r: 0, g: 0, b: 0, a: 0}
-    BaseColor3: {r: 0, g: 0, b: 0, a: 0}
-    BaseColor4: {r: 0, g: 0, b: 0, a: 0}
-  addOnColor:
-    addOnColor1: {r: 0, g: 0, b: 0, a: 0}
-    addOnColor2: {r: 0, g: 0, b: 0, a: 0}
-    addOnColor3: {r: 0, g: 0, b: 0, a: 0}
-    addOnColor4: {r: 0, g: 0, b: 0, a: 0}
-  creatureImages: []
-  mat: {fileID: 0}
 --- !u!1 &3500617626279996944
 GameObject:
   m_ObjectHideFlags: 0
@@ -6614,7 +6589,6 @@ GameObject:
   - component: {fileID: 4822496861046220553}
   - component: {fileID: 1818822004737295239}
   - component: {fileID: 3158297862867803568}
-  - component: {fileID: 6020288333482586824}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -6746,30 +6720,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6020288333482586824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4114906901056924510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 239326965550047439f0fc4db9587d82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseColor:
-    BaseColor1: {r: 0, g: 0, b: 0, a: 0}
-    BaseColor2: {r: 0, g: 0, b: 0, a: 0}
-    BaseColor3: {r: 0, g: 0, b: 0, a: 0}
-    BaseColor4: {r: 0, g: 0, b: 0, a: 0}
-  addOnColor:
-    addOnColor1: {r: 0, g: 0, b: 0, a: 0}
-    addOnColor2: {r: 0, g: 0, b: 0, a: 0}
-    addOnColor3: {r: 0, g: 0, b: 0, a: 0}
-    addOnColor4: {r: 0, g: 0, b: 0, a: 0}
-  creatureImages: []
-  mat: {fileID: 0}
 --- !u!1 &4253545081265499684
 GameObject:
   m_ObjectHideFlags: 0
@@ -8807,7 +8757,6 @@ GameObject:
   - component: {fileID: 7501138183974095012}
   - component: {fileID: 2816556378822349645}
   - component: {fileID: 3638959132696555729}
-  - component: {fileID: 923315306401773517}
   m_Layer: 5
   m_Name: Button (2)
   m_TagString: Untagged
@@ -8939,30 +8888,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &923315306401773517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5793442868945871935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 239326965550047439f0fc4db9587d82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseColor:
-    BaseColor1: {r: 0, g: 0, b: 0, a: 0}
-    BaseColor2: {r: 0, g: 0, b: 0, a: 0}
-    BaseColor3: {r: 0, g: 0, b: 0, a: 0}
-    BaseColor4: {r: 0, g: 0, b: 0, a: 0}
-  addOnColor:
-    addOnColor1: {r: 0, g: 0, b: 0, a: 0}
-    addOnColor2: {r: 0, g: 0, b: 0, a: 0}
-    addOnColor3: {r: 0, g: 0, b: 0, a: 0}
-    addOnColor4: {r: 0, g: 0, b: 0, a: 0}
-  creatureImages: []
-  mat: {fileID: 0}
 --- !u!1 &5872640624693807762
 GameObject:
   m_ObjectHideFlags: 0
@@ -9739,7 +9664,6 @@ GameObject:
   - component: {fileID: 1262769756088033343}
   - component: {fileID: 3673953006901398420}
   - component: {fileID: 8854340420522300104}
-  - component: {fileID: 7724086126663850801}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -9871,30 +9795,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7724086126663850801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6515720649758371525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 239326965550047439f0fc4db9587d82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseColor:
-    BaseColor1: {r: 0, g: 0, b: 0, a: 0}
-    BaseColor2: {r: 0, g: 0, b: 0, a: 0}
-    BaseColor3: {r: 0, g: 0, b: 0, a: 0}
-    BaseColor4: {r: 0, g: 0, b: 0, a: 0}
-  addOnColor:
-    addOnColor1: {r: 0, g: 0, b: 0, a: 0}
-    addOnColor2: {r: 0, g: 0, b: 0, a: 0}
-    addOnColor3: {r: 0, g: 0, b: 0, a: 0}
-    addOnColor4: {r: 0, g: 0, b: 0, a: 0}
-  creatureImages: []
-  mat: {fileID: 0}
 --- !u!1 &6608171732703373808
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,17 +24,8 @@ public class UI_Inspector_Item : MonoBehaviour, IDropHandler
         {
             InventoryManager.Instance.SelectCreatureRight(uiCreatureButton.Creature);
         }
-        ApplyColorsToCreatureButton(uiCreatureButton.Creature);
         UI_CompareManager.Instance.SetInspector();
         UI_InventoryManager.Instance.RefreshInventory();
         SoundManager.Instance.PlaySFX("Click");
-    }
-
-    private void ApplyColorsToCreatureButton(Creature creature)
-    {
-        creatureButton.gameObject.GetComponent<PalletSwap>().BaseColor = creature.Representation.BaseColor;
-        creatureButton.gameObject.GetComponent<PalletSwap>().AddOnColor = creature.Representation.AddOnColor;
-        creatureButton.gameObject.GetComponent<PalletSwap>().GetAllImageComponentsInChildren();
-        creatureButton.gameObject.GetComponent<PalletSwap>().ApplyNewMaterial();
     }
 }

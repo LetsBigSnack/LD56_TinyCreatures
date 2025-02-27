@@ -36,16 +36,7 @@ public class BuyBackCreature : MonoBehaviour
     public void Refresh()
     {
         sprite.SetupRepresentation(creature);
-        ApplyColorsToCreatureButton();
         text.text = creature.CreatureName;
         priceText.text = "Buy\n" + creature.CreatureStats.PowerLevel.ToNumberSuffix(false) + ",-";
-    }
-
-    private void ApplyColorsToCreatureButton()
-    {
-        creatureButton.gameObject.GetComponent<PalletSwap>().BaseColor = creature.Representation.BaseColor;
-        creatureButton.gameObject.GetComponent<PalletSwap>().AddOnColor = creature.Representation.AddOnColor;
-        creatureButton.gameObject.GetComponent<PalletSwap>().GetAllImageComponentsInChildren();
-        creatureButton.gameObject.GetComponent<PalletSwap>().ApplyNewMaterial();
     }
 }

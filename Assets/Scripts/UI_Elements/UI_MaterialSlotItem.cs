@@ -102,15 +102,6 @@ public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
         creatureButton.Creature = creature;
         creatureSprite.SetupRepresentation(creature);
         currentCreature = creature;
-        ApplyColorsToCreatureButton();
-    }
-
-    private void ApplyColorsToCreatureButton()
-    {
-        creatureButton.gameObject.GetComponent<PalletSwap>().BaseColor = currentCreature.Representation.BaseColor;
-        creatureButton.gameObject.GetComponent<PalletSwap>().AddOnColor = currentCreature.Representation.AddOnColor;
-        creatureButton.gameObject.GetComponent<PalletSwap>().GetAllImageComponentsInChildren();
-        creatureButton.gameObject.GetComponent<PalletSwap>().ApplyNewMaterial();
     }
 
     private void ResetCreatureRepresentation()
