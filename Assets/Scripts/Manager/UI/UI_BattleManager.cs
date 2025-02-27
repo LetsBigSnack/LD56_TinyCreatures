@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 using Data;
 
@@ -13,6 +14,7 @@ public class UI_BattleManager : MonoBehaviour
     [SerializeField] private UI_CreatureDetailsText battleCreatureDetails;
 
     [SerializeField] private GameObject nextBattleButton;
+    [SerializeField] private TextMeshProUGUI startButtonText;
 
     [SerializeField] private UI_ToggleButton toggleButton;
 
@@ -64,6 +66,7 @@ public class UI_BattleManager : MonoBehaviour
         BattleManager.OnCreatureTimeChanged += UpdateTimeSlider;
         BattleManager.OnEnemyHealthChanged += UpdateEnemyHealthSlider;
         BattleManager.OnEnemyTimeChanged += UpdateEnemyTimeSlider;
+        ToggleStartButton();
     }
 
     private void OnDisable()
@@ -73,6 +76,16 @@ public class UI_BattleManager : MonoBehaviour
         BattleManager.OnCreatureTimeChanged -= UpdateTimeSlider;
         BattleManager.OnEnemyHealthChanged -= UpdateEnemyHealthSlider;
         BattleManager.OnEnemyTimeChanged -= UpdateEnemyTimeSlider;
+    }
+
+    private void ToggleStartButton()
+    {
+        if (BattleManager.Instance.IsBattleRunning)
+        {
+            startButtonText.text = "Stop";
+            return;
+        }
+        startButtonText.text = "Start";
     }
 
     private void UpdateHealthSlider(float amount, CreatureBattleSlot type)
@@ -159,6 +172,12 @@ public class UI_BattleManager : MonoBehaviour
         battleCreatureDetails?.Reset();   
         UI_InventoryManager.Instance.RefreshInventory();
     }
+
+    public void StopBattle()
+    {
+        BattleManager.Instance.StopBattle();
+        UI_BattleInventoryManager.Instance.ResetAllSliders();
+    }
     
     public void RetreatAllCreatures()
     {
@@ -224,7 +243,10 @@ public class UI_BattleManager : MonoBehaviour
 
     public void StartBattle()
     {
-        BattleManager.Instance.NextBattle();
+        if (BattleManager.Instance.IsBattleRunning) StopBattle();
+        else BattleManager.Instance.NextBattle();
+
+        ToggleStartButton();
     }
 
     public void UpdateBattleCreatureRepresentation(CreatureBattleSlot battleSlot, Creature creature)

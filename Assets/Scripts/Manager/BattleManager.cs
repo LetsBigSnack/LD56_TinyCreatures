@@ -120,7 +120,7 @@ public class BattleManager : MonoBehaviour
             enemyCreature = CreatureManager.Instance.
                 CreateAdjustedCreature(statRange + (playerWins * winFactor), 
                                         (statMin + (playerWins * winFactor))* enemyScale);
-            enemyCreature.CreatureName = "Enemy";
+            UI_BattleDisplayManager.Instance.UpdateEnemy();
         }
         else
         {
@@ -599,7 +599,7 @@ public class BattleManager : MonoBehaviour
         
         if (UI_BattleManager.Instance != null)
         {
-            UI_InventoryHoverManager.Instance.BattleText.text = "NO DATA FOUND!";
+            UI_InventoryHoverManager.Instance.BattleText.text = "Battle Stopped!";
         }
         StopAllRoutines();
     }

@@ -42,7 +42,12 @@ public class UI_BattleDisplayManager : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    public void OnEnable()
+    {
+        UpdateEnemy();
+    }
+
+    public void UpdateEnemy()
     {
         Creature enemyCreature = BattleManager.Instance.EnemyCreature;
 
@@ -58,10 +63,7 @@ public class UI_BattleDisplayManager : MonoBehaviour
             enemyHealthBar.maxValue = 1;
             enemyHealthBar.value = (float)healthPercentage;
             enemyPL.text = enemyCreature.CreatureStats.PowerLevel.ToNumberSuffix(false);
-            if(enemyName.text == "")
-            {
-                enemyName.text = enemyCreature.GenerateRandomName();
-            }  
+            enemyName.text = enemyCreature.GenerateRandomName();
         }
         SetEnemyCreatureRepresentation(enemyCreature);
     }
