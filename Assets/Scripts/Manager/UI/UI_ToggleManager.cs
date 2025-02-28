@@ -13,7 +13,8 @@ public enum ToggleState
     Fusion,
     Materials,
     ReConfigure,
-    Achievements
+    Achievements,
+    CreatureDex
 }
 
 public class UI_ToggleManager : MonoBehaviour
@@ -27,6 +28,7 @@ public class UI_ToggleManager : MonoBehaviour
     [SerializeField] private GameObject materials;
     [SerializeField] private GameObject reconfigure;
     [SerializeField] private GameObject achievements;
+    [SerializeField] private GameObject creatureDex;
     
     [SerializeField] private Sprite clickedSprite;
     [SerializeField] private Sprite notClickedSprite;
@@ -63,6 +65,7 @@ public class UI_ToggleManager : MonoBehaviour
         materials.SetActive(false);
         reconfigure.SetActive(false);
         achievements.SetActive(false);
+        creatureDex.SetActive(false);
         soundManager.PlaySFX("Click");
         UpdateButtonSprite(state);
         switch (state)
@@ -99,6 +102,10 @@ public class UI_ToggleManager : MonoBehaviour
             case "Achievements":
                 achievements.SetActive(true);
                 currentState = ToggleState.Achievements;
+                break;
+            case "CreatureDex":
+                creatureDex.SetActive(true);
+                currentState = ToggleState.CreatureDex;
                 break;
 
         }

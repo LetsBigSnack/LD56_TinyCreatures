@@ -23,7 +23,7 @@ public class BuyBackCreature : MonoBehaviour
     {
         if (StoreManager.Instance.BuyBack(creature))
         {
-            SoundManager.Instance.PlaySFX("Click");
+            SoundManager.Instance.PlaySFX("Transaction");
             UI_InventoryManager.Instance.RefreshInventory();
             FindObjectOfType<UI_ShopManager>().RefreshInventory();
         }

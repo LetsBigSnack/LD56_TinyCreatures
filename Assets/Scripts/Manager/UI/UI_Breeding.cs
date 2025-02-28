@@ -6,11 +6,14 @@ using TMPro;
 using UnityEngine;
 
 public class UI_BreedingManager : MonoBehaviour
-{
-    
+{ 
     static public UI_BreedingManager Instance;
-    private SoundManager soundManager;
-
+    [SerializeField] private UI_CreatureSprite creatureSpriteLeft;
+    [SerializeField] private UI_CreatureSprite creatureSpriteRight;
+    [SerializeField] private UI_CreatureSprite creatureSpriteMiddle;
+    [SerializeField] private UI_CreatureDetailsText detailsLeft;
+    [SerializeField] private UI_CreatureDetailsText detailsRight;
+    [SerializeField] private TextMeshProUGUI costText;
 
     private void Awake()
     {
@@ -21,20 +24,9 @@ public class UI_BreedingManager : MonoBehaviour
         else
         {
             Instance = this;
-            soundManager = FindObjectOfType<SoundManager>();
         }
     }
-    
 
-
-    [SerializeField] private UI_CreatureSprite creatureSpriteLeft;
-    [SerializeField] private UI_CreatureSprite creatureSpriteRight;
-    [SerializeField] private UI_CreatureSprite creatureSpriteMiddle;
-    [SerializeField] private UI_CreatureDetailsText detailsLeft;
-    [SerializeField] private UI_CreatureDetailsText detailsRight;
-    [SerializeField] private TextMeshProUGUI costText;
-
-    
     //TODO: Observer Pattern
     private void FixedUpdate()
     {
@@ -64,11 +56,11 @@ public class UI_BreedingManager : MonoBehaviour
     {
         if (BreedingManager.Instance.RemoveToBreed(isLeft))
         {
-            soundManager.PlaySFX("Click");
+            SoundManager.Instance.PlaySFX("Click");
         }
         else
         {
-            soundManager.PlaySFX("Error");
+            SoundManager.Instance.PlaySFX("Error");
         }
         UI_InventoryManager.Instance.RefreshInventory();
     }
@@ -77,17 +69,17 @@ public class UI_BreedingManager : MonoBehaviour
     {
         if (BreedingManager.Instance.Result != null)
         {
-            soundManager.PlaySFX("Error");
+            SoundManager.Instance.PlaySFX("Error");
             return;
         }
         if (BreedingManager.Instance.Breed())
         {
-            soundManager.PlaySFX("Breed");
+            SoundManager.Instance.PlaySFX("Transaction");
             UI_ToggleManager.Instance.SwitchState("Fusion");
         }
         else
         {
-            soundManager.PlaySFX("Error");
+            SoundManager.Instance.PlaySFX("Error");
         }
     }
     

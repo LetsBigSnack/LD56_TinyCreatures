@@ -47,7 +47,7 @@ public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
                 return;
             }
             SetNewCreature(uiCreatureButton.Creature);
-            SoundManager.Instance.PlaySFX("Click");
+            SoundManager.Instance.PlaySFX("Drop");
         }
     }
 

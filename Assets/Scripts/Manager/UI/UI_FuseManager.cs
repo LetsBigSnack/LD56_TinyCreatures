@@ -8,13 +8,6 @@ public class UI_FuseManager : MonoBehaviour
    [SerializeField] private UICreatureButton creatureButton;
    [SerializeField] private UI_CreatureSprite fuseSprite;
    [SerializeField] private UI_CreatureDetailsText fuseDetailsText;
-   
-   private SoundManager _soundManager;
-
-   private void Awake()
-   {
-      _soundManager = FindObjectOfType<SoundManager>();
-   }
 
     private void FixedUpdate()
    {
@@ -32,11 +25,12 @@ public class UI_FuseManager : MonoBehaviour
    {
       if (BreedingManager.Instance.Collect())
       {
+         SoundManager.Instance.PlaySFX("Click");
          UI_ToggleManager.Instance.SwitchState("Inspector");
       }
       else
       {
-         _soundManager.PlaySFX("Error");
+         SoundManager.Instance.PlaySFX("Error");
       }
       UI_InventoryManager.Instance.RefreshInventory();
    }
@@ -48,10 +42,11 @@ public class UI_FuseManager : MonoBehaviour
          StoreManager.Instance.SellOwnedCreature(BreedingManager.Instance.Result);
          BreedingManager.Instance.Result = null;
          UI_ToggleManager.Instance.SwitchState("Inspector");
-      }
+         SoundManager.Instance.PlaySFX("Transaction");
+       }
       else
       {
-         _soundManager.PlaySFX("Error");
+         SoundManager.Instance.PlaySFX("Error");
       }
       
    }
@@ -62,13 +57,13 @@ public class UI_FuseManager : MonoBehaviour
       if (creature != null && BreedingManager.Instance.Breed(true))
       {
          StoreManager.Instance.EarnMoney(creature.CreatureStats.PowerLevel);
-         
-         _soundManager.PlaySFX("Click");
+
+            SoundManager.Instance.PlaySFX("Transaction");
          
       }
       else
       {
-         _soundManager.PlaySFX("Error");
+            SoundManager.Instance.PlaySFX("Error");
       }
    }
 }

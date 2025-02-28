@@ -88,7 +88,7 @@ public class UI_CompareManager : MonoBehaviour
                 InventoryManager.Instance.RemoveCreature(left);
                 InventoryManager.Instance.SelectCreatureLeft(null);
                 StoreManager.Instance.SellOwnedCreature(left);
-                soundManager.PlaySFX("Click");
+                soundManager.PlaySFX("Transaction");
             }
             else
             {
@@ -110,7 +110,7 @@ public class UI_CompareManager : MonoBehaviour
                 InventoryManager.Instance.RemoveCreature(right);
                 InventoryManager.Instance.SelectCreatureRight(null);
                 StoreManager.Instance.SellOwnedCreature(right);
-                soundManager.PlaySFX("Click");
+                soundManager.PlaySFX("Transaction");
             }
             else
             {

@@ -33,6 +33,7 @@ public class UI_BattleSlotHelper : MonoBehaviour, IDropHandler
         }
         activeSlot.GetComponentInChildren<UI_BattleCreatureItem>().OnDrop(eventData);
         UI_BattleManager.Instance.ResetSlider(slotType);
+        SoundManager.Instance.PlaySFX("Drop");
     }
 
     public void InitialSetup()

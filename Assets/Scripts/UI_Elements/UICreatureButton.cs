@@ -44,6 +44,7 @@ public class UICreatureButton : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     {
         if (isDragable)
         {
+            SoundManager.Instance.PlaySFX("Drag");
             canvasGroup.blocksRaycasts = false;
             parentAfterDrag = transform.parent;
             transform.SetParent(transform.root);

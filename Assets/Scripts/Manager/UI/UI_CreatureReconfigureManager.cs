@@ -180,7 +180,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
                 return;
             }
             SetNewCreature(uiCreatureButton.Creature);
-            SoundManager.Instance.PlaySFX("Click");
+            SoundManager.Instance.PlaySFX("Drop");
         }
     }
 

@@ -26,6 +26,6 @@ public class UI_Inspector_Item : MonoBehaviour, IDropHandler
         }
         UI_CompareManager.Instance.SetInspector();
         UI_InventoryManager.Instance.RefreshInventory();
-        SoundManager.Instance.PlaySFX("Click");
+        SoundManager.Instance.PlaySFX("Drop");
     }
 }
