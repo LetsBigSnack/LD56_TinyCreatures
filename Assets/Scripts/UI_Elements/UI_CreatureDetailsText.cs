@@ -8,6 +8,7 @@ using TMPro;
 
 public class UI_CreatureDetailsText : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI powerLevelText;
     [SerializeField] private TextMeshProUGUI hpText;
     [SerializeField] private TextMeshProUGUI atkText;
@@ -23,6 +24,10 @@ public class UI_CreatureDetailsText : MonoBehaviour
       
     public void Reset()
     {
+        if(nameText != null)
+        {
+            nameText.text = "";
+        }
         powerLevelText.text = "       ";
         hpText.text = "      ";
         hpText.color = new Color(255f, 255f, 255f, 255);
@@ -56,6 +61,10 @@ public class UI_CreatureDetailsText : MonoBehaviour
             {
                 attributes[i].SetActive(true);
             }
+        }
+        if(nameText != null)
+        {
+            nameText.text = creature.CreatureName;
         }
         hpText.text = creature.MaxHealth.ToNumberSuffix(false);
         hpText.color = new Color(255f,255f,255f,255);

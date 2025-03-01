@@ -305,14 +305,34 @@ public class InventoryManager : MonoBehaviour
         }
         return false;
     }
-    
-    public void AddToBreed(Creature creature)
+
+    public bool AddToBreedLeft(Creature creature)
     {
-        if (BreedingManager.Instance.AddToBreed(creature))
+        if(BreedingManager.Instance.AddToBreedLeft(creature)){
+            RemoveCreature(creature);
+            return true;
+        };
+
+        AddCreature(BreedingManager.Instance.CreaturePod1);
+        BreedingManager.Instance.RemoveFromBreed(true);
+        BreedingManager.Instance.AddToBreedLeft(creature);
+        RemoveCreature(creature);
+        return true;
+    }
+
+    public bool AddToBreedRight(Creature creature)
+    {
+        if (BreedingManager.Instance.AddToBreedRight(creature))
         {
             RemoveCreature(creature);
+            return true;
         };
-        
+
+        AddCreature(BreedingManager.Instance.CreaturePod2);
+        BreedingManager.Instance.RemoveFromBreed(false);
+        BreedingManager.Instance.AddToBreedRight(creature);
+        RemoveCreature(creature);
+        return true;
     }
 
     public void AddToReconfigure(Creature creature)

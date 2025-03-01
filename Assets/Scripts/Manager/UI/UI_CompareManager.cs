@@ -18,8 +18,6 @@ public class UI_CompareManager : MonoBehaviour
     [SerializeField] private UI_CreatureDetailsText rightCreatureDetails;
 
 
-    private SoundManager soundManager;
-
     public void Awake()
     {
         if (Instance != null && Instance != this)
@@ -29,7 +27,6 @@ public class UI_CompareManager : MonoBehaviour
         else
         {
             Instance = this;
-            soundManager = FindObjectOfType<SoundManager>();
         }
     }
 
@@ -88,11 +85,11 @@ public class UI_CompareManager : MonoBehaviour
                 InventoryManager.Instance.RemoveCreature(left);
                 InventoryManager.Instance.SelectCreatureLeft(null);
                 StoreManager.Instance.SellOwnedCreature(left);
-                soundManager.PlaySFX("Transaction");
+                SoundManager.Instance.PlaySFX("Transaction");
             }
             else
             {
-                soundManager.PlaySFX("Error");
+                SoundManager.Instance.PlaySFX("Error");
             }
         } 
         else
@@ -110,11 +107,11 @@ public class UI_CompareManager : MonoBehaviour
                 InventoryManager.Instance.RemoveCreature(right);
                 InventoryManager.Instance.SelectCreatureRight(null);
                 StoreManager.Instance.SellOwnedCreature(right);
-                soundManager.PlaySFX("Transaction");
+                SoundManager.Instance.PlaySFX("Transaction");
             }
             else
             {
-                soundManager.PlaySFX("Error");
+                SoundManager.Instance.PlaySFX("Error");
             }
         }
 
@@ -131,7 +128,7 @@ public class UI_CompareManager : MonoBehaviour
         {
             if (left != null)
             {
-                UI_BreedingManager.Instance.AddCreatureToPod(left);
+                UI_BreedingManager.Instance.AddToLeftPod(left);
                 InventoryManager.Instance.SelectCreatureLeft(null);
 
                 Creature test = UI_BattleManager.Instance.SelectedCreature;
@@ -144,18 +141,19 @@ public class UI_CompareManager : MonoBehaviour
                 UI_BattleManager.Instance.RefreshCreatureDetails();
                 
                 left = null;
-                soundManager.PlaySFX("Click");
+                SoundManager.Instance.PlaySFX("Click");
             }
             else
             {
-                soundManager.PlaySFX("Error");
+                SoundManager.Instance.PlaySFX("Error");
+                UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "Drag a Creature into the inspector to combine!");
             }
         } 
         else
         {
             if (right != null)
             {
-                UI_BreedingManager.Instance.AddCreatureToPod(right);
+                UI_BreedingManager.Instance.AddToRightPod(right);
                 InventoryManager.Instance.SelectCreatureRight(null);
                 
                 Creature test = UI_BattleManager.Instance.SelectedCreature;
@@ -168,11 +166,12 @@ public class UI_CompareManager : MonoBehaviour
                 UI_BattleManager.Instance.RefreshCreatureDetails();
                 
                 right = null;
-                soundManager.PlaySFX("Click");
+                SoundManager.Instance.PlaySFX("Click");
             }
             else
             {
-                soundManager.PlaySFX("Error");
+                SoundManager.Instance.PlaySFX("Error");
+                UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "Drag a Creature into the inspector to combine!");
             }
         }
 
