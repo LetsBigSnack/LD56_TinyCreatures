@@ -65,7 +65,7 @@ public class UI_FuseManager : MonoBehaviour
         else
         {
             SoundManager.Instance.PlaySFX("Error");
-            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "You need to combine a creature first to be able to re-combine!");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Something went wrong", "You're either trying to refuse without a creature or you're out of money!");
         }
     }
 }

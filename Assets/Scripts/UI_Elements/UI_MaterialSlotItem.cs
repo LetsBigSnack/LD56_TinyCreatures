@@ -44,6 +44,7 @@ public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
             if(uiCreatureButton == null || !uiCreatureButton.IsDragable || uiCreatureButton.Creature == null)
             {
                 SoundManager.Instance.PlaySFX("Error");
+                UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Oops", "Something went wrong :(");
                 return;
             }
             SetNewCreature(uiCreatureButton.Creature);
@@ -136,5 +137,6 @@ public class UI_MaterialSlotItem : MonoBehaviour, IDropHandler
         }
 
         SoundManager.Instance.PlaySFX("Error");
+        UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "There's no creature in " + selectedMaterial + " currently!");
     }
 }

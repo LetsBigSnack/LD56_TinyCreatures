@@ -244,9 +244,9 @@ RectTransform:
   - {fileID: 5010046052564767265}
   m_Father: {fileID: 3827460202156462248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 184, y: -128}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 368, y: 176}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1440782175266357058
@@ -1111,7 +1111,7 @@ RectTransform:
   m_GameObject: {fileID: 3831090853455873971}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3827460202156462248}
@@ -1150,7 +1150,7 @@ MonoBehaviour:
   titleBarRectTransform: {fileID: 1557531751416426251}
   canvas: {fileID: 0}
   canvasGroup: {fileID: 8706824561615992859}
-  sceneWhereVisible: DekisScene
+  sceneWhereVisible: NewUISpritesScene
 --- !u!225 &8706824561615992859
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2314,7 +2314,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: 
-        m_MethodName: 
+        m_MethodName: ViewPreviousTrack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2630,7 +2630,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 243.99995, y: 130}
+  m_AnchoredPosition: {x: 164, y: 88}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &185008074181288035

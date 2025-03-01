@@ -199,6 +199,7 @@ public class UI_BattleManager : MonoBehaviour
         else
         {
             SoundManager.Instance.PlaySFX("Error");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Inventory full", "You don't have the space, sell some creature or buy space!");
         }
     }
 
@@ -233,6 +234,7 @@ public class UI_BattleManager : MonoBehaviour
         else 
         { 
             soundManager.PlaySFX("Error");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Attacker", "You need at least an attacker creature to start the training!");
         }
     }
 

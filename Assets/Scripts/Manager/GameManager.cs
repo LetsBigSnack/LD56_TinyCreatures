@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     {
         switch (sceneName)
         {
-            case "DekisScene":
+            case "NewUISpritesScene":
                 _currentState = State.Game;
                 MaterialManager.Instance.StartAllMaterialCoroutines();
                 //TODO: rework 

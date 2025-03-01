@@ -13,7 +13,6 @@ public class UICreatureButton : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Transform parentAfterDrag;
     [SerializeField] private bool isDragable = true;
-    private List<ToggleState> dragableStates = new List<ToggleState> { ToggleState.Battle, ToggleState.Materials, ToggleState.ReConfigure, ToggleState.Inspector };
         
     public Creature Creature
     {
@@ -56,11 +55,8 @@ public class UICreatureButton : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (dragableStates.Contains(UI_ToggleManager.Instance.CurrentState) && isDragable)
-            {
-                rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
-                canvasGroup.alpha = 0.6f;
-            }
+            rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+            canvasGroup.alpha = 0.6f;
         }
     }
 

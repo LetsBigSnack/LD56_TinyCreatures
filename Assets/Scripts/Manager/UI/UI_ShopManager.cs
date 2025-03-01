@@ -53,7 +53,7 @@ public class UI_ShopManager : MonoBehaviour
         else
         {
             adjustedButton.interactable = false;
-            adjustedCreatureText.text = "Win 10 Battles to unlock \n " + BattleManager.Instance.PlayerWins + "/10";
+            adjustedCreatureText.text = "Win 10 Battles to unlock \n" + BattleManager.Instance.PlayerWins + "/10";
             adjustedPriceText.text = "";
         }
     }
@@ -67,6 +67,7 @@ public class UI_ShopManager : MonoBehaviour
         else
         {
             soundManager.PlaySFX("Error");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Money", "Not enough money to buy this! Fight some battles to earn currency!");
         }
         UI_InventoryManager.Instance.RefreshInventory();
     }
@@ -80,6 +81,7 @@ public class UI_ShopManager : MonoBehaviour
         else
         {
             soundManager.PlaySFX("Error");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Something went wrong", "Either you're missing the money or your inventory is full!");
         }
         UI_InventoryManager.Instance.RefreshInventory();
     }
@@ -93,6 +95,7 @@ public class UI_ShopManager : MonoBehaviour
         else
         {
             soundManager.PlaySFX("Error");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Something went wrong", "Either you're missing the money or your inventory is full!");
         }
         UI_InventoryManager.Instance.RefreshInventory();
     }

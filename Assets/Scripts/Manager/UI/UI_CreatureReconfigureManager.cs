@@ -31,7 +31,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
     [SerializeField] private GameObject uiBodyPartItemPrefab;
     [SerializeField] private Transform scrollViewContent;
-    
+
     [SerializeField] private UI_CreatureSprite creaturePreviewSprite;
     [SerializeField] private Image bodyPartPreviewImage;
     [SerializeField] private Sprite bodyPartPreviewBaseImage;
@@ -106,12 +106,12 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
         ResetCreatureStatPreview();
         UpdateAllButtonLists();
         UpdateCreaturePreview();
-        ToggleBodyParts(BodyPartToggleTypes.Head); 
+        ToggleBodyParts(BodyPartToggleTypes.Head);
     }
 
     private Creature SetReconfigureCreature(Creature creature)
     {
-        if(creature == null)
+        if (creature == null)
         {
             return null;
         }
@@ -148,7 +148,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
     private void CreateNonExistendButtons(List<BodyPartButtonAttributes> buttonList)
     {
-        foreach(BodyPartButtonAttributes creaturePartItem in buttonList)
+        foreach (BodyPartButtonAttributes creaturePartItem in buttonList)
         {
             GameObject newButton = Instantiate(uiBodyPartItemPrefab, scrollViewContent, false);
             newButton.transform.SetParent(scrollViewContent);
@@ -162,7 +162,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
     private void ClearCurrentlyDisplayedButtonList()
     {
-        foreach(GameObject button in currentlyDisplayedButtons)
+        foreach (GameObject button in currentlyDisplayedButtons)
         {
             Destroy(button);
         }
@@ -177,6 +177,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
             if (uiCreatureButton == null || !uiCreatureButton.IsDragable || uiCreatureButton.Creature == null)
             {
                 SoundManager.Instance.PlaySFX("Error");
+                UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Oops", "Something went wrong :(");
                 return;
             }
             SetNewCreature(uiCreatureButton.Creature);
@@ -199,17 +200,12 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
     public void Withdraw(bool isExchanged = false)
     {
-        if (currentCreature != null)
+        CancleReconfiguration();
+        if (!isExchanged)
         {
-            CancleReconfiguration();
-            if (!isExchanged)
-            {
-                SoundManager.Instance.PlaySFX("Click");
-            }
-            return;
+            SoundManager.Instance.PlaySFX("Click");
         }
-
-        SoundManager.Instance.PlaySFX("Error");
+        return;
     }
 
     public void ToggleBodyParts(BodyPartToggleTypes toggleTypes)
@@ -246,9 +242,9 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
     public void PickPart(BodyPart bodyPart, BodyPartType bodyPartType)
     {
-        if(currentCreature == null)
+        if (currentCreature == null)
         {
-            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Reconfigure Empty!", "Please drag a creature of your choice into the reconfigure to start!");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "Please drag a creature into the reconfigurator to start!");
             SoundManager.Instance.PlaySFX("Error");
             return;
         }
@@ -290,7 +286,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
 
     private void UpdateCreaturePreview()
     {
-        if(currentCreature == null)
+        if (currentCreature == null)
         {
             ResetCreatureStatPreview();
             creaturePreviewSprite.Reset();
@@ -345,7 +341,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
         float spdValue = 0;
         float crtValue = 0;
 
-        foreach(BodyPart bodyPart in reconfigCreature.Representation.BodyParts.Values)
+        foreach (BodyPart bodyPart in reconfigCreature.Representation.BodyParts.Values)
         {
             atkValue = atkValue + bodyPart.attackModifier;
             defValue = defValue + bodyPart.defenseModifier;
@@ -375,28 +371,33 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
     {
         if (currentCreature == null)
         {
-            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Reconfigure Empty!", "Please drag a creature of your choice into the reconfigure to start!");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "There's no creature in the configurator that could be bought!");
             SoundManager.Instance.PlaySFX("Error");
             return;
         }
 
         if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
         {
-            ReconfigureManager.Instance.ReconfigureSelectedCreature(reconfigCreature.Representation);
-            currentCreature = null;
-            reconfigCreature = null;
-            UpdateCreaturePreview();
-            ResetBodyPartStatPreview();
-            UI_InventoryManager.Instance.RefreshInventory();
-            SoundManager.Instance.PlaySFX("Transaction");
+            if (InventoryManager.Instance.HasSpace())
+            {
+                ReconfigureManager.Instance.ReconfigureSelectedCreature(reconfigCreature.Representation);
+                currentCreature = null;
+                reconfigCreature = null;
+                UpdateCreaturePreview();
+                ResetBodyPartStatPreview();
+                UI_InventoryManager.Instance.RefreshInventory();
+                SoundManager.Instance.PlaySFX("Transaction");
+                return;
+            }
+            SoundManager.Instance.PlaySFX("Error");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Inventory Full", "Your inventory is full!");
             return;
         }
-        SoundManager.Instance.PlaySFX("Error");
     }
 
     public void ResetConfiguration()
     {
-        if(currentCreature != null)
+        if (currentCreature != null)
         {
             reconfigCreature.Representation = currentCreature.Representation;
             UpdateCreaturePreview();
@@ -408,24 +409,29 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
     {
         if (currentCreature == null)
         {
-            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Reconfigure Empty!", "Please drag a creature of your choice into the reconfigure to start!");
             SoundManager.Instance.PlaySFX("Error");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "There's no creature in the configurator that could be removed!");
             return;
         }
 
         if (InventoryManager.Instance.SelectedCreatureForReConfigure != null)
         {
-            ReconfigureManager.Instance.RemoveFromReconfigure();
-            creatureButton.Creature = null;
-            currentCreature = null;
-            reconfigCreature = null;
-            UpdateCreaturePreview();
-            ResetCreatureStatPreview();
-            UI_InventoryManager.Instance.RefreshInventory();
-            SoundManager.Instance.PlaySFX("Transaction");
+            if (InventoryManager.Instance.HasSpace())
+            {
+                ReconfigureManager.Instance.RemoveFromReconfigure();
+                creatureButton.Creature = null;
+                currentCreature = null;
+                reconfigCreature = null;
+                UpdateCreaturePreview();
+                ResetCreatureStatPreview();
+                UI_InventoryManager.Instance.RefreshInventory();
+                SoundManager.Instance.PlaySFX("Transaction");
+                return;
+            }
+            SoundManager.Instance.PlaySFX("Error");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Inventory Full", "Your inventory is full!");
             return;
         }
-        SoundManager.Instance.PlaySFX("Error");
     }
 
 }

@@ -90,6 +90,7 @@ public class UI_CompareManager : MonoBehaviour
             else
             {
                 SoundManager.Instance.PlaySFX("Error");
+                UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "Drag a Creature into the inspector to sell it!");
             }
         } 
         else
@@ -112,6 +113,7 @@ public class UI_CompareManager : MonoBehaviour
             else
             {
                 SoundManager.Instance.PlaySFX("Error");
+                UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "Drag a Creature into the inspector to sell it!");
             }
         }
 
@@ -146,7 +148,7 @@ public class UI_CompareManager : MonoBehaviour
             else
             {
                 SoundManager.Instance.PlaySFX("Error");
-                UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "Drag a Creature into the inspector to combine!");
+                UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "Drag a Creature into the inspector to combine it!");
             }
         } 
         else
@@ -171,7 +173,7 @@ public class UI_CompareManager : MonoBehaviour
             else
             {
                 SoundManager.Instance.PlaySFX("Error");
-                UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "Drag a Creature into the inspector to combine!");
+                UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "Drag a Creature into the inspector to combine it!");
             }
         }
 

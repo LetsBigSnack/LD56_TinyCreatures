@@ -70,6 +70,10 @@ public class UI_BattleDisplayManager : MonoBehaviour
 
     public void SpawnEffect(EffectType effectType, CreatureBattleSlot slotType, BigDecimal amount, bool isCritical)
     {
+        if (!gameObject.activeInHierarchy)
+        {
+            return;
+        }
         Transform effectBoxTransform = ReturnEffectBoxTransform(slotType);
         GameObject damageEffect = Instantiate(effectPrefab, effectBoxTransform.position, Quaternion.identity);
         damageEffect.transform.SetParent(effectBoxTransform, false);

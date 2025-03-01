@@ -146,7 +146,11 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
     {
         if (currentCreature != null)
         {
-            InventoryManager.Instance.RetreatFormBattle(currentCreature, creatureBattleSlot);
+            if(!InventoryManager.Instance.RetreatFormBattle(currentCreature, creatureBattleSlot))
+            {
+                SoundManager.Instance.PlaySFX("Error");
+                UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Inventory Full", "Your inventory is full!");
+            }
             ResetCreatureRepresentation();
             creatureButton.Creature = null;
             currentCreature = null;
