@@ -40,50 +40,90 @@ public class UI_ToastManager : MonoBehaviour
         }
     }
 
-    public void PushNextToast(bool isAchievement)
+    public void PushNextToast(NotificationType type)
     {
-        StartCoroutine(ForceWait(isAchievement));
+        StartCoroutine(ForceWait(type));
     }
 
-    public void PushNewToast(bool isAchievement)
+    public void PushNewToast(NotificationType type)
     {
         Toast toast;
 
-        if (isAchievement && achievementToasts.Count > 0)
+        switch (type)
         {
-            toast = achievementToasts[0];
-            achievementToasts.RemoveAt(0);
-            CreateToast(toast.title, toast.description,toast.achievementJSON);
-        } 
-        else if(!isAchievement && notificationToasts.Count > 0)
-        {
-            toast = notificationToasts[0];
-            notificationToasts.RemoveAt(0);
-            CreateToast(toast.title, toast.description);
-        }
-        
+            case NotificationType.Achievement:
+                if (!NextAchievementAvailable()) return;
+                toast = achievementToasts[0];
+                achievementToasts.RemoveAt(0);
+                CreateToast(NotificationType.Achievement, toast.title, toast.description, toast.achievementJSON);
+                break;
+            case NotificationType.Notification:
+                if (!NextNotificationAvailable()) return;
+                toast = notificationToasts[0];
+                notificationToasts.RemoveAt(0);
+                CreateToast(NotificationType.Notification, toast.title, toast.description);
+                break;
+            case NotificationType.Alert:
+                if (!NextNotificationAvailable()) return;
+                toast = notificationToasts[0];
+                notificationToasts.RemoveAt(0);
+                CreateToast(NotificationType.Alert, toast.title, toast.description);
+                break;
+        }        
+    }
+
+    public bool NextAchievementAvailable()
+    {
+        return achievementToasts.Count > 0;
+    }
+
+    public bool NextNotificationAvailable()
+    {
+        return notificationToasts.Count > 0;
+    }
+
+    public bool CurrentAchievementEmpty()
+    {
+        return currAchievementToast == null;
+    }
+
+    public bool CurrentNotificationEmpty()
+    {
+        return currNotificationToast == null;
     }
     
-    public void CreateToast(string title = "", string description = "",AchievementJSON achievement = null)
+    public void CreateToast(NotificationType type, string title = "", string description = "",AchievementJSON achievement = null)
     {
-        if (currAchievementToast == null && achievement != null)
+        switch (type)
         {
-            CreateAchievmentToast(achievement);
-            return;
+            case NotificationType.Achievement:
+                if (CurrentAchievementEmpty())
+                {
+                    CreateAchievmentToast(achievement);
+                    return;
+                }
+                break;
+            case NotificationType.Notification:
+                if (CurrentNotificationEmpty())
+                {
+                    CreateNotificationToast(title, description);
+                    return;
+                }
+                break;
+            case NotificationType.Alert:
+                if (CurrentNotificationEmpty())
+                {
+                    CreateErrorToast(title, description);
+                    return;
+                }
+                break;
         }
-
-        if(currNotificationToast == null && achievement == null)
-        {
-            CreateNotificationToast(title, description);
-            return;
-        }
-
-        StashToast(achievement,title,description);
+        StashToast(type,achievement,title,description);
     }
     
-    private void StashToast(AchievementJSON achievement = null, string title = "", string description = "")
+    private void StashToast(NotificationType type, AchievementJSON achievement = null, string title = "", string description = "")
     {
-        Toast toast = new Toast(achievement, title, description);
+        Toast toast = new Toast(type, achievement, title, description);
 
         if (toast.achievementJSON != null)
         {
@@ -102,6 +142,7 @@ public class UI_ToastManager : MonoBehaviour
 
         toastItem.Image.sprite = AchievementManager.Instance.GetReferancedImage(achievement.sprite);
         toastItem.TitelText.text = achievement.name;
+        toastItem.Type = NotificationType.Achievement;
 
         string rewardText;
 
@@ -123,14 +164,26 @@ public class UI_ToastManager : MonoBehaviour
         UI_ToastItem toastItem = newToast.GetComponent<UI_ToastItem>();
 
         toastItem.TitelText.text = title;
-
         toastItem.RewardText.text = description;
+        toastItem.Type = NotificationType.Notification;
     }
 
-    private IEnumerator ForceWait(bool isAchievement)
+    private void CreateErrorToast(string title, string description)
+    {
+        GameObject newToast = Instantiate(notificationToastPrefab, gameObject.transform);
+        currNotificationToast = newToast;
+
+        UI_ToastItem toastItem = newToast.GetComponent<UI_ToastItem>();
+
+        toastItem.TitelText.text = title;
+        toastItem.RewardText.text = description;
+        toastItem.Type = NotificationType.Alert;
+    }
+
+    private IEnumerator ForceWait(NotificationType type)
     {
         yield return new WaitForSeconds(0.5f);
-        PushNewToast(isAchievement);
+        PushNewToast(type);
     }
 
 }

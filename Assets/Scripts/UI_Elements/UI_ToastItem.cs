@@ -4,12 +4,29 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum NotificationType
+{
+    Achievement,
+    Notification,
+    Alert
+}
+
 public class UI_ToastItem : MonoBehaviour
 {
+    [SerializeField] private NotificationType type;
+
     [SerializeField] private Image image;
+    [SerializeField] private Image backgroundImage;
     [SerializeField] private TextMeshProUGUI titelText;
     [SerializeField] private TextMeshProUGUI rewardText;
-    [SerializeField] private bool isAchievement;
+    [SerializeField] private Color notificationColor;
+    [SerializeField] private Color alertColor;
+
+    public NotificationType Type
+    {
+        get { return type; }
+        set { type = value; }
+    }
 
     public Image Image
     {
@@ -31,14 +48,27 @@ public class UI_ToastItem : MonoBehaviour
 
     void Start()
     {
-        if (isAchievement)
+        SetupRepresentation();
+    }
+
+    private void SetupRepresentation()
+    {
+        switch (type)
         {
-            UI_ToastManager.Instance.CurrAchievementToast = gameObject;
-        } 
-        else
-        {
-            UI_ToastManager.Instance.CurrNotificationToast = gameObject;
-        }  
+            case NotificationType.Achievement:
+                UI_ToastManager.Instance.CurrAchievementToast = gameObject;
+                backgroundImage.color = notificationColor;
+                break;
+            case NotificationType.Notification:
+                UI_ToastManager.Instance.CurrNotificationToast = gameObject;
+                backgroundImage.color = notificationColor;
+                break;
+            case NotificationType.Alert:
+                UI_ToastManager.Instance.CurrNotificationToast = gameObject;
+                backgroundImage.color = alertColor;
+                break;
+
+        }
     }
 
     public void EndToast()
@@ -48,7 +78,7 @@ public class UI_ToastItem : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (isAchievement)
+        if (type == NotificationType.Achievement)
         {
             UI_ToastManager.Instance.CurrAchievementToast = null;
         }
@@ -56,6 +86,6 @@ public class UI_ToastItem : MonoBehaviour
         {
             UI_ToastManager.Instance.CurrNotificationToast = null;
         }
-        UI_ToastManager.Instance.PushNextToast(isAchievement);
+        UI_ToastManager.Instance.PushNextToast(type);
     }
 }

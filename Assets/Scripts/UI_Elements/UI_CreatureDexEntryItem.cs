@@ -18,6 +18,10 @@ public class UI_CreatureDexEntryItem : MonoBehaviour
     [SerializeField] private Image bodyImage;
     [SerializeField] private Image armsImage;
     [SerializeField] private Image legsImage;
+    [SerializeField] private Image tailImage;
+    [SerializeField] private Image backImage;
+    [SerializeField] private Image topHeadImage;
+
 
     //name
     [SerializeField] private TextMeshProUGUI nameText;
@@ -73,6 +77,18 @@ public class UI_CreatureDexEntryItem : MonoBehaviour
 
             case BodyPartType.Legs:
                 imageToManipulate = legsImage;
+                break;
+
+            case BodyPartType.TopHead:
+                imageToManipulate = topHeadImage;
+                break;
+
+            case BodyPartType.Tail:
+                imageToManipulate = tailImage;
+                break;
+
+            case BodyPartType.Back:
+                imageToManipulate = backImage;
                 break;
         }
 

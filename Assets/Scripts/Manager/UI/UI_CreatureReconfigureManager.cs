@@ -248,7 +248,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
     {
         if(currentCreature == null)
         {
-            UI_ToastManager.Instance.CreateToast("Reconfigure Empty!", "Please drag a creature of your choice into the reconfigure to start!");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Reconfigure Empty!", "Please drag a creature of your choice into the reconfigure to start!");
             SoundManager.Instance.PlaySFX("Error");
             return;
         }
@@ -375,7 +375,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
     {
         if (currentCreature == null)
         {
-            UI_ToastManager.Instance.CreateToast("Reconfigure Empty!", "Please drag a creature of your choice into the reconfigure to start!");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Reconfigure Empty!", "Please drag a creature of your choice into the reconfigure to start!");
             SoundManager.Instance.PlaySFX("Error");
             return;
         }
@@ -408,7 +408,7 @@ public class UI_CreatureReconfigureManager : MonoBehaviour, IDropHandler
     {
         if (currentCreature == null)
         {
-            UI_ToastManager.Instance.CreateToast("Reconfigure Empty!", "Please drag a creature of your choice into the reconfigure to start!");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Reconfigure Empty!", "Please drag a creature of your choice into the reconfigure to start!");
             SoundManager.Instance.PlaySFX("Error");
             return;
         }

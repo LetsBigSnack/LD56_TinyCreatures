@@ -74,7 +74,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
     {
         if (BattleManager.Instance.IsBattleRunning)
         {
-            UI_ToastManager.Instance.CreateToast("Battle Ongoing!", "Can't remove a creature during battle!");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Battle Ongoing!", "Can't remove a creature during battle!");
             SoundManager.Instance.PlaySFX("Error");
             return;
         }
@@ -89,7 +89,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
         }
         else
         {
-            UI_ToastManager.Instance.CreateToast("Can't remove creature", "There is no space in the inventory.");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Can't remove creature", "There is no space in the inventory.");
             SoundManager.Instance.PlaySFX("Error");
         }
     }
@@ -98,7 +98,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
     {
         if (BattleManager.Instance.IsBattleRunning)
         {
-            UI_ToastManager.Instance.CreateToast("Battle Ongoing!", "Can't add a creature during battle!");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Battle Ongoing!", "Can't add a creature during battle!");
             SoundManager.Instance.PlaySFX("Error");
             return;
         }
@@ -156,7 +156,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
             }
             return;
         }
-        UI_ToastManager.Instance.CreateToast("No Creature!", "There's no creature in this slot!");
+        UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature!", "There's no creature in this slot!");
         SoundManager.Instance.PlaySFX("Error");
     }
 

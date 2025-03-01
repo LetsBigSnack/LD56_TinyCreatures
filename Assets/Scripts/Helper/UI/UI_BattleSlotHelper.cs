@@ -20,7 +20,7 @@ public class UI_BattleSlotHelper : MonoBehaviour, IDropHandler
         if (BattleManager.Instance.IsBattleRunning)
         {
             SoundManager.Instance.PlaySFX("Error");
-            UI_ToastManager.Instance.CreateToast("Battle Ongoing!", "Can't add/change creature during battle.");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Battle Ongoing!", "Can't add/change creature during battle.");
             return;
         }
         Creature creature = InventoryManager.Instance.CreatureBattleSlots[slotType];
