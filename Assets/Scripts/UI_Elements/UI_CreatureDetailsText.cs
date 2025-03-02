@@ -77,14 +77,19 @@ public class UI_CreatureDetailsText : MonoBehaviour
         }
         hpText.text = creature.MaxHealth.ToNumberSuffix(false);
         hpText.color = new Color(255f,255f,255f,255);
+        hpText.fontSharedMaterial = baseMaterial;
         atkText.text = creature.CreatureStats.Attack.ToNumberSuffix();
         atkText.color = new Color(255f, 255f, 255f, 255);
+        atkText.fontSharedMaterial = baseMaterial;
         spdText.text = creature.CreatureStats.Speed.ToNumberSuffix();
         spdText.color = new Color(255f, 255f, 255f, 255);
+        spdText.fontSharedMaterial = baseMaterial;
         dexText.text = creature.CreatureStats.Dexterity.ToNumberSuffix();
         dexText.color = new Color(255f, 255f, 255f, 255);
+        dexText.fontSharedMaterial = baseMaterial;
         defText.text = creature.CreatureStats.Defense.ToNumberSuffix();
         defText.color = new Color(255f, 255f, 255f, 255);
+        defText.fontSharedMaterial = baseMaterial;
         powerLevelText.text = creature.CreatureStats.PowerLevel.ToNumberSuffix(false);
     }
 
