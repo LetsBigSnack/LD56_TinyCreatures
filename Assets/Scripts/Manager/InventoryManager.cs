@@ -29,6 +29,10 @@ public class InventoryManager : MonoBehaviour
     
     private Creature creatureInspectorLeft;
     private Creature creatureInspectorRight;
+
+    public static event Action<Creature> OnChangesCreatureInspectorLeft;
+    public static event Action<Creature> OnChangesCreatureInspectorRight;
+
     private Creature selectedCreatureForReConfigure;
 
     private Creature selectedCreatureForMaterial_1;
@@ -344,6 +348,7 @@ public class InventoryManager : MonoBehaviour
         if (creatureInspectorLeft == creature)
         {
             creatureInspectorLeft = null;
+            OnChangesCreatureInspectorLeft.Invoke(creatureInspectorLeft);
             UI_CompareManager.Instance.SetInspector();
             return;
         }
@@ -351,6 +356,7 @@ public class InventoryManager : MonoBehaviour
         if(creatureInspectorRight == creature)
         {
             creatureInspectorRight = null;
+            OnChangesCreatureInspectorRight.Invoke(creatureInspectorRight);
             UI_CompareManager.Instance.SetInspector();
             return;
         }
@@ -386,11 +392,13 @@ public class InventoryManager : MonoBehaviour
             if (creature == creatureInspectorLeft)
             {
                 creatureInspectorLeft = null;
+                OnChangesCreatureInspectorLeft.Invoke(creatureInspectorLeft);
             }
             
             if (creature == creatureInspectorRight)
             {
                 creatureInspectorRight = null;
+                OnChangesCreatureInspectorRight.Invoke(creatureInspectorRight);
             }
             
             UI_CompareManager.Instance?.SetInspector();
@@ -422,8 +430,10 @@ public class InventoryManager : MonoBehaviour
         if (creatureToSelect == creatureInspectorRight)
         {
             creatureInspectorRight = null;
+            OnChangesCreatureInspectorRight.Invoke(creatureInspectorRight);
         }
         creatureInspectorLeft = creatureToSelect;
+        OnChangesCreatureInspectorLeft.Invoke(creatureInspectorLeft);
     }
     
     public void SelectCreatureRight(Creature creatureToSelect)
@@ -431,8 +441,10 @@ public class InventoryManager : MonoBehaviour
         if (creatureToSelect == creatureInspectorLeft)
         {
             creatureInspectorLeft = null;
+            OnChangesCreatureInspectorLeft.Invoke(creatureInspectorLeft);
         }
         creatureInspectorRight = creatureToSelect;
+        OnChangesCreatureInspectorRight.Invoke(creatureInspectorRight);
     }
 
     public void AddSlot()
