@@ -119,13 +119,11 @@ public class StoreManager : MonoBehaviour
     }
 
     public void SellOwnedCreature(Creature creature)
-    {
-        
+    { 
         EarnMoney(creature.CreatureStats.PowerLevel);
         
         if (soledCreatures.Count+1 > soldLimit)
         {
-            
             Creature soldCrt = soledCreatures.First();
             soledCreatures.Remove(soldCrt);
         }
