@@ -204,9 +204,11 @@ public class UI_BattleManager : MonoBehaviour
             SetAllBattleSlotEmpty();
             return;
         }
-        SoundManager.Instance.PlaySFX("Error");
-        UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Inventory full", "You don't have the space, sell some creature or buy space!");
-
+        else
+        {
+            SoundManager.Instance.PlaySFX("Error");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Inventory full", "You don't have the space, sell some creature or buy space!");
+        }
     }
 
     private bool IsACreatureInASlot()

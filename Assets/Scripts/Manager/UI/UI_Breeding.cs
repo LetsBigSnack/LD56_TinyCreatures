@@ -165,7 +165,7 @@ public class UI_BreedingManager : MonoBehaviour
         else
         {
             SoundManager.Instance.PlaySFX("Error");
-            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Money", "You don't have enough money to fuse! Earn Money by battling!");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Something went wrong", "You're either trying to refuse without a creature or you're out of money!");
         }
     }
     

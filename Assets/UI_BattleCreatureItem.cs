@@ -112,7 +112,7 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
                 return;
             }
             OnCreatureAdded(uiCreatureButton.Creature);
-            SoundManager.Instance.PlaySFX("Click");
+            SoundManager.Instance.PlaySFX("Drop");
         }
         UI_InventoryManager.Instance.RefreshInventory();
     }
@@ -146,11 +146,13 @@ public class UI_BattleCreatureItem : MonoBehaviour, IDropHandler
     {
         if (currentCreature != null)
         {
-            if(!InventoryManager.Instance.RetreatFormBattle(currentCreature, creatureBattleSlot))
+            if (!InventoryManager.Instance.HasSpace(1))
             {
                 SoundManager.Instance.PlaySFX("Error");
                 UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Inventory Full", "Your inventory is full!");
+                return;
             }
+            InventoryManager.Instance.RetreatFormBattle(currentCreature, creatureBattleSlot);
             ResetCreatureRepresentation();
             creatureButton.Creature = null;
             currentCreature = null;

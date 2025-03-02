@@ -30,7 +30,7 @@ public class ResolutionSelector : MonoBehaviour
             if (Mathf.Approximately(aspectRatio, 16f / 9f))  // Check if it's approximately 16:9
             {
                 validResolutions.Add(resolution);
-                options.Add($"{resolution.width} x {resolution.height} @ {resolution.refreshRateRatio} Hz");
+                options.Add($"{resolution.width} x {resolution.height} @ {resolution.refreshRate} Hz");
             }
         }
 
