@@ -58,6 +58,6 @@ public class ResolutionSelector : MonoBehaviour
         Screen.SetResolution(selectedResolution.width, selectedResolution.height, isFullscreen);
 
         // Load the main game scene (replace "MainScene" with your actual game scene name)
-        SceneManager.LoadScene("StartScene");
+        SceneManager.LoadScene("NewStartScene");
     }
 }
