@@ -16,7 +16,8 @@ public class UI_CompareManager : MonoBehaviour
     [SerializeField] private UICreatureButton rightCreatureButton;
     [SerializeField] private UI_CreatureDetailsText leftCreatureDetails;
     [SerializeField] private UI_CreatureDetailsText rightCreatureDetails;
-
+    [SerializeField] private TextMeshProUGUI dragHereTextLeft;
+    [SerializeField] private TextMeshProUGUI dragHereTextRight;
 
     public void Awake()
     {
@@ -37,34 +38,44 @@ public class UI_CompareManager : MonoBehaviour
 
     public void SetInspector()
     {
-        leftCreatureButton.Creature = null;
-        rightCreatureButton.Creature = null;
-        leftCreatureSprite.Reset();
-        rightCreatureSprite.Reset();
-        leftCreatureDetails.Reset();
-        rightCreatureDetails.Reset();
-        
         Creature left = InventoryManager.Instance.CreatureInspectorLeft;
         Creature right = InventoryManager.Instance.CreatureInspectorRight;
-        
+
+        if(left == null)
+        {
+            leftCreatureButton.Creature = null;
+            leftCreatureSprite.Reset();
+            leftCreatureDetails.Reset();
+            dragHereTextLeft.text = "Drag Here To Start!";
+        }
+
+        if(right == null)
+        {
+            rightCreatureButton.Creature = null;
+            rightCreatureSprite.Reset();
+            rightCreatureDetails.Reset();
+            dragHereTextRight.text = "Drag Here To Start!";
+        }
+
         if (left != null)
         {
             leftCreatureButton.Creature = left;
             leftCreatureSprite.SetupRepresentation(left);
             leftCreatureDetails.SetupRepresentation(left);
             leftCreatureDetails.CompareColor(left, right);
-
+            dragHereTextLeft.text = "";
         }
+
         if (right != null)
         {
             leftCreatureButton.Creature = right;
             rightCreatureSprite.SetupRepresentation(right);
             rightCreatureDetails.SetupRepresentation(right);
             rightCreatureDetails.CompareColor(right, left);
+            dragHereTextRight.text = "";
         }
     }
 
-    //TODO: check if all the logic is needed
     public void SellCreatureToShop(bool isLeft)
     {
         Creature left = InventoryManager.Instance.CreatureInspectorLeft;

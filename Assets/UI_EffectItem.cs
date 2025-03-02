@@ -22,6 +22,10 @@ public class UI_EffectItem : MonoBehaviour
     [SerializeField] private Sprite shieldSprite;
     [SerializeField] private Sprite healSprite;
 
+    [SerializeField] private Material dmgMaterial;
+    [SerializeField] private Material healMaterial;
+    [SerializeField] private Material shieldMaterial;
+
     public EffectType EffectType
     {
         get { return effectType; }
@@ -39,11 +43,11 @@ public class UI_EffectItem : MonoBehaviour
         effectType = type;
         if (!isCritical)
         {
-            amountTextObj.text = amount.ToNumberSuffix(false);
+            amountTextObj.text = type == EffectType.Damage? "-"+amount.ToNumberSuffix(false) : amount.ToNumberSuffix(false);
         }
         else
         {
-            amountTextObj.text = amount.ToNumberSuffix(false) + "!!";
+            amountTextObj.text = type == EffectType.Damage ? "-" + amount.ToNumberSuffix(false) + "!!" : amount.ToNumberSuffix(false) + "!!";
         }
 
         SetImage();
@@ -55,12 +59,15 @@ public class UI_EffectItem : MonoBehaviour
         {
             case EffectType.Damage:
                 iconObj.sprite = damageSprite;
+                amountTextObj.fontSharedMaterial = dmgMaterial;
                 break;
             case EffectType.Heal:
                 iconObj.sprite = healSprite;
+                amountTextObj.fontSharedMaterial = healMaterial;
                 break;
             case EffectType.Shield:
                 iconObj.sprite = shieldSprite;
+                amountTextObj.fontSharedMaterial = shieldMaterial;
                 break;
         }
     }

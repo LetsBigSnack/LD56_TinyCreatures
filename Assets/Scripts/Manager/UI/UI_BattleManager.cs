@@ -181,6 +181,13 @@ public class UI_BattleManager : MonoBehaviour
     
     public void RetreatAllCreatures()
     {
+        if (!IsACreatureInASlot())
+        {
+            SoundManager.Instance.PlaySFX("Error");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Creature", "There's no creature to return to inventory!");
+            return;
+        }
+
 
         if (InventoryManager.Instance.HasSpace(3))
         {
@@ -195,12 +202,23 @@ public class UI_BattleManager : MonoBehaviour
         
             CheckAllSlotsRepresentation();
             SetAllBattleSlotEmpty();
+            return;
         }
-        else
+        SoundManager.Instance.PlaySFX("Error");
+        UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Inventory full", "You don't have the space, sell some creature or buy space!");
+
+    }
+
+    private bool IsACreatureInASlot()
+    {
+        if(ReturnBattleSlotItem(CreatureBattleSlot.Attack).CurrentCreature != null ||
+            ReturnBattleSlotItem(CreatureBattleSlot.Defense).CurrentCreature != null ||
+            ReturnBattleSlotItem(CreatureBattleSlot.Heal).CurrentCreature != null)
         {
-            SoundManager.Instance.PlaySFX("Error");
-            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "Inventory full", "You don't have the space, sell some creature or buy space!");
+            return true;
         }
+
+        return false;
     }
 
     private void SetAllBattleSlotEmpty()
@@ -246,8 +264,11 @@ public class UI_BattleManager : MonoBehaviour
     public void StartBattle()
     {
         if (BattleManager.Instance.IsBattleRunning) StopBattle();
-        else BattleManager.Instance.NextBattle();
-
+        else if (!BattleManager.Instance.NextBattle())
+        {
+            soundManager.PlaySFX("Error");
+            UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Attacker", "You need at least an attacker creature to start the training!");
+        }
         ToggleStartButton();
     }
 

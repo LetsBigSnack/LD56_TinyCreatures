@@ -17678,6 +17678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf4d28ebcfbe93d4cb2ff17d8f98641d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nameText: {fileID: 0}
   powerLevelText: {fileID: 75555038242275785}
   hpText: {fileID: 1436008141682648965}
   atkText: {fileID: 5143783405445993085}
@@ -17685,6 +17686,9 @@ MonoBehaviour:
   dexText: {fileID: 2307923071980643552}
   defText: {fileID: 2301259143772434589}
   attributes: []
+  baseMaterial: {fileID: -8795944488419149960, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
+  upMaterial: {fileID: 2100000, guid: 430d06911722113428e27abd1c54f071, type: 2}
+  downMaterial: {fileID: 2100000, guid: 234c01f35a69343418a4b2555e619d7e, type: 2}
 --- !u!1 &4499453330900247922
 GameObject:
   m_ObjectHideFlags: 0

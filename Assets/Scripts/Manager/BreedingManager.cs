@@ -25,8 +25,6 @@ public class BreedingManager : MonoBehaviour
     public Action<Creature> OnCreatureChangeResult;
 
     private BigDecimal breedingPrice = 0;
-    //TODO: need to think about a better way 
-    [SerializeField] private float winFactor = 0.5f;
 
     public BigDecimal BreedingPrice
     {

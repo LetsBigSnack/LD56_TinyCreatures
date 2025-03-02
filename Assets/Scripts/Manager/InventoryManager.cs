@@ -310,6 +310,7 @@ public class InventoryManager : MonoBehaviour
     {
         if(BreedingManager.Instance.AddToBreedLeft(creature)){
             RemoveCreature(creature);
+            RemoveFromCompareManager(creature);
             return true;
         };
 
@@ -317,6 +318,7 @@ public class InventoryManager : MonoBehaviour
         BreedingManager.Instance.RemoveFromBreed(true);
         BreedingManager.Instance.AddToBreedLeft(creature);
         RemoveCreature(creature);
+        RemoveFromCompareManager(creature);
         return true;
     }
 
@@ -325,6 +327,7 @@ public class InventoryManager : MonoBehaviour
         if (BreedingManager.Instance.AddToBreedRight(creature))
         {
             RemoveCreature(creature);
+            RemoveFromCompareManager(creature);
             return true;
         };
 
@@ -332,7 +335,25 @@ public class InventoryManager : MonoBehaviour
         BreedingManager.Instance.RemoveFromBreed(false);
         BreedingManager.Instance.AddToBreedRight(creature);
         RemoveCreature(creature);
+        RemoveFromCompareManager(creature);
         return true;
+    }
+
+    private void RemoveFromCompareManager(Creature creature)
+    {
+        if (creatureInspectorLeft == creature)
+        {
+            creatureInspectorLeft = null;
+            UI_CompareManager.Instance.SetInspector();
+            return;
+        }
+
+        if(creatureInspectorRight == creature)
+        {
+            creatureInspectorRight = null;
+            UI_CompareManager.Instance.SetInspector();
+            return;
+        }
     }
 
     public void AddToReconfigure(Creature creature)

@@ -44,7 +44,6 @@ public class UI_AchievementComponent : MonoBehaviour
 
     
     [SerializeField] private int maxTitleLength = 20;
-    [SerializeField] private int maxDescriptionLength = 50;
     private AchievementJSON achievement;
     
 

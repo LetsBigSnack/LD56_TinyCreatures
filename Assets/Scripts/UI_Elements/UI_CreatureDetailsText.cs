@@ -16,7 +16,11 @@ public class UI_CreatureDetailsText : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dexText;
     [SerializeField] private TextMeshProUGUI defText;
     [SerializeField] private GameObject[] attributes;
-    
+
+    [SerializeField] private Material baseMaterial;
+    [SerializeField] private Material upMaterial;
+    [SerializeField] private Material downMaterial;
+
     private void OnEnable()
     {
         Reset();
@@ -31,14 +35,19 @@ public class UI_CreatureDetailsText : MonoBehaviour
         powerLevelText.text = "       ";
         hpText.text = "      ";
         hpText.color = new Color(255f, 255f, 255f, 255);
+        hpText.fontSharedMaterial = baseMaterial;
         atkText.text = "      ";
         atkText.color = new Color(255f, 255f, 255f, 255);
+        atkText.fontSharedMaterial = baseMaterial;
         spdText.text = "      ";
         spdText.color = new Color(255f, 255f, 255f, 255);
+        spdText.fontSharedMaterial = baseMaterial;
         dexText.text = "      ";
         dexText.color = new Color(255f, 255f, 255f, 255);
+        dexText.fontSharedMaterial = baseMaterial;
         defText.text = "      ";
         defText.color = new Color(255f, 255f, 255f, 255);
+        defText.fontSharedMaterial = baseMaterial;
     }
 
     public void SetupRepresentation(Creature creature)
@@ -80,11 +89,7 @@ public class UI_CreatureDetailsText : MonoBehaviour
     }
 
     public void CompareColor(Creature creature1, Creature creature2)
-    {
-
-        Color pos = new Color(10/255f,71/255f,6/255f);
-        Color neg = new Color(71/255f,5/255f,5/255f);
-        
+    {   
         if (creature1 == null || creature2 == null)
         {
             return;
@@ -95,11 +100,11 @@ public class UI_CreatureDetailsText : MonoBehaviour
         {
             if (creature1.MaxHealth < creature2.MaxHealth)
             {
-                hpText.color = neg;
+                hpText.fontSharedMaterial = downMaterial;
             }
             else
             {
-                hpText.color = pos;
+                hpText.fontSharedMaterial = upMaterial;
             }
         }
         
@@ -107,11 +112,11 @@ public class UI_CreatureDetailsText : MonoBehaviour
         {
             if (creature1.CreatureStats.Attack < creature2.CreatureStats.Attack)
             {
-                atkText.color = neg;
+                atkText.fontSharedMaterial = downMaterial;
             }
             else
             {
-                atkText.color = pos;
+                atkText.fontSharedMaterial = upMaterial;
             }
         }
         
@@ -119,11 +124,11 @@ public class UI_CreatureDetailsText : MonoBehaviour
         {
             if (creature1.CreatureStats.Speed < creature2.CreatureStats.Speed)
             {
-                spdText.color = neg;
+                spdText.fontSharedMaterial = downMaterial;
             }
             else
             {
-                spdText.color = pos;
+                spdText.fontSharedMaterial = upMaterial;
             }
         }
         
@@ -131,11 +136,11 @@ public class UI_CreatureDetailsText : MonoBehaviour
         {
             if (creature1.CreatureStats.Dexterity < creature2.CreatureStats.Dexterity)
             {
-                dexText.color = neg;
+                dexText.fontSharedMaterial = downMaterial;
             }
             else
             {
-                dexText.color = pos;
+                dexText.fontSharedMaterial = upMaterial;
             }
         }
         
@@ -143,11 +148,11 @@ public class UI_CreatureDetailsText : MonoBehaviour
         {
             if (creature1.CreatureStats.Defense < creature2.CreatureStats.Defense)
             {
-                defText.color = neg;
+                defText.fontSharedMaterial = downMaterial;
             }
             else
             {
-                defText.color = pos;
+                defText.fontSharedMaterial = upMaterial;
             }
         }
         
