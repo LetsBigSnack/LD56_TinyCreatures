@@ -55,8 +55,11 @@ public class UICreatureButton : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
-            canvasGroup.alpha = 0.6f;
+            if (isDragable)
+            {
+                rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                canvasGroup.alpha = 0.6f;
+            }
         }
     }
 
