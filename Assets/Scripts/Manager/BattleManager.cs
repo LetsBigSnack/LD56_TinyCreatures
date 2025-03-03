@@ -22,6 +22,9 @@ public class BattleManager : MonoBehaviour
 
     [Header("Battle Parameters")] 
     private Creature enemyCreature;
+
+    public static event Action<Creature> OnEnemyCreatureChanged;
+
     private BigDecimal statRange = new BigDecimal(35,-1);
     private BigDecimal statMin = new BigDecimal(8,0);
     //how this shit is displayed in the inspector
@@ -120,7 +123,7 @@ public class BattleManager : MonoBehaviour
             enemyCreature = CreatureManager.Instance.
                 CreateAdjustedCreature(statRange + (playerWins * winFactor), 
                                         (statMin + (playerWins * winFactor))* enemyScale);
-            UI_BattleDisplayManager.Instance.UpdateEnemy();
+            OnEnemyCreatureChanged?.Invoke(enemyCreature);
         }
         else
         {
@@ -182,6 +185,7 @@ public class BattleManager : MonoBehaviour
         
         StoreManager.Instance.EarnMoney(enemyCreature.CreatureStats.PowerLevel * 5);
         enemyCreature = null;
+        OnEnemyCreatureChanged?.Invoke(enemyCreature);
         playerWins++;
 
         AddCreatureWins();

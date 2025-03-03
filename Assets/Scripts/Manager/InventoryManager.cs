@@ -26,7 +26,9 @@ public class InventoryManager : MonoBehaviour
 
     //private Creature selectedCreatureForBattle;
     private Dictionary<CreatureBattleSlot, Creature> creatureBattleSlots;
-    
+
+    public static event Action<CreatureBattleSlot> OnCreatureChanged;
+
     private Creature creatureInspectorLeft;
     private Creature creatureInspectorRight;
 
@@ -97,15 +99,13 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Awake called. Setting Instance and initializing creatureBattleSlots.");
             Instance = this;
             creatureBattleSlots = new Dictionary<CreatureBattleSlot, Creature>
             {
-                { CreatureBattleSlot.Attack, new Creature(1,1,null,null) },
+                { CreatureBattleSlot.Attack, null },
                 { CreatureBattleSlot.Defense, null },
                 { CreatureBattleSlot.Heal, null }
             };
-            Debug.Log("CreatureBattleSlots initialized: " + (creatureBattleSlots != null));
         }
     }
 
@@ -348,7 +348,7 @@ public class InventoryManager : MonoBehaviour
         if (creatureInspectorLeft == creature)
         {
             creatureInspectorLeft = null;
-            OnChangesCreatureInspectorLeft.Invoke(creatureInspectorLeft);
+            OnChangesCreatureInspectorLeft?.Invoke(creatureInspectorLeft);
             UI_CompareManager.Instance.SetInspector();
             return;
         }
@@ -356,7 +356,7 @@ public class InventoryManager : MonoBehaviour
         if(creatureInspectorRight == creature)
         {
             creatureInspectorRight = null;
-            OnChangesCreatureInspectorRight.Invoke(creatureInspectorRight);
+            OnChangesCreatureInspectorRight?.Invoke(creatureInspectorRight);
             UI_CompareManager.Instance.SetInspector();
             return;
         }
@@ -392,18 +392,19 @@ public class InventoryManager : MonoBehaviour
             if (creature == creatureInspectorLeft)
             {
                 creatureInspectorLeft = null;
-                OnChangesCreatureInspectorLeft.Invoke(creatureInspectorLeft);
+                OnChangesCreatureInspectorLeft?.Invoke(creatureInspectorLeft);
             }
             
             if (creature == creatureInspectorRight)
             {
                 creatureInspectorRight = null;
-                OnChangesCreatureInspectorRight.Invoke(creatureInspectorRight);
+                OnChangesCreatureInspectorRight?.Invoke(creatureInspectorRight);
             }
             
             UI_CompareManager.Instance?.SetInspector();
             
             creatureBattleSlots[battleSlot] = creature;
+            OnCreatureChanged?.Invoke(battleSlot);
             
             UI_BattleManager.Instance.UpdateBattleCreatureRepresentation(battleSlot, creature);
 
@@ -418,9 +419,9 @@ public class InventoryManager : MonoBehaviour
         {
             return false;
         }
-        
-        Debug.Log("Retreating battle slot");
+       
         creatureBattleSlots[battleSlot] = null;
+        OnCreatureChanged?.Invoke(battleSlot);
         AddCreature(creature);
         return true;
     }
@@ -430,10 +431,10 @@ public class InventoryManager : MonoBehaviour
         if (creatureToSelect == creatureInspectorRight)
         {
             creatureInspectorRight = null;
-            OnChangesCreatureInspectorRight.Invoke(creatureInspectorRight);
+            OnChangesCreatureInspectorRight?.Invoke(creatureInspectorRight);
         }
         creatureInspectorLeft = creatureToSelect;
-        OnChangesCreatureInspectorLeft.Invoke(creatureInspectorLeft);
+        OnChangesCreatureInspectorLeft?.Invoke(creatureInspectorLeft);
     }
     
     public void SelectCreatureRight(Creature creatureToSelect)
@@ -441,10 +442,10 @@ public class InventoryManager : MonoBehaviour
         if (creatureToSelect == creatureInspectorLeft)
         {
             creatureInspectorLeft = null;
-            OnChangesCreatureInspectorLeft.Invoke(creatureInspectorLeft);
+            OnChangesCreatureInspectorLeft?.Invoke(creatureInspectorLeft);
         }
         creatureInspectorRight = creatureToSelect;
-        OnChangesCreatureInspectorRight.Invoke(creatureInspectorRight);
+        OnChangesCreatureInspectorRight?.Invoke(creatureInspectorRight);
     }
 
     public void AddSlot()

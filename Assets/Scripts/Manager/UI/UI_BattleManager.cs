@@ -66,6 +66,7 @@ public class UI_BattleManager : MonoBehaviour
         BattleManager.OnCreatureTimeChanged += UpdateTimeSlider;
         BattleManager.OnEnemyHealthChanged += UpdateEnemyHealthSlider;
         BattleManager.OnEnemyTimeChanged += UpdateEnemyTimeSlider;
+        InventoryManager.OnCreatureChanged += CheckCreatureRepresentation;
         ToggleStartButton();
     }
 
@@ -76,6 +77,7 @@ public class UI_BattleManager : MonoBehaviour
         BattleManager.OnCreatureTimeChanged -= UpdateTimeSlider;
         BattleManager.OnEnemyHealthChanged -= UpdateEnemyHealthSlider;
         BattleManager.OnEnemyTimeChanged -= UpdateEnemyTimeSlider;
+        InventoryManager.OnCreatureChanged -= CheckCreatureRepresentation;
     }
 
     private void ToggleStartButton()
@@ -110,10 +112,7 @@ public class UI_BattleManager : MonoBehaviour
     private void UpdateEnemyHealthSlider(float amount)
     {
         enemyHealthSlider.value = amount;
-        if (amount <= 0)
-        {
-            UI_BattleInventoryManager.Instance.Enemy.ToggleActiveState();
-        }
+        UI_BattleInventoryManager.Instance.Enemy.ToggleActiveState();
     }
 
     private void UpdateEnemyTimeSlider(float amount)

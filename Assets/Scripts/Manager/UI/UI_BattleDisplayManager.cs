@@ -26,8 +26,6 @@ public class UI_BattleDisplayManager : MonoBehaviour
 
     [SerializeField] private GameObject effectPrefab;
 
-
-
     [SerializeField] private UI_CreatureSprite enemySprite;
 
     private void Awake()
@@ -44,13 +42,17 @@ public class UI_BattleDisplayManager : MonoBehaviour
 
     public void OnEnable()
     {
-        UpdateEnemy();
+        UpdateEnemy(BattleManager.Instance.EnemyCreature);
+        BattleManager.OnEnemyCreatureChanged += UpdateEnemy;
     }
 
-    public void UpdateEnemy()
+    public void OnDisable()
     {
-        Creature enemyCreature = BattleManager.Instance.EnemyCreature;
+        BattleManager.OnEnemyCreatureChanged -= UpdateEnemy;
+    }
 
+    public void UpdateEnemy(Creature enemyCreature)
+    {
         if (enemyCreature == null)
         {
             enemyObject.SetActive(false);

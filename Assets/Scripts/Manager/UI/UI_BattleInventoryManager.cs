@@ -63,6 +63,7 @@ public class UI_BattleInventoryManager : MonoBehaviour
             ReturnedBattleInventoryItem(item.Type).UpdateHealthSlider(1);
             ReturnedBattleInventoryItem(item.Type).UpdateShieldSlider(0);
             ReturnedBattleInventoryItem(item.Type).UpdateTimeSlider(0);
+            item.ToggleActiveState();
         }
 
         if(BattleManager.Instance.EnemyCreature != null)
