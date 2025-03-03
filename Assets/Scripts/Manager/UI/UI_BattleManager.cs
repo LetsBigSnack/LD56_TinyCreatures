@@ -24,6 +24,9 @@ public class UI_BattleManager : MonoBehaviour
 
     [SerializeField] private Slider enemyHealthSlider;
     [SerializeField] private Slider enemyTimeSlider;
+    [SerializeField] private GameObject activeEnemy;
+    [SerializeField] private GameObject inactiveEnemy;
+
 
     [SerializeField] private UI_CreatureSprite attackSprite;
     [SerializeField] private UI_CreatureSprite healSprite;
@@ -51,7 +54,6 @@ public class UI_BattleManager : MonoBehaviour
         {
             Instance = this;
             soundManager = FindObjectOfType<SoundManager>();
-            SetNextBattleButtonActive(false);
         }
     }
 
@@ -67,7 +69,8 @@ public class UI_BattleManager : MonoBehaviour
         BattleManager.OnEnemyHealthChanged += UpdateEnemyHealthSlider;
         BattleManager.OnEnemyTimeChanged += UpdateEnemyTimeSlider;
         InventoryManager.OnCreatureChanged += CheckCreatureRepresentation;
-        ToggleStartButton();
+        BattleManager.OnBattleRunningChanged += ToggleStartButton;
+        ToggleStartButton(BattleManager.Instance.IsBattleRunning);
     }
 
     private void OnDisable()
@@ -80,9 +83,9 @@ public class UI_BattleManager : MonoBehaviour
         InventoryManager.OnCreatureChanged -= CheckCreatureRepresentation;
     }
 
-    private void ToggleStartButton()
+    private void ToggleStartButton(bool isBattleRunning)
     {
-        if (BattleManager.Instance.IsBattleRunning)
+        if (isBattleRunning)
         {
             startButtonText.text = "Stop";
             return;
@@ -111,6 +114,21 @@ public class UI_BattleManager : MonoBehaviour
 
     private void UpdateEnemyHealthSlider(float amount)
     {
+        if(inactiveEnemy.activeInHierarchy && amount > 0)
+        {
+            inactiveEnemy.SetActive(false);
+            activeEnemy.SetActive(true);
+        }
+
+        if (!BattleManager.Instance.AutoBattle && amount <= 0)
+        {
+            activeEnemy.SetActive(false);
+            inactiveEnemy.SetActive(true);
+            ResetSlider(CreatureBattleSlot.Attack);
+            ResetSlider(CreatureBattleSlot.Heal);
+            ResetSlider(CreatureBattleSlot.Defense);
+            UI_BattleInventoryManager.Instance.ResetAllSliders();
+        }
         enemyHealthSlider.value = amount;
         UI_BattleInventoryManager.Instance.Enemy.ToggleActiveState();
     }
@@ -270,7 +288,6 @@ public class UI_BattleManager : MonoBehaviour
             soundManager.PlaySFX("Error");
             UI_ToastManager.Instance.CreateToast(NotificationType.Alert, "No Attacker", "You need at least an attacker creature to start the training!");
         }
-        ToggleStartButton();
     }
 
     public void UpdateBattleCreatureRepresentation(CreatureBattleSlot battleSlot, Creature creature)

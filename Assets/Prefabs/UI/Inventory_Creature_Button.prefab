@@ -447,8 +447,8 @@ GameObject:
   - component: {fileID: 2148942320053515979}
   - component: {fileID: 3837123755546262781}
   - component: {fileID: 4740814729668810428}
-  - component: {fileID: 4446963975470363313}
   - component: {fileID: 8792882132501065738}
+  - component: {fileID: 4446963975470363313}
   - component: {fileID: 8565825482338371458}
   - component: {fileID: 9159522543882503881}
   - component: {fileID: 6393426832433838422}
@@ -638,20 +638,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &4446963975470363313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2499411820491973088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 118606981d51f0640b9f9de3bd0b9ebf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sellButton: {fileID: 7037227382118663687}
-  creatureButton: {fileID: 8792882132501065738}
 --- !u!114 &8792882132501065738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -670,6 +656,22 @@ MonoBehaviour:
   canvasGroup: {fileID: 0}
   parentAfterDrag: {fileID: 0}
   isDragable: 1
+--- !u!114 &4446963975470363313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2499411820491973088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 118606981d51f0640b9f9de3bd0b9ebf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sellButton: {fileID: 7037227382118663687}
+  creatureButton: {fileID: 8792882132501065738}
+  borderColor: {r: 0.25943398, g: 0.90332127, b: 1, a: 1}
+  border: {fileID: 2148942320053515979}
 --- !u!114 &8565825482338371458
 MonoBehaviour:
   m_ObjectHideFlags: 0

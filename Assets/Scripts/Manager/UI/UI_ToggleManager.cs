@@ -34,7 +34,7 @@ public class UI_ToggleManager : MonoBehaviour
     [SerializeField] private Sprite notClickedSprite;
     [SerializeField] private List<GameObject> tabButtons;
 
-    [SerializeField] private ToggleState currentState = ToggleState.Battle;
+    [SerializeField] private ToggleState currentState;
 
     private SoundManager soundManager;
     private PopupManager popupManager;
@@ -58,6 +58,11 @@ public class UI_ToggleManager : MonoBehaviour
 
     public void SwitchState(string state)
     {  
+        if(currentState.ToString() == state)
+        {
+            return;
+        }
+
         fuse.SetActive(false);
         inspector.SetActive(false);
         battle.SetActive(false);

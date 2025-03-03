@@ -56,7 +56,10 @@ public class UI_BattleDisplayManager : MonoBehaviour
         if (enemyCreature == null)
         {
             enemyObject.SetActive(false);
-            enemyName.text = "";
+            enemyName.text = "Press Start to continue!";
+            enemyPL.text = "";
+            BattleManager.OnEnemyHealthChanged?.Invoke(0);
+            BattleManager.OnEnemyTimeChanged?.Invoke(0);
         }
         else
         {

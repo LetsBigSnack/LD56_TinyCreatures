@@ -303,6 +303,18 @@ public class InventoryManager : MonoBehaviour
     {
         if (creatureToRemove != null && inventoryCreatures.Contains(creatureToRemove))
         {
+            if(creatureInspectorLeft == creatureToRemove)
+            {
+                creatureInspectorLeft = null;
+                OnChangesCreatureInspectorLeft?.Invoke(creatureInspectorLeft);
+            }
+
+            if(creatureInspectorRight == creatureToRemove)
+            {
+                creatureInspectorRight = null;
+                OnChangesCreatureInspectorRight?.Invoke(creatureInspectorRight);
+            }
+
             inventoryCreatures.Remove(creatureToRemove);
             UI_InventoryManager.Instance.RefreshInventory();
             return true;

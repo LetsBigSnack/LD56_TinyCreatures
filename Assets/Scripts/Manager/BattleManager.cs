@@ -49,6 +49,7 @@ public class BattleManager : MonoBehaviour
     private bool autoBattle;
     
     [SerializeField] private bool isBattleRunning;
+    public static event Action<bool> OnBattleRunningChanged;
 
 
     private Dictionary<CreatureBattleSlot, Coroutine> _creatureBattleCoroutines =
@@ -114,6 +115,7 @@ public class BattleManager : MonoBehaviour
         }
         
         isBattleRunning = true;
+        OnBattleRunningChanged?.Invoke(isBattleRunning);
 
         ResetCreatures(creatureBattleSlot);
 
@@ -208,6 +210,7 @@ public class BattleManager : MonoBehaviour
         }
 
         isBattleRunning = false;
+        OnBattleRunningChanged?.Invoke(isBattleRunning);
 
         if (autoBattle)
         {
@@ -218,7 +221,6 @@ public class BattleManager : MonoBehaviour
             if(!autoBattle && UI_BattleManager.Instance != null && UI_InventoryHoverManager.Instance != null)
             {
                 UI_InventoryHoverManager.Instance.ChangeBattleText("READY TO BATTLE");
-                UI_BattleManager.Instance.SetNextBattleButtonActive(true);
             }
         }
     }
@@ -600,6 +602,7 @@ public class BattleManager : MonoBehaviour
     public void StopBattle()
     {
         isBattleRunning = false;
+        OnBattleRunningChanged?.Invoke(isBattleRunning);
         
         if (UI_BattleManager.Instance != null)
         {
@@ -620,6 +623,7 @@ public class BattleManager : MonoBehaviour
     public void ResumeBattle()
     {
         isBattleRunning = true;
+        OnBattleRunningChanged?.Invoke(isBattleRunning);
     }
 
     public void SwitchAutoBattle()
@@ -660,6 +664,7 @@ public class BattleManager : MonoBehaviour
                 if (slot == CreatureBattleSlot.Attack)
                 {
                     isBattleRunning = false;
+                    OnBattleRunningChanged?.Invoke(isBattleRunning);
                 
                     
                     UI_BattleManager.Instance.SelectedCreature = null;
@@ -681,10 +686,6 @@ public class BattleManager : MonoBehaviour
         if(InventoryManager.Instance.CreatureBattleSlots[CreatureBattleSlot.Attack] == null  || enemyCreature != null)
         {
             return false;
-        }
-        if(UI_BattleManager.Instance != null)
-        {
-            UI_BattleManager.Instance.SetNextBattleButtonActive(true);
         }
         return true;
     }

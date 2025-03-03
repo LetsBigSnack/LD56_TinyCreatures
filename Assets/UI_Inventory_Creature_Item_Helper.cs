@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UI_Inventory_Creature_Item_Helper : MonoBehaviour, IPointerClickHandler 
 {
@@ -21,6 +22,10 @@ public class UI_Inventory_Creature_Item_Helper : MonoBehaviour, IPointerClickHan
     {
         StoreManager.Instance.SellOwnedCreature(creatureButton.Creature);
         InventoryManager.Instance.RemoveCreature(creatureButton.Creature);
+        if(UI_ToggleManager.Instance.CurrentState == ToggleState.Inspector)
+        {
+            UI_CompareManager.Instance.SetInspector();
+        }
         SoundManager.Instance.PlaySFX("Transaction");
         UI_InventoryManager.Instance.RefreshInventory();
     }
