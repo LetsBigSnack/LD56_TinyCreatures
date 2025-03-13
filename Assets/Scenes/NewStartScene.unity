@@ -4507,6 +4507,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7315044951568535218, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: factorMult
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7315044951568535218, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: multFactorHeal
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7315044951568535218, guid: ece12bc82724e6357b2f0fa836f287fc, type: 3}
+      propertyPath: multFactorDefense
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
