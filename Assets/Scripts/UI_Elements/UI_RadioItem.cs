@@ -98,13 +98,13 @@ public class UI_RadioItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
 
     private void ViewedTrackChanged(Track viewedTrack)
     {
-        titleViewedTxt.text = "Currently viewed: " + viewedTrack.name;
+        titleViewedTxt.text = "Viewing: " + viewedTrack.name;
         PlayButtonChange();
     }
 
     private void PlayedTrackChanged(Track playedTrack)
     {
-        titleTxt.text = "Currently playing: " + playedTrack.name;
+        titleTxt.text = "Playing: " + playedTrack.name;
         currentTrackMaxTime = TranslateToMinutes(playedTrack.source.clip.length);
         PlayButtonChange();
     }

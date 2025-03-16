@@ -18,11 +18,11 @@ public class BreedingManager : MonoBehaviour
     private Creature creaturePod1;
     private Creature creaturePod2;
 
-    public Action<Creature> OnCreatureChangePod1;
-    public Action<Creature> OnCreatureChangePod2;
+    public static event Action<Creature> OnCreatureChangePod1;
+    public static event Action<Creature> OnCreatureChangePod2;
 
     private Creature result;
-    public Action<Creature> OnCreatureChangeResult;
+    public static event Action<Creature> OnCreatureChangeResult;
 
     private BigDecimal breedingPrice = 0;
 
@@ -30,8 +30,6 @@ public class BreedingManager : MonoBehaviour
     {
         get => breedingPrice;
     }
-
-    private HashSet<Creature> _breedingCreatures;
 
     public Creature CreaturePod1 { get => creaturePod1; set => creaturePod1 = value; }
     public Creature CreaturePod2 { get => creaturePod2; set => creaturePod2 = value; }
@@ -138,7 +136,7 @@ public class BreedingManager : MonoBehaviour
         return false;
     }
 
-    public bool Breed(bool pay = true, float randomChance = 0.05f) // randomChance parameter added
+    public bool Breed(bool pay = true, float randomChance = 0.05f, bool refuse = false) // randomChance parameter added
     {
         if (creaturePod1 == null || creaturePod2 == null)
         {
@@ -155,15 +153,25 @@ public class BreedingManager : MonoBehaviour
 
         if (pay == true)
         {
-            if (StoreManager.Instance.PlayerMoney < BreedingPrice)
+            if (StoreManager.Instance.PlayerMoney < BreedingPrice && !refuse)
+            {
+                return false;
+            }
+
+            if (StoreManager.Instance.PlayerMoney < BreedingPrice/2 && refuse)
             {
                 return false;
             }
         }
 
-        StoreManager.Instance.SpendMoney(BreedingPrice);
-
-
+        if (!refuse)
+        {
+            StoreManager.Instance.SpendMoney(BreedingPrice);
+        }
+        else
+        {
+            StoreManager.Instance.SpendMoney(BreedingPrice/2);
+        }
 
         // Create a "color pod" from all body parts of both parents
         List<BaseColor> colorPodBase = new List<BaseColor>
@@ -256,6 +264,7 @@ public class BreedingManager : MonoBehaviour
 
         BigDecimal newPrice = ((creaturePod1.CreatureStats.PowerLevel + creaturePod2.CreatureStats.PowerLevel) / 2) * 2;
         breedingPrice = (newPrice.Round(0));
+
     }
 
     public bool Collect()

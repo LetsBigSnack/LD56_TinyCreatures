@@ -397,7 +397,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: RE-FUSE
+  m_text: RETRY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
   m_sharedMaterial: {fileID: -8795944488419149960, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
@@ -1032,10 +1032,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 8
+    m_Right: 8
+    m_Top: 8
+    m_Bottom: 8
   m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
@@ -1548,9 +1548,9 @@ MonoBehaviour:
   dexText: {fileID: 3078427911576626756}
   defText: {fileID: 5290840514866717510}
   attributes: []
-  baseMaterial: {fileID: 2100000, guid: 78f5fcaa3ea394447b12df3acb0fc6b5, type: 2}
-  upMaterial: {fileID: 2100000, guid: 85520cd184d72144ba2e58c073c08826, type: 2}
-  downMaterial: {fileID: 2100000, guid: d0a60c19fdc2a694b9405decc0b1c741, type: 2}
+  baseMaterial: {fileID: -8795944488419149960, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
+  upMaterial: {fileID: 2100000, guid: 430d06911722113428e27abd1c54f071, type: 2}
+  downMaterial: {fileID: 2100000, guid: 234c01f35a69343418a4b2555e619d7e, type: 2}
 --- !u!1 &3722989284667948017
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,7 +1666,7 @@ GameObject:
   - component: {fileID: 3776820863303270190}
   - component: {fileID: 3355573811527302808}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Reduced_Price_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1688,8 +1688,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 326.5, y: -127.332504}
-  m_SizeDelta: {x: 653, y: 65.33501}
+  m_AnchoredPosition: {x: 326.5, y: -123.332504}
+  m_SizeDelta: {x: 637, y: 57.335003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3776820863303270190
 CanvasRenderer:
@@ -1722,7 +1722,7 @@ MonoBehaviour:
   m_text: '[999.999 QDA]'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
-  m_sharedMaterial: {fileID: -8795944488419149960, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: d0a60c19fdc2a694b9405decc0b1c741, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2620,6 +2620,13 @@ MonoBehaviour:
   creatureButton: {fileID: 4024478652577099551}
   fuseSprite: {fileID: 4251584213802702999}
   fuseDetailsText: {fileID: 7100110223528426450}
+  activeTop: {fileID: 6540201917997272823}
+  inactiveTop: {fileID: 6519557966859862630}
+  activeMid: {fileID: 5904180614459673274}
+  inactiveMid: {fileID: 6944393921929755978}
+  activeBottom: {fileID: 6363562060944008985}
+  inactiveBottom: {fileID: 2220966631823816704}
+  reducedCostText: {fileID: 3355573811527302808}
 --- !u!1 &5576544184045417648
 GameObject:
   m_ObjectHideFlags: 0
@@ -2685,7 +2692,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: No Data
+  m_text: 'Information about your new creature will appear here:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
   m_sharedMaterial: {fileID: -8795944488419149960, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
@@ -3439,10 +3446,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 8
+    m_Right: 8
+    m_Top: 8
+    m_Bottom: 8
   m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
@@ -3724,7 +3731,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: There's currently no creature here - To receive a result drag your two
-    creatures of choice into the left and right tower to your right and press combine!
+    creatures of choice into the left and right tower to your right and press extract!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
   m_sharedMaterial: {fileID: -8795944488419149960, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
@@ -4116,7 +4123,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: EVOLVING
+  m_text: EXTRACT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7e98a2f7cd9674c46ba6e7f6e3da4752, type: 2}
   m_sharedMaterial: {fileID: -2212295204888369927, guid: 7e98a2f7cd9674c46ba6e7f6e3da4752, type: 2}
@@ -4219,8 +4226,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 326.5, y: -47.3325}
-  m_SizeDelta: {x: 653, y: 94.665}
+  m_AnchoredPosition: {x: 326.5, y: -51.3325}
+  m_SizeDelta: {x: 637, y: 86.665}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5102937361933193458
 CanvasRenderer:
@@ -4384,7 +4391,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: No Data
+  m_text: You can retry the extraction for 50% off the current extraction costs!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
   m_sharedMaterial: {fileID: -8795944488419149960, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
@@ -4862,7 +4869,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'After evolving your creatures you''re about to receive following:'
+  m_text: 'After extracting the dna of your creatures you''re about to receive following:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
   m_sharedMaterial: {fileID: -8795944488419149960, guid: 986ba755917bb2e42bb533ee2af79d7e, type: 2}
@@ -5157,6 +5164,22 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 7dca8d496f5d4204bafcd9c80a18e082, type: 3}
+    - target: {fileID: 2321407939486724926, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 2321407939486724926, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 2588327852121185674, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 2588327852121185674, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 160
+      objectReference: {fileID: 0}
     - target: {fileID: 2672177709707318695, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -5345,6 +5368,22 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5064728591529540189, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 5064728591529540189, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 5187364529836966711, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 5187364529836966711, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 160
+      objectReference: {fileID: 0}
     - target: {fileID: 5201609748217437794, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -5361,9 +5400,45 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6816210444976009153, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 6816210444976009153, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 7486993990883031915, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 7486993990883031915, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 160
+      objectReference: {fileID: 0}
     - target: {fileID: 7843208254596767153, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
       propertyPath: m_Name
       value: Creature_Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 7934231052977777026, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 7934231052977777026, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764216761721881995, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764216761721881995, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764216761721881995, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -60.000015
       objectReference: {fileID: 0}
     - target: {fileID: 8792882132501065738, guid: e4ab85888adcd83e9b4357e24e2320ae, type: 3}
       propertyPath: isLeft

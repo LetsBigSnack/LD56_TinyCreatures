@@ -39,16 +39,16 @@ public class UI_BreedingManager : MonoBehaviour
 
     private void OnEnable()
     {
-        BreedingManager.Instance.OnCreatureChangePod1 += UpdateRepresentationLeftPod;
-        BreedingManager.Instance.OnCreatureChangePod2 += UpdateRepresentationRightPod;
-        BreedingManager.Instance.OnCreatureChangeResult += UpdateRepresentationMiddlePod;
+        BreedingManager.OnCreatureChangePod1 += UpdateRepresentationLeftPod;
+        BreedingManager.OnCreatureChangePod2 += UpdateRepresentationRightPod;
+        BreedingManager.OnCreatureChangeResult += UpdateRepresentationMiddlePod;
     }
 
     private void OnDisable()
     {
-        BreedingManager.Instance.OnCreatureChangePod1 -= UpdateRepresentationLeftPod;
-        BreedingManager.Instance.OnCreatureChangePod2 -= UpdateRepresentationRightPod;
-        BreedingManager.Instance.OnCreatureChangeResult -= UpdateRepresentationMiddlePod;
+        BreedingManager.OnCreatureChangePod1 -= UpdateRepresentationLeftPod;
+        BreedingManager.OnCreatureChangePod2 -= UpdateRepresentationRightPod;
+        BreedingManager.OnCreatureChangeResult -= UpdateRepresentationMiddlePod;
     }
 
     private void Start()
